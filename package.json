@@ -1,7 +1,7 @@
 {
   "name": "drakonwidget",
   "version": "0.8.1",
-  "description": "A JavaScript-based widget for viewing and editing drakon flowcharts",
+  "description": "A JavaScript widget for viewing and editing drakon flowcharts",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

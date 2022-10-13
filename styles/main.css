@@ -1,0 +1,32 @@
+body {
+    overflow: none;
+}
+
+#main {
+    display: inline-block;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+}
+
+#left-toolbar {
+    display: inline-block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 38px;
+    height: 100%;
+    background: orangered;
+}
+
+#editor-area {
+    display: inline-block;
+    position: absolute;
+    left: 38px;
+    top: 0px;
+    width: calc(100% - 38px);
+    height: 100%;
+    background: orange;
+}
