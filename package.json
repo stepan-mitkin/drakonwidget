@@ -1,0 +1,24 @@
+{
+  "name": "drakonwidget",
+  "version": "0.8.1",
+  "description": "A JavaScript-based widget for viewing and editing drakon flowcharts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stepan-mitkin/drakonwidget.git"
+  },
+  "keywords": [
+    "drakon",
+    "flowchart",
+    "widget"
+  ],
+  "author": "Stepan Mitkin",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/stepan-mitkin/drakonwidget/issues"
+  },
+  "homepage": "https://github.com/stepan-mitkin/drakonwidget#readme"
+}
