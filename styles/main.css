@@ -16,9 +16,10 @@ body {
     position: absolute;
     left: 0px;
     top: 0px;
-    width: 38px;
+    width: 40px;
     height: 100%;
-    background: orangered;
+    background: white;
+    padding: 2px;
 }
 
 #editor-area {
@@ -26,7 +27,7 @@ body {
     position: absolute;
     left: 38px;
     top: 0px;
-    width: calc(100% - 38px);
+    width: calc(100% - 40px);
     height: 100%;
     background: orange;
 }
