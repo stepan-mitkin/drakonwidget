@@ -26,9 +26,61 @@
     <div id="main">
         <div id="left-toolbar"></div>
         <div id="editor-area"></div>
+        <div id="menu" class="main-menu">
+            <div class="menu-block">
+                <div id="close-button" class="generic-button simple-button" style="padding-left:0px;">
+                    <img src="images/delete.png"><span>Close</span>
+                </div>
+                <div class="menu-header">DrakonWidget online demo</div>
+            </div>
+            <div class="menu-block">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 60px;">
+                            <div><img class="menu-logo" src="images/dra2.png" /></div>
+                        </td>
+                        <td style="width: calc(100% - 60px); text-align: right; vertical-align: top;">
+                            <p><a href="https://github.com/stepan-mitkin/drakonwidget">Documentation</a></p>
+                            <p>
+                            <div id="create-diagram-button" class="generic-button default-button"
+                                style="margin-right:0px;">Create diagram</div>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="menu-block">
+                <div class="menu-label">Select diagram</div>
+                <select id="diagrams-combobox" class="main-menu-combobox"></select>
+            </div>
+            <div class="menu-block">
+                <div id="delete-diagram-button" class="generic-button bad-button">Delete diagram</div>
+                <div id="set-diagram-json-button" class="generic-button simple-button right-button"
+                    style="margin-right: 0px;">Diagram JSON...
+                </div>
+            </div>
+            <div class="menu-block">
+                <div class="menu-label">Color theme</div>
+                <select id="themes-combobox" class="main-menu-combobox"></select>
+            </div>
+            <div class="menu-block" style="height: 46px;">
+                <div id="set-theme-json-button" class="generic-button simple-button right-button"
+                    style="margin-right: 0px;">Theme JSON...</div>
+            </div>
+            <div class="menu-block">
+                <div class="menu-label">Editor mode</div>
+                <select id="modes-combobox" class="main-menu-combobox"></select>
+            </div>
+            <div class="menu-block">
+                <div id="reset-all-diagrams-button" class="generic-button bad-button">Reset all diagrams</div>
+            </div>
+            <div style="height: 10px"></div>
+        </div>
         <div id="snack-root"></div>
         <div id="question-root"></div>
         <div id="popup-root"></div>
+
     </div>
     <script src="libs/simplewidgets.js"></script>
     <script src="js/main.js"></script>
