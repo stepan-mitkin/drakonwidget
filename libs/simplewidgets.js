@@ -10,22 +10,22 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        className = 'generic-button simple-button icon-button';
-                        element = img(image, className);
-                        element.style.marginRight = '2px';
-                        registerAction(element, 'click', callback);
-                        if (tooltip) {
-                            addTooltip(element, tooltip);
-                            __state = '6';
-                        } else {
-                            __state = '6';
-                        }
-                        break;
-                    case '6':
-                        return element;
-                    default:
-                        return;
+                case '2':
+                    className = 'generic-button simple-button icon-button';
+                    element = img(image, className);
+                    element.style.marginRight = '2px';
+                    registerAction(element, 'click', callback);
+                    if (tooltip) {
+                        addTooltip(element, tooltip);
+                        __state = '6';
+                    } else {
+                        __state = '6';
+                    }
+                    break;
+                case '6':
+                    return element;
+                default:
+                    return;
                 }
             }
         }
@@ -47,45 +47,45 @@ function createSimpleWidgets() {
                 try {
                     while (true) {
                         switch (me.state) {
-                            case '2':
-                                me.state = '6';
-                                return;
-                            case '5':
-                                me.state = '10';
-                                return;
-                            case '12':
-                                me.state = '14';
-                                return;
-                            case '18':
-                                clearTimeout(timeoutId);
-                                me.state = '25';
-                                break;
-                            case '19':
-                                timeoutId = setTimeout(me.onTimeout, 3000);
-                                showTooltip(left, top, text);
-                                me.state = '12';
-                                break;
-                            case '20':
-                                left = evt.clientX;
-                                top = evt.clientY;
-                                timeoutId = setTimeout(me.onTimeout, 1000);
-                                me.state = '5';
-                                break;
-                            case '21':
-                                left = evt.clientX;
-                                top = evt.clientY;
-                                me.state = '5';
-                                break;
-                            case '24':
-                                clearTimeout(timeoutId);
-                                me.state = '2';
-                                break;
-                            case '25':
-                                hideTooltip();
-                                me.state = '2';
-                                break;
-                            default:
-                                return;
+                        case '2':
+                            me.state = '6';
+                            return;
+                        case '5':
+                            me.state = '10';
+                            return;
+                        case '12':
+                            me.state = '14';
+                            return;
+                        case '18':
+                            clearTimeout(timeoutId);
+                            me.state = '25';
+                            break;
+                        case '19':
+                            timeoutId = setTimeout(me.onTimeout, 3000);
+                            showTooltip(left, top, text);
+                            me.state = '12';
+                            break;
+                        case '20':
+                            left = evt.clientX;
+                            top = evt.clientY;
+                            timeoutId = setTimeout(me.onTimeout, 1000);
+                            me.state = '5';
+                            break;
+                        case '21':
+                            left = evt.clientX;
+                            top = evt.clientY;
+                            me.state = '5';
+                            break;
+                        case '24':
+                            clearTimeout(timeoutId);
+                            me.state = '2';
+                            break;
+                        case '25':
+                            hideTooltip();
+                            me.state = '2';
+                            break;
+                        default:
+                            return;
                         }
                     }
                 } catch (ex) {
@@ -101,44 +101,44 @@ function createSimpleWidgets() {
                         _ = ___;
                         evt = _evt_;
                         switch (me.state) {
-                            case '6':
-                                me.state = '20';
-                                _main_Tooltip(__resolve, __reject);
-                                break;
-                            case '10':
-                                me.state = '21';
-                                _main_Tooltip(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '6':
+                            me.state = '20';
+                            _main_Tooltip(__resolve, __reject);
+                            break;
+                        case '10':
+                            me.state = '21';
+                            _main_Tooltip(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     me.onTimeout = function () {
                         switch (me.state) {
-                            case '10':
-                                me.state = '19';
-                                _main_Tooltip(__resolve, __reject);
-                                break;
-                            case '14':
-                                me.state = '25';
-                                _main_Tooltip(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '10':
+                            me.state = '19';
+                            _main_Tooltip(__resolve, __reject);
+                            break;
+                        case '14':
+                            me.state = '25';
+                            _main_Tooltip(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     me.onOut = function () {
                         switch (me.state) {
-                            case '10':
-                                me.state = '24';
-                                _main_Tooltip(__resolve, __reject);
-                                break;
-                            case '14':
-                                me.state = '18';
-                                _main_Tooltip(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '10':
+                            me.state = '24';
+                            _main_Tooltip(__resolve, __reject);
+                            break;
+                        case '14':
+                            me.state = '18';
+                            _main_Tooltip(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     _main_Tooltip(__resolve, __reject);
@@ -172,19 +172,19 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        if (unit.tooltipElement) {
-                            html.remove(unit.tooltipElement);
-                            unit.tooltipElement = undefined;
-                            __state = '1';
-                        } else {
-                            __state = '1';
-                        }
-                        break;
-                    default:
-                        return;
+                case '1':
+                    return;
+                case '2':
+                    if (unit.tooltipElement) {
+                        html.remove(unit.tooltipElement);
+                        unit.tooltipElement = undefined;
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -204,36 +204,36 @@ function createSimpleWidgets() {
                 try {
                     while (true) {
                         switch (me.state) {
-                            case '2':
-                                root = html.get('question-root');
-                                _var2 = div('question-back');
-                                html.add(root, _var2);
-                                message = div({
-                                    padding: '10px',
-                                    text: title
-                                });
-                                _var4 = createBadButton(okText, me.yes);
-                                _var5 = createSimpleButton(cancelText, me.no);
-                                buttons = div({
-                                    'text-align': 'right',
-                                    'padding-bottom': '5px'
-                                }, _var4, _var5);
-                                _var3 = div('question-body shadow', message, buttons);
-                                html.add(root, _var3);
-                                me.state = '12';
-                                return;
-                            case '13':
-                                removeQuestions();
-                                me.state = undefined;
-                                __resolve(true);
-                                return;
-                            case '17':
-                                removeQuestions();
-                                me.state = undefined;
-                                __resolve(false);
-                                return;
-                            default:
-                                return;
+                        case '2':
+                            root = html.get('question-root');
+                            _var2 = div('question-back');
+                            html.add(root, _var2);
+                            message = div({
+                                padding: '10px',
+                                text: title
+                            });
+                            _var4 = createBadButton(okText, me.yes);
+                            _var5 = createSimpleButton(cancelText, me.no);
+                            buttons = div({
+                                'text-align': 'right',
+                                'padding-bottom': '5px'
+                            }, _var4, _var5);
+                            _var3 = div('question-body shadow', message, buttons);
+                            html.add(root, _var3);
+                            me.state = '12';
+                            return;
+                        case '13':
+                            removeQuestions();
+                            me.state = undefined;
+                            __resolve(true);
+                            return;
+                        case '17':
+                            removeQuestions();
+                            me.state = undefined;
+                            __resolve(false);
+                            return;
+                        default:
+                            return;
                         }
                     }
                 } catch (ex) {
@@ -247,22 +247,22 @@ function createSimpleWidgets() {
                 return new Promise(function (__resolve, __reject) {
                     me.yes = function () {
                         switch (me.state) {
-                            case '12':
-                                me.state = '13';
-                                _main_criticalQuestion(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '12':
+                            me.state = '13';
+                            _main_criticalQuestion(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     me.no = function () {
                         switch (me.state) {
-                            case '12':
-                                me.state = '17';
-                                _main_criticalQuestion(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '12':
+                            me.state = '17';
+                            _main_criticalQuestion(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     _main_criticalQuestion(__resolve, __reject);
@@ -279,28 +279,28 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        if (unit.popups.length === 0) {
-                            __state = '1';
-                        } else {
-                            popup = unit.popups.pop();
-                            html.remove(popup.element);
-                            if (popup.onCanceled) {
-                                if (skipCancel) {
-                                    __state = '1';
-                                } else {
-                                    popup.onCanceled();
-                                    __state = '1';
-                                }
+                case '1':
+                    return;
+                case '2':
+                    if (unit.popups.length === 0) {
+                        __state = '1';
+                    } else {
+                        popup = unit.popups.pop();
+                        html.remove(popup.element);
+                        if (popup.onCanceled) {
+                            if (skipCancel) {
+                                __state = '1';
                             } else {
+                                popup.onCanceled();
                                 __state = '1';
                             }
+                        } else {
+                            __state = '1';
                         }
-                        break;
-                    default:
-                        return;
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -332,25 +332,25 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        i = 0;
-                        __state = '5';
-                        break;
-                    case '5':
-                        if (i < unit.popups.length) {
-                            popup = unit.popups[i].element;
-                            if (popup === element) {
-                                return i;
-                            } else {
-                                i++;
-                                __state = '5';
-                            }
+                case '2':
+                    i = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (i < unit.popups.length) {
+                        popup = unit.popups[i].element;
+                        if (popup === element) {
+                            return i;
                         } else {
-                            return -1;
+                            i++;
+                            __state = '5';
                         }
-                        break;
-                    default:
-                        return;
+                    } else {
+                        return -1;
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -359,54 +359,54 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        x = Math.floor(x);
-                        y = Math.floor(y);
-                        element.style.display = 'inline-block';
-                        element.style.position = 'fixed';
-                        element.style.left = x + 'px';
-                        element.style.top = y + 'px';
-                        __state = '16';
-                        break;
-                    case '15':
-                        element.style.left = x + 'px';
-                        element.style.top = y + 'px';
-                        return;
-                    case '16':
-                        rect = element.getBoundingClientRect();
-                        if (rect.right >= window.innerWidth) {
-                            x = window.innerWidth - rect.width;
-                            __state = '20';
-                        } else {
-                            __state = '20';
-                        }
-                        break;
-                    case '20':
-                        if (x < 0) {
-                            x = 0;
-                            __state = '22';
-                        } else {
-                            __state = '22';
-                        }
-                        break;
-                    case '22':
-                        if (rect.bottom >= window.innerHeight) {
-                            y = window.innerHeight - rect.height;
-                            __state = '24';
-                        } else {
-                            __state = '24';
-                        }
-                        break;
-                    case '24':
-                        if (y < 0) {
-                            y = 0;
-                            __state = '15';
-                        } else {
-                            __state = '15';
-                        }
-                        break;
-                    default:
-                        return;
+                case '2':
+                    x = Math.floor(x);
+                    y = Math.floor(y);
+                    element.style.display = 'inline-block';
+                    element.style.position = 'fixed';
+                    element.style.left = x + 'px';
+                    element.style.top = y + 'px';
+                    __state = '16';
+                    break;
+                case '15':
+                    element.style.left = x + 'px';
+                    element.style.top = y + 'px';
+                    return;
+                case '16':
+                    rect = element.getBoundingClientRect();
+                    if (rect.right >= window.innerWidth) {
+                        x = window.innerWidth - rect.width;
+                        __state = '20';
+                    } else {
+                        __state = '20';
+                    }
+                    break;
+                case '20':
+                    if (x < 0) {
+                        x = 0;
+                        __state = '22';
+                    } else {
+                        __state = '22';
+                    }
+                    break;
+                case '22':
+                    if (rect.bottom >= window.innerHeight) {
+                        y = window.innerHeight - rect.height;
+                        __state = '24';
+                    } else {
+                        __state = '24';
+                    }
+                    break;
+                case '24':
+                    if (y < 0) {
+                        y = 0;
+                        __state = '15';
+                    } else {
+                        __state = '15';
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -415,27 +415,27 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        current = evt.target;
-                        __state = '9';
-                        break;
-                    case '6':
-                        return index;
-                    case '9':
-                        index = getPopupIndex(current);
-                        if (index === -1) {
-                            current = current.parentElement;
-                            if (current) {
-                                __state = '9';
-                            } else {
-                                __state = '6';
-                            }
+                case '2':
+                    current = evt.target;
+                    __state = '9';
+                    break;
+                case '6':
+                    return index;
+                case '9':
+                    index = getPopupIndex(current);
+                    if (index === -1) {
+                        current = current.parentElement;
+                        if (current) {
+                            __state = '9';
                         } else {
                             __state = '6';
                         }
-                        break;
-                    default:
-                        return;
+                    } else {
+                        __state = '6';
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -444,30 +444,30 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        i = unit.popups.length - 1;
-                        __state = '5';
-                        break;
-                    case '4':
-                        i--;
-                        __state = '5';
-                        break;
-                    case '5':
-                        if (i > index) {
-                            popup = unit.popups.pop();
-                            html.remove(popup.element);
-                            if (popup.onCanceled) {
-                                popup.onCanceled();
-                                __state = '4';
-                            } else {
-                                __state = '4';
-                            }
+                case '2':
+                    i = unit.popups.length - 1;
+                    __state = '5';
+                    break;
+                case '4':
+                    i--;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (i > index) {
+                        popup = unit.popups.pop();
+                        html.remove(popup.element);
+                        if (popup.onCanceled) {
+                            popup.onCanceled();
+                            __state = '4';
                         } else {
-                            return;
+                            __state = '4';
                         }
-                        break;
-                    default:
+                    } else {
                         return;
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -501,49 +501,49 @@ function createSimpleWidgets() {
             var __state = '7';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        width = width || '100%';
-                        className = 'generic-button simple-button';
-                        container = div(className, {
-                            width: width,
-                            'line-height': '30px',
-                            'position': 'relative'
-                        });
-                        html.addText(container, valueText);
-                        _var4 = createArrowDownIcon({});
-                        html.add(container, _var4);
-                        cbOptions = {
-                            container: container,
-                            options: options,
-                            value: value,
-                            onChange: onChange
-                        };
-                        registerAction(container, 'click', buildComboPopup, cbOptions);
-                        __state = '5';
-                        break;
-                    case '5':
-                        return container;
-                    case '7':
-                        _var2 = options;
-                        _var3 = 0;
-                        __state = '11';
-                        break;
-                    case '11':
-                        if (_var3 < _var2.length) {
-                            item = _var2[_var3];
-                            if (item.id === value) {
-                                valueText = item.text;
-                                __state = '2';
-                            } else {
-                                _var3++;
-                                __state = '11';
-                            }
+                case '2':
+                    width = width || '100%';
+                    className = 'generic-button simple-button';
+                    container = div(className, {
+                        width: width,
+                        'line-height': '30px',
+                        'position': 'relative'
+                    });
+                    html.addText(container, valueText);
+                    _var4 = createArrowDownIcon({});
+                    html.add(container, _var4);
+                    cbOptions = {
+                        container: container,
+                        options: options,
+                        value: value,
+                        onChange: onChange
+                    };
+                    registerAction(container, 'click', buildComboPopup, cbOptions);
+                    __state = '5';
+                    break;
+                case '5':
+                    return container;
+                case '7':
+                    _var2 = options;
+                    _var3 = 0;
+                    __state = '11';
+                    break;
+                case '11':
+                    if (_var3 < _var2.length) {
+                        item = _var2[_var3];
+                        if (item.id === value) {
+                            valueText = item.text;
+                            __state = '2';
                         } else {
-                            throw new Error('Bad combobox value: ' + value);
+                            _var3++;
+                            __state = '11';
                         }
-                        break;
-                    default:
-                        return;
+                    } else {
+                        throw new Error('Bad combobox value: ' + value);
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -573,43 +573,43 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        size = 30;
-                        padding = 8;
-                        style = {
-                            display: 'inline-block',
-                            margin: '0px',
-                            'vertical-align': 'bottom',
-                            position: 'absolute',
-                            top: '0px',
-                            right: '0px'
-                        };
-                        canvas = html.createElement('canvas', {
-                            width: size,
-                            height: size
-                        }, [style]);
-                        __state = '7';
-                        break;
-                    case '6':
-                        return canvas;
-                    case '7':
-                        ctx = canvas.getContext('2d');
-                        left = padding;
-                        top = padding;
-                        right = size - padding;
-                        bottom = size - padding;
-                        middle = size / 2;
-                        ctx.fillStyle = 'rgb(69, 90, 100)';
-                        ctx.beginPath();
-                        ctx.moveTo(left, top);
-                        ctx.lineTo(right, top);
-                        ctx.lineTo(middle, bottom);
-                        ctx.closePath();
-                        ctx.fill();
-                        __state = '6';
-                        break;
-                    default:
-                        return;
+                case '2':
+                    size = 30;
+                    padding = 8;
+                    style = {
+                        display: 'inline-block',
+                        margin: '0px',
+                        'vertical-align': 'bottom',
+                        position: 'absolute',
+                        top: '0px',
+                        right: '0px'
+                    };
+                    canvas = html.createElement('canvas', {
+                        width: size,
+                        height: size
+                    }, [style]);
+                    __state = '7';
+                    break;
+                case '6':
+                    return canvas;
+                case '7':
+                    ctx = canvas.getContext('2d');
+                    left = padding;
+                    top = padding;
+                    right = size - padding;
+                    bottom = size - padding;
+                    middle = size / 2;
+                    ctx.fillStyle = 'rgb(69, 90, 100)';
+                    ctx.beginPath();
+                    ctx.moveTo(left, top);
+                    ctx.lineTo(right, top);
+                    ctx.lineTo(middle, bottom);
+                    ctx.closePath();
+                    ctx.fill();
+                    __state = '6';
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -622,26 +622,26 @@ function createSimpleWidgets() {
                 try {
                     while (true) {
                         switch (me.state) {
-                            case '2':
-                                me.state = '3';
-                                setTimeout(function () {
-                                    _main_snackProc(__resolve, __reject);
-                                }, 3000);
-                                return;
-                            case '3':
-                                snackDiv.style.opacity = 0;
-                                me.state = '6';
-                                setTimeout(function () {
-                                    _main_snackProc(__resolve, __reject);
-                                }, 500);
-                                return;
-                            case '6':
-                                removeSnack();
-                                me.state = undefined;
-                                __resolve({ ok: true });
-                                return;
-                            default:
-                                return;
+                        case '2':
+                            me.state = '3';
+                            setTimeout(function () {
+                                _main_snackProc(__resolve, __reject);
+                            }, 3000);
+                            return;
+                        case '3':
+                            snackDiv.style.opacity = 0;
+                            me.state = '6';
+                            setTimeout(function () {
+                                _main_snackProc(__resolve, __reject);
+                            }, 500);
+                            return;
+                        case '6':
+                            removeSnack();
+                            me.state = undefined;
+                            __resolve({ ok: true });
+                            return;
+                        default:
+                            return;
                         }
                     }
                 } catch (ex) {
@@ -667,28 +667,28 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        removeSnack();
-                        __state = '5';
-                        break;
-                    case '4':
-                        return;
-                    case '5':
-                        root = html.get('snack-root');
-                        _var2 = div('snack-field-back');
-                        _var4 = div('middle-v', {
-                            text: text,
-                            'padding-left': '10px'
-                        });
-                        _var3 = div('snack-field-text', _var4);
-                        snackDiv = div('snack-container shadow', _var2, _var3);
-                        html.add(root, snackDiv);
-                        unit.snack = snackProc_create(snackDiv);
-                        unit.snack.run();
-                        __state = '4';
-                        break;
-                    default:
-                        return;
+                case '2':
+                    removeSnack();
+                    __state = '5';
+                    break;
+                case '4':
+                    return;
+                case '5':
+                    root = html.get('snack-root');
+                    _var2 = div('snack-field-back');
+                    _var4 = div('middle-v', {
+                        text: text,
+                        'padding-left': '10px'
+                    });
+                    _var3 = div('snack-field-text', _var4);
+                    snackDiv = div('snack-container shadow', _var2, _var3);
+                    html.add(root, snackDiv);
+                    unit.snack = snackProc_create(snackDiv);
+                    unit.snack.run();
+                    __state = '4';
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -697,21 +697,21 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        if (unit.snack) {
-                            unit.snack.state = undefined;
-                            unit.snack = undefined;
-                            __state = '3';
-                        } else {
-                            __state = '3';
-                        }
-                        break;
-                    case '3':
-                        container = html.get('snack-root');
-                        html.clear(container);
-                        return;
-                    default:
-                        return;
+                case '2':
+                    if (unit.snack) {
+                        unit.snack.state = undefined;
+                        unit.snack = undefined;
+                        __state = '3';
+                    } else {
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    container = html.get('snack-root');
+                    html.clear(container);
+                    return;
+                default:
+                    return;
                 }
             }
         }
@@ -720,59 +720,59 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        removePopups();
-                        shift = 10;
-                        menu = div('context-menu shadow');
-                        if (options) {
-                            if ('shift' in options) {
-                                shift = options.shift;
-                                if ('width' in options) {
-                                    menu.style.width = options.width;
-                                    __state = '_item2';
-                                } else {
-                                    __state = '_item2';
-                                }
+                case '1':
+                    return;
+                case '2':
+                    removePopups();
+                    shift = 10;
+                    menu = div('context-menu shadow');
+                    if (options) {
+                        if ('shift' in options) {
+                            shift = options.shift;
+                            if ('width' in options) {
+                                menu.style.width = options.width;
+                                __state = '_item2';
                             } else {
                                 __state = '_item2';
                             }
                         } else {
                             __state = '_item2';
                         }
-                        break;
-                    case '5':
-                        if (_var3 < _var2.length) {
-                            item = _var2[_var3];
-                            _var4 = makeContextMenuItem(item);
-                            html.add(menu, _var4);
-                            _var3++;
-                            __state = '5';
-                        } else {
-                            if (options) {
-                                if (options.modal) {
-                                    pushSemiModalPopup(menu, x + shift, y + shift);
-                                    __state = '1';
-                                } else {
-                                    __state = '23';
-                                }
+                    } else {
+                        __state = '_item2';
+                    }
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        item = _var2[_var3];
+                        _var4 = makeContextMenuItem(item);
+                        html.add(menu, _var4);
+                        _var3++;
+                        __state = '5';
+                    } else {
+                        if (options) {
+                            if (options.modal) {
+                                pushSemiModalPopup(menu, x + shift, y + shift);
+                                __state = '1';
                             } else {
                                 __state = '23';
                             }
+                        } else {
+                            __state = '23';
                         }
-                        break;
-                    case '23':
-                        pushPopup(menu, x + shift, y + shift);
-                        __state = '1';
-                        break;
-                    case '_item2':
-                        _var2 = items;
-                        _var3 = 0;
-                        __state = '5';
-                        break;
-                    default:
-                        return;
+                    }
+                    break;
+                case '23':
+                    pushPopup(menu, x + shift, y + shift);
+                    __state = '1';
+                    break;
+                case '_item2':
+                    _var2 = items;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -781,36 +781,36 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        if (item.type === 'separator') {
-                            _var4 = div('context-menu-separator');
-                            return _var4;
+                case '2':
+                    if (item.type === 'separator') {
+                        _var4 = div('context-menu-separator');
+                        return _var4;
+                    } else {
+                        line = div('context-menu-item');
+                        if (item.icon) {
+                            _var2 = html.createElement('img', {
+                                draggable: false,
+                                src: item.icon
+                            }, ['context-menu-icon-passive']);
+                            html.add(line, _var2);
+                            __state = '_item3';
                         } else {
-                            line = div('grid-item');
-                            if (item.icon) {
-                                _var2 = html.createElement('img', {
-                                    draggable: false,
-                                    src: item.icon
-                                }, ['grid-icon-passive']);
-                                html.add(line, _var2);
-                                __state = '_item3';
-                            } else {
-                                __state = '_item3';
-                            }
+                            __state = '_item3';
                         }
-                        break;
-                    case '_item3':
-                        _var3 = div('grid-item-text', { text: item.text });
-                        html.add(line, _var3);
-                        callback = function (arg, evt) {
-                            removePopups();
-                            _var5 = item.action(arg, evt);
-                            return _var5;
-                        };
-                        registerAction(line, 'click', callback, item.arg);
-                        return line;
-                    default:
-                        return;
+                    }
+                    break;
+                case '_item3':
+                    _var3 = div('context-menu-item-text', { text: item.text });
+                    html.add(line, _var3);
+                    callback = function (arg, evt) {
+                        removePopups();
+                        _var5 = item.action(arg, evt);
+                        return _var5;
+                    };
+                    registerAction(line, 'click', callback, item.arg);
+                    return line;
+                default:
+                    return;
                 }
             }
         }
@@ -819,20 +819,20 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        if (src) {
-                            dst = {};
-                            Object.assign(dst, src);
-                            return dst;
-                        } else {
-                            src;
-                            __state = '1';
-                        }
-                        break;
-                    default:
-                        return;
+                case '1':
+                    return;
+                case '2':
+                    if (src) {
+                        dst = {};
+                        Object.assign(dst, src);
+                        return dst;
+                    } else {
+                        src;
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -935,53 +935,57 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        html.addClass('textarea', 'resize: none');
-                        html.addClass('body', 'font: 14px Arial');
-                        html.addClass('.title', 'font: bold 16px Arial', 'margin-top: 10px');
-                        html.addClass('.shadow', 'box-shadow: 0px 0px 7px 2px rgba(0,0,0,0.27)');
-                        html.addClass('.full-screen', 'display: inline-block', 'position: fixed', 'left: 0px', 'top: 0px', 'width: 100vw', 'height: 100vh');
-                        html.addClass('input, textarea', 'font: 14px Arial', 'width: 100%', 'padding: 5px');
-                        html.addClass('.screen-container', 'display:inline-block', 'width:100%', 'height:100%');
-                        html.addClass('.middle', 'display: inline-block', 'position: absolute', 'left: 50%', 'top: 50%', 'transform: translate(-50%, -50%)');
-                        html.addClass('.middle-v', 'display: inline-block', 'position: absolute', 'left: 0px', 'top: 50%', 'transform: translateY(-50%)');
-                        html.addClass('.middle-h', 'display: inline-block', 'position: absolute', 'left: 50%', 'top: 0px', 'transform: translateX(-50%)');
-                        html.addClass('.header1', 'font-weight: bold', 'font-size: 18px', 'text-align: center');
-                        __state = '56';
-                        break;
-                    case '54':
-                        return;
-                    case '56':
-                        html.addClass('.generic-button', 'display:inline-block', 'vertical-align: top', 'padding-left: 10px', 'padding-right: 10px', 'cursor: pointer', 'border-radius: 3px', 'margin-right: 5px', 'line-height:34px', 'user-select: none');
-                        html.addClass('.generic-button:active', 'transform: translateY(2px)');
-                        html.addClass('.simple-button', 'background: white', 'border: solid 1px #a0a0a0');
-                        html.addClass('.simple-button:hover', 'background: #9fd694');
-                        html.addClass('.default-button', 'border: solid 1px #038009', 'background: #038009', 'color: white');
-                        html.addClass('.default-button:hover', 'border: solid 1px #004a04', 'background: #004a04');
-                        html.addClass('.bad-button', 'border: solid 1px darkred', 'background: darkred', 'color: white');
-                        html.addClass('.bad-button:hover', 'border: solid 1px red', 'background: red');
-                        html.addClass('.icon-button', 'height: 34px', 'width: 34px');
-                        html.addClass('img.icon-button', 'display: inline-block', 'vertical-align: top', 'padding:0px', 'margin:0px');
-                        __state = '67';
-                        break;
-                    case '67':
-                        html.addClass('.question-back', 'display: inline-block', 'position: fixed', 'left: 0px', 'top: 0px', 'width: 100vw', 'height: 100vh', 'background: rgba(0, 0, 0, 0.2)', 'z-index: 2000');
-                        html.addClass('.question-body', 'display: inline-block', 'position: fixed', 'left: 50%', 'transform: translateX(-50%)', 'top: 0px', 'max-width: 100vw', 'width: 400px', 'background: white', 'z-index: 2001');
-                        __state = '70';
-                        break;
-                    case '70':
-                        html.addClass('.context-menu', 'display: inline-block', 'position: absolute', 'background: white', 'max-width: 100vw', 'min-width: 200px', 'border: solid 1px #a0a0a0', 'padding: 10px');
-                        html.addClass('.context-menu-separator', 'background: #a0a0a0', 'height: 1px', 'margin-top:5px', 'margin-bottom:5px');
-                        __state = '73';
-                        break;
-                    case '73':
-                        html.addClass('.snack-container', 'display: inline-block', 'position: fixed', 'left: 20px', 'top: 20px', 'width: 400px', 'max-width: calc(100vw - 20px)', 'height: 80px', 'background: white', 'z-index: 500', 'border: solid 1px #a0a0a0', 'transition: opacity 500ms');
-                        html.addClass('.snack-field-back', 'display: inline-block', 'position: absolute', 'left: 0px', 'top: 0px', 'width: 30px', 'height: 80px', 'background: darkred');
-                        html.addClass('.snack-field-text', 'display: inline-block', 'position: absolute', 'left: 30px', 'top: 0px', 'width: 370px', 'height: 80px');
-                        __state = '54';
-                        break;
-                    default:
-                        return;
+                case '2':
+                    html.addClass('textarea', 'resize: none');
+                    html.addClass('body', 'font: 14px Arial');
+                    html.addClass('.title', 'font: bold 16px Arial', 'margin-top: 10px');
+                    html.addClass('.shadow', 'box-shadow: 0px 0px 7px 2px rgba(0,0,0,0.27)');
+                    html.addClass('.full-screen', 'display: inline-block', 'position: fixed', 'left: 0px', 'top: 0px', 'width: 100vw', 'height: 100vh');
+                    html.addClass('input, textarea', 'font: 14px Arial', 'width: 100%', 'padding: 5px');
+                    html.addClass('.screen-container', 'display:inline-block', 'width:100%', 'height:100%');
+                    html.addClass('.middle', 'display: inline-block', 'position: absolute', 'left: 50%', 'top: 50%', 'transform: translate(-50%, -50%)');
+                    html.addClass('.middle-v', 'display: inline-block', 'position: absolute', 'left: 0px', 'top: 50%', 'transform: translateY(-50%)');
+                    html.addClass('.middle-h', 'display: inline-block', 'position: absolute', 'left: 50%', 'top: 0px', 'transform: translateX(-50%)');
+                    html.addClass('.header1', 'font-weight: bold', 'font-size: 18px', 'text-align: center');
+                    __state = '56';
+                    break;
+                case '54':
+                    return;
+                case '56':
+                    html.addClass('.generic-button', 'display:inline-block', 'vertical-align: top', 'padding-left: 10px', 'padding-right: 10px', 'cursor: pointer', 'border-radius: 3px', 'margin-right: 5px', 'line-height:34px', 'user-select: none');
+                    html.addClass('.generic-button:active', 'transform: translateY(2px)');
+                    html.addClass('.simple-button', 'background: white', 'border: solid 1px #a0a0a0');
+                    html.addClass('.simple-button:hover', 'background: #9fd694');
+                    html.addClass('.default-button', 'border: solid 1px #038009', 'background: #038009', 'color: white');
+                    html.addClass('.default-button:hover', 'border: solid 1px #004a04', 'background: #004a04');
+                    html.addClass('.bad-button', 'border: solid 1px darkred', 'background: darkred', 'color: white');
+                    html.addClass('.bad-button:hover', 'border: solid 1px red', 'background: red');
+                    html.addClass('.icon-button', 'height: 34px', 'width: 34px');
+                    html.addClass('img.icon-button', 'display: inline-block', 'vertical-align: top', 'padding:0px', 'margin:0px');
+                    __state = '67';
+                    break;
+                case '67':
+                    html.addClass('.question-back', 'display: inline-block', 'position: fixed', 'left: 0px', 'top: 0px', 'width: 100vw', 'height: 100vh', 'background: rgba(0, 0, 0, 0.2)', 'z-index: 2000');
+                    html.addClass('.question-body', 'display: inline-block', 'position: fixed', 'left: 50%', 'transform: translateX(-50%)', 'top: 0px', 'max-width: 100vw', 'width: 400px', 'background: white', 'z-index: 2001');
+                    __state = '70';
+                    break;
+                case '70':
+                    html.addClass('.context-menu-item', 'display:block', 'line-height:30px', 'margin: 0px', 'user-select: none', 'cursor: default', 'white-space: nowrap');
+                    html.addClass('.context-menu-item:hover', 'background:#9fd694');
+                    html.addClass('.context-menu', 'display: inline-block', 'position: absolute', 'background: white', 'max-width: 100vw', 'min-width: 200px', 'border: solid 1px #a0a0a0', 'padding: 10px');
+                    html.addClass('.context-menu-separator', 'background: #a0a0a0', 'height: 1px', 'margin-top:5px', 'margin-bottom:5px');
+                    html.addClass('.context-menu-item-text', 'display: inline-block', 'vertical-align: bottom', 'width: calc(100% - 30px)', 'white-space: nowrap', 'overflow: hidden', 'padding-left: 5px');
+                    html.addClass('img.context-menu-icon-passive', 'display: inline-block', 'vertical-align: bottom', 'width: 30px', 'height: 30px');
+                    __state = '73';
+                    break;
+                case '73':
+                    html.addClass('.snack-container', 'display: inline-block', 'position: fixed', 'left: 20px', 'top: 20px', 'width: 400px', 'max-width: calc(100vw - 20px)', 'height: 80px', 'background: white', 'z-index: 500', 'border: solid 1px #a0a0a0', 'transition: opacity 500ms');
+                    html.addClass('.snack-field-back', 'display: inline-block', 'position: absolute', 'left: 0px', 'top: 0px', 'width: 30px', 'height: 80px', 'background: darkred');
+                    html.addClass('.snack-field-text', 'display: inline-block', 'position: absolute', 'left: 30px', 'top: 0px', 'width: 370px', 'height: 80px');
+                    __state = '54';
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -1001,78 +1005,78 @@ function createSimpleWidgets() {
                 try {
                     while (true) {
                         switch (me.state) {
-                            case '2':
-                                input = html.createElement('input', { type: 'text' });
-                                _var2 = tr('ÐŸÑ€Ð¸Ð½ÑÑ‚ÑŒ');
-                                ok = createDefaultButton(_var2, me.confirm);
-                                _var3 = tr('ÐžÑ‚Ð¼ÐµÐ½Ð°');
-                                cancel = createSimpleButton(_var3, removePopups);
-                                cancel.style.margin = '0px';
-                                bottom = div({
-                                    'padding-top': '5px',
-                                    'text-align': 'right'
-                                }, ok, cancel);
-                                error = div({
-                                    'padding-top': '5px',
-                                    'color': 'dark-red',
-                                    display: 'none'
-                                });
-                                me.state = '32';
-                                break;
-                            case '20':
-                                removePopups();
-                                me.state = undefined;
-                                __resolve(text);
-                                return;
-                            case '21':
+                        case '2':
+                            input = html.createElement('input', { type: 'text' });
+                            _var2 = tr('Accept');
+                            ok = createDefaultButton(_var2, me.confirm);
+                            _var3 = tr('Cancel');
+                            cancel = createSimpleButton(_var3, removePopups);
+                            cancel.style.margin = '0px';
+                            bottom = div({
+                                'padding-top': '5px',
+                                'text-align': 'right'
+                            }, ok, cancel);
+                            error = div({
+                                'padding-top': '5px',
+                                'color': 'dark-red',
+                                display: 'none'
+                            });
+                            me.state = '32';
+                            break;
+                        case '20':
+                            removePopups();
+                            me.state = undefined;
+                            __resolve(text);
+                            return;
+                        case '21':
+                            me.state = '43';
+                            break;
+                        case '22':
+                            shift = 10;
+                            x2 = x + shift;
+                            y2 = y + shift;
+                            removePopups();
+                            pushPopup(dialog, x2, y2);
+                            input.value = text;
+                            input.setSelectionRange(0, input.value.length);
+                            input.focus();
+                            me.state = '21';
+                            break;
+                        case '32':
+                            registerAction(input, 'keydown', onInputKeyDown, me);
+                            _var4 = div({
+                                text: title,
+                                'padding-bottom': '5px'
+                            });
+                            dialog = div('shadow', {
+                                width: '400px',
+                                'max-width': '100vw',
+                                padding: '5px',
+                                background: 'white',
+                                border: 'solid 1px #a0a0a0'
+                            }, _var4, input, bottom);
+                            me.state = '22';
+                            break;
+                        case '43':
+                            me.state = '49';
+                            return;
+                        case '51':
+                            text = input.value.trim();
+                            errorMessage = checkInputText(text, check);
+                            if (errorMessage) {
+                                error.style.display = 'block';
+                                html.setText(error, errorMessage);
                                 me.state = '43';
-                                break;
-                            case '22':
-                                shift = 10;
-                                x2 = x + shift;
-                                y2 = y + shift;
-                                removePopups();
-                                pushPopup(dialog, x2, y2);
-                                input.value = text;
-                                input.setSelectionRange(0, input.value.length);
-                                input.focus();
-                                me.state = '21';
-                                break;
-                            case '32':
-                                registerAction(input, 'keydown', onInputKeyDown, me);
-                                _var4 = div({
-                                    text: title,
-                                    'padding-bottom': '5px'
-                                });
-                                dialog = div('shadow', {
-                                    width: '400px',
-                                    'max-width': '100vw',
-                                    padding: '5px',
-                                    background: 'white',
-                                    border: 'solid 1px #a0a0a0'
-                                }, _var4, input, bottom);
-                                me.state = '22';
-                                break;
-                            case '43':
-                                me.state = '49';
-                                return;
-                            case '51':
-                                text = input.value.trim();
-                                errorMessage = checkInputText(text, check);
-                                if (errorMessage) {
-                                    error.style.display = 'block';
-                                    html.setText(error, errorMessage);
-                                    me.state = '43';
-                                } else {
-                                    me.state = '20';
-                                }
-                                break;
-                            case '63':
-                                text = undefined;
+                            } else {
                                 me.state = '20';
-                                break;
-                            default:
-                                return;
+                            }
+                            break;
+                        case '63':
+                            text = undefined;
+                            me.state = '20';
+                            break;
+                        default:
+                            return;
                         }
                     }
                 } catch (ex) {
@@ -1086,22 +1090,22 @@ function createSimpleWidgets() {
                 return new Promise(function (__resolve, __reject) {
                     me.cancel = function () {
                         switch (me.state) {
-                            case '49':
-                                me.state = '63';
-                                _main_inputBox(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '49':
+                            me.state = '63';
+                            _main_inputBox(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     me.confirm = function () {
                         switch (me.state) {
-                            case '49':
-                                me.state = '51';
-                                _main_inputBox(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '49':
+                            me.state = '51';
+                            _main_inputBox(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     _main_inputBox(__resolve, __reject);
@@ -1117,29 +1121,29 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        if (evt.key === 'Enter') {
-                            if (evt.ctrlKey) {
-                                evt.preventDefault();
-                                self.confirm();
-                                __state = '1';
-                            } else {
-                                __state = '1';
-                            }
+                case '1':
+                    return;
+                case '2':
+                    if (evt.key === 'Enter') {
+                        if (evt.ctrlKey) {
+                            evt.preventDefault();
+                            self.confirm();
+                            __state = '1';
                         } else {
-                            if (evt.key === 'Escape') {
-                                evt.preventDefault();
-                                self.cancel();
-                                __state = '1';
-                            } else {
-                                __state = '1';
-                            }
+                            __state = '1';
                         }
-                        break;
-                    default:
-                        return;
+                    } else {
+                        if (evt.key === 'Escape') {
+                            evt.preventDefault();
+                            self.cancel();
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -1156,23 +1160,23 @@ function createSimpleWidgets() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        if (evt.key === 'Enter') {
-                            self.confirm();
+                case '1':
+                    return;
+                case '2':
+                    if (evt.key === 'Enter') {
+                        self.confirm();
+                        __state = '1';
+                    } else {
+                        if (evt.key === 'Escape') {
+                            self.cancel();
                             __state = '1';
                         } else {
-                            if (evt.key === 'Escape') {
-                                self.cancel();
-                                __state = '1';
-                            } else {
-                                __state = '1';
-                            }
+                            __state = '1';
                         }
-                        break;
-                    default:
-                        return;
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -1186,78 +1190,78 @@ function createSimpleWidgets() {
                 try {
                     while (true) {
                         switch (me.state) {
-                            case '2':
-                                input = html.createElement('textarea', {}, [{ height: '300px' }]);
-                                _var2 = tr('ÐŸÑ€Ð¸Ð½ÑÑ‚ÑŒ');
-                                ok = createDefaultButton(_var2, me.confirm);
-                                _var3 = tr('ÐžÑ‚Ð¼ÐµÐ½Ð°');
-                                cancel = createSimpleButton(_var3, removePopups);
-                                cancel.style.margin = '0px';
-                                bottom = div({
-                                    'padding-top': '5px',
-                                    'text-align': 'right'
-                                }, ok, cancel);
-                                error = div({
-                                    'padding-top': '5px',
-                                    'color': 'dark-red',
-                                    display: 'none'
-                                });
-                                me.state = '32';
-                                break;
-                            case '20':
-                                removePopups();
-                                me.state = undefined;
-                                __resolve(text);
-                                return;
-                            case '21':
+                        case '2':
+                            input = html.createElement('textarea', {}, [{ height: '300px' }]);
+                            _var2 = tr('Accept');
+                            ok = createDefaultButton(_var2, me.confirm);
+                            _var3 = tr('Cancel');
+                            cancel = createSimpleButton(_var3, removePopups);
+                            cancel.style.margin = '0px';
+                            bottom = div({
+                                'padding-top': '5px',
+                                'text-align': 'right'
+                            }, ok, cancel);
+                            error = div({
+                                'padding-top': '5px',
+                                'color': 'dark-red',
+                                display: 'none'
+                            });
+                            me.state = '32';
+                            break;
+                        case '20':
+                            removePopups();
+                            me.state = undefined;
+                            __resolve(text);
+                            return;
+                        case '21':
+                            me.state = '43';
+                            break;
+                        case '22':
+                            shift = 10;
+                            x2 = x + shift;
+                            y2 = y + shift;
+                            removePopups();
+                            pushSemiModalPopup(dialog, x2, y2);
+                            input.value = text;
+                            input.setSelectionRange(0, input.value.length);
+                            input.focus();
+                            me.state = '21';
+                            break;
+                        case '32':
+                            registerAction(input, 'keydown', onLargeInputKeyDown, me);
+                            _var4 = div({
+                                text: title,
+                                'padding-bottom': '5px'
+                            });
+                            dialog = div('shadow', {
+                                width: '400px',
+                                'max-width': '100vw',
+                                padding: '5px',
+                                background: 'white',
+                                border: 'solid 1px #a0a0a0'
+                            }, _var4, input, bottom);
+                            me.state = '22';
+                            break;
+                        case '43':
+                            me.state = '49';
+                            return;
+                        case '51':
+                            text = input.value.trim();
+                            errorMessage = checkInputText(text, check);
+                            if (errorMessage) {
+                                error.style.display = 'block';
+                                html.setText(error, errorMessage);
                                 me.state = '43';
-                                break;
-                            case '22':
-                                shift = 10;
-                                x2 = x + shift;
-                                y2 = y + shift;
-                                removePopups();
-                                pushSemiModalPopup(dialog, x2, y2);
-                                input.value = text;
-                                input.setSelectionRange(0, input.value.length);
-                                input.focus();
-                                me.state = '21';
-                                break;
-                            case '32':
-                                registerAction(input, 'keydown', onLargeInputKeyDown, me);
-                                _var4 = div({
-                                    text: title,
-                                    'padding-bottom': '5px'
-                                });
-                                dialog = div('shadow', {
-                                    width: '400px',
-                                    'max-width': '100vw',
-                                    padding: '5px',
-                                    background: 'white',
-                                    border: 'solid 1px #a0a0a0'
-                                }, _var4, input, bottom);
-                                me.state = '22';
-                                break;
-                            case '43':
-                                me.state = '49';
-                                return;
-                            case '51':
-                                text = input.value.trim();
-                                errorMessage = checkInputText(text, check);
-                                if (errorMessage) {
-                                    error.style.display = 'block';
-                                    html.setText(error, errorMessage);
-                                    me.state = '43';
-                                } else {
-                                    me.state = '20';
-                                }
-                                break;
-                            case '63':
-                                text = undefined;
+                            } else {
                                 me.state = '20';
-                                break;
-                            default:
-                                return;
+                            }
+                            break;
+                        case '63':
+                            text = undefined;
+                            me.state = '20';
+                            break;
+                        default:
+                            return;
                         }
                     }
                 } catch (ex) {
@@ -1271,22 +1275,22 @@ function createSimpleWidgets() {
                 return new Promise(function (__resolve, __reject) {
                     me.cancel = function () {
                         switch (me.state) {
-                            case '49':
-                                me.state = '63';
-                                _main_largeBox(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '49':
+                            me.state = '63';
+                            _main_largeBox(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     me.confirm = function () {
                         switch (me.state) {
-                            case '49':
-                                me.state = '51';
-                                _main_largeBox(__resolve, __reject);
-                                break;
-                            default:
-                                return;
+                        case '49':
+                            me.state = '51';
+                            _main_largeBox(__resolve, __reject);
+                            break;
+                        default:
+                            return;
                         }
                     };
                     _main_largeBox(__resolve, __reject);
@@ -1308,49 +1312,49 @@ function createSimpleWidgets() {
                 try {
                     while (true) {
                         switch (me.state) {
-                            case '2':
-                                input = html.createElement('input', { type: 'text' });
-                                input.readOnly = true;
-                                _var2 = tr('Ð—Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ');
-                                cancel = createSimpleButton(_var2, removePopups);
-                                cancel.style.margin = '0px';
-                                bottom = div({
-                                    'padding-top': '5px',
-                                    'text-align': 'right'
-                                }, cancel);
-                                me.state = '32';
-                                break;
-                            case '20':
-                                me.state = undefined;
-                                __resolve({ ok: true });
-                                return;
-                            case '22':
-                                shift = 10;
-                                x2 = x + shift;
-                                y2 = y + shift;
-                                removePopups();
-                                pushPopup(dialog, x2, y2);
-                                input.value = text;
-                                input.setSelectionRange(0, input.value.length);
-                                input.focus();
-                                me.state = '20';
-                                break;
-                            case '32':
-                                _var3 = div({
-                                    text: title,
-                                    'padding-bottom': '5px'
-                                });
-                                dialog = div('shadow', {
-                                    width: '400px',
-                                    'max-width': '100vw',
-                                    padding: '5px',
-                                    background: 'white',
-                                    border: 'solid 1px #a0a0a0'
-                                }, _var3, input, bottom);
-                                me.state = '22';
-                                break;
-                            default:
-                                return;
+                        case '2':
+                            input = html.createElement('input', { type: 'text' });
+                            input.readOnly = true;
+                            _var2 = tr('Close');
+                            cancel = createSimpleButton(_var2, removePopups);
+                            cancel.style.margin = '0px';
+                            bottom = div({
+                                'padding-top': '5px',
+                                'text-align': 'right'
+                            }, cancel);
+                            me.state = '32';
+                            break;
+                        case '20':
+                            me.state = undefined;
+                            __resolve({ ok: true });
+                            return;
+                        case '22':
+                            shift = 10;
+                            x2 = x + shift;
+                            y2 = y + shift;
+                            removePopups();
+                            pushPopup(dialog, x2, y2);
+                            input.value = text;
+                            input.setSelectionRange(0, input.value.length);
+                            input.focus();
+                            me.state = '20';
+                            break;
+                        case '32':
+                            _var3 = div({
+                                text: title,
+                                'padding-bottom': '5px'
+                            });
+                            dialog = div('shadow', {
+                                width: '400px',
+                                'max-width': '100vw',
+                                padding: '5px',
+                                background: 'white',
+                                border: 'solid 1px #a0a0a0'
+                            }, _var3, input, bottom);
+                            me.state = '22';
+                            break;
+                        default:
+                            return;
                         }
                     }
                 } catch (ex) {
@@ -1381,49 +1385,49 @@ function createSimpleWidgets() {
                 try {
                     while (true) {
                         switch (me.state) {
-                            case '2':
-                                input = html.createElement('textarea', {}, [{ height: '300px' }]);
-                                input.readOnly = true;
-                                _var2 = tr('Ð—Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ');
-                                cancel = createSimpleButton(_var2, removePopups);
-                                cancel.style.margin = '0px';
-                                bottom = div({
-                                    'padding-top': '5px',
-                                    'text-align': 'right'
-                                }, cancel);
-                                me.state = '32';
-                                break;
-                            case '20':
-                                me.state = undefined;
-                                __resolve({ ok: true });
-                                return;
-                            case '22':
-                                shift = 10;
-                                x2 = x + shift;
-                                y2 = y + shift;
-                                removePopups();
-                                pushSemiModalPopup(dialog, x2, y2);
-                                input.value = text;
-                                input.setSelectionRange(0, input.value.length);
-                                input.focus();
-                                me.state = '20';
-                                break;
-                            case '32':
-                                _var3 = div({
-                                    text: title,
-                                    'padding-bottom': '5px'
-                                });
-                                dialog = div('shadow', {
-                                    width: '400px',
-                                    'max-width': '100vw',
-                                    padding: '5px',
-                                    background: 'white',
-                                    border: 'solid 1px #a0a0a0'
-                                }, _var3, input, bottom);
-                                me.state = '22';
-                                break;
-                            default:
-                                return;
+                        case '2':
+                            input = html.createElement('textarea', {}, [{ height: '300px' }]);
+                            input.readOnly = true;
+                            _var2 = tr('Close');
+                            cancel = createSimpleButton(_var2, removePopups);
+                            cancel.style.margin = '0px';
+                            bottom = div({
+                                'padding-top': '5px',
+                                'text-align': 'right'
+                            }, cancel);
+                            me.state = '32';
+                            break;
+                        case '20':
+                            me.state = undefined;
+                            __resolve({ ok: true });
+                            return;
+                        case '22':
+                            shift = 10;
+                            x2 = x + shift;
+                            y2 = y + shift;
+                            removePopups();
+                            pushSemiModalPopup(dialog, x2, y2);
+                            input.value = text;
+                            input.setSelectionRange(0, input.value.length);
+                            input.focus();
+                            me.state = '20';
+                            break;
+                        case '32':
+                            _var3 = div({
+                                text: title,
+                                'padding-bottom': '5px'
+                            });
+                            dialog = div('shadow', {
+                                width: '400px',
+                                'max-width': '100vw',
+                                padding: '5px',
+                                background: 'white',
+                                border: 'solid 1px #a0a0a0'
+                            }, _var3, input, bottom);
+                            me.state = '22';
+                            break;
+                        default:
+                            return;
                         }
                     }
                 } catch (ex) {
