@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>DrakonWidget online demo</title>
     <meta name="description" content="DrakonWidget online demo shows how to use DrakonWidget in your application. This demo is an online
-        editor for drakon flowcharts that does not require registration." />
+        mini-editor for drakon flowcharts that does not require registration." />
+        <meta property="og:title" content="DrakonWidget online demo">
+        <meta property="og:description" content="DrakonWidget online demo shows how to use DrakonWidget in your application. This demo is an online
+        mini-editor for drakon flowcharts that does not require registration.">
+        <meta property="og:image" content="images/drakon-widget-hero.png">
     <link rel="shortcut icon" href="images/favicon.ico" />
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <style>
@@ -56,7 +60,8 @@
             </div>
             <div class="menu-block">
                 <div id="delete-diagram-button" class="generic-button simple-button">Delete diagram</div>
-                <div id="set-diagram-json-button" class="generic-button simple-button right-button"
+                <div id="duplicate-diagram-button" class="generic-button simple-button">Duplicate diagram</div>
+                <div id="set-diagram-json-button" class="generic-button simple-button"
                     style="margin-right: 0px;">Diagram JSON...
                 </div>
             </div>
@@ -83,8 +88,10 @@
 
     </div>
     <script src="libs/drakonwidget.js"></script>
+    <script src="libs/mousetrap.min.js"></script>
     <script src="libs/simplewidgets.js"></script>
     <script src="js/examples.js"></script>
+    <script src="js/themes.js"></script>
     <script src="js/main.js"></script>
 </body>
 

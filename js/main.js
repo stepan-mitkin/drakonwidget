@@ -1,16 +1,20 @@
 (function () {
     var widgets
     var drakon
+    var currentMode = "write"
     function main() {
         widgets = createSimpleWidgets()
         widgets.init(tr)
         initToolbar()
         loadDiagrams()
+        loadThemes()
         var closeButton = get("close-button")
         closeButton.addEventListener("click", closeMenu)
 
         registerClick("create-diagram-button", createDiagram)
         registerClick("delete-diagram-button", deleteDiagram)
+        registerClick("duplicate-diagram-button", duplicateDiagram)
+        
         registerClick("set-diagram-json-button", setDiagramJson)
         registerClick("set-theme-json-button", setThemeJson)
         registerClick("reset-all-diagrams-button", resetAllDiagrams)
@@ -20,9 +24,83 @@
         registerChange("modes-combobox", onModesChanged)
 
         initDrakonWidget()
+        initShortcuts()
         var currentDiagram = localStorage.getItem("current-diagram")
         openDiagram(currentDiagram)
+        window.onresize = debounce(onResize, 500)
     }
+
+    function initShortcuts() {
+        Mousetrap.bind(['ctrl+c', 'command+c'], copy);
+        Mousetrap.bind(['ctrl+v', 'command+v'], paste);
+        Mousetrap.bind(['ctrl+x', 'command+x'], cut);
+        Mousetrap.bind(['ctrl+z', 'command+z'], undo);
+        Mousetrap.bind(['ctrl+y', 'command+y'], redo);
+        Mousetrap.bind(['del', 'backspace'], deleteSelection);
+        Mousetrap.bind('enter', editContent);
+        Mousetrap.bind('up', arrowUp);
+        Mousetrap.bind('down', arrowDown);
+        Mousetrap.bind('left', arrowLeft);
+        Mousetrap.bind('right', arrowRight);
+    }
+
+    function arrowUp(evt) {
+        evt.preventDefault()
+        drakon.arrowUp()
+    }
+
+    function arrowDown(evt) {
+        evt.preventDefault()
+        drakon.arrowDown()
+    }
+    
+    function arrowLeft(evt) {
+        evt.preventDefault()
+        drakon.arrowLeft()
+    }
+    
+    function arrowRight(evt) {
+        evt.preventDefault()
+        drakon.arrowRight()
+    }    
+
+    function editContent() {
+        drakon.editContent()
+    }
+
+    function deleteSelection() {
+        drakon.deleteSelection()
+    }
+
+    function copy() {
+        drakon.copySelection()
+    }
+
+    function paste() {
+        drakon.showPaste()
+    }
+
+    function cut() {
+        drakon.cutSelection()
+    }
+
+    function debounce(action, delay) {
+        var timeoutId = undefined
+        var onTimeout = function() {
+            timeoutId = undefined
+            action()
+        }
+        var resetDebounce = function() {
+            if (timeoutId) {
+                clearTimeout(timeoutId)
+            }
+            timeoutId = setTimeout(onTimeout, delay)            
+        }
+
+        return function() {
+            resetDebounce()
+        }
+    }   
 
     function registerChange(id, action) {
         var element = get(id)
@@ -35,60 +113,200 @@
     }
 
     function onModesChanged() {
-        console.log("onModesChanged")
+        var modes = get("modes-combobox")
+        currentMode = modes.value
+        reloadCurrent()
+        closeMenu()
+    }
+
+    function reloadCurrent() {
+        var current = localStorage.getItem("current-diagram")
+        openDiagram(current)
     }
 
     function onThemesChanged() {
-        console.log("onThemesChanged")
-
+        var themes = get("themes-combobox")
+        localStorage.setItem("current-theme", themes.value)
+        reloadCurrent()
+        closeMenu()
     }
 
     function onDiagramsChanged() {
         var diagrams = get("diagrams-combobox")
         openDiagram(diagrams.value)
-        localStorage.setItem("current-diagram", diagrams.value)
+        closeMenu()
     }
 
-    function resetAllDiagrams() {
-        console.log("resetAllDiagrams")
+    async function resetAllDiagrams() {
+        var yes = await widgets.criticalQuestion("Do you want to delete ALL your diagrams?", "Delete", "Cancel")
+        if (!yes) {
+            return
+        }
 
+        var list = getDiagramList()
+        for (var id of list) {
+            localStorage.removeItem(id)
+        }
+        var themes = getThemes()
+        for (var theme of themes) {
+            localStorage.removeItem(theme)            
+        }
+        localStorage.removeItem("diagram-list")
+        localStorage.removeItem("current-diagram")
+        localStorage.removeItem("current-zoom")
+        localStorage.removeItem("current-theme")
+        localStorage.removeItem("themes")
+        location.reload()
     }
 
-    function setThemeJson() {
-        console.log("setThemeJson")
+    async function setThemeJson(evt) {
+        var current = localStorage.getItem("current-theme")
+        var theme = JSON.parse(localStorage.getItem(current))        
+        var beautiful = JSON.stringify(theme, null, 4)
+        var newContent = await widgets.largeBox(
+            evt.clientX,
+            evt.clientY,
+            "Theme",
+            beautiful,
+            undefined
+        )
+        if (newContent === undefined) {
+            return
+        }
+        var newDiagram
+        try {
+            newDiagram = JSON.parse(newContent)
+        } catch (ex) {
+            widgets.showErrorSnack("Error in JSON: " + ex.message)
+            return
+        }
 
+        if (!newDiagram.name || !newDiagram.id) {
+            widgets.showErrorSnack("Error in theme structure")
+            return
+        }
+
+        localStorage.setItem(current, newContent)
+        reloadCurrent()
+        closeMenu()
     }
 
-    function setDiagramJson() {
-        console.log("setDiagramJson")
+    async function setDiagramJson(evt) {
+        var current = localStorage.getItem("current-diagram")
+        var diagram = JSON.parse(localStorage.getItem(current))
+        delete diagram.id
+        var beautiful = JSON.stringify(diagram, null, 4)
+        var newContent = await widgets.largeBox(
+            evt.clientX,
+            evt.clientY,
+            "Diagram source",
+            beautiful,
+            undefined
+        )
+        if (newContent === undefined) {
+            return
+        }
+        var newDiagram
+        try {
+            newDiagram = JSON.parse(newContent)
+        } catch (ex) {
+            widgets.showErrorSnack("Error in JSON: " + ex.message)
+            return
+        }
 
+        if (!newDiagram.name || !newDiagram.items) {
+            widgets.showErrorSnack("Error in diagram structure")
+            return
+        }
+
+        localStorage.setItem(current, newContent)
+        openDiagram(current)
+        closeMenu()
     }
 
-    function deleteDiagram() {
-        console.log("deleteDiagram")
+    async function deleteDiagram() {
+        var list = getDiagramList()
+        if (list.length == 1) {
+            widgets.showErrorSnack("Cannot delete the last diagram")
+            return
+        }
 
+        var yes = await widgets.criticalQuestion("Do you want to delete the current diagram", "Delete", "Cancel")
+        if (!yes) {
+            return
+        }
+        
+        var current = localStorage.getItem("current-diagram")
+        var index = list.indexOf(current)
+        localStorage.removeItem(current)
+        list.splice(index, 1)
+        localStorage.setItem("diagram-list", JSON.stringify(list))
+        var nextCurrent
+        if (index < list.length) {
+            nextCurrent = list[index]
+        } else {
+            nextCurrent = list[index - 1]
+        }
+        openDiagram(nextCurrent)
+        closeMenu()
     }
 
-    function createDiagram() {
-        console.log("createDiagram")
-
+    function duplicateDiagram() {
+        var current = localStorage.getItem("current-diagram")
+        var diagram = JSON.parse(localStorage.getItem(current))
+        diagram.name += "-2"
+        var list = getDiagramList()
+        var id = generateId(list)
+        var diagramStr = JSON.stringify(diagram)
+        list.push(id)
+        localStorage.setItem("diagram-list", JSON.stringify(list))
+        localStorage.setItem(id, diagramStr)
+        openDiagram(id)
+        closeMenu()
     }
+
+    async function createDiagram(evt) {
+        var name = await widgets.inputBox(
+            evt.clientX,
+            evt.clientY,
+            "Enter diagram name",
+            "",
+            nameNotEmpty)
+        if (name) {
+            var id = createEmptyDiagram(name)
+            openDiagram(id)
+            closeMenu()
+        }
+    }
+
+    function createEmptyDiagram(name) {
+        var diagram = {name:name, items:{}}
+        var list = getDiagramList()
+        var id = generateId(list)
+        var diagramStr = JSON.stringify(diagram)
+        list.push(id)
+        localStorage.setItem("diagram-list", JSON.stringify(list))
+        localStorage.setItem(id, diagramStr)
+        return id
+    }    
 
     function initToolbar() {
         var toolbar = get("left-toolbar")
         addIconButton(toolbar, "menu.png", showMenu, "Menu")
         addVSpace(toolbar)
-        addIconButton(toolbar, "undo.png", undo, "Undo")
-        addIconButton(toolbar, "redo.png", redo, "Redo")
+        addIconButton(toolbar, "zoom.png", showZoom, "Zoom")
         addVSpace(toolbar)
-        addInsertButton(toolbar, "action.png", "action", "Action. Key: A")
-        addInsertButton(toolbar, "question.png", "question", "Question. Key: Q")
-        addInsertButton(toolbar, "select.png", "select", "Choice. Key: S")
-        addInsertButton(toolbar, "case.png", "case", "Case. Key: C")
-        addInsertButton(toolbar, "foreach.png", "foreach", "FOR loop. Key: L")
+        addIconButton(toolbar, "undo.png", undo, "Undo. Key: Ctrl+Z")
+        addIconButton(toolbar, "redo.png", redo, "Redo. Key: Ctrl+Y")
+        addVSpace(toolbar)
+        addInsertButton(toolbar, "action.png", "action", "Action. Key: A", "A")
+        addInsertButton(toolbar, "question.png", "question", "Question. Key: Q", "Q")
+        addInsertButton(toolbar, "select.png", "select", "Choice. Key: S", "S")
+        addInsertButton(toolbar, "case.png", "case", "Case. Key: C", "C")
+        addInsertButton(toolbar, "foreach.png", "foreach", "FOR loop. Key: L", "L")
         addVSpace(toolbar)
         addIconButton(toolbar, "silhouette.png", toggleSilhouette, "Toggle silhouette/primitive")
-        addInsertButton(toolbar, "branch.png", "branch", "Silhouette branch. Key: B")
+        addInsertButton(toolbar, "branch.png", "branch", "Silhouette branch. Key: B", "B")
     }
 
     function showMenu() {
@@ -102,6 +320,39 @@
         menu.style.display = "inline-block"
     }
 
+    function showZoom(ign, evt) {
+        var items = []
+        addZooomLevel(items, "2500", "25%")
+        addZooomLevel(items, "5000", "50%")
+        addZooomLevel(items, "6667", "66.667%")
+        items.push({type:"separator"})
+        addZooomLevel(items, "10000", "100%")
+        items.push({type:"separator"})
+        addZooomLevel(items, "11000", "110%")
+        addZooomLevel(items, "12000", "120%")
+        addZooomLevel(items, "15000", "150%")
+        addZooomLevel(items, "20000", "200%")
+        addZooomLevel(items, "40000", "400%")
+        widgets.showContextMenu(
+            evt.clientX,
+            evt.clientY,
+            items
+        )
+    }
+
+    function addZooomLevel(items, value, text) {
+        items.push({
+            text: text,
+            action: function() { setZoom(value) }
+        })        
+    }
+
+    function setZoom(zoom) {
+        var zoomValue = parseInt(zoom)
+        drakon.setZoom(zoomValue)
+        closeMenu()
+    }
+
     function closeMenu() {
         var menu = get("menu")
         menu.style.display = "none"
@@ -111,26 +362,52 @@
     function fillDiagrams(diagrams) {
         diagrams.innerHTML = ""
         var diagramObjects = getDiagramObjects()
+        diagramObjects.diagrams.sort(by("name"))
         for (var diagram of diagramObjects.diagrams) {
             addOption(diagrams, diagram.id, diagram.name)
         }
         diagrams.value = diagramObjects.currentDiagram
     }
 
-    function fillThemes(themes) {
-        themes.innerHTML = ""
-        addOption(themes, "x1", "Ночная синева")
-        addOption(themes, "x2", "Стандартная")
-        addOption(themes, "x3", "Ещё какая-то")
-        themes.value = "x1"
+    function by(prop) {
+        return function(leftObj, rightObj) {
+            var left = leftObj[prop]
+            var right = rightObj[prop]
+            if (left < right) {
+                return -1
+            } else if (left > right) {
+                return 1
+            }
+
+            return 0
+        }
+    }
+
+    function getThemes() {
+        var str = localStorage.getItem("themes")
+        if (str) {
+            return JSON.parse(str)
+        }
+
+        return undefined
+    }
+
+    function fillThemes(combo) {
+        combo.innerHTML = ""
+        var themes = getThemes()
+        for (var themeId of themes) {
+            var theme = JSON.parse(localStorage.getItem(themeId))
+            addOption(combo, themeId, theme.name)
+        }
+        combo.value = localStorage.getItem("current-theme")
     }
 
     function fillModes(modes) {
         modes.innerHTML = ""
-        addOption(modes, "x1", "Read/write")
-        addOption(modes, "x2", "Read-only")
-        addOption(modes, "x3", "Read-only, no select")
-        modes.value = "x1"
+        addOption(modes, "write", "Read/write")
+        addOption(modes, "read", "Read-only")
+        addOption(modes, "no-select", "Read-only, no select")
+        modes.value = currentMode
     }
 
     function undo() {
@@ -159,12 +436,13 @@
         return element
     }
 
-    function addInsertButton(container, image, type, tooltip) {
+    function addInsertButton(container, image, type, tooltip, shortcut) {
         var action = function () {
             insertIcon(type)
         }
 
         addIconButton(container, image, action, tooltip)
+        Mousetrap.bind(shortcut.toLowerCase(), action)
     }
 
     function addIconButton(container, image, action, tooltip) {
@@ -212,6 +490,23 @@
         if (!list) {
             saveExamplesInStorage()
         }
+    }
+
+    function loadThemes() {
+        var list = getThemes()
+        if (!list) {
+            saveThemesInStorage()
+        }
+    }
+
+    function saveThemesInStorage() {
+        var themes = createThemes()
+        var ids = themes.map(function(theme) { return theme.id })
+        localStorage.setItem("themes", JSON.stringify(ids))
+        for (var theme of themes) {
+            localStorage.setItem(theme.id, JSON.stringify(theme))
+        }
+        localStorage.setItem("current-theme", "theme-egg")
     }
 
     function getDiagramList() {
@@ -330,38 +625,15 @@
     }
 
     function buildConfig() {
-        return {
-            startEditContent: startEditContent,
-            showContextMenu: widgets.showContextMenu,
-            translate: tr,
-            drawZones: false,
-            canSelect: true,
-            width: 300,
-            theme: {
-                lineWidth: 1,
-                background: "#afddfa",
-                iconBorder: "#b0c0e0",
-                iconBack: "white",
-                shadowColor: "rgba(0, 0, 50, 0.15)",
-                icons: {
-                    "question": {
-                        iconBack: "darkred",                        
-                        lineWidth: 0,
-                        color: "yellow"
-                    },
-                    "loopbegin": {
-                        iconBack: "blue",                        
-                        lineWidth: 0,
-                        color: "white"
-                    },
-                    "loopend": {
-                        iconBack: "blue",                        
-                        lineWidth: 0,
-                        color: "white"
-                    }                    
-                }
-            }        
-        }
+        var canSelect = (currentMode !== "no-select") ;
+        var currentTheme = localStorage.getItem("current-theme")
+        var config = JSON.parse(localStorage.getItem(currentTheme))
+        config.startEditContent = startEditContent
+        config.showContextMenu = widgets.showContextMenu
+        config.translate = tr
+        config.drawZones = false
+        config.canSelect = canSelect
+        return config
     }
 
     function createEditSender() {
@@ -405,7 +677,7 @@
         }
     }
 
-    function openDiagram(currentDiagram) {
+    function renderEditorWidget() {
         var editorArea = get("editor-area")
         var rect = editorArea.getBoundingClientRect()
         editorArea.innerHTML = ""
@@ -416,16 +688,31 @@
             config
         )
         add(editorArea, canvas)
+    }
+
+    function openDiagram(currentDiagram) {
+        renderEditorWidget()
         var sender = createEditSender()
         var diagramStr = localStorage.getItem(currentDiagram)
         var diagram = JSON.parse(diagramStr)
-        diagram.access = "write"
+        if (currentMode === "write") {
+            diagram.access = "write"
+        } else {
+            diagram.access = "read"
+        }
 
         drakon.setDiagram(
             diagram.id,
             diagram,
             sender
         )
+
+        localStorage.setItem("current-diagram", currentDiagram)
+    }
+
+    function onResize() {
+        renderEditorWidget()
+        drakon.redraw()
     }
 
     function initDrakonWidget() {
