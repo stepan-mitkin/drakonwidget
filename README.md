@@ -21,7 +21,7 @@ DrakonWidget is a plain JavaScript file with no dependencies.
 __Include drakonwidget.js in the HTML page.__
 
 ```html
-<script src="<your location for js-files>/simplewidgets.js"></script>
+<script src="<your location for js-files>/drakonwidget.js"></script>
 ```
 
 __Create an instance of DrakonWidget.__
