@@ -128,7 +128,7 @@ Builds the content of an icon. Returns an HTML element.
 Signature
 
 ```
-function buildMulitlineDiv(type, content, config, font, textAlign, color)
+function buildContentDiv(type, content, config, font, textAlign, color)
 ```
 
 Arguments
