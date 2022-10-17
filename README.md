@@ -11,7 +11,7 @@ https://stepan-mitkin.github.io/drakonwidget/
 
 DrakonWidget is plain JavaScript file with no dependencies.
 
-[drakonwidget.js](libs/drakonwidget.js)
+[drakonwidget.js](https://stepan-mitkin.github.io/drakonwidget/libs/drakonwidget.js)
 
 
 ## Source code
@@ -26,7 +26,7 @@ A miminal example of the configuration object:
 ```javascript
 var config = {
     startEditContent: startMyContentEditor, // My function
-    showContextMenu: showMyContextMenu, // My function 
+    showContextMenu: showMyContextMenu // My function 
 }
 ```
 
@@ -213,7 +213,7 @@ var items = [
 
 ### startEditContent
 
-Starts editing of an icon's content.
+Starts editing the content of an icon.
 When the user wants to save the edited content, call the __setContent__ method on the widget.
 
 If the user cancels editing, do not do anything.
