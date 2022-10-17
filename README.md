@@ -75,20 +75,20 @@ __Load the diagram into the widget.__
 
 ```javascript
 
-        var sender = createEditSender()
-        var diagram = getDiagramFromServer(diagramId)
-        drakon.setDiagram(
-            diagramId,
-            diagram,
-            sender
-        )
+var sender = createEditSender()
+var diagram = getDiagramFromServer(diagramId)
+drakon.setDiagram(
+    diagramId,
+    diagram,
+    sender
+)
 ```
 
 __When the widget must change its size, call render() and redraw().__
 
 ```javascript
-        rebuildWidgetElement()
-        drakon.redraw()
+rebuildWidgetElement()
+drakon.redraw()
 ```
 
 ## Support
