@@ -14,7 +14,7 @@
         registerClick("create-diagram-button", createDiagram)
         registerClick("delete-diagram-button", deleteDiagram)
         registerClick("duplicate-diagram-button", duplicateDiagram)
-        
+
         registerClick("set-diagram-json-button", setDiagramJson)
         registerClick("set-theme-json-button", setThemeJson)
         registerClick("reset-all-diagrams-button", resetAllDiagrams)
@@ -53,16 +53,16 @@
         evt.preventDefault()
         drakon.arrowDown()
     }
-    
+
     function arrowLeft(evt) {
         evt.preventDefault()
         drakon.arrowLeft()
     }
-    
+
     function arrowRight(evt) {
         evt.preventDefault()
         drakon.arrowRight()
-    }    
+    }
 
     function editContent() {
         drakon.editContent()
@@ -86,21 +86,21 @@
 
     function debounce(action, delay) {
         var timeoutId = undefined
-        var onTimeout = function() {
+        var onTimeout = function () {
             timeoutId = undefined
             action()
         }
-        var resetDebounce = function() {
+        var resetDebounce = function () {
             if (timeoutId) {
                 clearTimeout(timeoutId)
             }
-            timeoutId = setTimeout(onTimeout, delay)            
+            timeoutId = setTimeout(onTimeout, delay)
         }
 
-        return function() {
+        return function () {
             resetDebounce()
         }
-    }   
+    }
 
     function registerChange(id, action) {
         var element = get(id)
@@ -149,7 +149,7 @@
         }
         var themes = getThemes()
         for (var theme of themes) {
-            localStorage.removeItem(theme)            
+            localStorage.removeItem(theme)
         }
         localStorage.removeItem("diagram-list")
         localStorage.removeItem("current-diagram")
@@ -161,7 +161,7 @@
 
     async function setThemeJson(evt) {
         var current = localStorage.getItem("current-theme")
-        var theme = JSON.parse(localStorage.getItem(current))        
+        var theme = JSON.parse(localStorage.getItem(current))
         var beautiful = JSON.stringify(theme, null, 4)
         var newContent = await widgets.largeBox(
             evt.clientX,
@@ -235,7 +235,7 @@
         if (!yes) {
             return
         }
-        
+
         var current = localStorage.getItem("current-diagram")
         var index = list.indexOf(current)
         localStorage.removeItem(current)
@@ -280,7 +280,7 @@
     }
 
     function createEmptyDiagram(name) {
-        var diagram = {name:name, items:{}}
+        var diagram = { name: name, items: {} }
         var list = getDiagramList()
         var id = generateId(list)
         var diagramStr = JSON.stringify(diagram)
@@ -288,7 +288,7 @@
         localStorage.setItem("diagram-list", JSON.stringify(list))
         localStorage.setItem(id, diagramStr)
         return id
-    }    
+    }
 
     function initToolbar() {
         var toolbar = get("left-toolbar")
@@ -325,9 +325,9 @@
         addZooomLevel(items, "2500", "25%")
         addZooomLevel(items, "5000", "50%")
         addZooomLevel(items, "6667", "66.667%")
-        items.push({type:"separator"})
+        items.push({ type: "separator" })
         addZooomLevel(items, "10000", "100%")
-        items.push({type:"separator"})
+        items.push({ type: "separator" })
         addZooomLevel(items, "11000", "110%")
         addZooomLevel(items, "12000", "120%")
         addZooomLevel(items, "15000", "150%")
@@ -343,8 +343,8 @@
     function addZooomLevel(items, value, text) {
         items.push({
             text: text,
-            action: function() { setZoom(value) }
-        })        
+            action: function () { setZoom(value) }
+        })
     }
 
     function setZoom(zoom) {
@@ -370,7 +370,7 @@
     }
 
     function by(prop) {
-        return function(leftObj, rightObj) {
+        return function (leftObj, rightObj) {
             var left = leftObj[prop]
             var right = rightObj[prop]
             if (left < right) {
@@ -501,7 +501,7 @@
 
     function saveThemesInStorage() {
         var themes = createThemes()
-        var ids = themes.map(function(theme) { return theme.id })
+        var ids = themes.map(function (theme) { return theme.id })
         localStorage.setItem("themes", JSON.stringify(ids))
         for (var theme of themes) {
             localStorage.setItem(theme.id, JSON.stringify(theme))
@@ -545,7 +545,7 @@
 
     function getDiagramObjects() {
         var list = getDiagramList()
-        var output = {diagrams:[]}
+        var output = { diagrams: [] }
         for (var id of list) {
             var diagramStr = localStorage.getItem(id)
             var diagram = JSON.parse(diagramStr)
@@ -566,7 +566,7 @@
                     prim.top,
                     "Name",
                     prim.content
-                )                
+                )
             } else {
                 widgets.inputBox(
                     prim.left,
@@ -574,7 +574,7 @@
                     tr("Rename"),
                     prim.content,
                     nameNotEmpty
-                ).then(function(newContent) {
+                ).then(function (newContent) {
                     if (newContent && newContent !== prim.content) {
                         drakon.setContent(
                             prim.id,
@@ -598,15 +598,15 @@
                     prim.top,
                     "",
                     prim.content
-                ).then(function(newContent) {
+                ).then(function (newContent) {
                     if (newContent !== undefined && newContent != prim.content) {
                         drakon.setContent(
                             prim.id,
                             newContent
                         )
                     }
-                })                  
-            }          
+                })
+            }
         }
     }
 
@@ -625,7 +625,7 @@
     }
 
     function buildConfig() {
-        var canSelect = (currentMode !== "no-select") ;
+        var canSelect = (currentMode !== "no-select");
         var currentTheme = localStorage.getItem("current-theme")
         var config = JSON.parse(localStorage.getItem(currentTheme))
         config.startEditContent = startEditContent
@@ -638,12 +638,13 @@
 
     function createEditSender() {
         return {
-            stop: function() {},
+            stop: function () { },
             pushEdit: pushEdit
-        }        
+        }
     }
 
     function pushEdit(edit) {
+        console.log("pushEdit", JSON.stringify(edit, null, 4))
         var currentDiagram = localStorage.getItem("current-diagram")
         var diagramStr = localStorage.getItem(currentDiagram)
         var diagram = JSON.parse(diagramStr)
@@ -652,7 +653,7 @@
                 updateDiagramItem(diagram, change.id, change.op, change.fields)
             } else {
                 Object.assign(diagram, change.fields)
-            }            
+            }
         }
         var changedDiagram = JSON.stringify(diagram)
         localStorage.setItem(currentDiagram, changedDiagram)
@@ -716,7 +717,7 @@
     }
 
     function initDrakonWidget() {
-        drakon = createDrakonWidget()        
+        drakon = createDrakonWidget()
     }
 
     main()
