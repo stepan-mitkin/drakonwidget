@@ -11,7 +11,7 @@ https://stepan-mitkin.github.io/drakonwidget/
 
 ## Download
 
-DrakonWidget is plain JavaScript file with no dependencies.
+DrakonWidget is a plain JavaScript file with no dependencies.
 
 [drakonwidget.js](https://stepan-mitkin.github.io/drakonwidget/libs/drakonwidget.js)
 
@@ -623,7 +623,7 @@ var diagram = {
 
 __items__ is a dictionary where the keys are item ids.
 
-### The item object
+### Item object
 
 |Name|Description|Data type|Required|
 |---|---|---|---|
