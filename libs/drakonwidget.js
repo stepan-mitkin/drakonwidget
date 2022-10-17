@@ -2981,7 +2981,7 @@ function createDrakonWidget() {
             ctx.shadowBlur = 0;
             return;
         }
-        function buildTextDiv(text, config, font, textAlign, color) {
+        function buildTextDiv(type, text, config, font, textAlign, color) {
             var textDiv;
             text = text || '';
             textDiv = div({
@@ -3293,7 +3293,7 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
-        function buildMulitlineDiv(text, config, font, textAlign, color) {
+        function buildMulitlineDiv(type, text, config, font, textAlign, color) {
             var textDiv, lines, p, _var2, _var3, line, _var4;
             var __state = '2';
             while (true) {
@@ -5260,25 +5260,25 @@ function createDrakonWidget() {
                     color = getThemeValue(config, node, 'color');
                     _var2 = type;
                     if (_var2 === 'question') {
-                        textDiv = config.buildContentDiv(content, config, config.font, 'left', color);
+                        textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
                         textDiv.style.paddingLeft = config.metre + 'px';
                         textDiv.style.paddingRight = config.metre + 'px';
                         __state = '5';
                     } else {
                         if (_var2 === 'header') {
-                            textDiv = buildTextDiv(content, config, config.headerFont, 'center', color);
+                            textDiv = buildTextDiv(type, content, config, config.headerFont, 'center', color);
                             smallerPadding = config.padding / 2 + 'px';
                             textDiv.style.paddingTop = smallerPadding;
                             textDiv.style.paddingBottom = smallerPadding;
                             __state = '5';
                         } else {
                             if (_var2 === 'branch') {
-                                textDiv = buildMulitlineDiv(content, config, config.font, 'center', color);
+                                textDiv = buildMulitlineDiv(type, content, config, config.font, 'center', color);
                                 textDiv.style.fontWeight = 'bold';
                                 __state = '5';
                             } else {
                                 if (_var2 === 'select') {
-                                    textDiv = config.buildContentDiv(content, config, config.font, 'left', color);
+                                    textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
                                     textDiv.style.paddingLeft = config.padding * 1.5 + 'px';
                                     textDiv.style.paddingRight = config.padding * 1.5 + 'px';
                                     __state = '5';
@@ -5290,14 +5290,14 @@ function createDrakonWidget() {
                                             __state = '22';
                                         } else {
                                             if (_var2 === 'end') {
-                                                textDiv = buildTextDiv(content, config, config.font, 'center', color);
+                                                textDiv = buildTextDiv(type, content, config, config.font, 'center', color);
                                                 textDiv.style.minWidth = '';
                                                 smallerPadding = config.padding / 2 + 'px';
                                                 textDiv.style.paddingTop = smallerPadding;
                                                 textDiv.style.paddingBottom = smallerPadding;
                                                 __state = '5';
                                             } else {
-                                                textDiv = config.buildContentDiv(content, config, config.font, 'left', color);
+                                                textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
                                                 __state = '5';
                                             }
                                         }
@@ -5311,7 +5311,7 @@ function createDrakonWidget() {
                     html.add(container, textDiv);
                     return textDiv;
                 case '22':
-                    textDiv = config.buildContentDiv(content, config, config.font, 'center', color);
+                    textDiv = config.buildContentDiv(type, content, config, config.font, 'center', color);
                     __state = '5';
                     break;
                 default:
@@ -7869,7 +7869,6 @@ function createDrakonWidget() {
                         'socketBody': 'yellow',
                         'socketBorder': 'black',
                         'canvasLabels': '14px Arial',
-                        'startEditContent': startEditContent,
                         'buildContentDiv': buildMulitlineDiv,
                         'getClipboard': getClipboard,
                         'setClipboard': setClipboard
