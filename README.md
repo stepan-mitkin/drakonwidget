@@ -11,7 +11,7 @@ https://stepan-mitkin.github.io/drakonwidget/
 
 DrakonWidget is plain JavaScript file with no dependencies.
 
-[drakonwidget.js](https://raw.githubusercontent.com/stepan-mitkin/drakonwidget/c77a471128df69cfa6600de6f07ac4f9e7edfefb/libs/drakonwidget.js)
+[drakonwidget.js](libs/drakonwidget.js)
 
 
 ## Source code
