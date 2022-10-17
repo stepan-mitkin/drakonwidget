@@ -573,6 +573,13 @@ var edit = {
 }
 ```
 
+### stop
+
+Stops all running actions that are related to the current diagram.
+
+```
+function stop()
+```
 
 ## Diagram data model
 
