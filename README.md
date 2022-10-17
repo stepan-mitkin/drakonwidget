@@ -16,6 +16,86 @@ DrakonWidget is a plain JavaScript file with no dependencies.
 [drakonwidget.js](https://stepan-mitkin.github.io/drakonwidget/libs/drakonwidget.js)
 
 
+## How to use DrakonWidget
+
+__Include drakonwidget.js in the HTML page.__
+
+```html
+<script src="<your location for js-files>/simplewidgets.js"></script>
+```
+
+__Create an instance of DrakonWidget.__
+
+```javascript
+var drakon = createDrakonWidget()
+```
+
+__Build the configuration object.__
+
+Provide the required callbacks: __startEditContent__ and __showContextMenu__. See the configuration reference.
+
+```javascript
+function buildConfig() {
+    var config = {}
+    config.startEditContent = startMyContentEditor
+    config.showContextMenu = showMyCuteContextMenu
+    return config
+}
+```
+
+__Call render() and insert the widget into the DOM.__
+
+```javascript
+function rebuildWidgetElement() {
+    var editorArea = document.getElementById("editor-area")
+    var rect = editorArea.getBoundingClientRect()
+    editorArea.innerHTML = ""
+    var config = buildConfig()
+    var widgetElement = drakon.render(
+        rect.width,
+        rect.height,
+        config
+    )
+    editorArea.appendChild(widgetElement);
+}
+```
+
+__Implement and create an EditSender object.__
+
+```javascript
+function createEditSender() {
+    return {
+        stop: function () { },
+        pushEdit: function(edit) { console.log(edit) }
+    }
+}
+```
+
+__Load the diagram into the widget.__
+
+```javascript
+
+        var sender = createEditSender()
+        var diagram = getDiagramFromServer(diagramId)
+        drakon.setDiagram(
+            diagramId,
+            diagram,
+            sender
+        )
+```
+
+__When the widget must change its size, call render() and redraw().__
+
+```javascript
+        rebuildWidgetElement()
+        drakon.redraw()
+```
+
+## Support
+
+Write to drakon.editor@gmail.com if you need help integrating DrakonWidget.
+
+
 ## Source code
 
 https://app.drakon.tech/ide/doc/drakon_widget_10/1
@@ -618,6 +698,9 @@ var diagram = {
 }
 
 ```
+
+The first icon on the diagram is the __branch__ icon with the lowest __branchId__.
+
 
 ### Diagram object
 
