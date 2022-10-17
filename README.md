@@ -21,7 +21,16 @@ https://app.drakon.tech/ide/doc/drakon_widget_10/1
 
 ## Configuration reference
 
-An example of the configuration object.
+A miminal example of the configuration object:
+
+```javascript
+var config = {
+    startEditContent: startMyContentEditor, // My function
+    showContextMenu: showMyContextMenu, // My function 
+}
+```
+
+Another example of the configuration object:
 
 ```javascript
 var config = {
