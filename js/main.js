@@ -5,6 +5,7 @@
     function main() {
         widgets = createSimpleWidgets()
         widgets.init(tr)
+        initDrakonWidget()
         initToolbar()
         loadDiagrams()
         loadThemes()
@@ -23,7 +24,6 @@
         registerChange("themes-combobox", onThemesChanged)
         registerChange("modes-combobox", onModesChanged)
 
-        initDrakonWidget()
         initShortcuts()
         var currentDiagram = localStorage.getItem("current-diagram")
         openDiagram(currentDiagram)
@@ -147,16 +147,23 @@
         for (var id of list) {
             localStorage.removeItem(id)
         }
-        var themes = getThemes()
-        for (var theme of themes) {
-            localStorage.removeItem(theme)
-        }
+
         localStorage.removeItem("diagram-list")
         localStorage.removeItem("current-diagram")
         localStorage.removeItem("current-zoom")
-        localStorage.removeItem("current-theme")
-        localStorage.removeItem("themes")
+        resetThemes()
         location.reload()
+    }
+
+    function resetThemes() {
+        var themes = getThemes()
+        if (themes) {
+            for (var theme of themes) {
+                localStorage.removeItem(theme)
+            }
+            localStorage.removeItem("current-theme")
+            localStorage.removeItem("themes")
+        }
     }
 
     async function setThemeJson(evt) {
@@ -307,6 +314,9 @@
         addVSpace(toolbar)
         addIconButton(toolbar, "silhouette.png", toggleSilhouette, "Toggle silhouette/primitive")
         addInsertButton(toolbar, "branch.png", "branch", "Silhouette branch. Key: B", "B")
+        addVSpace(toolbar)
+        addInsertButton(toolbar, "insertion.png", "insertion", "Insertion")
+        addInsertButton(toolbar, "comment.png", "comment", "Comment")
     }
 
     function showMenu() {
@@ -442,7 +452,9 @@
         }
 
         addIconButton(container, image, action, tooltip)
-        Mousetrap.bind(shortcut.toLowerCase(), action)
+        if (shortcut) {
+            Mousetrap.bind(shortcut.toLowerCase(), action)
+        }
     }
 
     function addIconButton(container, image, action, tooltip) {
@@ -493,10 +505,18 @@
     }
 
     function loadThemes() {
+        var expectedVersion = drakon.getVersion()
         var list = getThemes()
         if (!list) {
             saveThemesInStorage()
+        } else {
+            var actualVersion = localStorage.getItem("drakon-widget-version")
+            if (actualVersion !== expectedVersion) {
+                resetThemes()
+                saveThemesInStorage()
+            }
         }
+        localStorage.setItem("drakon-widget-version", expectedVersion)
     }
 
     function saveThemesInStorage() {

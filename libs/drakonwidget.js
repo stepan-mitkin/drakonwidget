@@ -9,36 +9,36 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (unit.styleElement) {
-                        __state = '3';
-                    } else {
-                        unit.styleElement = createStyle();
-                        __state = '3';
-                    }
-                    break;
-                case '3':
-                    style = unit.styleElement;
-                    name = arguments[0];
-                    lines = [];
-                    i = 1;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (i < arguments.length) {
-                        lines.push(arguments[i]);
-                        i++;
+                    case '2':
+                        if (unit.styleElement) {
+                            __state = '3';
+                        } else {
+                            unit.styleElement = createStyle();
+                            __state = '3';
+                        }
+                        break;
+                    case '3':
+                        style = unit.styleElement;
+                        name = arguments[0];
+                        lines = [];
+                        i = 1;
                         __state = '5';
-                    } else {
-                        _var2 = lines.map(addSemi);
-                        body = _var2.join('\n');
-                        content = '\n' + name + ' {\n' + body + '\n}\n';
-                        style.innerHTML += content;
+                        break;
+                    case '5':
+                        if (i < arguments.length) {
+                            lines.push(arguments[i]);
+                            i++;
+                            __state = '5';
+                        } else {
+                            _var2 = lines.map(addSemi);
+                            body = _var2.join('\n');
+                            content = '\n' + name + ' {\n' + body + '\n}\n';
+                            style.innerHTML += content;
+                            return;
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -46,19 +46,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (unit.styleElement) {
-                        removeElement(unit.styleElement);
-                        __state = '5';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '5':
-                    unit.styleElement = createStyle();
-                    return unit.styleElement;
-                default:
-                    return;
+                    case '2':
+                        if (unit.styleElement) {
+                            removeElement(unit.styleElement);
+                            __state = '5';
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    case '5':
+                        unit.styleElement = createStyle();
+                        return unit.styleElement;
+                    default:
+                        return;
                 }
             }
         }
@@ -74,28 +74,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    style = arguments[0];
-                    name = arguments[1];
-                    lines = [];
-                    i = 2;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (i < arguments.length) {
-                        lines.push(arguments[i]);
-                        i++;
+                    case '2':
+                        style = arguments[0];
+                        name = arguments[1];
+                        lines = [];
+                        i = 2;
                         __state = '5';
-                    } else {
-                        _var2 = lines.map(addSemi);
-                        body = _var2.join('\n');
-                        content = '\n' + name + ' {\n' + body + '\n}\n';
-                        style.innerHTML += content;
+                        break;
+                    case '5':
+                        if (i < arguments.length) {
+                            lines.push(arguments[i]);
+                            i++;
+                            __state = '5';
+                        } else {
+                            _var2 = lines.map(addSemi);
+                            body = _var2.join('\n');
+                            content = '\n' + name + ' {\n' + body + '\n}\n';
+                            style.innerHTML += content;
+                            return;
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -123,100 +123,100 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    args = args || [];
-                    element = document.createElement(tagName);
-                    if (properties) {
-                        _var3 = properties;
-                        _var2 = Object.keys(_var3);
-                        _var4 = 0;
-                        __state = '42';
-                    } else {
-                        __state = '22';
-                    }
-                    break;
-                case '13':
-                    return element;
-                case '22':
-                    className = '';
-                    style = {};
-                    _var5 = args;
-                    _var6 = 0;
-                    __state = '32';
-                    break;
-                case '31':
-                    _var6++;
-                    __state = '32';
-                    break;
-                case '32':
-                    if (_var6 < _var5.length) {
-                        arg = _var5[_var6];
-                        if (typeof arg === 'string') {
-                            className = arg;
-                            __state = '31';
+                    case '2':
+                        args = args || [];
+                        element = document.createElement(tagName);
+                        if (properties) {
+                            _var3 = properties;
+                            _var2 = Object.keys(_var3);
+                            _var4 = 0;
+                            __state = '42';
                         } else {
-                            if (arg.tagName) {
-                                add(element, arg);
+                            __state = '22';
+                        }
+                        break;
+                    case '13':
+                        return element;
+                    case '22':
+                        className = '';
+                        style = {};
+                        _var5 = args;
+                        _var6 = 0;
+                        __state = '32';
+                        break;
+                    case '31':
+                        _var6++;
+                        __state = '32';
+                        break;
+                    case '32':
+                        if (_var6 < _var5.length) {
+                            arg = _var5[_var6];
+                            if (typeof arg === 'string') {
+                                className = arg;
                                 __state = '31';
                             } else {
-                                style = arg;
-                                __state = '31';
+                                if (arg.tagName) {
+                                    add(element, arg);
+                                    __state = '31';
+                                } else {
+                                    style = arg;
+                                    __state = '31';
+                                }
                             }
-                        }
-                    } else {
-                        __state = '48';
-                    }
-                    break;
-                case '42':
-                    if (_var4 < _var2.length) {
-                        key = _var2[_var4];
-                        value = _var3[key];
-                        element.setAttribute(key, value);
-                        _var4++;
-                        __state = '42';
-                    } else {
-                        __state = '22';
-                    }
-                    break;
-                case '48':
-                    _var8 = style;
-                    _var7 = Object.keys(_var8);
-                    _var9 = 0;
-                    __state = '50';
-                    break;
-                case '49':
-                    _var9++;
-                    __state = '50';
-                    break;
-                case '50':
-                    if (_var9 < _var7.length) {
-                        key = _var7[_var9];
-                        value = _var8[key];
-                        if (key === 'text') {
-                            addText(element, value);
-                            __state = '49';
                         } else {
-                            if (key === 'tid') {
+                            __state = '48';
+                        }
+                        break;
+                    case '42':
+                        if (_var4 < _var2.length) {
+                            key = _var2[_var4];
+                            value = _var3[key];
+                            element.setAttribute(key, value);
+                            _var4++;
+                            __state = '42';
+                        } else {
+                            __state = '22';
+                        }
+                        break;
+                    case '48':
+                        _var8 = style;
+                        _var7 = Object.keys(_var8);
+                        _var9 = 0;
+                        __state = '50';
+                        break;
+                    case '49':
+                        _var9++;
+                        __state = '50';
+                        break;
+                    case '50':
+                        if (_var9 < _var7.length) {
+                            key = _var7[_var9];
+                            value = _var8[key];
+                            if (key === 'text') {
+                                addText(element, value);
                                 __state = '49';
                             } else {
-                                element.style.setProperty(key, value);
-                                __state = '49';
+                                if (key === 'tid') {
+                                    __state = '49';
+                                } else {
+                                    element.style.setProperty(key, value);
+                                    __state = '49';
+                                }
                             }
+                        } else {
+                            __state = '52';
                         }
-                    } else {
-                        __state = '52';
-                    }
-                    break;
-                case '52':
-                    if (className) {
-                        element.className = className;
-                        __state = '13';
-                    } else {
-                        __state = '13';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '52':
+                        if (className) {
+                            element.className = className;
+                            __state = '13';
+                        } else {
+                            __state = '13';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -317,36 +317,36 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (change.id) {
-                        _var2 = change.op;
-                        if (_var2 === 'insert') {
-                            item = clone(change.fields);
-                            diagram.items[change.id] = item;
-                            __state = '1';
-                        } else {
-                            if (_var2 === 'update') {
-                                item = diagram.items[change.id];
-                                Object.assign(item, change.fields);
+                    case '1':
+                        return;
+                    case '2':
+                        if (change.id) {
+                            _var2 = change.op;
+                            if (_var2 === 'insert') {
+                                item = clone(change.fields);
+                                diagram.items[change.id] = item;
                                 __state = '1';
                             } else {
-                                if (_var2 === 'delete') {
-                                    delete diagram.items[change.id];
+                                if (_var2 === 'update') {
+                                    item = diagram.items[change.id];
+                                    Object.assign(item, change.fields);
                                     __state = '1';
                                 } else {
-                                    throw new Error('Unexpected case value: ' + _var2);
+                                    if (_var2 === 'delete') {
+                                        delete diagram.items[change.id];
+                                        __state = '1';
+                                    } else {
+                                        throw new Error('Unexpected case value: ' + _var2);
+                                    }
                                 }
                             }
+                        } else {
+                            Object.assign(diagram, change.fields);
+                            __state = '1';
                         }
-                    } else {
-                        Object.assign(diagram, change.fields);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -355,23 +355,23 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = edit.changes;
-                    _var3 = 0;
-                    __state = '13';
-                    break;
-                case '13':
-                    if (_var3 < _var2.length) {
-                        changes = _var2[_var3];
-                        applyChange(diagram, changes);
-                        _var3++;
+                    case '2':
+                        _var2 = edit.changes;
+                        _var3 = 0;
                         __state = '13';
-                    } else {
+                        break;
+                    case '13':
+                        if (_var3 < _var2.length) {
+                            changes = _var2[_var3];
+                            applyChange(diagram, changes);
+                            _var3++;
+                            __state = '13';
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -380,34 +380,34 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var3 = changedFields;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var4 < _var2.length) {
-                        name = _var2[_var4];
-                        value = _var3[name];
-                        if (name in obj) {
-                            oldValue = obj[name];
-                            __state = '7';
+                    case '2':
+                        _var3 = changedFields;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            name = _var2[_var4];
+                            value = _var3[name];
+                            if (name in obj) {
+                                oldValue = obj[name];
+                                __state = '7';
+                            } else {
+                                oldValue = '';
+                                __state = '7';
+                            }
                         } else {
-                            oldValue = '';
-                            __state = '7';
+                            return;
                         }
-                    } else {
+                        break;
+                    case '7':
+                        output[name] = oldValue;
+                        _var4++;
+                        __state = '5';
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                case '7':
-                    output[name] = oldValue;
-                    _var4++;
-                    __state = '5';
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -424,56 +424,56 @@ function createDrakonWidget() {
             var __state = '19';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = change.op;
-                    if (_var2 === 'insert') {
-                        undoChange = {
-                            id: change.id,
-                            op: 'delete'
-                        };
-                        __state = '17';
-                    } else {
-                        if (_var2 === 'update') {
+                    case '2':
+                        _var2 = change.op;
+                        if (_var2 === 'insert') {
                             undoChange = {
                                 id: change.id,
-                                op: 'update',
-                                fields: {}
+                                op: 'delete'
                             };
-                            item = diagram.items[change.id];
-                            getOldValues(item, change.fields, undoChange.fields);
                             __state = '17';
                         } else {
-                            if (_var2 === 'delete') {
-                                item = diagram.items[change.id];
-                                _var3 = clone(item);
+                            if (_var2 === 'update') {
                                 undoChange = {
                                     id: change.id,
-                                    op: 'insert',
-                                    fields: _var3
+                                    op: 'update',
+                                    fields: {}
                                 };
+                                item = diagram.items[change.id];
+                                getOldValues(item, change.fields, undoChange.fields);
                                 __state = '17';
                             } else {
-                                throw new Error('Unexpected case value: ' + _var2);
+                                if (_var2 === 'delete') {
+                                    item = diagram.items[change.id];
+                                    _var3 = clone(item);
+                                    undoChange = {
+                                        id: change.id,
+                                        op: 'insert',
+                                        fields: _var3
+                                    };
+                                    __state = '17';
+                                } else {
+                                    throw new Error('Unexpected case value: ' + _var2);
+                                }
                             }
                         }
-                    }
-                    break;
-                case '17':
-                    return undoChange;
-                case '18':
-                    undoChange = { fields: {} };
-                    getOldValues(diagram, change.fields, undoChange.fields);
-                    __state = '17';
-                    break;
-                case '19':
-                    if (change.id) {
-                        __state = '2';
-                    } else {
-                        __state = '18';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '17':
+                        return undoChange;
+                    case '18':
+                        undoChange = { fields: {} };
+                        getOldValues(diagram, change.fields, undoChange.fields);
+                        __state = '17';
+                        break;
+                    case '19':
+                        if (change.id) {
+                            __state = '2';
+                        } else {
+                            __state = '18';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -482,55 +482,55 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    diagram = obj.diagram;
-                    undo = createEditStep(diagram.id);
-                    redo = createEditStep(diagram.id);
-                    _var2 = changes;
-                    _var3 = 0;
-                    __state = '46';
-                    break;
-                case '10':
-                    return edit;
-                case '23':
-                    if (obj.currentUndo >= 0) {
-                        if (obj.currentUndo < obj.undo.length) {
-                            obj.currentUndo++;
-                            __state = '26';
-                        } else {
-                            __state = '26';
-                        }
-                    } else {
-                        obj.undo = [];
-                        obj.currentUndo = 0;
-                        __state = '29';
-                    }
-                    break;
-                case '26':
-                    obj.undo = obj.undo.slice(0, obj.currentUndo);
-                    __state = '29';
-                    break;
-                case '29':
-                    obj.undo.push(edit);
-                    __state = '10';
-                    break;
-                case '46':
-                    if (_var3 < _var2.length) {
-                        change = _var2[_var3];
-                        addChangeToEdit(diagram, change, undo, redo);
-                        _var3++;
+                    case '2':
+                        diagram = obj.diagram;
+                        undo = createEditStep(diagram.id);
+                        redo = createEditStep(diagram.id);
+                        _var2 = changes;
+                        _var3 = 0;
                         __state = '46';
-                    } else {
-                        undo.changes.reverse();
-                        edit = {
-                            undo: undo,
-                            redo: redo
-                        };
-                        __state = '23';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '10':
+                        return edit;
+                    case '23':
+                        if (obj.currentUndo >= 0) {
+                            if (obj.currentUndo < obj.undo.length) {
+                                obj.currentUndo++;
+                                __state = '26';
+                            } else {
+                                __state = '26';
+                            }
+                        } else {
+                            obj.undo = [];
+                            obj.currentUndo = 0;
+                            __state = '29';
+                        }
+                        break;
+                    case '26':
+                        obj.undo = obj.undo.slice(0, obj.currentUndo);
+                        __state = '29';
+                        break;
+                    case '29':
+                        obj.undo.push(edit);
+                        __state = '10';
+                        break;
+                    case '46':
+                        if (_var3 < _var2.length) {
+                            change = _var2[_var3];
+                            addChangeToEdit(diagram, change, undo, redo);
+                            _var3++;
+                            __state = '46';
+                        } else {
+                            undo.changes.reverse();
+                            edit = {
+                                undo: undo,
+                                redo: redo
+                            };
+                            __state = '23';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -539,24 +539,24 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (diagram.initial) {
-                        if (diagram.initial.length === 0) {
-                            __state = '7';
+                    case '2':
+                        if (diagram.initial) {
+                            if (diagram.initial.length === 0) {
+                                __state = '7';
+                            } else {
+                                step = createEditStep(diagram.id);
+                                step.changes = diagram.initial;
+                                diagram.initial = undefined;
+                                return step;
+                            }
                         } else {
-                            step = createEditStep(diagram.id);
-                            step.changes = diagram.initial;
-                            diagram.initial = undefined;
-                            return step;
+                            __state = '7';
                         }
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    return undefined;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        return undefined;
+                    default:
+                        return;
                 }
             }
         }
@@ -565,38 +565,38 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    action = {
-                        op: 'update',
-                        fields: {}
-                    };
-                    _var3 = changedFields;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '6';
-                    break;
-                case '5':
-                    _var4++;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var4 < _var2.length) {
-                        name = _var2[_var4];
-                        value = _var3[name];
-                        if (name === 'id') {
-                            __state = '5';
+                    case '2':
+                        action = {
+                            op: 'update',
+                            fields: {}
+                        };
+                        _var3 = changedFields;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '6';
+                        break;
+                    case '5':
+                        _var4++;
+                        __state = '6';
+                        break;
+                    case '6':
+                        if (_var4 < _var2.length) {
+                            name = _var2[_var4];
+                            value = _var3[name];
+                            if (name === 'id') {
+                                __state = '5';
+                            } else {
+                                action.fields[name] = value;
+                                __state = '5';
+                            }
                         } else {
-                            action.fields[name] = value;
-                            __state = '5';
+                            edit = { changes: [action] };
+                            applyEdit(self.diagram, edit);
+                            return;
                         }
-                    } else {
-                        edit = { changes: [action] };
-                        applyEdit(self.diagram, edit);
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -617,33 +617,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    initial = createInitialEdit(self.diagram);
-                    if (initial) {
-                        _var2 = initial.changes;
-                        _var3 = 0;
-                        __state = '18';
-                    } else {
-                        __state = '12';
-                    }
-                    break;
-                case '12':
-                    undoRecord = createEdit(self, changes);
-                    sendEditToServer(self, undoRecord.redo);
-                    return;
-                case '18':
-                    if (_var3 < _var2.length) {
-                        change = _var2[_var3];
-                        applyChange(self.diagram, change);
-                        _var3++;
-                        __state = '18';
-                    } else {
-                        sendEditToServer(self, initial);
-                        __state = '12';
-                    }
-                    break;
-                default:
-                    return;
+                    case '2':
+                        initial = createInitialEdit(self.diagram);
+                        if (initial) {
+                            _var2 = initial.changes;
+                            _var3 = 0;
+                            __state = '18';
+                        } else {
+                            __state = '12';
+                        }
+                        break;
+                    case '12':
+                        undoRecord = createEdit(self, changes);
+                        sendEditToServer(self, undoRecord.redo);
+                        return;
+                    case '18':
+                        if (_var3 < _var2.length) {
+                            change = _var2[_var3];
+                            applyChange(self.diagram, change);
+                            _var3++;
+                            __state = '18';
+                        } else {
+                            sendEditToServer(self, initial);
+                            __state = '12';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -652,25 +652,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (self.currentUndo >= 0) {
-                        if (self.currentUndo < self.undo.length) {
-                            edit = self.undo[self.currentUndo];
-                            self.currentUndo--;
-                            applyEdit(self.diagram, edit.undo);
-                            sendEditToServer(self, edit.undo);
-                            return edit.undo;
+                    case '2':
+                        if (self.currentUndo >= 0) {
+                            if (self.currentUndo < self.undo.length) {
+                                edit = self.undo[self.currentUndo];
+                                self.currentUndo--;
+                                applyEdit(self.diagram, edit.undo);
+                                sendEditToServer(self, edit.undo);
+                                return edit.undo;
+                            } else {
+                                __state = '19';
+                            }
                         } else {
                             __state = '19';
                         }
-                    } else {
-                        __state = '19';
-                    }
-                    break;
-                case '19':
-                    return undefined;
-                default:
-                    return;
+                        break;
+                    case '19':
+                        return undefined;
+                    default:
+                        return;
                 }
             }
         }
@@ -679,20 +679,20 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (src) {
-                        dst = {};
-                        Object.assign(dst, src);
-                        return dst;
-                    } else {
-                        src;
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (src) {
+                            dst = {};
+                            Object.assign(dst, src);
+                            return dst;
+                        } else {
+                            src;
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -742,58 +742,52 @@ function createDrakonWidget() {
         function findDraggable(visuals, x, y) {
             return;
         }
-        function selectNode(widget, node) {
-            deselectAll(widget);
-            selectPrim(widget, node.id);
-            paint(widget);
-            return;
-        }
         function DrakonCanvas_showPasteSockets(self, type) {
             var showInsert, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var3 = isReadonly(self);
-                    if (_var3) {
-                        __state = '1';
-                    } else {
-                        clearSockets(self.visuals);
-                        if (type) {
-                            deselectAll(self);
-                            _var2 = type;
-                            if (_var2 === 'case') {
-                                showInsert = function (visuals, node) {
-                                    showCaseSockets(visuals, node, 'paste');
-                                };
-                                forType(self.visuals, 'case', showInsert);
-                                __state = '11';
-                            } else {
-                                if (_var2 === 'branch') {
-                                    showAllBranchSockets(self.visuals, 'paste');
+                    case '1':
+                        return;
+                    case '2':
+                        _var3 = isReadonly(self);
+                        if (_var3) {
+                            __state = '1';
+                        } else {
+                            clearSockets(self.visuals);
+                            if (type) {
+                                deselectAll(self);
+                                _var2 = type;
+                                if (_var2 === 'case') {
+                                    showInsert = function (visuals, node) {
+                                        showCaseSockets(visuals, node, 'paste');
+                                    };
+                                    forType(self.visuals, 'case', showInsert);
                                     __state = '11';
                                 } else {
-                                    if (_var2 === 'block') {
-                                        showBlockInsertSockets(self.visuals, 'paste', type);
+                                    if (_var2 === 'branch') {
+                                        showAllBranchSockets(self.visuals, 'paste');
                                         __state = '11';
                                     } else {
-                                        __state = '11';
+                                        if (_var2 === 'block') {
+                                            showBlockInsertSockets(self.visuals, 'paste', type);
+                                            __state = '11';
+                                        } else {
+                                            __state = '11';
+                                        }
                                     }
                                 }
+                            } else {
+                                __state = '11';
                             }
-                        } else {
-                            __state = '11';
                         }
-                    }
-                    break;
-                case '11':
-                    paint(self);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '11':
+                        paint(self);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -808,21 +802,21 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (context.arrows === 0) {
-                        if (context.paths === 0) {
-                            return true;
+                    case '2':
+                        if (context.arrows === 0) {
+                            if (context.paths === 0) {
+                                return true;
+                            } else {
+                                __state = '6';
+                            }
                         } else {
                             __state = '6';
                         }
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -831,25 +825,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = isReadonly(self);
-                    if (_var2) {
-                        __state = '1';
-                    } else {
-                        if (self.edit) {
-                            resetSelection(self);
-                            self.edit.undoEdit();
-                            self.redraw();
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = isReadonly(self);
+                        if (_var2) {
                             __state = '1';
                         } else {
-                            __state = '1';
+                            if (self.edit) {
+                                resetSelection(self);
+                                self.edit.undoEdit();
+                                self.redraw();
+                                __state = '1';
+                            } else {
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -858,93 +852,93 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    diagram.initial = [];
-                    model = {
-                        items: {},
-                        doc: {},
-                        branches: [],
-                        edits: [],
-                        scrollX: 0,
-                        scrollY: 0
-                    };
-                    model.doc.access = diagram.access || 'write';
-                    model.doc.name = diagram.name || '';
-                    model.doc.keywords = clone(diagram.keywords || {});
-                    model.doc.params = diagram.params || '';
-                    nextId = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    _var3 = diagram.items;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '7';
-                    break;
-                case '6':
-                    _var4++;
-                    __state = '7';
-                    break;
-                case '7':
-                    if (_var4 < _var2.length) {
-                        itemId = _var2[_var4];
-                        item = _var3[itemId];
-                        item.id = itemId;
-                        addItemToModel(model, item);
-                        idNum = parseInt(item.id);
-                        _var5 = isNaN(idNum);
-                        if (_var5) {
-                            __state = '6';
+                    case '2':
+                        diagram.initial = [];
+                        model = {
+                            items: {},
+                            doc: {},
+                            branches: [],
+                            edits: [],
+                            scrollX: 0,
+                            scrollY: 0
+                        };
+                        model.doc.access = diagram.access || 'write';
+                        model.doc.name = diagram.name || '';
+                        model.doc.keywords = clone(diagram.keywords || {});
+                        model.doc.params = diagram.params || '';
+                        nextId = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        _var3 = diagram.items;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '7';
+                        break;
+                    case '6':
+                        _var4++;
+                        __state = '7';
+                        break;
+                    case '7':
+                        if (_var4 < _var2.length) {
+                            itemId = _var2[_var4];
+                            item = _var3[itemId];
+                            item.id = itemId;
+                            addItemToModel(model, item);
+                            idNum = parseInt(item.id);
+                            _var5 = isNaN(idNum);
+                            if (_var5) {
+                                __state = '6';
+                            } else {
+                                nextId = Math.max(nextId, idNum);
+                                __state = '6';
+                            }
                         } else {
-                            nextId = Math.max(nextId, idNum);
-                            __state = '6';
+                            model.nextId = nextId + 1;
+                            __state = '16';
                         }
-                    } else {
-                        model.nextId = nextId + 1;
-                        __state = '16';
-                    }
-                    break;
-                case '16':
-                    if (model.branches.length === 0) {
-                        end = createNewItem(model, 'end');
-                        branch = createNewItem(model, 'branch');
-                        branch.branchId = 0;
-                        branch.one = end.id;
-                        _var7 = createInsert(end);
-                        _var8 = createInsert(branch);
-                        diagram.initial.push(_var7);
-                        diagram.initial.push(_var8);
-                        __state = '39';
-                    } else {
-                        model.branches.sort(function (a, b) {
-                            _var6 = compareBranches(a, b, model.items);
-                            return _var6;
-                        });
-                        __state = '39';
-                    }
-                    break;
-                case '37':
-                    stopMachine(widget, 'mouseEvents');
-                    if (widget.config.canSelect) {
-                        widget.mouseEvents = SelectBehavior_create(widget);
-                        __state = '46';
-                    } else {
-                        widget.mouseEvents = NoSelectBehavior_create(widget);
-                        __state = '46';
-                    }
-                    break;
-                case '39':
-                    widget.model = model;
-                    __state = '37';
-                    break;
-                case '46':
-                    widget.mouseEvents.run();
-                    __state = '4';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '16':
+                        if (model.branches.length === 0) {
+                            end = createNewItem(model, 'end');
+                            branch = createNewItem(model, 'branch');
+                            branch.branchId = 0;
+                            branch.one = end.id;
+                            _var7 = createInsert(end);
+                            _var8 = createInsert(branch);
+                            diagram.initial.push(_var7);
+                            diagram.initial.push(_var8);
+                            __state = '39';
+                        } else {
+                            model.branches.sort(function (a, b) {
+                                _var6 = compareBranches(a, b, model.items);
+                                return _var6;
+                            });
+                            __state = '39';
+                        }
+                        break;
+                    case '37':
+                        stopMachine(widget, 'mouseEvents');
+                        if (widget.config.canSelect) {
+                            widget.mouseEvents = SelectBehavior_create(widget);
+                            __state = '46';
+                        } else {
+                            widget.mouseEvents = NoSelectBehavior_create(widget);
+                            __state = '46';
+                        }
+                        break;
+                    case '39':
+                        widget.model = model;
+                        __state = '37';
+                        break;
+                    case '46':
+                        widget.mouseEvents.run();
+                        __state = '4';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -977,7 +971,7 @@ function createDrakonWidget() {
             ctx.lineTo(x, bottom);
             ctx.lineTo(left, middle);
             ctx.closePath();
-            return;
+            return middle;
         }
         function contentBranch(node, config, container) {
             var _var2;
@@ -989,21 +983,21 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    type = copyCore(widget);
-                    if (type) {
-                        nodes = getNodesFromSelection(widget);
-                        deleteSelectionCore(widget, nodes);
-                        widget.showPasteSockets(type);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        type = copyCore(widget);
+                        if (type) {
+                            nodes = getNodesFromSelection(widget);
+                            deleteSelectionCore(widget, nodes);
+                            widget.showPasteSockets(type);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1026,20 +1020,20 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (src) {
-                        dst = {};
-                        Object.assign(dst, src);
-                        return dst;
-                    } else {
-                        src;
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (src) {
+                            dst = {};
+                            Object.assign(dst, src);
+                            return dst;
+                        } else {
+                            src;
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1047,19 +1041,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (property in src) {
-                        dst[property] = src[property];
-                        __state = '1';
-                    } else {
-                        dst[property] = defaultValue;
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (property in src) {
+                            dst[property] = src[property];
+                            __state = '1';
+                        } else {
+                            dst[property] = defaultValue;
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1079,19 +1073,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    index = array.indexOf(item);
-                    if (index === -1) {
-                        __state = '1';
-                    } else {
-                        array.splice(index, 1);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        index = array.indexOf(item);
+                        if (index === -1) {
+                            __state = '1';
+                        } else {
+                            array.splice(index, 1);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1099,18 +1093,18 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (name in src) {
-                        dst[name] = src[name];
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (name in src) {
+                            dst[name] = src[name];
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1119,29 +1113,29 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (from) {
-                        _var2 = from;
-                        _var3 = 0;
-                        __state = '6';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                case '6':
-                    if (_var3 < _var2.length) {
-                        item = _var2[_var3];
-                        to.push(item);
-                        _var3++;
-                        __state = '6';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (from) {
+                            _var2 = from;
+                            _var3 = 0;
+                            __state = '6';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    case '6':
+                        if (_var3 < _var2.length) {
+                            item = _var2[_var3];
+                            to.push(item);
+                            _var3++;
+                            __state = '6';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1150,33 +1144,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    result = {};
-                    _var3 = from;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '6';
-                    break;
-                case '5':
-                    _var4++;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var4 < _var2.length) {
-                        key = _var2[_var4];
-                        value = _var3[key];
-                        if (key in what) {
-                            __state = '5';
+                    case '2':
+                        result = {};
+                        _var3 = from;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '6';
+                        break;
+                    case '5':
+                        _var4++;
+                        __state = '6';
+                        break;
+                    case '6':
+                        if (_var4 < _var2.length) {
+                            key = _var2[_var4];
+                            value = _var3[key];
+                            if (key in what) {
+                                __state = '5';
+                            } else {
+                                result[key] = value;
+                                __state = '5';
+                            }
                         } else {
-                            result[key] = value;
-                            __state = '5';
+                            return result;
                         }
-                    } else {
-                        return result;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1191,33 +1185,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    right1 = box1.left + box1.width;
-                    if (box2.left > right1) {
-                        __state = '6';
-                    } else {
-                        bottom1 = box1.top + box1.height;
-                        if (box2.top > bottom1) {
+                    case '2':
+                        right1 = box1.left + box1.width;
+                        if (box2.left > right1) {
                             __state = '6';
                         } else {
-                            right2 = box2.left + box2.width;
-                            if (box1.left > right2) {
+                            bottom1 = box1.top + box1.height;
+                            if (box2.top > bottom1) {
                                 __state = '6';
                             } else {
-                                bottom2 = box2.top + box2.height;
-                                if (box1.top > bottom2) {
+                                right2 = box2.left + box2.width;
+                                if (box1.left > right2) {
                                     __state = '6';
                                 } else {
-                                    return true;
+                                    bottom2 = box2.top + box2.height;
+                                    if (box1.top > bottom2) {
+                                        __state = '6';
+                                    } else {
+                                        return true;
+                                    }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '6':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -1263,34 +1257,34 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (larger) {
-                        _var3 = smaller;
-                        _var2 = Object.keys(_var3);
-                        _var4 = 0;
-                        __state = '7';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '5':
-                    return false;
-                case '7':
-                    if (_var4 < _var2.length) {
-                        smallKey = _var2[_var4];
-                        _ = _var3[smallKey];
-                        if (smallKey in larger) {
-                            _var4++;
+                    case '2':
+                        if (larger) {
+                            _var3 = smaller;
+                            _var2 = Object.keys(_var3);
+                            _var4 = 0;
                             __state = '7';
                         } else {
                             __state = '5';
                         }
-                    } else {
-                        return true;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '5':
+                        return false;
+                    case '7':
+                        if (_var4 < _var2.length) {
+                            smallKey = _var2[_var4];
+                            _ = _var3[smallKey];
+                            if (smallKey in larger) {
+                                _var4++;
+                                __state = '7';
+                            } else {
+                                __state = '5';
+                            }
+                        } else {
+                            return true;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1299,20 +1293,20 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    list = dict[key];
-                    if (list) {
-                        __state = '5';
-                    } else {
-                        list = [];
-                        dict[key] = list;
-                        __state = '5';
-                    }
-                    break;
-                case '5':
-                    return list;
-                default:
-                    return;
+                    case '2':
+                        list = dict[key];
+                        if (list) {
+                            __state = '5';
+                        } else {
+                            list = [];
+                            dict[key] = list;
+                            __state = '5';
+                        }
+                        break;
+                    case '5':
+                        return list;
+                    default:
+                        return;
                 }
             }
         }
@@ -1320,12 +1314,15 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (x >= box.left) {
-                        if (y >= box.top) {
-                            if (x < box.left + box.width) {
-                                if (y < box.top + box.height) {
-                                    return true;
+                    case '2':
+                        if (x >= box.left) {
+                            if (y >= box.top) {
+                                if (x < box.left + box.width) {
+                                    if (y < box.top + box.height) {
+                                        return true;
+                                    } else {
+                                        __state = '8';
+                                    }
                                 } else {
                                     __state = '8';
                                 }
@@ -1335,14 +1332,11 @@ function createDrakonWidget() {
                         } else {
                             __state = '8';
                         }
-                    } else {
-                        __state = '8';
-                    }
-                    break;
-                case '8':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '8':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -1351,26 +1345,26 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    result = [];
-                    _var3 = obj;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var4 < _var2.length) {
-                        key = _var2[_var4];
-                        value = _var3[key];
-                        result.push(value);
-                        _var4++;
+                    case '2':
+                        result = [];
+                        _var3 = obj;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
                         __state = '6';
-                    } else {
-                        return result;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        if (_var4 < _var2.length) {
+                            key = _var2[_var4];
+                            value = _var3[key];
+                            result.push(value);
+                            _var4++;
+                            __state = '6';
+                        } else {
+                            return result;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1393,20 +1387,20 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    machine = obj[property];
-                    if (machine) {
-                        machine.state = undefined;
-                        obj[property] = undefined;
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        machine = obj[property];
+                        if (machine) {
+                            machine.state = undefined;
+                            obj[property] = undefined;
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1446,39 +1440,39 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (self.visuals.config.canSelect) {
-                        nodes = getNodesFromSelection(self);
-                        if (nodes.length === 0) {
-                            __state = '1';
-                        } else {
-                            first = nodes[0];
-                            node = findNeighbour(first, 'right', 'tail');
-                            if (node) {
-                                __state = '12';
+                    case '1':
+                        return;
+                    case '2':
+                        if (self.visuals.config.canSelect) {
+                            nodes = getNodesFromSelection(self);
+                            if (nodes.length === 0) {
+                                __state = '1';
                             } else {
-                                node = findClosestNode(self, function (n) {
-                                    return n.x > first.x;
-                                }, first, false);
+                                first = nodes[0];
+                                node = findNeighbour(first, 'right', 'tail');
                                 if (node) {
                                     __state = '12';
                                 } else {
-                                    __state = '1';
+                                    node = findClosestNode(self, function (n) {
+                                        return n.x > first.x;
+                                    }, first, false);
+                                    if (node) {
+                                        __state = '12';
+                                    } else {
+                                        __state = '1';
+                                    }
                                 }
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
+                        break;
+                    case '12':
+                        self.showItem(node.id);
                         __state = '1';
-                    }
-                    break;
-                case '12':
-                    self.showItem(node.id);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1487,25 +1481,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = isOnScrollbars(self, evt);
-                    if (_var2) {
-                        __state = '1';
-                    } else {
-                        evt.preventDefault();
-                        evt.stopPropagation();
-                        if (self.mouseEvents) {
-                            self.mouseEvents.mouseDown(evt);
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = isOnScrollbars(self, evt);
+                        if (_var2) {
                             __state = '1';
                         } else {
-                            __state = '1';
+                            evt.preventDefault();
+                            evt.stopPropagation();
+                            if (self.mouseEvents) {
+                                self.mouseEvents.mouseDown(evt);
+                                __state = '1';
+                            } else {
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1514,38 +1508,38 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var3 = isReadonly(self);
-                    if (_var3) {
-                        __state = '1';
-                    } else {
-                        clearSockets(self.visuals);
-                        _var2 = type;
-                        if (_var2 === 'case') {
-                            showInsert = function (visuals, node) {
-                                showCaseSockets(visuals, node, 'insert');
-                            };
-                            forType(self.visuals, 'case', showInsert);
-                            __state = '11';
+                    case '1':
+                        return;
+                    case '2':
+                        _var3 = isReadonly(self);
+                        if (_var3) {
+                            __state = '1';
                         } else {
-                            if (_var2 === 'branch') {
-                                showAllBranchSockets(self.visuals, 'insert');
+                            clearSockets(self.visuals);
+                            _var2 = type;
+                            if (_var2 === 'case') {
+                                showInsert = function (visuals, node) {
+                                    showCaseSockets(visuals, node, 'insert');
+                                };
+                                forType(self.visuals, 'case', showInsert);
                                 __state = '11';
                             } else {
-                                showBlockInsertSockets(self.visuals, 'insert', type);
-                                __state = '11';
+                                if (_var2 === 'branch') {
+                                    showAllBranchSockets(self.visuals, 'insert');
+                                    __state = '11';
+                                } else {
+                                    showBlockInsertSockets(self.visuals, 'insert', type);
+                                    __state = '11';
+                                }
                             }
                         }
-                    }
-                    break;
-                case '11':
-                    paint(self);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '11':
+                        paint(self);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1554,63 +1548,63 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edits = [];
-                    visuals = widget.visuals;
-                    branches = visuals.branches;
-                    first = {};
-                    rest = {};
-                    firstId = branches[0];
-                    _var2 = getBranch(visuals, 0);
-                    scanBranchItems(_var2, first);
-                    __state = '6';
-                    break;
-                case '4':
-                    return edits;
-                case '5':
-                    redirectBranch(visuals, first, rest, endId, edits);
-                    delete rest[firstId];
-                    ditch = function (itemId) {
-                        deleteItem(edits, itemId);
-                    };
-                    _var4 = Object.keys(rest);
-                    _var4.forEach(ditch);
-                    updateItem(edits, branches[0], {
-                        content: '',
-                        branchId: 0
-                    });
-                    __state = '4';
-                    break;
-                case '6':
-                    i = 1;
-                    __state = '12';
-                    break;
-                case '7':
-                    if (visuals.end) {
-                        endId = visuals.end.itemId;
-                        delete rest[endId];
-                        __state = '18';
-                    } else {
-                        endId = createItem(widget.model, edits, { type: 'end' });
-                        __state = '18';
-                    }
-                    break;
-                case '12':
-                    if (i < branches.length) {
-                        _var3 = getBranch(visuals, i);
-                        scanBranchItems(_var3, rest);
-                        i++;
+                    case '2':
+                        edits = [];
+                        visuals = widget.visuals;
+                        branches = visuals.branches;
+                        first = {};
+                        rest = {};
+                        firstId = branches[0];
+                        _var2 = getBranch(visuals, 0);
+                        scanBranchItems(_var2, first);
+                        __state = '6';
+                        break;
+                    case '4':
+                        return edits;
+                    case '5':
+                        redirectBranch(visuals, first, rest, endId, edits);
+                        delete rest[firstId];
+                        ditch = function (itemId) {
+                            deleteItem(edits, itemId);
+                        };
+                        _var4 = Object.keys(rest);
+                        _var4.forEach(ditch);
+                        updateItem(edits, branches[0], {
+                            content: '',
+                            branchId: 0
+                        });
+                        __state = '4';
+                        break;
+                    case '6':
+                        i = 1;
                         __state = '12';
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '18':
-                    rest[firstId] = true;
-                    __state = '5';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        if (visuals.end) {
+                            endId = visuals.end.itemId;
+                            delete rest[endId];
+                            __state = '18';
+                        } else {
+                            endId = createItem(widget.model, edits, { type: 'end' });
+                            __state = '18';
+                        }
+                        break;
+                    case '12':
+                        if (i < branches.length) {
+                            _var3 = getBranch(visuals, i);
+                            scanBranchItems(_var3, rest);
+                            i++;
+                            __state = '12';
+                        } else {
+                            __state = '7';
+                        }
+                        break;
+                    case '18':
+                        rest[firstId] = true;
+                        __state = '5';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1619,41 +1613,41 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var3 = branchNodes;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var4++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var4 < _var2.length) {
-                        itemId = _var2[_var4];
-                        _ = _var3[itemId];
-                        node = getNode(visuals, itemId);
-                        if (node.one in oldTargets) {
-                            updateItem(edits, itemId, { one: newTarget });
-                            __state = '9';
+                    case '2':
+                        _var3 = branchNodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var4++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            itemId = _var2[_var4];
+                            _ = _var3[itemId];
+                            node = getNode(visuals, itemId);
+                            if (node.one in oldTargets) {
+                                updateItem(edits, itemId, { one: newTarget });
+                                __state = '9';
+                            } else {
+                                __state = '9';
+                            }
                         } else {
-                            __state = '9';
+                            return;
                         }
-                    } else {
+                        break;
+                    case '9':
+                        if (node.two in oldTargets) {
+                            updateItem(edits, itemId, { two: newTarget });
+                            __state = '4';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                case '9':
-                    if (node.two in oldTargets) {
-                        updateItem(edits, itemId, { two: newTarget });
-                        __state = '4';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -1673,34 +1667,34 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (node.itemId in visited) {
-                        __state = '1';
-                    } else {
-                        if (node.type === 'address') {
+                    case '1':
+                        return;
+                    case '2':
+                        if (node.itemId in visited) {
                             __state = '1';
                         } else {
-                            visited[node.itemId] = node;
-                            _var2 = node.next;
-                            _var3 = 0;
-                            __state = '8';
+                            if (node.type === 'address') {
+                                __state = '1';
+                            } else {
+                                visited[node.itemId] = node;
+                                _var2 = node.next;
+                                _var3 = 0;
+                                __state = '8';
+                            }
                         }
-                    }
-                    break;
-                case '8':
-                    if (_var3 < _var2.length) {
-                        next = _var2[_var3];
-                        scanBranchItems(next, visited);
-                        _var3++;
-                        __state = '8';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '8':
+                        if (_var3 < _var2.length) {
+                            next = _var2[_var3];
+                            scanBranchItems(next, visited);
+                            _var3++;
+                            __state = '8';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1709,44 +1703,44 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    model = widget.model;
-                    visuals = widget.visuals;
-                    end = visuals.end;
-                    edits = [];
-                    b1 = visuals.config.branch + '1';
-                    b2 = visuals.config.branch + '2';
-                    b3 = visuals.config.exit;
-                    fb = firstBranchNode(visuals);
-                    __state = '5';
-                    break;
-                case '4':
-                    return edits;
-                case '5':
-                    branch3 = createItem(model, edits, {
-                        type: 'branch',
-                        content: b3,
-                        one: end.itemId,
-                        branchId: 3
-                    });
-                    branch2 = createItem(model, edits, {
-                        type: 'branch',
-                        content: b2,
-                        one: branch3,
-                        branchId: 2
-                    });
-                    updateItem(edits, fb.itemId, {
-                        content: b1,
-                        branchId: 1
-                    });
-                    __state = '6';
-                    break;
-                case '6':
-                    redirectUpperItems(edits, end.up.links, branch2);
-                    __state = '4';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        model = widget.model;
+                        visuals = widget.visuals;
+                        end = visuals.end;
+                        edits = [];
+                        b1 = visuals.config.branch + '1';
+                        b2 = visuals.config.branch + '2';
+                        b3 = visuals.config.exit;
+                        fb = firstBranchNode(visuals);
+                        __state = '5';
+                        break;
+                    case '4':
+                        return edits;
+                    case '5':
+                        branch3 = createItem(model, edits, {
+                            type: 'branch',
+                            content: b3,
+                            one: end.itemId,
+                            branchId: 3
+                        });
+                        branch2 = createItem(model, edits, {
+                            type: 'branch',
+                            content: b2,
+                            one: branch3,
+                            branchId: 2
+                        });
+                        updateItem(edits, fb.itemId, {
+                            content: b1,
+                            branchId: 1
+                        });
+                        __state = '6';
+                        break;
+                    case '6':
+                        redirectUpperItems(edits, end.up.links, branch2);
+                        __state = '4';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1755,39 +1749,39 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (self.visuals.config.canSelect) {
-                        nodes = getNodesFromSelection(self);
-                        if (nodes.length === 0) {
-                            __state = '1';
-                        } else {
-                            first = nodes[0];
-                            node = findNeighbour(first, 'left', 'head');
-                            if (node) {
-                                __state = '12';
+                    case '1':
+                        return;
+                    case '2':
+                        if (self.visuals.config.canSelect) {
+                            nodes = getNodesFromSelection(self);
+                            if (nodes.length === 0) {
+                                __state = '1';
                             } else {
-                                node = findClosestNode(self, function (n) {
-                                    return n.x < first.x;
-                                }, first, false);
+                                first = nodes[0];
+                                node = findNeighbour(first, 'left', 'head');
                                 if (node) {
                                     __state = '12';
                                 } else {
-                                    __state = '1';
+                                    node = findClosestNode(self, function (n) {
+                                        return n.x < first.x;
+                                    }, first, false);
+                                    if (node) {
+                                        __state = '12';
+                                    } else {
+                                        __state = '1';
+                                    }
                                 }
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
+                        break;
+                    case '12':
+                        self.showItem(node.id);
                         __state = '1';
-                    }
-                    break;
-                case '12':
-                    self.showItem(node.id);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1796,30 +1790,30 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var3 = isReadonly(self);
-                    if (_var3) {
-                        __state = '1';
-                    } else {
-                        _var2 = isSilhouette(self.visuals);
-                        if (_var2) {
-                            edits = toPrimitive(self);
-                            __state = '5';
+                    case '1':
+                        return;
+                    case '2':
+                        _var3 = isReadonly(self);
+                        if (_var3) {
+                            __state = '1';
                         } else {
-                            edits = toSilhouette(self);
-                            __state = '5';
+                            _var2 = isSilhouette(self.visuals);
+                            if (_var2) {
+                                edits = toPrimitive(self);
+                                __state = '5';
+                            } else {
+                                edits = toSilhouette(self);
+                                __state = '5';
+                            }
                         }
-                    }
-                    break;
-                case '5':
-                    doEdit(self, edits, false);
-                    self.redraw();
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '5':
+                        doEdit(self, edits, false);
+                        self.redraw();
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1828,72 +1822,98 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    container = div({
-                        display: 'inline-block',
-                        position: 'absolute',
-                        left: '0px',
-                        top: '0px',
-                        width: '100%',
-                        height: '100%',
-                        overflow: 'hidden'
-                    });
-                    canvas = html.createElement('canvas');
-                    factor = html.getRetinaFactor();
-                    canvas.style.position = 'absolute';
-                    canvas.style.display = 'inline-block';
-                    canvas.style.left = '0px';
-                    canvas.style.top = '0px';
-                    canvas.style.width = width + 'px';
-                    canvas.style.height = height + 'px';
-                    canvas.width = width * factor;
-                    canvas.height = height * factor;
-                    self.width = width;
-                    self.height = height;
-                    self.canvas = canvas;
-                    self.container = container;
-                    html.add(container, canvas);
-                    __state = '18';
-                    break;
-                case '17':
-                    return container;
-                case '18':
-                    self.config = buildConfig(config);
-                    createStyles(self);
-                    __state = '39';
-                    break;
-                case '29':
-                    scrollable = 'drakon-scrollable-container' + self.myStyleId;
-                    self.scrollableContainer = div(scrollable);
-                    html.add(container, self.scrollableContainer);
-                    self.scrollable = div('drakon-scrollable');
-                    html.add(self.scrollableContainer, self.scrollable);
-                    registerAction(self.scrollableContainer, 'scroll', self.onScroll);
-                    __state = '51';
-                    break;
-                case '39':
-                    self.contentContainer = div({
-                        display: 'inline-block',
-                        position: 'absolute',
-                        left: '0px',
-                        top: '0px',
-                        width: '100vw',
-                        height: '100vh',
-                        'pointer-events': 'none'
-                    });
-                    html.add(container, self.contentContainer);
-                    __state = '29';
-                    break;
-                case '51':
-                    registerAction(self.scrollableContainer, 'mousedown', self.onMouseDown);
-                    registerAction(self.scrollableContainer, 'mousemove', self.onMouseMove);
-                    registerAction(self.scrollableContainer, 'mouseup', self.onMouseUp);
-                    registerAction(self.scrollableContainer, 'mouseleave', self.onMouseLeave);
-                    registerAction(self.scrollableContainer, 'contextmenu', self.onContextMenu);
-                    __state = '17';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        container = div({
+                            display: 'inline-block',
+                            position: 'absolute',
+                            left: '0px',
+                            top: '0px',
+                            width: '100%',
+                            height: '100%',
+                            overflow: 'hidden'
+                        });
+                        canvas = html.createElement('canvas');
+                        factor = html.getRetinaFactor();
+                        canvas.style.position = 'absolute';
+                        canvas.style.display = 'inline-block';
+                        canvas.style.left = '0px';
+                        canvas.style.top = '0px';
+                        canvas.style.width = width + 'px';
+                        canvas.style.height = height + 'px';
+                        canvas.width = width * factor;
+                        canvas.height = height * factor;
+                        self.width = width;
+                        self.height = height;
+                        self.canvas = canvas;
+                        self.container = container;
+                        html.add(container, canvas);
+                        __state = '18';
+                        break;
+                    case '17':
+                        return container;
+                    case '18':
+                        self.config = buildConfig(config);
+                        createStyles(self);
+                        __state = '39';
+                        break;
+                    case '29':
+                        scrollable = 'drakon-scrollable-container' + self.myStyleId;
+                        self.scrollableContainer = div(scrollable);
+                        html.add(container, self.scrollableContainer);
+                        self.scrollable = div('drakon-scrollable');
+                        html.add(self.scrollableContainer, self.scrollable);
+                        registerAction(self.scrollableContainer, 'scroll', self.onScroll);
+                        __state = '51';
+                        break;
+                    case '39':
+                        self.contentContainer = div({
+                            display: 'inline-block',
+                            position: 'absolute',
+                            left: '0px',
+                            top: '0px',
+                            width: '100vw',
+                            height: '100vh',
+                            'pointer-events': 'none'
+                        });
+                        html.add(container, self.contentContainer);
+                        __state = '29';
+                        break;
+                    case '51':
+                        registerAction(self.scrollableContainer, 'mousedown', self.onMouseDown);
+                        registerAction(self.scrollableContainer, 'mousemove', self.onMouseMove);
+                        registerAction(self.scrollableContainer, 'mouseup', self.onMouseUp);
+                        registerAction(self.scrollableContainer, 'mouseleave', self.onMouseLeave);
+                        registerAction(self.scrollableContainer, 'contextmenu', self.onContextMenu);
+                        __state = '17';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function resetSelection(widget) {
+            var _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        if (widget.selection) {
+                            _var2 = Object.keys(widget.selection.prims);
+                            if (_var2 === 0) {
+                                __state = '3';
+                            } else {
+                                widget.config.onItemSelected(undefined);
+                                __state = '3';
+                            }
+                        } else {
+                            __state = '3';
+                        }
+                        break;
+                    case '3':
+                        resetSelectionCore(widget);
+                        return;
+                    default:
+                        return;
                 }
             }
         }
@@ -1902,76 +1922,76 @@ function createDrakonWidget() {
             var __state = '17';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var6 = visuals.nodes;
-                    _var5 = Object.keys(_var6);
-                    _var7 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var7++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var7 < _var5.length) {
-                        id = _var5[_var7];
-                        node = _var6[id];
-                        _var10 = isSelected(widget, id);
-                        if (_var10) {
-                            __state = '4';
-                        } else {
-                            _var9 = canSelectNode(node);
-                            if (_var9) {
-                                _var8 = boxesIntersect(visuals.selectionFrame, node.box);
-                                if (_var8) {
-                                    addToSelection(widget, node);
-                                    __state = '4';
+                    case '2':
+                        _var6 = visuals.nodes;
+                        _var5 = Object.keys(_var6);
+                        _var7 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var7++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var7 < _var5.length) {
+                            id = _var5[_var7];
+                            node = _var6[id];
+                            _var10 = isSelected(widget, id);
+                            if (_var10) {
+                                __state = '4';
+                            } else {
+                                _var9 = canSelectNode(node);
+                                if (_var9) {
+                                    _var8 = boxesIntersect(visuals.selectionFrame, node.box);
+                                    if (_var8) {
+                                        addToSelection(widget, node);
+                                        __state = '4';
+                                    } else {
+                                        __state = '4';
+                                    }
                                 } else {
                                     __state = '4';
                                 }
-                            } else {
-                                __state = '4';
-                            }
-                        }
-                    } else {
-                        __state = '15';
-                    }
-                    break;
-                case '15':
-                    return;
-                case '17':
-                    selection = widget.selection;
-                    visuals = widget.visuals;
-                    _var3 = selection.prims;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '19';
-                    break;
-                case '18':
-                    _var4++;
-                    __state = '19';
-                    break;
-                case '19':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        prim = _var3[id];
-                        if (prim === 'node') {
-                            snode = getNode(visuals, id);
-                            _var11 = canSelectNode(snode);
-                            if (_var11) {
-                                __state = '18';
-                            } else {
-                                __state = '15';
                             }
                         } else {
-                            __state = '18';
+                            __state = '15';
                         }
-                    } else {
-                        __state = '2';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '15':
+                        return;
+                    case '17':
+                        selection = widget.selection;
+                        visuals = widget.visuals;
+                        _var3 = selection.prims;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '19';
+                        break;
+                    case '18':
+                        _var4++;
+                        __state = '19';
+                        break;
+                    case '19':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            prim = _var3[id];
+                            if (prim === 'node') {
+                                snode = getNode(visuals, id);
+                                _var11 = canSelectNode(snode);
+                                if (_var11) {
+                                    __state = '18';
+                                } else {
+                                    __state = '15';
+                                }
+                            } else {
+                                __state = '18';
+                            }
+                        } else {
+                            __state = '2';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -1980,27 +2000,27 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (nodeInfo.include) {
-                        context.arrows--;
-                        __state = '1';
-                    } else {
-                        context.arrows++;
-                        nodeInfo.include = true;
-                        node = nodeInfo.node;
-                        _var2 = clusterComplete(context);
-                        if (_var2) {
+                    case '1':
+                        return;
+                    case '2':
+                        if (nodeInfo.include) {
+                            context.arrows--;
                             __state = '1';
                         } else {
-                            selectClusterStep(widget, context, node, node.next[0]);
-                            __state = '1';
+                            context.arrows++;
+                            nodeInfo.include = true;
+                            node = nodeInfo.node;
+                            _var2 = clusterComplete(context);
+                            if (_var2) {
+                                __state = '1';
+                            } else {
+                                selectClusterStep(widget, context, node, node.next[0]);
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2009,29 +2029,29 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    selection = widget.selection;
-                    if (node.id in selection.prims) {
-                        __state = '8';
-                    } else {
-                        selection.prims[node.id] = 'node';
-                        if (headNode) {
-                            if (node.y < headNode.y) {
-                                __state = '3';
-                            } else {
-                                __state = '8';
-                            }
+                    case '2':
+                        selection = widget.selection;
+                        if (node.id in selection.prims) {
+                            __state = '8';
                         } else {
-                            __state = '3';
+                            selection.prims[node.id] = 'node';
+                            if (headNode) {
+                                if (node.y < headNode.y) {
+                                    __state = '3';
+                                } else {
+                                    __state = '8';
+                                }
+                            } else {
+                                __state = '3';
+                            }
                         }
-                    }
-                    break;
-                case '3':
-                    return node;
-                case '8':
-                    return headNode;
-                default:
-                    return;
+                        break;
+                    case '3':
+                        return node;
+                    case '8':
+                        return headNode;
+                    default:
+                        return;
                 }
             }
         }
@@ -2043,28 +2063,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    __state = '10';
-                    break;
-                case '10':
-                    edge = node[nodeProp];
-                    if (edge) {
-                        node = edge[edgeProp];
-                        if (node.type === 'junction') {
-                            __state = '10';
-                        } else {
-                            if (node.type === 'arrow-loop') {
+                    case '2':
+                        __state = '10';
+                        break;
+                    case '10':
+                        edge = node[nodeProp];
+                        if (edge) {
+                            node = edge[edgeProp];
+                            if (node.type === 'junction') {
                                 __state = '10';
                             } else {
-                                return node;
+                                if (node.type === 'arrow-loop') {
+                                    __state = '10';
+                                } else {
+                                    return node;
+                                }
                             }
+                        } else {
+                            return undefined;
                         }
-                    } else {
-                        return undefined;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2073,52 +2093,52 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visuals = widget.visuals;
-                    evt0 = {
-                        clientX: startX,
-                        clientY: startY,
-                        target: evt.target
-                    };
-                    start = toDiagram(widget, evt0);
-                    current = toDiagram(widget, evt);
-                    if (visuals.selectionFrame) {
-                        __state = '9';
-                    } else {
-                        visuals.selectionFrame = {};
-                        __state = '9';
-                    }
-                    break;
-                case '7':
-                    visuals.selectionFrame.left = left;
-                    visuals.selectionFrame.top = top;
-                    visuals.selectionFrame.width = width;
-                    visuals.selectionFrame.height = height;
-                    return;
-                case '9':
-                    if (start.x < current.x) {
-                        left = start.x;
-                        width = current.x - start.x;
-                        __state = '12';
-                    } else {
-                        left = current.x;
-                        width = start.x - current.x;
-                        __state = '12';
-                    }
-                    break;
-                case '12':
-                    if (start.y < current.y) {
-                        top = start.y;
-                        height = current.y - start.y;
-                        __state = '7';
-                    } else {
-                        top = current.y;
-                        height = start.y - current.y;
-                        __state = '7';
-                    }
-                    break;
-                default:
-                    return;
+                    case '2':
+                        visuals = widget.visuals;
+                        evt0 = {
+                            clientX: startX,
+                            clientY: startY,
+                            target: evt.target
+                        };
+                        start = toDiagram(widget, evt0);
+                        current = toDiagram(widget, evt);
+                        if (visuals.selectionFrame) {
+                            __state = '9';
+                        } else {
+                            visuals.selectionFrame = {};
+                            __state = '9';
+                        }
+                        break;
+                    case '7':
+                        visuals.selectionFrame.left = left;
+                        visuals.selectionFrame.top = top;
+                        visuals.selectionFrame.width = width;
+                        visuals.selectionFrame.height = height;
+                        return;
+                    case '9':
+                        if (start.x < current.x) {
+                            left = start.x;
+                            width = current.x - start.x;
+                            __state = '12';
+                        } else {
+                            left = current.x;
+                            width = start.x - current.x;
+                            __state = '12';
+                        }
+                        break;
+                    case '12':
+                        if (start.y < current.y) {
+                            top = start.y;
+                            height = current.y - start.y;
+                            __state = '7';
+                        } else {
+                            top = current.y;
+                            height = start.y - current.y;
+                            __state = '7';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2140,22 +2160,22 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    dx = n1.x - n2.x;
-                    dy = n1.y - n2.y;
-                    if (vertical) {
-                        dx *= 4;
-                        __state = '_item2';
-                    } else {
-                        dy *= 4;
-                        __state = '_item2';
-                    }
-                    break;
-                case '_item2':
-                    _var2 = Math.sqrt(dx * dx + dy * dy);
-                    return _var2;
-                default:
-                    return;
+                    case '2':
+                        dx = n1.x - n2.x;
+                        dy = n1.y - n2.y;
+                        if (vertical) {
+                            dx *= 4;
+                            __state = '_item2';
+                        } else {
+                            dy *= 4;
+                            __state = '_item2';
+                        }
+                        break;
+                    case '_item2':
+                        _var2 = Math.sqrt(dx * dx + dy * dy);
+                        return _var2;
+                    default:
+                        return;
                 }
             }
         }
@@ -2164,100 +2184,100 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var8 = isSelected(widget, node.id);
-                    if (_var8) {
-                        return headNode;
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '5':
-                    included = [];
-                    _var4 = context.nodes;
-                    _var3 = Object.keys(_var4);
-                    _var5 = 0;
-                    __state = '21';
-                    break;
-                case '7':
-                    _var2 = node.type;
-                    if (_var2 === 'select') {
-                        start = node;
-                        __state = '35';
-                    } else {
-                        if (_var2 === 'case') {
-                            start = node.select;
+                    case '2':
+                        _var8 = isSelected(widget, node.id);
+                        if (_var8) {
+                            return headNode;
+                        } else {
+                            __state = '7';
+                        }
+                        break;
+                    case '5':
+                        included = [];
+                        _var4 = context.nodes;
+                        _var3 = Object.keys(_var4);
+                        _var5 = 0;
+                        __state = '21';
+                        break;
+                    case '7':
+                        _var2 = node.type;
+                        if (_var2 === 'select') {
+                            start = node;
                             __state = '35';
                         } else {
-                            if (_var2 === 'loopbegin') {
-                                start = node;
+                            if (_var2 === 'case') {
+                                start = node.select;
                                 __state = '35';
                             } else {
-                                if (_var2 === 'loopend') {
-                                    start = node.loopStart;
+                                if (_var2 === 'loopbegin') {
+                                    start = node;
                                     __state = '35';
                                 } else {
-                                    if (_var2 === 'arrow-loop') {
-                                        start = node;
+                                    if (_var2 === 'loopend') {
+                                        start = node.loopStart;
                                         __state = '35';
                                     } else {
-                                        if (_var2 === 'question') {
+                                        if (_var2 === 'arrow-loop') {
                                             start = node;
                                             __state = '35';
                                         } else {
-                                            _var9 = addOne(widget, headNode, node);
-                                            return _var9;
+                                            if (_var2 === 'question') {
+                                                start = node;
+                                                __state = '35';
+                                            } else {
+                                                _var9 = addOne(widget, headNode, node);
+                                                return _var9;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '20':
-                    _var5++;
-                    __state = '21';
-                    break;
-                case '21':
-                    if (_var5 < _var3.length) {
-                        id = _var3[_var5];
-                        info = _var4[id];
-                        if (info.include) {
-                            included.push(info.node);
-                            __state = '20';
+                        break;
+                    case '20':
+                        _var5++;
+                        __state = '21';
+                        break;
+                    case '21':
+                        if (_var5 < _var3.length) {
+                            id = _var3[_var5];
+                            info = _var4[id];
+                            if (info.include) {
+                                included.push(info.node);
+                                __state = '20';
+                            } else {
+                                __state = '20';
+                            }
                         } else {
-                            __state = '20';
+                            result = headNode;
+                            _var6 = included;
+                            _var7 = 0;
+                            __state = '26';
                         }
-                    } else {
-                        result = headNode;
-                        _var6 = included;
-                        _var7 = 0;
-                        __state = '26';
-                    }
-                    break;
-                case '26':
-                    if (_var7 < _var6.length) {
-                        inode = _var6[_var7];
-                        result = addOne(widget, result, inode);
-                        _var7++;
-                        __state = '26';
-                    } else {
-                        return result;
-                    }
-                    break;
-                case '35':
-                    context = {
-                        paths: 0,
-                        nodes: {},
-                        arrows: 0,
-                        loops: {}
-                    };
-                    info = getNodeInfo(context, start);
-                    selectClusterStepNext(widget, context, info);
-                    __state = '5';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '26':
+                        if (_var7 < _var6.length) {
+                            inode = _var6[_var7];
+                            result = addOne(widget, result, inode);
+                            _var7++;
+                            __state = '26';
+                        } else {
+                            return result;
+                        }
+                        break;
+                    case '35':
+                        context = {
+                            paths: 0,
+                            nodes: {},
+                            arrows: 0,
+                            loops: {}
+                        };
+                        info = getNodeInfo(context, start);
+                        selectClusterStepNext(widget, context, info);
+                        __state = '5';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2267,19 +2287,11 @@ function createDrakonWidget() {
             return;
         }
         function findVisualItem(visuals, x, y) {
-            var node, edge;
+            var node, edge, _var2;
             node = findNode(visuals, x, y);
             if (node) {
-                return {
-                    id: node.id,
-                    type: node.type,
-                    content: node.content,
-                    elType: 'node',
-                    left: node.x - node.w,
-                    top: node.y - node.h,
-                    width: node.w * 2,
-                    height: node.h * 2
-                };
+                _var2 = nodeToVisualItem(node);
+                return _var2;
             } else {
                 edge = findEdge(visuals, x, y);
                 if (edge) {
@@ -2298,31 +2310,31 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (highNode) {
-                        context = {
-                            visited: {},
-                            leak: false
-                        };
-                        findWayUpStep(context, lowNode, highNode);
-                        if (highNode.id in context.visited) {
-                            if (context.leak) {
-                                __state = '7';
+                    case '2':
+                        if (highNode) {
+                            context = {
+                                visited: {},
+                                leak: false
+                            };
+                            findWayUpStep(context, lowNode, highNode);
+                            if (highNode.id in context.visited) {
+                                if (context.leak) {
+                                    __state = '7';
+                                } else {
+                                    _var2 = objectValues(context.visited);
+                                    return _var2;
+                                }
                             } else {
-                                _var2 = objectValues(context.visited);
-                                return _var2;
+                                __state = '7';
                             }
                         } else {
-                            __state = '7';
+                            return [lowNode];
                         }
-                    } else {
-                        return [lowNode];
-                    }
-                    break;
-                case '7':
-                    return [];
-                default:
-                    return;
+                        break;
+                    case '7':
+                        return [];
+                    default:
+                        return;
                 }
             }
         }
@@ -2346,36 +2358,36 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    selection = widget.selection;
-                    visuals = widget.visuals;
-                    if (selection.head) {
-                        head = visuals.nodes[selection.head];
-                        __state = '7';
-                    } else {
-                        head = undefined;
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    wayUp = findWayUp(node, head);
-                    if (wayUp.length) {
-                        selectPath(widget, wayUp, head);
-                        __state = '14';
-                    } else {
-                        wayDown = findWayUp(head, node);
-                        if (wayDown.length) {
-                            selectPath(widget, wayDown, head);
+                    case '2':
+                        selection = widget.selection;
+                        visuals = widget.visuals;
+                        if (selection.head) {
+                            head = visuals.nodes[selection.head];
+                            __state = '7';
+                        } else {
+                            head = undefined;
+                            __state = '7';
+                        }
+                        break;
+                    case '7':
+                        wayUp = findWayUp(node, head);
+                        if (wayUp.length) {
+                            selectPath(widget, wayUp, head);
                             __state = '14';
                         } else {
-                            return false;
+                            wayDown = findWayUp(head, node);
+                            if (wayDown.length) {
+                                selectPath(widget, wayDown, head);
+                                __state = '14';
+                            } else {
+                                return false;
+                            }
                         }
-                    }
-                    break;
-                case '14':
-                    return true;
-                default:
-                    return;
+                        break;
+                    case '14':
+                        return true;
+                    default:
+                        return;
                 }
             }
         }
@@ -2384,54 +2396,59 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (prim.id in visuals.nodes) {
-                        node = visuals.nodes[prim.id];
-                        console.log(node);
-                        __state = '1';
-                    } else {
-                        if (prim.id in visuals.edges) {
-                            edge = visuals.edges[prim.id];
-                            console.log(edge);
+                    case '1':
+                        return;
+                    case '2':
+                        if (prim.id in visuals.nodes) {
+                            node = visuals.nodes[prim.id];
+                            console.log(node);
                             __state = '1';
                         } else {
-                            console.log('Unknown primitive', prim);
-                            __state = '1';
+                            if (prim.id in visuals.edges) {
+                                edge = visuals.edges[prim.id];
+                                console.log(edge);
+                                __state = '1';
+                            } else {
+                                console.log('Unknown primitive', prim);
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
         function selectPrim(widget, id) {
-            var selection, visuals;
+            var selection, visuals, item, node;
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    selection = widget.selection;
-                    visuals = widget.visuals;
-                    if (id in visuals.nodes) {
-                        selection.prims[id] = 'node';
-                        selection.head = id;
-                        __state = '1';
-                    } else {
-                        if (id in visuals.edges) {
-                            selection.prims[id] = 'edge';
+                    case '1':
+                        return;
+                    case '2':
+                        clearSockets(widget.visuals);
+                        resetSelectionCore(widget);
+                        selection = widget.selection;
+                        visuals = widget.visuals;
+                        if (id in visuals.nodes) {
+                            selection.prims[id] = 'node';
+                            selection.head = id;
+                            node = getNode(visuals, id);
+                            item = nodeToVisualItem(node);
+                            widget.config.onItemSelected(item);
                             __state = '1';
                         } else {
-                            throw new Error('Can\'t select ' + id);
+                            if (id in visuals.edges) {
+                                selection.prims[id] = 'edge';
+                                __state = '1';
+                            } else {
+                                throw new Error('Can\'t select ' + id);
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2440,25 +2457,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.id in context.nodes) {
-                        nodeInfo = context.nodes[node.id];
-                        __state = '7';
-                    } else {
-                        nodeInfo = {
-                            node: node,
-                            include: false,
-                            remaining: node.prev.length,
-                            aremaining: node.aprev.length
-                        };
-                        context.nodes[node.id] = nodeInfo;
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    return nodeInfo;
-                default:
-                    return;
+                    case '2':
+                        if (node.id in context.nodes) {
+                            nodeInfo = context.nodes[node.id];
+                            __state = '7';
+                        } else {
+                            nodeInfo = {
+                                node: node,
+                                include: false,
+                                remaining: node.prev.length,
+                                aremaining: node.aprev.length
+                            };
+                            context.nodes[node.id] = nodeInfo;
+                            __state = '7';
+                        }
+                        break;
+                    case '7':
+                        return nodeInfo;
+                    default:
+                        return;
                 }
             }
         }
@@ -2467,49 +2484,49 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    best = undefined;
-                    distance = 10000000000;
-                    _var3 = widget.visuals.nodes;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var4++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        node = _var3[id];
-                        _var5 = filter(node);
-                        if (_var5) {
-                            if (node.type === 'junction') {
-                                __state = '4';
-                            } else {
-                                if (node.type === 'arrow-loop') {
+                    case '2':
+                        best = undefined;
+                        distance = 10000000000;
+                        _var3 = widget.visuals.nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var4++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            _var5 = filter(node);
+                            if (_var5) {
+                                if (node.type === 'junction') {
                                     __state = '4';
                                 } else {
-                                    current = getDistance(node, srcNode, vertical);
-                                    if (current < distance) {
-                                        best = node;
-                                        distance = current;
+                                    if (node.type === 'arrow-loop') {
                                         __state = '4';
                                     } else {
-                                        __state = '4';
+                                        current = getDistance(node, srcNode, vertical);
+                                        if (current < distance) {
+                                            best = node;
+                                            distance = current;
+                                            __state = '4';
+                                        } else {
+                                            __state = '4';
+                                        }
                                     }
                                 }
+                            } else {
+                                __state = '4';
                             }
                         } else {
-                            __state = '4';
+                            return best;
                         }
-                    } else {
-                        return best;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2523,44 +2540,44 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = node.type;
-                    if (_var2 === 'end') {
-                        __state = '3';
-                    } else {
-                        if (_var2 === 'header') {
+                    case '2':
+                        _var2 = node.type;
+                        if (_var2 === 'end') {
                             __state = '3';
                         } else {
-                            if (_var2 === 'branch') {
+                            if (_var2 === 'header') {
                                 __state = '3';
                             } else {
-                                if (_var2 === 'address') {
+                                if (_var2 === 'branch') {
                                     __state = '3';
                                 } else {
-                                    if (_var2 === 'junction') {
+                                    if (_var2 === 'address') {
                                         __state = '3';
                                     } else {
-                                        if (_var2 === 'action') {
-                                            if (node.id === 'params') {
-                                                __state = '3';
+                                        if (_var2 === 'junction') {
+                                            __state = '3';
+                                        } else {
+                                            if (_var2 === 'action') {
+                                                if (node.id === 'params') {
+                                                    __state = '3';
+                                                } else {
+                                                    __state = '13';
+                                                }
                                             } else {
                                                 __state = '13';
                                             }
-                                        } else {
-                                            __state = '13';
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '3':
-                    return false;
-                case '13':
-                    return true;
-                default:
-                    return;
+                        break;
+                    case '3':
+                        return false;
+                    case '13':
+                        return true;
+                    default:
+                        return;
                 }
             }
         }
@@ -2569,45 +2586,45 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    visited = context.visited;
-                    if (node.type === 'branch') {
-                        context.leak = true;
-                        __state = '1';
-                    } else {
-                        if (node.id in visited) {
+                    case '1':
+                        return;
+                    case '2':
+                        visited = context.visited;
+                        if (node.type === 'branch') {
+                            context.leak = true;
                             __state = '1';
                         } else {
-                            visited[node.id] = node;
-                            if (node === highNode) {
+                            if (node.id in visited) {
                                 __state = '1';
                             } else {
-                                if (node.type === 'case') {
-                                    findWayUpStep(context, node.select, highNode);
+                                visited[node.id] = node;
+                                if (node === highNode) {
                                     __state = '1';
                                 } else {
-                                    _var2 = node.prev;
-                                    _var3 = 0;
-                                    __state = '16';
+                                    if (node.type === 'case') {
+                                        findWayUpStep(context, node.select, highNode);
+                                        __state = '1';
+                                    } else {
+                                        _var2 = node.prev;
+                                        _var3 = 0;
+                                        __state = '16';
+                                    }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '16':
-                    if (_var3 < _var2.length) {
-                        prev = _var2[_var3];
-                        findWayUpStep(context, prev, highNode);
-                        _var3++;
-                        __state = '16';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '16':
+                        if (_var3 < _var2.length) {
+                            prev = _var2[_var3];
+                            findWayUpStep(context, prev, highNode);
+                            _var3++;
+                            __state = '16';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2616,25 +2633,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    newHead = head;
-                    _var2 = path;
-                    _var3 = 0;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var3 < _var2.length) {
-                        step = _var2[_var3];
-                        newHead = selectCluster(widget, newHead, step);
-                        _var3++;
+                    case '2':
+                        newHead = head;
+                        _var2 = path;
+                        _var3 = 0;
                         __state = '6';
-                    } else {
-                        widget.selection.head = newHead.id;
+                        break;
+                    case '6':
+                        if (_var3 < _var2.length) {
+                            step = _var2[_var3];
+                            newHead = selectCluster(widget, newHead, step);
+                            _var3++;
+                            __state = '6';
+                        } else {
+                            widget.selection.head = newHead.id;
+                            return;
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -2642,6 +2659,19 @@ function createDrakonWidget() {
             var _var2;
             _var2 = findElementAt(visuals.edges, x, y);
             return _var2;
+        }
+        function nodeToVisualItem(node) {
+            return {
+                id: node.id,
+                type: node.type,
+                style: node.style,
+                content: node.content,
+                elType: 'node',
+                left: node.x - node.w,
+                top: node.y - node.h,
+                width: node.w * 2,
+                height: node.h * 2
+            };
         }
         function toClient(widget, diaX, diaY) {
             var rect, clientX, clientY, widgetX, widgetY, visuals;
@@ -2661,56 +2691,56 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (node.type === 'end') {
-                        __state = '1';
-                    } else {
-                        if (node.type === 'address') {
+                    case '1':
+                        return;
+                    case '2':
+                        if (node.type === 'end') {
                             __state = '1';
                         } else {
-                            nodeInfo = getNodeInfo(context, node);
-                            _var2 = isBackLink(src, node);
-                            if (_var2) {
-                                aprev = nodeInfo.node.aprev.length;
-                                nodeInfo.aremaining--;
-                                if (nodeInfo.aremaining === 0) {
-                                    context.paths -= aprev;
-                                    selectClusterStepBack(widget, context, nodeInfo);
-                                    __state = '1';
-                                } else {
-                                    __state = '1';
-                                }
+                            if (node.type === 'address') {
+                                __state = '1';
                             } else {
-                                prev = nodeInfo.node.prev.length;
-                                if (prev === 1) {
-                                    __state = '14';
-                                } else {
-                                    nodeInfo.remaining--;
-                                    if (nodeInfo.remaining === 0) {
-                                        joins = prev - 1;
-                                        context.paths -= joins;
-                                        _var3 = clusterComplete(context);
-                                        if (_var3) {
-                                            __state = '1';
-                                        } else {
-                                            __state = '14';
-                                        }
+                                nodeInfo = getNodeInfo(context, node);
+                                _var2 = isBackLink(src, node);
+                                if (_var2) {
+                                    aprev = nodeInfo.node.aprev.length;
+                                    nodeInfo.aremaining--;
+                                    if (nodeInfo.aremaining === 0) {
+                                        context.paths -= aprev;
+                                        selectClusterStepBack(widget, context, nodeInfo);
+                                        __state = '1';
                                     } else {
                                         __state = '1';
+                                    }
+                                } else {
+                                    prev = nodeInfo.node.prev.length;
+                                    if (prev === 1) {
+                                        __state = '14';
+                                    } else {
+                                        nodeInfo.remaining--;
+                                        if (nodeInfo.remaining === 0) {
+                                            joins = prev - 1;
+                                            context.paths -= joins;
+                                            _var3 = clusterComplete(context);
+                                            if (_var3) {
+                                                __state = '1';
+                                            } else {
+                                                __state = '14';
+                                            }
+                                        } else {
+                                            __state = '1';
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '14':
-                    selectClusterStepNext(widget, context, nodeInfo);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '14':
+                        selectClusterStepNext(widget, context, nodeInfo);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2724,40 +2754,40 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var3 = elements;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var4++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        element = _var3[id];
-                        if (element.box) {
-                            _var5 = hitBox(element.box, x, y);
-                            if (_var5) {
-                                return element;
+                    case '2':
+                        _var3 = elements;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var4++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            element = _var3[id];
+                            if (element.box) {
+                                _var5 = hitBox(element.box, x, y);
+                                if (_var5) {
+                                    return element;
+                                } else {
+                                    __state = '4';
+                                }
                             } else {
                                 __state = '4';
                             }
                         } else {
-                            __state = '4';
+                            return undefined;
                         }
-                    } else {
-                        return undefined;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
-        function resetSelection(widget) {
+        function resetSelectionCore(widget) {
             widget.selection = { prims: {} };
             return;
         }
@@ -2766,68 +2796,68 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (nodeInfo.include) {
-                        context.arrows--;
-                        __state = '1';
-                    } else {
-                        _var2 = isArrowLoop(nodeInfo.node);
-                        if (_var2) {
-                            context.arrows++;
-                            __state = '22';
+                    case '1':
+                        return;
+                    case '2':
+                        if (nodeInfo.include) {
+                            context.arrows--;
+                            __state = '1';
                         } else {
-                            __state = '22';
-                        }
-                    }
-                    break;
-                case '7':
-                    selectClusterStep(widget, context, node, node.next[0]);
-                    __state = '1';
-                    break;
-                case '22':
-                    nodeInfo.include = true;
-                    node = nodeInfo.node;
-                    if (node.next.length === 2) {
-                        context.paths++;
-                        selectClusterStep(widget, context, node, node.next[1]);
-                        __state = '_item3';
-                    } else {
-                        if (node.type === 'loopbegin') {
-                            context.loops[node.id] = true;
-                            context.arrows++;
-                            __state = '_item3';
-                        } else {
-                            if (node.type === 'loopend') {
-                                if (node.loopStart.id in context.loops) {
-                                    context.arrows--;
-                                    __state = '_item3';
-                                } else {
-                                    info = getNodeInfo(context, node.loopStart);
-                                    selectClusterStepNext(widget, context, info);
-                                    __state = '_item3';
-                                }
+                            _var2 = isArrowLoop(nodeInfo.node);
+                            if (_var2) {
+                                context.arrows++;
+                                __state = '22';
                             } else {
-                                __state = '_item3';
+                                __state = '22';
                             }
                         }
-                    }
-                    break;
-                case '_item3':
-                    _var3 = clusterComplete(context);
-                    if (_var3) {
-                        if (node.type == 'select') {
-                            __state = '7';
+                        break;
+                    case '7':
+                        selectClusterStep(widget, context, node, node.next[0]);
+                        __state = '1';
+                        break;
+                    case '22':
+                        nodeInfo.include = true;
+                        node = nodeInfo.node;
+                        if (node.next.length === 2) {
+                            context.paths++;
+                            selectClusterStep(widget, context, node, node.next[1]);
+                            __state = '_item3';
                         } else {
-                            __state = '1';
+                            if (node.type === 'loopbegin') {
+                                context.loops[node.id] = true;
+                                context.arrows++;
+                                __state = '_item3';
+                            } else {
+                                if (node.type === 'loopend') {
+                                    if (node.loopStart.id in context.loops) {
+                                        context.arrows--;
+                                        __state = '_item3';
+                                    } else {
+                                        info = getNodeInfo(context, node.loopStart);
+                                        selectClusterStepNext(widget, context, info);
+                                        __state = '_item3';
+                                    }
+                                } else {
+                                    __state = '_item3';
+                                }
+                            }
                         }
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '_item3':
+                        _var3 = clusterComplete(context);
+                        if (_var3) {
+                            if (node.type == 'select') {
+                                __state = '7';
+                            } else {
+                                __state = '1';
+                            }
+                        } else {
+                            __state = '7';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -2849,6 +2879,489 @@ function createDrakonWidget() {
             evt.preventDefault();
             return false;
         }
+        function centerContent(node) {
+            var left, top;
+            left = Math.floor(node.x - node.w);
+            top = Math.floor(node.y - node.frame.height / 2);
+            node.frame.div.style.left = left + 'px';
+            node.frame.div.style.top = top + 'px';
+            return;
+        }
+        function buildContentFrame(container, node, config, paddingLeft, paddingRight) {
+            var core, context, element, rect;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        context = {
+                            type: node.type,
+                            content: node.content,
+                            style: node.style,
+                            flag1: node.flag1,
+                            config: config,
+                            paddingLeft: paddingLeft,
+                            paddingRight: paddingRight
+                        };
+                        core = config.buildIconCore(context);
+                        element = core.buildDom();
+                        if (element) {
+                            __state = '50';
+                        } else {
+                            element = buildDomDefault(core);
+                            __state = '50';
+                        }
+                        break;
+                    case '50':
+                        element.style.display = 'inline-block';
+                        element.style.position = 'absolute';
+                        html.add(container, element);
+                        rect = element.getBoundingClientRect();
+                        return {
+                            div: element,
+                            core: core,
+                            width: rect.width,
+                            height: rect.height
+                        };
+                    default:
+                        return;
+                }
+            }
+        }
+        function centerContentBottom(node) {
+            var left, top;
+            left = Math.floor(node.x - node.w);
+            top = Math.floor(node.y + node.h - node.frame.height);
+            node.frame.div.style.left = left + 'px';
+            node.frame.div.style.top = top + 'px';
+            return;
+        }
+        function buildContentOld(container, node, config) {
+            var textDiv, smallerPadding, color, type, content, padding, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        type = node.type;
+                        content = node.content;
+                        color = getThemeValue(config, node, 'color');
+                        _var2 = type;
+                        if (_var2 === 'question') {
+                            textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
+                            textDiv.style.paddingLeft = config.metre + 'px';
+                            textDiv.style.paddingRight = config.metre + 'px';
+                            __state = '5';
+                        } else {
+                            if (_var2 === 'insertion') {
+                                textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
+                                padding = config.padding + config.insertionPadding;
+                                textDiv.style.paddingLeft = padding + 'px';
+                                textDiv.style.paddingRight = padding + 'px';
+                                __state = '5';
+                            } else {
+                                if (_var2 === 'comment') {
+                                    textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
+                                    padding = config.padding + config.commentPadding;
+                                    textDiv.style.padding = padding + 'px';
+                                    __state = '5';
+                                } else {
+                                    if (_var2 === 'header') {
+                                        textDiv = buildTextDiv(type, content, config, config.headerFont, 'center', color);
+                                        smallerPadding = config.padding / 2 + 'px';
+                                        textDiv.style.paddingTop = smallerPadding;
+                                        textDiv.style.paddingBottom = smallerPadding;
+                                        __state = '5';
+                                    } else {
+                                        if (_var2 === 'branch') {
+                                            textDiv = buildMulitlineDiv(type, content, config, config.font, 'center', color);
+                                            textDiv.style.fontWeight = 'bold';
+                                            __state = '5';
+                                        } else {
+                                            if (_var2 === 'select') {
+                                                textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
+                                                textDiv.style.paddingLeft = config.padding * 1.5 + 'px';
+                                                textDiv.style.paddingRight = config.padding * 1.5 + 'px';
+                                                __state = '5';
+                                            } else {
+                                                if (_var2 === 'case') {
+                                                    __state = '22';
+                                                } else {
+                                                    if (_var2 === 'address') {
+                                                        __state = '22';
+                                                    } else {
+                                                        if (_var2 === 'end') {
+                                                            textDiv = buildTextDiv(type, content, config, config.font, 'center', color);
+                                                            textDiv.style.minWidth = '';
+                                                            smallerPadding = config.padding / 2 + 'px';
+                                                            textDiv.style.paddingTop = smallerPadding;
+                                                            textDiv.style.paddingBottom = smallerPadding;
+                                                            __state = '5';
+                                                        } else {
+                                                            textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
+                                                            __state = '5';
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case '5':
+                        html.add(container, textDiv);
+                        return textDiv;
+                    case '22':
+                        textDiv = config.buildContentDiv(type, content, config, config.font, 'center', color);
+                        __state = '5';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function centerContentTop(node) {
+            var left, top;
+            left = Math.floor(node.x - node.w);
+            top = Math.floor(node.y - node.h);
+            node.frame.div.style.left = left + 'px';
+            node.frame.div.style.top = top + 'px';
+            return;
+        }
+        function mergeConfigs(dst, src, propName, defaultValues) {
+            var merged, userValues;
+            userValues = src[propName] || {};
+            merged = {};
+            Object.assign(merged, defaultValues);
+            Object.assign(merged, userValues);
+            dst[propName] = merged;
+            return;
+        }
+        function getThemeValue(config, node, name) {
+            var _var2;
+            _var2 = getThemeValueCore(config, node.type, node.style, name);
+            return _var2;
+        }
+        function getThemeValueCore(config, type, style, name) {
+            var theme, icons, forIcon, value;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        if (style) {
+                            value = style[name];
+                            if (value === undefined) {
+                                __state = '16';
+                            } else {
+                                __state = '24';
+                            }
+                        } else {
+                            __state = '16';
+                        }
+                        break;
+                    case '16':
+                        theme = config.theme;
+                        icons = theme.icons;
+                        if (icons) {
+                            forIcon = icons[type];
+                            if (forIcon) {
+                                value = forIcon[name];
+                                if (value === undefined) {
+                                    __state = '21';
+                                } else {
+                                    __state = '24';
+                                }
+                            } else {
+                                __state = '21';
+                            }
+                        } else {
+                            __state = '21';
+                        }
+                        break;
+                    case '21':
+                        return theme[name];
+                    case '24':
+                        return value;
+                    default:
+                        return;
+                }
+            }
+        }
+        function buildDomDefault(core) {
+            var textDiv, config, paddingLeft, paddingTop, paddingRight, paddingBottom, maxWidth, minWidth, color, textAlign, font, lines, p, text, _var2, _var3, _var4, _var5, line, _var6;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        config = core.config;
+                        paddingLeft = config.padding + core.paddingLeft + 'px';
+                        paddingTop = config.padding + 'px';
+                        paddingRight = config.padding + core.paddingRight + 'px';
+                        paddingBottom = config.padding + 'px';
+                        maxWidth = config.maxWidth + 'px';
+                        minWidth = config.minWidth + 'px';
+                        textAlign = 'left';
+                        font = getThemeValueCore(config, core.type, core.style, 'font');
+                        _var2 = core.type;
+                        if (_var2 === 'header') {
+                            font = config.headerFont;
+                            textAlign = 'center';
+                            maxWidth = config.maxWidth * 1.3 + 'px';
+                            __state = '6';
+                        } else {
+                            if (_var2 === 'end') {
+                                textAlign = 'center';
+                                minWidth = '';
+                                paddingTop = config.padding / 2;
+                                paddingBottom = paddingTop;
+                                __state = '6';
+                            } else {
+                                if (_var2 === 'question') {
+                                    paddingLeft = config.metre + 'px';
+                                    paddingRight = config.metre + 'px';
+                                    __state = '6';
+                                } else {
+                                    if (_var2 === 'case') {
+                                        __state = '34';
+                                    } else {
+                                        if (_var2 === 'branch') {
+                                            font = config.branchFont;
+                                            __state = '34';
+                                        } else {
+                                            if (_var2 === 'address') {
+                                                __state = '34';
+                                            } else {
+                                                __state = '6';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case '5':
+                        return textDiv;
+                    case '6':
+                        color = getThemeValueCore(config, core.type, core.style, 'color');
+                        textDiv = div({
+                            display: 'inline-block',
+                            position: 'absolute',
+                            color: color,
+                            left: '0px',
+                            top: '0px',
+                            font: font,
+                            'user-select': 'none',
+                            'text-align': textAlign,
+                            'max-width': maxWidth,
+                            'min-width': minWidth,
+                            'padding-left': paddingLeft,
+                            'padding-top': paddingTop,
+                            'padding-right': paddingRight,
+                            'padding-bottom': paddingBottom,
+                            lineHeight: config.lineHeight
+                        });
+                        __state = '38';
+                        break;
+                    case '34':
+                        textAlign = 'center';
+                        __state = '6';
+                        break;
+                    case '38':
+                        text = core.content || '';
+                        _var3 = core.type;
+                        if (_var3 === 'header') {
+                            __state = '43';
+                        } else {
+                            if (_var3 === 'end') {
+                                __state = '43';
+                            } else {
+                                lines = text.split('\n');
+                                _var4 = lines;
+                                _var5 = 0;
+                                __state = '45';
+                            }
+                        }
+                        break;
+                    case '43':
+                        html.addText(textDiv, text);
+                        __state = '5';
+                        break;
+                    case '45':
+                        if (_var5 < _var4.length) {
+                            line = _var4[_var5];
+                            _var6 = line.trim();
+                            p = createPar(_var6);
+                            html.add(textDiv, p);
+                            _var5++;
+                            __state = '45';
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function buildIconCore(context) {
+            var core, _var2;
+            core = {};
+            Object.assign(core, context);
+            core.buildDom = function () {
+                _var2 = buildDomDefault(core);
+                return _var2;
+            };
+            return core;
+        }
+        function initAlignedNodes(output, input) {
+            var defaultValues;
+            defaultValues = {
+                action: true,
+                question: true,
+                'case': true,
+                select: true,
+                branch: true,
+                address: true,
+                loopbegin: true,
+                loopend: true,
+                insertion: true,
+                comment: true
+            };
+            mergeConfigs(output, input, 'alignedNodes', defaultValues);
+            return;
+        }
+        function renderInsertion(visuals, node, ctx) {
+            var left, right, top, thickness, x1, x2, style, _var2;
+            renderAction(visuals, node, ctx);
+            left = node.x - node.w;
+            right = node.x + node.w;
+            top = node.y - node.h;
+            x1 = left + visuals.config.insertionPadding;
+            x2 = right - visuals.config.insertionPadding;
+            _var2 = getThemeValue(visuals.config, node, 'borderWidth');
+            thickness = _var2 || 1;
+            style = getThemeValue(visuals.config, node, 'iconBorder');
+            ctx.fillStyle = getThemeValue(visuals.config, node, 'internalLine');
+            ctx.fillRect(x1, top, thickness, node.h * 2);
+            ctx.fillRect(x2, top, thickness, node.h * 2);
+            return;
+        }
+        function renderBranch(visuals, node, ctx) {
+            var middle, x, y, w, h, bottom, tx0, tx1, ty, line, tri;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        tri = visuals.config.triangleHeight;
+                        middle = buildBranchPath(ctx, node.x, node.y, node.w, node.h, tri);
+                        ctx.fill();
+                        centerContentTop(node);
+                        if (line) {
+                            buildBranchPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, tri);
+                            ctx.stroke();
+                            __state = '19';
+                        } else {
+                            __state = '19';
+                        }
+                        break;
+                    case '11':
+                        return;
+                    case '12':
+                        if (node.mark) {
+                            x = node.x;
+                            y = node.y;
+                            w = node.w;
+                            h = node.h;
+                            bottom = y + h;
+                            tx0 = x - w / 2;
+                            tx1 = x + w / 2;
+                            ty = (bottom + middle) / 2;
+                            ctx.fillStyle = visuals.config.theme.internalLine;
+                            ctx.beginPath();
+                            ctx.moveTo(tx0, ty);
+                            ctx.lineTo(x, bottom);
+                            ctx.lineTo(tx1, ty);
+                            ctx.closePath();
+                            ctx.fill();
+                            __state = '11';
+                        } else {
+                            __state = '11';
+                        }
+                        break;
+                    case '19':
+                        clearShadow(ctx);
+                        __state = '12';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function renderCase(visuals, node, ctx) {
+            var left, bottom, middle, thickness, _var2;
+            renderBranch(visuals, node, ctx);
+            left = node.x - node.w;
+            bottom = node.y + node.h;
+            middle = bottom - visuals.config.metre;
+            _var2 = getThemeValue(visuals.config, node, 'borderWidth');
+            thickness = _var2 || 1;
+            ctx.fillStyle = getThemeValue(visuals.config, node, 'internalLine');
+            ctx.fillRect(left, middle, node.w * 2, thickness);
+            return;
+        }
+        function renderAddress(visuals, node, ctx) {
+            var middle, x, y, w, h, top, tx0, tx1, ty, line, tri;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        tri = visuals.config.triangleHeight;
+                        line = setFillStroke(visuals.config, node, ctx);
+                        middle = buildAddressPath(ctx, node.x, node.y, node.w, node.h, tri);
+                        ctx.fill();
+                        centerContentBottom(node);
+                        if (line) {
+                            buildAddressPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, tri);
+                            ctx.stroke();
+                            __state = '19';
+                        } else {
+                            __state = '19';
+                        }
+                        break;
+                    case '11':
+                        return;
+                    case '12':
+                        if (node.mark) {
+                            x = node.x;
+                            y = node.y;
+                            w = node.w;
+                            h = node.h;
+                            top = y - h;
+                            tx0 = x - w / 2;
+                            tx1 = x + w / 2;
+                            ty = (top + middle) / 2;
+                            ctx.fillStyle = visuals.config.theme.internalLine;
+                            ctx.beginPath();
+                            ctx.moveTo(tx0, ty);
+                            ctx.lineTo(x, top);
+                            ctx.lineTo(tx1, ty);
+                            ctx.closePath();
+                            ctx.fill();
+                            __state = '11';
+                        } else {
+                            __state = '11';
+                        }
+                        break;
+                    case '19':
+                        clearShadow(ctx);
+                        __state = '12';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function buildLoopBeginPath(ctx, x, y, w, h, padding) {
             var x0, x1, x3, x2, top, bottom, add;
             add = 5;
@@ -2866,15 +3379,6 @@ function createDrakonWidget() {
             ctx.lineTo(x3, bottom);
             ctx.lineTo(x0, bottom);
             ctx.closePath();
-            return;
-        }
-        function centerContent(node) {
-            var left, top;
-            left = Math.floor(node.x - node.w);
-            top = Math.floor(node.y - node.frame.height / 2);
-            node.frame.div.style.left = left + 'px';
-            node.frame.div.style.width = node.w * 2 + 'px';
-            node.frame.div.style.top = top + 'px';
             return;
         }
         function buildQuestionPath(ctx, x, y, w, h, padding) {
@@ -2895,139 +3399,10 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
-        function renderBranch(visuals, node, ctx) {
-            var x, y, w, h, bottom, middle, tx0, tx1, ty, line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildBranchPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    centerContentTop(node);
-                    if (line) {
-                        buildBranchPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '19';
-                    } else {
-                        __state = '19';
-                    }
-                    break;
-                case '11':
-                    return;
-                case '12':
-                    if (node.mark) {
-                        x = node.x;
-                        y = node.y;
-                        w = node.w;
-                        h = node.h;
-                        bottom = y + h;
-                        middle = bottom - 2 / 3 * h;
-                        tx0 = x - w / 2;
-                        tx1 = x + w / 2;
-                        ty = (bottom + middle) / 2;
-                        ctx.fillStyle = visuals.config.theme.iconBorder;
-                        ctx.beginPath();
-                        ctx.moveTo(tx0, ty);
-                        ctx.lineTo(x, bottom);
-                        ctx.lineTo(tx1, ty);
-                        ctx.closePath();
-                        ctx.fill();
-                        __state = '11';
-                    } else {
-                        __state = '11';
-                    }
-                    break;
-                case '19':
-                    clearShadow(ctx);
-                    __state = '12';
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function centerContentBottom(node) {
-            var left, top;
-            left = Math.floor(node.x - node.w);
-            top = Math.floor(node.y + node.h - node.frame.height);
-            node.frame.div.style.left = left + 'px';
-            node.frame.div.style.width = node.w * 2 + 'px';
-            node.frame.div.style.top = top + 'px';
-            return;
-        }
-        function contentEnd(node, config, container) {
-            var _var2;
-            _var2 = contentAction(node, config, container);
-            return _var2;
-        }
-        function buildAlignedNodes(output, input) {
-            var defaultValues;
-            defaultValues = {
-                action: true,
-                question: true,
-                'case': true,
-                select: true,
-                branch: true,
-                address: true,
-                loopbegin: true,
-                loopend: true
-            };
-            mergeConfigs(output, input, 'alignedNodes', defaultValues);
-            return;
-        }
         function clearShadow(ctx) {
             ctx.shadowColor = '';
             ctx.shadowBlur = 0;
             return;
-        }
-        function buildTextDiv(type, text, config, font, textAlign, color) {
-            var textDiv;
-            text = text || '';
-            textDiv = div({
-                display: 'inline-block',
-                position: 'absolute',
-                color: color,
-                text: text,
-                left: '0px',
-                top: '0px',
-                font: font,
-                'user-select': 'none',
-                'text-align': textAlign,
-                'max-width': config.width + 'px',
-                'min-width': config.minWidth + 'px',
-                padding: config.padding + 'px',
-                lineHeight: config.lineHeight
-            });
-            return textDiv;
-        }
-        function renderCase(visuals, node, ctx) {
-            var left, bottom, middle, thickness, _var2;
-            renderBranch(visuals, node, ctx);
-            left = node.x - node.w;
-            bottom = node.y + node.h;
-            middle = bottom - visuals.config.metre;
-            _var2 = getThemeValue(visuals.config, node, 'lineWidth');
-            thickness = _var2 || 1;
-            thickness = 1;
-            ctx.fillStyle = visuals.config.theme.iconBorder;
-            ctx.fillRect(left, middle, node.w * 2, thickness);
-            return;
-        }
-        function createLabel(container, text, config) {
-            var label;
-            label = div({
-                display: 'inline-block',
-                position: 'absolute',
-                text: text,
-                'user-select': 'none',
-                color: config.backText,
-                font: config.font,
-                left: '0px',
-                top: '0px'
-            });
-            html.add(container, label);
-            return label;
         }
         function drawArrowHead(ctx, color, x, y, angle) {
             var thick, arrowWidth, arrowHeight;
@@ -3067,103 +3442,24 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
-        function contentAction(node, config, container) {
-            var textDiv, rect;
-            textDiv = buildContent(container, node, config);
-            rect = textDiv.getBoundingClientRect();
-            return {
-                div: textDiv,
-                width: rect.width,
-                height: rect.height
-            };
-        }
-        function renderAddress(visuals, node, ctx) {
-            var x, y, w, h, top, middle, tx0, tx1, ty, line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildAddressPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    centerContentBottom(node);
-                    if (line) {
-                        buildAddressPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '19';
-                    } else {
-                        __state = '19';
-                    }
-                    break;
-                case '11':
-                    return;
-                case '12':
-                    if (node.mark) {
-                        x = node.x;
-                        y = node.y;
-                        w = node.w;
-                        h = node.h;
-                        top = y - h;
-                        middle = top + 2 / 3 * h;
-                        tx0 = x - w / 2;
-                        tx1 = x + w / 2;
-                        ty = (top + middle) / 2;
-                        ctx.fillStyle = visuals.config.theme.iconBorder;
-                        ctx.beginPath();
-                        ctx.moveTo(tx0, ty);
-                        ctx.lineTo(x, top);
-                        ctx.lineTo(tx1, ty);
-                        ctx.closePath();
-                        ctx.fill();
-                        __state = '11';
-                    } else {
-                        __state = '11';
-                    }
-                    break;
-                case '19':
-                    clearShadow(ctx);
-                    __state = '12';
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function contentQuestion(node, config, container) {
-            var rect, yesDiv, noDiv, textDiv;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    textDiv = buildContent(container, node, config);
-                    rect = textDiv.getBoundingClientRect();
-                    if (config.canvasLabels) {
-                        yesDiv = undefined;
-                        noDiv = undefined;
-                        __state = '6';
-                    } else {
-                        yesDiv = createLabel(container, config.yes, config);
-                        noDiv = createLabel(container, config.no, config);
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    return {
-                        div: textDiv,
-                        yesDiv: yesDiv,
-                        noDiv: noDiv,
-                        width: rect.width,
-                        height: rect.height
-                    };
-                default:
-                    return;
-                }
-            }
-        }
-        function contentCase(node, config, container) {
-            var _var2;
-            _var2 = contentBranchCore(node, config, container);
-            return _var2;
+        function roundedRect(ctx, left, top, width, height, radius) {
+            var x1, right2, x2, y1, bottom2, y2;
+            x1 = left + radius;
+            right2 = left + width;
+            x2 = right2 - radius;
+            y1 = top + radius;
+            bottom2 = top + height;
+            y2 = bottom2 - radius;
+            ctx.beginPath();
+            ctx.arc(x1, y1, radius, Math.PI * 1, Math.PI * 1.5);
+            ctx.lineTo(x2, top);
+            ctx.arc(x2, y1, radius, Math.PI * 1.5, Math.PI * 0);
+            ctx.lineTo(right2, y2);
+            ctx.arc(x2, y2, radius, Math.PI * 0, Math.PI * 0.5);
+            ctx.lineTo(x1, bottom2);
+            ctx.arc(x1, y2, radius, Math.PI * 0.5, Math.PI * 1);
+            ctx.closePath();
+            return;
         }
         function buildSelectPath(ctx, x, y, w, h, padding) {
             var x0, x1, x3, x2, top, bottom;
@@ -3180,99 +3476,6 @@ function createDrakonWidget() {
             ctx.lineTo(x2, bottom);
             ctx.closePath();
             return;
-        }
-        function renderSelect(visuals, node, ctx) {
-            var padding, line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    padding = visuals.config.metre / 2;
-                    buildSelectPath(ctx, node.x, node.y, node.w, node.h, padding);
-                    ctx.fill();
-                    centerContent(node);
-                    if (line) {
-                        buildSelectPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding);
-                        ctx.stroke();
-                        __state = '13';
-                    } else {
-                        __state = '13';
-                    }
-                    break;
-                case '13':
-                    clearShadow(ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
-        }
-        function buildIconRender(output, input) {
-            var defaultValues;
-            defaultValues = {
-                action: renderAction,
-                question: renderQuestion,
-                'case': renderCase,
-                select: renderSelect,
-                branch: renderBranch,
-                address: renderAddress,
-                end: renderEnd,
-                junction: renderJunction,
-                'arrow-loop': renderJunction,
-                header: renderHeader,
-                loopbegin: renderLoopBegin,
-                loopend: renderLoopEnd,
-                params: renderAction
-            };
-            mergeConfigs(output, input, 'iconRender', defaultValues);
-            return;
-        }
-        function buildIconContent(output, input) {
-            var defaultValues;
-            defaultValues = {
-                action: contentAction,
-                question: contentQuestion,
-                'case': contentCase,
-                select: contentSelect,
-                branch: contentBranch,
-                address: contentAddress,
-                end: contentEnd,
-                junction: contentJunction,
-                'arrow-loop': contentJunction,
-                header: contentHeader,
-                loopbegin: contentAction,
-                loopend: contentAction,
-                params: contentAction
-            };
-            mergeConfigs(output, input, 'iconContent', defaultValues);
-            return;
-        }
-        function renderLoopBegin(visuals, node, ctx) {
-            var line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildLoopBeginPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    centerContent(node);
-                    if (line) {
-                        buildLoopBeginPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '13';
-                    } else {
-                        __state = '13';
-                    }
-                    break;
-                case '13':
-                    clearShadow(ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
         }
         function buildLoopEndPath(ctx, x, y, w, h, padding) {
             var x0, x1, x3, x2, top, bottom, add;
@@ -3293,250 +3496,29 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
-        function buildMulitlineDiv(type, text, config, font, textAlign, color) {
-            var textDiv, lines, p, _var2, _var3, line, _var4;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    text = text || '';
-                    textDiv = div({
-                        display: 'inline-block',
-                        position: 'absolute',
-                        color: color,
-                        left: '0px',
-                        top: '0px',
-                        font: font,
-                        'user-select': 'none',
-                        'text-align': textAlign,
-                        'max-width': config.width + 'px',
-                        'min-width': config.minWidth + 'px',
-                        padding: config.padding + 'px',
-                        lineHeight: config.lineHeight
-                    });
-                    lines = text.split('\n');
-                    _var2 = lines;
-                    _var3 = 0;
-                    __state = '7';
-                    break;
-                case '7':
-                    if (_var3 < _var2.length) {
-                        line = _var2[_var3];
-                        _var4 = line.trim();
-                        p = createPar(_var4);
-                        html.add(textDiv, p);
-                        _var3++;
-                        __state = '7';
-                    } else {
-                        return textDiv;
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function renderQuestion(visuals, node, ctx) {
-            var yesDiv, noDiv, yesRect, noRect, leftText, rightText, leftWidth, leftX, leftY, rightX, rightY, line, _var2;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildQuestionPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    if (line) {
-                        buildQuestionPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '37';
-                    } else {
-                        __state = '37';
-                    }
-                    break;
-                case '11':
-                    return;
-                case '12':
-                    if (visuals.config.canvasLabels) {
-                        if (node.flag1) {
-                            leftText = visuals.config.yes;
-                            rightText = visuals.config.no;
-                            __state = '29';
-                        } else {
-                            leftText = visuals.config.no;
-                            rightText = visuals.config.yes;
-                            __state = '29';
-                        }
-                    } else {
-                        if (node.flag1) {
-                            yesDiv = node.frame.yesDiv;
-                            noDiv = node.frame.noDiv;
-                            __state = '19';
-                        } else {
-                            noDiv = node.frame.yesDiv;
-                            yesDiv = node.frame.noDiv;
-                            __state = '19';
-                        }
-                    }
-                    break;
-                case '19':
-                    yesRect = yesDiv.getBoundingClientRect();
-                    noRect = noDiv.getBoundingClientRect();
-                    yesDiv.style.top = node.y + node.h + 2 + 'px';
-                    yesDiv.style.left = node.x - yesRect.width - 2 + 'px';
-                    noDiv.style.top = node.y - noRect.height + 'px';
-                    noDiv.style.left = node.x + node.w + 'px';
-                    __state = '11';
-                    break;
-                case '29':
-                    ctx.fillStyle = visuals.config.theme.backText;
-                    ctx.font = visuals.config.canvasLabels;
-                    _var2 = ctx.measureText(leftText);
-                    leftWidth = _var2.width;
-                    leftX = node.x - 3;
-                    leftY = node.y + node.h + 3;
-                    rightX = node.x + node.w + 3;
-                    rightY = node.y - 3;
-                    ctx.textAlign = 'right';
-                    ctx.textBaseline = 'top';
-                    ctx.fillText(leftText, leftX, leftY);
-                    ctx.textAlign = 'left';
-                    ctx.textBaseline = 'bottom';
-                    ctx.fillText(rightText, rightX, rightY);
-                    __state = '11';
-                    break;
-                case '37':
-                    clearShadow(ctx);
-                    centerContent(node);
-                    __state = '12';
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function centerContentTop(node) {
-            var left, top;
-            left = Math.floor(node.x - node.w);
-            top = Math.floor(node.y - node.h);
-            node.frame.div.style.left = left + 'px';
-            node.frame.div.style.width = node.w * 2 + 'px';
-            node.frame.div.style.top = top + 'px';
-            return;
-        }
-        function contentHeader(node, config, container) {
-            var _var2;
-            _var2 = contentAction(node, config, container);
-            return _var2;
-        }
-        function contentBranchCore(node, config, container) {
-            var rect, textDiv, rectHeight;
-            textDiv = buildContent(container, node, config);
-            rect = textDiv.getBoundingClientRect();
-            rectHeight = Math.max(config.metre * 2, rect.height);
-            return {
-                div: textDiv,
-                width: rect.width,
-                h: rectHeight + config.metre,
-                height: rect.height
-            };
-        }
-        function contentSelect(node, config, container) {
-            var _var2;
-            _var2 = contentAction(node, config, container);
-            return _var2;
-        }
-        function renderEnd(visuals, node, ctx) {
-            renderHeader(visuals, node, ctx);
-            return;
-        }
         function setFillStroke(config, node, ctx) {
             var theme, lineWidth;
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    theme = config.theme;
-                    ctx.strokeStyle = getThemeValue(config, node, 'iconBorder');
-                    ctx.fillStyle = getThemeValue(config, node, 'iconBack');
-                    lineWidth = getThemeValue(config, node, 'borderWidth');
-                    ctx.lineWidth = lineWidth;
-                    if (theme.shadowColor) {
-                        ctx.shadowColor = theme.shadowColor;
-                        ctx.shadowBlur = theme.shadowBlur;
-                        __state = '14';
-                    } else {
-                        __state = '14';
-                    }
-                    break;
-                case '14':
-                    return lineWidth;
-                default:
-                    return;
-                }
-            }
-        }
-        function contentJunction(node, config, container) {
-            return {
-                width: 0,
-                height: 0
-            };
-        }
-        function contentAddress(node, config, container) {
-            var _var2;
-            _var2 = contentBranchCore(node, config, container);
-            return _var2;
-        }
-        function renderAction(visuals, node, ctx) {
-            var left, top, width, height, line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    left = node.x - node.w;
-                    top = node.y - node.h;
-                    width = node.w * 2;
-                    height = node.h * 2;
-                    line = setFillStroke(visuals.config, node, ctx);
-                    ctx.fillRect(left, top, width, height);
-                    if (line) {
-                        ctx.strokeRect(left + 0.5, top + 0.5, width, height);
-                        __state = '12';
-                    } else {
-                        __state = '12';
-                    }
-                    break;
-                case '12':
-                    clearShadow(ctx);
-                    centerContent(node);
-                    return;
-                default:
-                    return;
-                }
-            }
-        }
-        function renderHeader(visuals, node, ctx) {
-            var line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildBeginEndPath(ctx, node.x, node.y, node.w, node.h);
-                    ctx.fill();
-                    centerContent(node);
-                    if (line) {
-                        buildBeginEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
-                        ctx.stroke();
-                        __state = '16';
-                    } else {
-                        __state = '16';
-                    }
-                    break;
-                case '16':
-                    clearShadow(ctx);
-                    return;
-                default:
-                    return;
+                    case '2':
+                        theme = config.theme;
+                        ctx.strokeStyle = getThemeValue(config, node, 'iconBorder');
+                        ctx.fillStyle = getThemeValue(config, node, 'iconBack');
+                        lineWidth = getThemeValue(config, node, 'borderWidth');
+                        ctx.lineWidth = lineWidth;
+                        if (theme.shadowColor) {
+                            ctx.shadowColor = theme.shadowColor;
+                            ctx.shadowBlur = theme.shadowBlur;
+                            __state = '14';
+                        } else {
+                            __state = '14';
+                        }
+                        break;
+                    case '14':
+                        return lineWidth;
+                    default:
+                        return;
                 }
             }
         }
@@ -3554,91 +3536,552 @@ function createDrakonWidget() {
             ctx.lineTo(right, middle);
             ctx.lineTo(right, bottom);
             ctx.closePath();
+            return middle;
+        }
+        function renderSelect(visuals, node, ctx) {
+            var padding, line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        padding = visuals.config.metre / 2;
+                        buildSelectPath(ctx, node.x, node.y, node.w, node.h, padding);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildSelectPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding);
+                            ctx.stroke();
+                            __state = '13';
+                        } else {
+                            __state = '13';
+                        }
+                        break;
+                    case '13':
+                        clearShadow(ctx);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
+        function renderLoopBegin(visuals, node, ctx) {
+            var line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        buildLoopBeginPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildLoopBeginPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
+                            ctx.stroke();
+                            __state = '13';
+                        } else {
+                            __state = '13';
+                        }
+                        break;
+                    case '13':
+                        clearShadow(ctx);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
+        function renderQuestion(visuals, node, ctx) {
+            var yesDiv, noDiv, yesRect, noRect, leftText, rightText, leftWidth, leftX, leftY, rightX, rightY, line, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        buildQuestionPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
+                        ctx.fill();
+                        if (line) {
+                            buildQuestionPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
+                            ctx.stroke();
+                            __state = '37';
+                        } else {
+                            __state = '37';
+                        }
+                        break;
+                    case '11':
+                        return;
+                    case '12':
+                        if (visuals.config.canvasLabels) {
+                            if (node.flag1) {
+                                leftText = visuals.config.yes;
+                                rightText = visuals.config.no;
+                                __state = '29';
+                            } else {
+                                leftText = visuals.config.no;
+                                rightText = visuals.config.yes;
+                                __state = '29';
+                            }
+                        } else {
+                            if (node.flag1) {
+                                yesDiv = node.frame.yesDiv;
+                                noDiv = node.frame.noDiv;
+                                __state = '19';
+                            } else {
+                                noDiv = node.frame.yesDiv;
+                                yesDiv = node.frame.noDiv;
+                                __state = '19';
+                            }
+                        }
+                        break;
+                    case '19':
+                        yesRect = yesDiv.getBoundingClientRect();
+                        noRect = noDiv.getBoundingClientRect();
+                        yesDiv.style.top = node.y + node.h + 2 + 'px';
+                        yesDiv.style.left = node.x - yesRect.width - 2 + 'px';
+                        noDiv.style.top = node.y - noRect.height + 'px';
+                        noDiv.style.left = node.x + node.w + 'px';
+                        __state = '11';
+                        break;
+                    case '29':
+                        ctx.fillStyle = visuals.config.theme.backText;
+                        ctx.font = visuals.config.canvasLabels;
+                        _var2 = ctx.measureText(leftText);
+                        leftWidth = _var2.width;
+                        leftX = node.x - 3;
+                        leftY = node.y + node.h + 3;
+                        rightX = node.x + node.w + 3;
+                        rightY = node.y - 3;
+                        ctx.textAlign = 'right';
+                        ctx.textBaseline = 'top';
+                        ctx.fillText(leftText, leftX, leftY);
+                        ctx.textAlign = 'left';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fillText(rightText, rightX, rightY);
+                        __state = '11';
+                        break;
+                    case '37':
+                        clearShadow(ctx);
+                        centerContent(node);
+                        __state = '12';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function renderComment(visuals, node, ctx) {
+            var left, top, width, height, config, theme, lineWidth, left2, top2, width2, height2, padding;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        left = node.x - node.w;
+                        top = node.y - node.h;
+                        width = node.w * 2;
+                        height = node.h * 2;
+                        config = visuals.config;
+                        theme = config.theme;
+                        ctx.strokeStyle = getThemeValue(config, node, 'iconBorder');
+                        ctx.fillStyle = theme.commentBack;
+                        lineWidth = getThemeValue(config, node, 'borderWidth');
+                        if (theme.shadowColor) {
+                            ctx.shadowColor = theme.shadowColor;
+                            ctx.shadowBlur = theme.shadowBlur;
+                            __state = '28';
+                        } else {
+                            __state = '28';
+                        }
+                        break;
+                    case '26':
+                        centerContent(node);
+                        return;
+                    case '27':
+                        padding = config.commentPadding;
+                        ctx.fillStyle = getThemeValue(config, node, 'iconBack');
+                        ctx.strokeStyle = getThemeValue(config, node, 'internalLine');
+                        left2 = left + padding;
+                        top2 = top + padding;
+                        width2 = width - padding * 2;
+                        height2 = height - padding * 2;
+                        roundedRect(ctx, left2, top2, width2, height2, padding);
+                        ctx.fill();
+                        ctx.lineWidth = lineWidth || 1;
+                        roundedRect(ctx, left2 + 0.5, top2 + 0.5, width2, height2, padding);
+                        ctx.stroke();
+                        __state = '26';
+                        break;
+                    case '28':
+                        ctx.fillRect(left, top, width, height);
+                        if (lineWidth) {
+                            ctx.lineWidth = lineWidth;
+                            ctx.strokeRect(left + 0.5, top + 0.5, width, height);
+                            __state = '27';
+                        } else {
+                            __state = '27';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function renderEnd(visuals, node, ctx) {
+            renderHeader(visuals, node, ctx);
             return;
+        }
+        function renderAction(visuals, node, ctx) {
+            var left, top, width, height, line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        left = node.x - node.w;
+                        top = node.y - node.h;
+                        width = node.w * 2;
+                        height = node.h * 2;
+                        line = setFillStroke(visuals.config, node, ctx);
+                        ctx.fillRect(left, top, width, height);
+                        if (line) {
+                            ctx.strokeRect(left + 0.5, top + 0.5, width, height);
+                            __state = '12';
+                        } else {
+                            __state = '12';
+                        }
+                        break;
+                    case '12':
+                        clearShadow(ctx);
+                        centerContent(node);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
+        function renderHeader(visuals, node, ctx) {
+            var line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        buildBeginEndPath(ctx, node.x, node.y, node.w, node.h);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildBeginEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
+                            ctx.stroke();
+                            __state = '16';
+                        } else {
+                            __state = '16';
+                        }
+                        break;
+                    case '16':
+                        clearShadow(ctx);
+                        return;
+                    default:
+                        return;
+                }
+            }
         }
         function renderLoopEnd(visuals, node, ctx) {
             var line;
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildLoopEndPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    centerContent(node);
-                    if (line) {
-                        buildLoopEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '13';
-                    } else {
-                        __state = '13';
-                    }
-                    break;
-                case '13':
-                    clearShadow(ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
-        }
-        function mergeConfigs(dst, src, propName, defaultValues) {
-            var merged, userValues;
-            userValues = src[propName] || {};
-            merged = {};
-            Object.assign(merged, defaultValues);
-            Object.assign(merged, userValues);
-            dst[propName] = merged;
-            return;
-        }
-        function getThemeValue(config, node, name) {
-            var style, theme, icons, forIcon, value;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    style = node.style;
-                    if (style) {
-                        value = style[name];
-                        if (value === undefined) {
-                            __state = '16';
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        buildLoopEndPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildLoopEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
+                            ctx.stroke();
+                            __state = '13';
                         } else {
-                            __state = '24';
+                            __state = '13';
                         }
-                    } else {
-                        __state = '16';
-                    }
-                    break;
-                case '16':
-                    theme = config.theme;
-                    icons = theme.icons;
-                    if (icons) {
-                        forIcon = icons[node.type];
-                        if (forIcon) {
-                            value = forIcon[name];
-                            if (value === undefined) {
-                                __state = '21';
-                            } else {
-                                __state = '24';
-                            }
-                        } else {
-                            __state = '21';
-                        }
-                    } else {
-                        __state = '21';
-                    }
-                    break;
-                case '21':
-                    return theme[name];
-                case '24':
-                    return value;
-                default:
-                    return;
+                        break;
+                    case '13':
+                        clearShadow(ctx);
+                        return;
+                    default:
+                        return;
                 }
             }
         }
         function renderJunction(node, ctx) {
             return;
+        }
+        function initIconRender(output, input) {
+            var defaultValues;
+            defaultValues = {
+                action: renderAction,
+                question: renderQuestion,
+                'case': renderCase,
+                select: renderSelect,
+                branch: renderBranch,
+                address: renderAddress,
+                end: renderEnd,
+                junction: renderJunction,
+                'arrow-loop': renderJunction,
+                header: renderHeader,
+                loopbegin: renderLoopBegin,
+                loopend: renderLoopEnd,
+                params: renderAction,
+                comment: renderComment,
+                insertion: renderInsertion
+            };
+            mergeConfigs(output, input, 'iconRender', defaultValues);
+            return;
+        }
+        function initIconContent(output, input) {
+            var defaultValues;
+            defaultValues = {
+                action: contentAction,
+                question: contentQuestion,
+                'case': contentCase,
+                select: contentSelect,
+                branch: contentBranch,
+                address: contentAddress,
+                end: contentEnd,
+                junction: contentJunction,
+                'arrow-loop': contentJunction,
+                header: contentHeader,
+                loopbegin: contentAction,
+                loopend: contentAction,
+                params: contentAction,
+                comment: contentComment,
+                insertion: contentInsertion
+            };
+            mergeConfigs(output, input, 'iconContent', defaultValues);
+            return;
+        }
+        function flowIcon(visuals, node) {
+            var flow, config;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        flow = visuals.config.iconContent[node.type];
+                        if (flow) {
+                            __state = '17';
+                        } else {
+                            flow = visuals.config.iconContent.action;
+                            console.error('iconContent callback not found for node of type: ' + node.type);
+                            __state = '17';
+                        }
+                        break;
+                    case '17':
+                        node.frame = flow(node, visuals.config, visuals.container);
+                        config = visuals.config;
+                        node.w = makeHalfSize(config, node.frame.width);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
+        function buildTextDiv(type, text, config, font, textAlign, color) {
+            var textDiv;
+            text = text || '';
+            textDiv = div({
+                display: 'inline-block',
+                position: 'absolute',
+                color: color,
+                text: text,
+                left: '0px',
+                top: '0px',
+                font: font,
+                'user-select': 'none',
+                'text-align': textAlign,
+                'max-width': config.width + 'px',
+                'min-width': config.minWidth + 'px',
+                padding: config.padding + 'px',
+                lineHeight: config.lineHeight
+            });
+            return textDiv;
+        }
+        function createLabel(container, text, config) {
+            var label;
+            label = div({
+                display: 'inline-block',
+                position: 'absolute',
+                text: text,
+                'user-select': 'none',
+                color: config.backText,
+                font: config.font,
+                left: '0px',
+                top: '0px'
+            });
+            html.add(container, label);
+            return label;
+        }
+        function buildMulitlineDiv(type, text, config, font, textAlign, color) {
+            var textDiv, lines, p, _var2, _var3, line, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        text = text || '';
+                        textDiv = div({
+                            display: 'inline-block',
+                            position: 'absolute',
+                            color: color,
+                            left: '0px',
+                            top: '0px',
+                            font: font,
+                            'user-select': 'none',
+                            'text-align': textAlign,
+                            'max-width': config.width + 'px',
+                            'min-width': config.minWidth + 'px',
+                            padding: config.padding + 'px',
+                            lineHeight: config.lineHeight
+                        });
+                        lines = text.split('\n');
+                        _var2 = lines;
+                        _var3 = 0;
+                        __state = '7';
+                        break;
+                    case '7':
+                        if (_var3 < _var2.length) {
+                            line = _var2[_var3];
+                            _var4 = line.trim();
+                            p = createPar(_var4);
+                            html.add(textDiv, p);
+                            _var3++;
+                            __state = '7';
+                        } else {
+                            return textDiv;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function contentEnd(node, config, container) {
+            var _var2;
+            _var2 = contentAction(node, config, container);
+            return _var2;
+        }
+        function contentAction(node, config, container) {
+            var _var2;
+            _var2 = buildContentFrame(container, node, config, 0, 0);
+            return _var2;
+        }
+        function contentInsertion(node, config, container) {
+            var padding, _var2;
+            padding = config.insertionPadding;
+            _var2 = buildContentFrame(container, node, config, padding, padding);
+            return _var2;
+        }
+        function contentQuestion(node, config, container) {
+            var frame;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        frame = buildContentFrame(container, node, config, 0, 0);
+                        if (config.canvasLabels) {
+                            __state = '15';
+                        } else {
+                            frame.yesDiv = createLabel(container, config.yes, config);
+                            frame.noDiv = createLabel(container, config.no, config);
+                            __state = '15';
+                        }
+                        break;
+                    case '15':
+                        return frame;
+                    default:
+                        return;
+                }
+            }
+        }
+        function contentCase(node, config, container) {
+            var _var2;
+            _var2 = contentBranchCore(node, config, container);
+            return _var2;
+        }
+        function contentHeader(node, config, container) {
+            var _var2;
+            _var2 = contentAction(node, config, container);
+            return _var2;
+        }
+        function contentBranchCore(node, config, container) {
+            var _var2;
+            _var2 = buildContentFrame(container, node, config, 0, 0);
+            return _var2;
+        }
+        function contentSelect(node, config, container) {
+            var padding, _var2;
+            padding = config.padding * 1.5;
+            _var2 = buildContentFrame(container, node, config, padding, padding);
+            return _var2;
+        }
+        function contentJunction(node, config, container) {
+            return {
+                core: undefined,
+                width: 0,
+                height: 0
+            };
+        }
+        function contentAddress(node, config, container) {
+            var _var2;
+            _var2 = contentBranchCore(node, config, container);
+            return _var2;
+        }
+        function contentComment(node, config, container) {
+            var padding, _var2;
+            padding = config.commentPadding;
+            _var2 = buildContentFrame(container, node, config, padding, padding);
+            return _var2;
+        }
+        function reflowIcon(node, config) {
+            var rect, div, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        if (node.frame) {
+                            if (node.frame.div) {
+                                div = node.frame.div;
+                                div.style.width = node.w * 2 + 'px';
+                                rect = div.getBoundingClientRect();
+                                node.frame.height = rect.height;
+                                node.frame.width = rect.width;
+                                node.h = makeHalfSize(config, rect.height);
+                                node.h = Math.max(node.h, config.metre);
+                                _var2 = node.type;
+                                if (_var2 === 'branch') {
+                                    __state = '17';
+                                } else {
+                                    if (_var2 === 'case') {
+                                        __state = '17';
+                                    } else {
+                                        if (_var2 === 'address') {
+                                            __state = '17';
+                                        } else {
+                                            __state = '1';
+                                        }
+                                    }
+                                }
+                            } else {
+                                __state = '1';
+                            }
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    case '17':
+                        node.h += config.triangleHeight / 2;
+                        __state = '1';
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
         function DrakonCanvas_setZoom(self, zoom) {
             var _var2;
@@ -3653,19 +4096,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = isReadonly(self);
-                    if (_var2) {
-                        __state = '1';
-                    } else {
-                        deleteSelection(self);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = isReadonly(self);
+                        if (_var2) {
+                            __state = '1';
+                        } else {
+                            deleteSelection(self);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -3673,18 +4116,18 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (self.mouseEvents) {
-                        self.mouseEvents.mouseMove(evt);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (self.mouseEvents) {
+                            self.mouseEvents.mouseMove(evt);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -3693,28 +4136,31 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    nodes = getNodesFromSelection(self);
-                    if (nodes.length === 1) {
-                        node = nodes[0];
-                        _var2 = canEditNodeText(node);
-                        if (_var2) {
-                            prim = primFromNode(self, node);
-                            startEditContent(widget, prim);
-                            __state = '1';
+                    case '1':
+                        return;
+                    case '2':
+                        nodes = getNodesFromSelection(self);
+                        if (nodes.length === 1) {
+                            node = nodes[0];
+                            _var2 = canEditNodeText(node);
+                            if (_var2) {
+                                prim = primFromNode(self, node);
+                                startEditContent(widget, prim);
+                                __state = '1';
+                            } else {
+                                __state = '1';
+                            }
                         } else {
                             __state = '1';
                         }
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
+        }
+        function DrakonCanvas_getVersion(self) {
+            return '0.8.2';
         }
         function DrakonCanvas_copySelection(self) {
             copy(self);
@@ -3725,44 +4171,44 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    checkNotReadonly(self);
-                    _var2 = itemId;
-                    if (_var2 === 'header') {
-                        change = {
-                            fields: { name: content },
-                            op: 'update'
-                        };
-                        doEdit(self, [change], true);
-                        __state = '1';
-                    } else {
-                        if (_var2 === 'params') {
+                    case '1':
+                        return;
+                    case '2':
+                        checkNotReadonly(self);
+                        _var2 = itemId;
+                        if (_var2 === 'header') {
                             change = {
-                                fields: { params: content },
+                                fields: { name: content },
                                 op: 'update'
                             };
-                            __state = '34';
+                            doEdit(self, [change], true);
+                            __state = '1';
                         } else {
-                            change = {
-                                id: itemId,
-                                fields: { content: content },
-                                op: 'update'
-                            };
-                            __state = '34';
+                            if (_var2 === 'params') {
+                                change = {
+                                    fields: { params: content },
+                                    op: 'update'
+                                };
+                                __state = '34';
+                            } else {
+                                change = {
+                                    id: itemId,
+                                    fields: { content: content },
+                                    op: 'update'
+                                };
+                                __state = '34';
+                            }
                         }
-                    }
-                    break;
-                case '34':
-                    doEdit(self, [change], true);
-                    buildDiagramModel(self, self.edit.diagram);
-                    buildVisualsForEdit(self);
-                    paint(self);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '34':
+                        doEdit(self, [change], true);
+                        buildDiagramModel(self, self.edit.diagram);
+                        buildVisualsForEdit(self);
+                        paint(self);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -3771,66 +4217,65 @@ function createDrakonWidget() {
             var __state = '13';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (nodeLeft >= 0) {
-                        if (nodeRight < width) {
-                            scrollX = visuals.scrollX;
-                            __state = '12';
+                    case '2':
+                        if (nodeLeft >= 0) {
+                            if (nodeRight < width) {
+                                scrollX = visuals.scrollX;
+                                __state = '12';
+                            } else {
+                                __state = '36';
+                            }
                         } else {
                             __state = '36';
                         }
-                    } else {
-                        __state = '36';
-                    }
-                    break;
-                case '11':
-                    return;
-                case '12':
-                    if (nodeTop >= 0) {
-                        if (nodeBottom < height) {
-                            scrollY = visuals.scrollY;
-                            __state = '21';
+                        break;
+                    case '11':
+                        return;
+                    case '12':
+                        if (nodeTop >= 0) {
+                            if (nodeBottom < height) {
+                                scrollY = visuals.scrollY;
+                                __state = '21';
+                            } else {
+                                __state = '39';
+                            }
                         } else {
                             __state = '39';
                         }
-                    } else {
-                        __state = '39';
-                    }
-                    break;
-                case '13':
-                    visuals = self.visuals;
-                    box = visuals.box;
-                    zoom = self.zoom / 10000;
-                    width = self.width / zoom;
-                    height = self.height / zoom;
-                    node = getNode(visuals, itemId);
-                    nodeBox = node.box;
-                    nodeLeft = diagramToWidgetX(self, nodeBox.left);
-                    nodeTop = diagramToWidgetY(self, nodeBox.top);
-                    nodeRight = diagramToWidgetX(self, nodeBox.left + nodeBox.width);
-                    nodeBottom = diagramToWidgetY(self, nodeBox.top + nodeBox.height);
-                    __state = '2';
-                    break;
-                case '21':
-                    setScroll(self, scrollX, scrollY);
-                    copyScrollToScrollable(self);
-                    deselectAll(widget);
-                    selectPrim(widget, itemId);
-                    paint(self);
-                    __state = '11';
-                    break;
-                case '36':
-                    halfWidth = Math.floor(width / 2);
-                    scrollX = node.x - halfWidth;
-                    __state = '12';
-                    break;
-                case '39':
-                    halfHeight = Math.floor(height / 2);
-                    scrollY = node.y - halfHeight;
-                    __state = '21';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '13':
+                        visuals = self.visuals;
+                        box = visuals.box;
+                        zoom = self.zoom / 10000;
+                        width = self.width / zoom;
+                        height = self.height / zoom;
+                        node = getNode(visuals, itemId);
+                        nodeBox = node.box;
+                        nodeLeft = diagramToWidgetX(self, nodeBox.left);
+                        nodeTop = diagramToWidgetY(self, nodeBox.top);
+                        nodeRight = diagramToWidgetX(self, nodeBox.left + nodeBox.width);
+                        nodeBottom = diagramToWidgetY(self, nodeBox.top + nodeBox.height);
+                        __state = '2';
+                        break;
+                    case '21':
+                        setScroll(self, scrollX, scrollY);
+                        copyScrollToScrollable(self);
+                        selectPrim(self, itemId);
+                        paint(self);
+                        __state = '11';
+                        break;
+                    case '36':
+                        halfWidth = Math.floor(width / 2);
+                        scrollX = node.x - halfWidth;
+                        __state = '12';
+                        break;
+                    case '39':
+                        halfHeight = Math.floor(height / 2);
+                        scrollY = node.y - halfHeight;
+                        __state = '21';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -3853,37 +4298,37 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    target = getNodeByItem(visuals, targetId);
-                    _var2 = srcLinks;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var3++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        link = _var2[_var3];
-                        src = getNodeByItem(visuals, link.source);
-                        _var4 = isSubset(src.loops, target.loops);
-                        if (_var4) {
-                            __state = '4';
-                        } else {
-                            _var5 = canComeBackTo(src, target.loops);
-                            if (_var5) {
+                    case '2':
+                        target = getNodeByItem(visuals, targetId);
+                        _var2 = srcLinks;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var3++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            link = _var2[_var3];
+                            src = getNodeByItem(visuals, link.source);
+                            _var4 = isSubset(src.loops, target.loops);
+                            if (_var4) {
                                 __state = '4';
                             } else {
-                                return false;
+                                _var5 = canComeBackTo(src, target.loops);
+                                if (_var5) {
+                                    __state = '4';
+                                } else {
+                                    return false;
+                                }
                             }
+                        } else {
+                            return true;
                         }
-                    } else {
-                        return true;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -3892,53 +4337,53 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = node.type;
-                    if (_var2 === 'loopbegin') {
-                        depth--;
-                        __state = '10';
-                    } else {
-                        if (_var2 === 'loopend') {
-                            depth++;
+                    case '2':
+                        _var2 = node.type;
+                        if (_var2 === 'loopbegin') {
+                            depth--;
                             __state = '10';
                         } else {
-                            __state = '10';
+                            if (_var2 === 'loopend') {
+                                depth++;
+                                __state = '10';
+                            } else {
+                                __state = '10';
+                            }
                         }
-                    }
-                    break;
-                case '3':
-                    return true;
-                case '10':
-                    if (depth < 0) {
-                        __state = '11';
-                    } else {
-                        if (node === target) {
-                            __state = '3';
-                        } else {
-                            _var3 = node.prev;
-                            _var4 = 0;
-                            __state = '14';
-                        }
-                    }
-                    break;
-                case '11':
-                    return false;
-                case '14':
-                    if (_var4 < _var3.length) {
-                        prev = _var3[_var4];
-                        _var5 = withinSameLoopCore(prev, target, depth);
-                        if (_var5) {
-                            _var4++;
-                            __state = '14';
-                        } else {
+                        break;
+                    case '3':
+                        return true;
+                    case '10':
+                        if (depth < 0) {
                             __state = '11';
+                        } else {
+                            if (node === target) {
+                                __state = '3';
+                            } else {
+                                _var3 = node.prev;
+                                _var4 = 0;
+                                __state = '14';
+                            }
                         }
-                    } else {
-                        __state = '3';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '11':
+                        return false;
+                    case '14':
+                        if (_var4 < _var3.length) {
+                            prev = _var3[_var4];
+                            _var5 = withinSameLoopCore(prev, target, depth);
+                            if (_var5) {
+                                _var4++;
+                                __state = '14';
+                            } else {
+                                __state = '11';
+                            }
+                        } else {
+                            __state = '3';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -3947,22 +4392,22 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.down) {
-                        below = getDown(node);
-                        if (below.type == 'case') {
-                            return true;
+                    case '2':
+                        if (node.down) {
+                            below = getDown(node);
+                            if (below.type == 'case') {
+                                return true;
+                            } else {
+                                __state = '7';
+                            }
                         } else {
                             __state = '7';
                         }
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -3971,49 +4416,49 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = node.type;
-                    if (_var2 === 'header') {
-                        __state = '3';
-                    } else {
-                        if (_var2 === 'end') {
+                    case '2':
+                        _var2 = node.type;
+                        if (_var2 === 'header') {
                             __state = '3';
                         } else {
-                            if (_var2 === 'junction') {
+                            if (_var2 === 'end') {
                                 __state = '3';
                             } else {
-                                if (_var2 === 'select') {
+                                if (_var2 === 'junction') {
                                     __state = '3';
                                 } else {
-                                    if (_var2 === 'question') {
+                                    if (_var2 === 'select') {
                                         __state = '3';
                                     } else {
-                                        if (_var2 === 'address') {
+                                        if (_var2 === 'question') {
                                             __state = '3';
                                         } else {
-                                            if (_var2 === 'case') {
-                                                _var3 = firstCase(node.select);
-                                                if (_var3 === node) {
-                                                    __state = '3';
+                                            if (_var2 === 'address') {
+                                                __state = '3';
+                                            } else {
+                                                if (_var2 === 'case') {
+                                                    _var3 = firstCase(node.select);
+                                                    if (_var3 === node) {
+                                                        __state = '3';
+                                                    } else {
+                                                        __state = '12';
+                                                    }
                                                 } else {
                                                     __state = '12';
                                                 }
-                                            } else {
-                                                __state = '12';
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '3':
-                    return false;
-                case '12':
-                    return true;
-                default:
-                    return;
+                        break;
+                    case '3':
+                        return false;
+                    case '12':
+                        return true;
+                    default:
+                        return;
                 }
             }
         }
@@ -4022,29 +4467,29 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    targetNode = target.finalTarget;
-                    _var2 = src.links;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        link = _var2[_var3];
-                        node = getNodeByItem(visuals, link.source);
-                        _var4 = withinSameLoopCore(node, targetNode, 0);
-                        if (_var4) {
-                            _var3++;
-                            __state = '5';
+                    case '2':
+                        targetNode = target.finalTarget;
+                        _var2 = src.links;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            link = _var2[_var3];
+                            node = getNodeByItem(visuals, link.source);
+                            _var4 = withinSameLoopCore(node, targetNode, 0);
+                            if (_var4) {
+                                _var3++;
+                                __state = '5';
+                            } else {
+                                return false;
+                            }
                         } else {
-                            return false;
+                            return true;
                         }
-                    } else {
-                        return true;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -4053,50 +4498,50 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    targetId = element.finalTarget.itemId;
-                    _var2 = isArrowLoop(element.head);
-                    if (_var2) {
-                        __state = '4';
-                    } else {
-                        _var3 = isArrowLoop(element.tail);
-                        if (_var3) {
+                    case '2':
+                        targetId = element.finalTarget.itemId;
+                        _var2 = isArrowLoop(element.head);
+                        if (_var2) {
                             __state = '4';
                         } else {
-                            _var4 = canTransplant(visuals, targetId, source);
-                            if (_var4) {
-                                __state = '5';
+                            _var3 = isArrowLoop(element.tail);
+                            if (_var3) {
+                                __state = '4';
+                            } else {
+                                _var4 = canTransplant(visuals, targetId, source);
+                                if (_var4) {
+                                    __state = '5';
+                                } else {
+                                    __state = '4';
+                                }
+                            }
+                        }
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        if (element.tail.x < source.tail.x) {
+                            targetLoops = element.finalTarget.loops;
+                            srcLoops = source.finalTarget.loops;
+                            _var5 = withinSameLoop(visuals, source, element, 0);
+                            if (_var5) {
+                                _var6 = hasOtherEntries(visuals, source, element.tail);
+                                if (_var6) {
+                                    __state = '4';
+                                } else {
+                                    socket = createSocketFromEdge(visuals, element, 'arrow', undefined);
+                                    addRange(source.links, socket.links);
+                                    __state = '4';
+                                }
                             } else {
                                 __state = '4';
                             }
-                        }
-                    }
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    if (element.tail.x < source.tail.x) {
-                        targetLoops = element.finalTarget.loops;
-                        srcLoops = source.finalTarget.loops;
-                        _var5 = withinSameLoop(visuals, source, element, 0);
-                        if (_var5) {
-                            _var6 = hasOtherEntries(visuals, source, element.tail);
-                            if (_var6) {
-                                __state = '4';
-                            } else {
-                                socket = createSocketFromEdge(visuals, element, 'arrow', undefined);
-                                addRange(source.links, socket.links);
-                                __state = '4';
-                            }
                         } else {
                             __state = '4';
                         }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -4105,48 +4550,48 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    loops = context.loops;
-                    visited = context.visited;
-                    if (context.finished) {
-                        __state = '1';
-                    } else {
-                        if (node.itemId in loops) {
-                            context.finished = true;
+                    case '1':
+                        return;
+                    case '2':
+                        loops = context.loops;
+                        visited = context.visited;
+                        if (context.finished) {
                             __state = '1';
                         } else {
-                            if (node.id in visited) {
+                            if (node.itemId in loops) {
+                                context.finished = true;
                                 __state = '1';
                             } else {
-                                visited[node.id] = true;
-                                _var4 = isSubset(node.loops, loops);
-                                if (_var4) {
-                                    context.finished = true;
-                                    context.success = true;
+                                if (node.id in visited) {
                                     __state = '1';
                                 } else {
-                                    _var2 = node.prev;
-                                    _var3 = 0;
-                                    __state = '12';
+                                    visited[node.id] = true;
+                                    _var4 = isSubset(node.loops, loops);
+                                    if (_var4) {
+                                        context.finished = true;
+                                        context.success = true;
+                                        __state = '1';
+                                    } else {
+                                        _var2 = node.prev;
+                                        _var3 = 0;
+                                        __state = '12';
+                                    }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '12':
-                    if (_var3 < _var2.length) {
-                        prev = _var2[_var3];
-                        canComeBackToStep(context, prev);
-                        _var3++;
-                        __state = '12';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '12':
+                        if (_var3 < _var2.length) {
+                            prev = _var2[_var3];
+                            canComeBackToStep(context, prev);
+                            _var3++;
+                            __state = '12';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -4155,22 +4600,22 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (source.finalTarget.itemId === targetId) {
-                        __state = '6';
-                    } else {
-                        _var2 = sameLoop(visuals, source.links, targetId);
-                        if (_var2) {
-                            return true;
-                        } else {
+                    case '2':
+                        if (source.finalTarget.itemId === targetId) {
                             __state = '6';
+                        } else {
+                            _var2 = sameLoop(visuals, source.links, targetId);
+                            if (_var2) {
+                                return true;
+                            } else {
+                                __state = '6';
+                            }
                         }
-                    }
-                    break;
-                case '6':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -4185,32 +4630,32 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.up) {
-                        above = getUp(node);
-                        if (above.type === 'address') {
-                            __state = '3';
-                        } else {
-                            if (node.right) {
-                                if (node.right.role == 'floor') {
-                                    __state = '3';
+                    case '2':
+                        if (node.up) {
+                            above = getUp(node);
+                            if (above.type === 'address') {
+                                __state = '3';
+                            } else {
+                                if (node.right) {
+                                    if (node.right.role == 'floor') {
+                                        __state = '3';
+                                    } else {
+                                        __state = '10';
+                                    }
                                 } else {
                                     __state = '10';
                                 }
-                            } else {
-                                __state = '10';
                             }
+                        } else {
+                            __state = '10';
                         }
-                    } else {
-                        __state = '10';
-                    }
-                    break;
-                case '3':
-                    return true;
-                case '10':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '3':
+                        return true;
+                    case '10':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -4219,160 +4664,160 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = prim.elType;
-                    if (_var2 === 'node') {
-                        node = getNode(visuals, prim.id);
-                        if (node.arrow) {
-                            return node.arrow;
-                        } else {
-                            if (node.type === 'junction') {
-                                _var5 = isLeftDown(node);
-                                if (_var5) {
-                                    __state = '21';
-                                } else {
-                                    _var6 = isRightUp(node);
-                                    if (_var6) {
-                                        if (node.right.role === 'floor') {
-                                            return undefined;
-                                        } else {
-                                            return node.up;
-                                        }
+                    case '2':
+                        _var2 = prim.elType;
+                        if (_var2 === 'node') {
+                            node = getNode(visuals, prim.id);
+                            if (node.arrow) {
+                                return node.arrow;
+                            } else {
+                                if (node.type === 'junction') {
+                                    _var5 = isLeftDown(node);
+                                    if (_var5) {
+                                        __state = '21';
                                     } else {
-                                        _var7 = isCaseJun(node);
-                                        if (_var7) {
-                                            __state = '34';
+                                        _var6 = isRightUp(node);
+                                        if (_var6) {
+                                            if (node.right.role === 'floor') {
+                                                return undefined;
+                                            } else {
+                                                return node.up;
+                                            }
                                         } else {
-                                            _var8 = isBranchJun(node);
-                                            if (_var8) {
+                                            _var7 = isCaseJun(node);
+                                            if (_var7) {
                                                 __state = '34';
                                             } else {
-                                                _var9 = isAddressJun(node);
-                                                if (_var9) {
+                                                _var8 = isBranchJun(node);
+                                                if (_var8) {
                                                     __state = '34';
                                                 } else {
-                                                    if (node.left) {
-                                                        if (node.up) {
-                                                            if (node.down) {
-                                                                return node.left;
+                                                    _var9 = isAddressJun(node);
+                                                    if (_var9) {
+                                                        __state = '34';
+                                                    } else {
+                                                        if (node.left) {
+                                                            if (node.up) {
+                                                                if (node.down) {
+                                                                    return node.left;
+                                                                } else {
+                                                                    return node.up;
+                                                                }
                                                             } else {
-                                                                return node.up;
+                                                                __state = '34';
                                                             }
                                                         } else {
                                                             __state = '34';
                                                         }
-                                                    } else {
-                                                        __state = '34';
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                            } else {
-                                _var3 = isSimpleItem(node);
-                                if (_var3) {
-                                    if (node.down) {
-                                        __state = '21';
-                                    } else {
-                                        __state = '59';
-                                    }
                                 } else {
-                                    if (node.type === 'address') {
-                                        if (node.skewer.main) {
-                                            __state = '59';
+                                    _var3 = isSimpleItem(node);
+                                    if (_var3) {
+                                        if (node.down) {
+                                            __state = '21';
                                         } else {
-                                            return node.up;
+                                            __state = '59';
                                         }
                                     } else {
-                                        __state = '59';
+                                        if (node.type === 'address') {
+                                            if (node.skewer.main) {
+                                                __state = '59';
+                                            } else {
+                                                return node.up;
+                                            }
+                                        } else {
+                                            __state = '59';
+                                        }
                                     }
                                 }
                             }
-                        }
-                    } else {
-                        if (_var2 === 'edge') {
-                            edge = getEdge(visuals, prim.id);
-                            if (edge.arrow) {
-                                return edge.arrow;
-                            } else {
-                                if (edge.role) {
-                                    if (edge.role === 'floor') {
-                                        __state = '61';
-                                    } else {
-                                        if (edge.role === 'rarrow') {
+                        } else {
+                            if (_var2 === 'edge') {
+                                edge = getEdge(visuals, prim.id);
+                                if (edge.arrow) {
+                                    return edge.arrow;
+                                } else {
+                                    if (edge.role) {
+                                        if (edge.role === 'floor') {
                                             __state = '61';
                                         } else {
-                                            if (edge.vertical) {
-                                                if (edge.tail.type === 'junction') {
-                                                    _var12 = isRightT(edge.tail);
-                                                    if (_var12) {
-                                                        __state = '61';
+                                            if (edge.role === 'rarrow') {
+                                                __state = '61';
+                                            } else {
+                                                if (edge.vertical) {
+                                                    if (edge.tail.type === 'junction') {
+                                                        _var12 = isRightT(edge.tail);
+                                                        if (_var12) {
+                                                            __state = '61';
+                                                        } else {
+                                                            return edge;
+                                                        }
                                                     } else {
-                                                        return edge;
+                                                        __state = '61';
                                                     }
                                                 } else {
-                                                    __state = '61';
-                                                }
-                                            } else {
-                                                _var10 = isLeftUp(edge.tail);
-                                                if (_var10) {
-                                                    return edge.tail.up;
-                                                } else {
-                                                    _var11 = isRightUp(edge.head);
-                                                    if (_var11) {
-                                                        return edge.head.up;
+                                                    _var10 = isLeftUp(edge.tail);
+                                                    if (_var10) {
+                                                        return edge.tail.up;
                                                     } else {
-                                                        if (edge.head.type == 'junction') {
-                                                            return edge;
+                                                        _var11 = isRightUp(edge.head);
+                                                        if (_var11) {
+                                                            return edge.head.up;
                                                         } else {
-                                                            if (edge.head.type === 'question') {
-                                                                if (edge.tail.up) {
-                                                                    return edge;
+                                                            if (edge.head.type == 'junction') {
+                                                                return edge;
+                                                            } else {
+                                                                if (edge.head.type === 'question') {
+                                                                    if (edge.tail.up) {
+                                                                        return edge;
+                                                                    } else {
+                                                                        __state = '60';
+                                                                    }
                                                                 } else {
                                                                     __state = '60';
                                                                 }
-                                                            } else {
-                                                                __state = '60';
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
+                                    } else {
+                                        __state = '61';
                                     }
-                                } else {
-                                    __state = '61';
                                 }
+                            } else {
+                                __state = '61';
+                            }
+                        }
+                        break;
+                    case '21':
+                        beneath = getDown(node);
+                        if (beneath.type === 'junction') {
+                            _var4 = isRightT(beneath);
+                            if (_var4) {
+                                __state = '59';
+                            } else {
+                                return node.down;
                             }
                         } else {
-                            __state = '61';
-                        }
-                    }
-                    break;
-                case '21':
-                    beneath = getDown(node);
-                    if (beneath.type === 'junction') {
-                        _var4 = isRightT(beneath);
-                        if (_var4) {
                             __state = '59';
-                        } else {
-                            return node.down;
                         }
-                    } else {
-                        __state = '59';
-                    }
-                    break;
-                case '34':
-                    return undefined;
-                case '59':
-                    return undefined;
-                case '60':
-                    return undefined;
-                case '61':
-                    return undefined;
-                default:
-                    return;
+                        break;
+                    case '34':
+                        return undefined;
+                    case '59':
+                        return undefined;
+                    case '60':
+                        return undefined;
+                    case '61':
+                        return undefined;
+                    default:
+                        return;
                 }
             }
         }
@@ -4381,34 +4826,34 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = canTransplant(visuals, record.targetId, source);
-                    if (_var2) {
-                        _var3 = adjacentToAddress(record, source);
-                        if (_var3) {
-                            __state = '1';
-                        } else {
-                            if (record.type === 'node') {
-                                socket = createNodeSocket(visuals, record.element, source);
-                                __state = '9';
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = canTransplant(visuals, record.targetId, source);
+                        if (_var2) {
+                            _var3 = adjacentToAddress(record, source);
+                            if (_var3) {
+                                __state = '1';
                             } else {
-                                socket = createSocketFromEdge(visuals, record.element, 'liana', undefined);
-                                __state = '9';
+                                if (record.type === 'node') {
+                                    socket = createNodeSocket(visuals, record.element, source);
+                                    __state = '9';
+                                } else {
+                                    socket = createSocketFromEdge(visuals, record.element, 'liana', undefined);
+                                    __state = '9';
+                                }
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
+                        break;
+                    case '9':
+                        socket.arrow = source.arrow;
+                        addRange(source.links, socket.links);
                         __state = '1';
-                    }
-                    break;
-                case '9':
-                    socket.arrow = source.arrow;
-                    addRange(source.links, socket.links);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -4428,28 +4873,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    context = {
-                        found: false,
-                        visited: {}
-                    };
-                    _var2 = source.links;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        link = _var2[_var3];
-                        node = getNodeByItem(visuals, link.source);
-                        hasOtherEntriesStep(node, higher, context);
-                        _var3++;
+                    case '2':
+                        context = {
+                            found: false,
+                            visited: {}
+                        };
+                        _var2 = source.links;
+                        _var3 = 0;
                         __state = '5';
-                    } else {
-                        return context.found;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            link = _var2[_var3];
+                            node = getNodeByItem(visuals, link.source);
+                            hasOtherEntriesStep(node, higher, context);
+                            _var3++;
+                            __state = '5';
+                        } else {
+                            return context.found;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -4458,43 +4903,43 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (context.found) {
-                        __state = '1';
-                    } else {
-                        if (lower === higher) {
+                    case '1':
+                        return;
+                    case '2':
+                        if (context.found) {
                             __state = '1';
                         } else {
-                            if (lower.id in context.visited) {
+                            if (lower === higher) {
                                 __state = '1';
                             } else {
-                                context.visited[lower.id] = true;
-                                if (lower.prev.length === 0) {
-                                    context.found = true;
+                                if (lower.id in context.visited) {
                                     __state = '1';
                                 } else {
-                                    _var2 = lower.prev;
-                                    _var3 = 0;
-                                    __state = '10';
+                                    context.visited[lower.id] = true;
+                                    if (lower.prev.length === 0) {
+                                        context.found = true;
+                                        __state = '1';
+                                    } else {
+                                        _var2 = lower.prev;
+                                        _var3 = 0;
+                                        __state = '10';
+                                    }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '10':
-                    if (_var3 < _var2.length) {
-                        prev = _var2[_var3];
-                        hasOtherEntriesStep(prev, higher, context);
-                        _var3++;
-                        __state = '10';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '10':
+                        if (_var3 < _var2.length) {
+                            prev = _var2[_var3];
+                            hasOtherEntriesStep(prev, higher, context);
+                            _var3++;
+                            __state = '10';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -4503,170 +4948,170 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visuals = widget.visuals;
-                    clearSockets(visuals);
-                    _var21 = isReadonly(widget);
-                    if (_var21) {
-                        __state = '4';
-                    } else {
-                        source = findLianaSource(visuals, prim);
-                        if (source) {
-                            __state = '10';
+                    case '2':
+                        visuals = widget.visuals;
+                        clearSockets(visuals);
+                        _var21 = isReadonly(widget);
+                        if (_var21) {
+                            __state = '4';
+                        } else {
+                            source = findLianaSource(visuals, prim);
+                            if (source) {
+                                __state = '10';
+                            } else {
+                                __state = '4';
+                            }
+                        }
+                        break;
+                    case '4':
+                        return;
+                    case '6':
+                        _var17 = isDegQuestion(source);
+                        if (_var17) {
+                            _var15 = source.inner.inner;
+                            _var14 = Object.keys(_var15);
+                            _var16 = 0;
+                            __state = '13';
                         } else {
                             __state = '4';
                         }
-                    }
-                    break;
-                case '4':
-                    return;
-                case '6':
-                    _var17 = isDegQuestion(source);
-                    if (_var17) {
-                        _var15 = source.inner.inner;
-                        _var14 = Object.keys(_var15);
-                        _var16 = 0;
-                        __state = '13';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '7':
-                    _var12 = source.inner.outer;
-                    _var11 = Object.keys(_var12);
-                    _var13 = 0;
-                    __state = '16';
-                    break;
-                case '8':
-                    _var9 = source.outer.inner;
-                    _var8 = Object.keys(_var9);
-                    _var10 = 0;
-                    __state = '24';
-                    break;
-                case '9':
-                    if (source.arrow) {
-                        __state = '8';
-                    } else {
-                        _var6 = source.outer.outerArrPads;
-                        _var5 = Object.keys(_var6);
-                        _var7 = 0;
-                        __state = '32';
-                    }
-                    break;
-                case '10':
-                    if (source.outer) {
-                        _var3 = source.outer.outer;
-                        _var2 = Object.keys(_var3);
-                        _var4 = 0;
-                        __state = '36';
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '13':
-                    if (_var16 < _var14.length) {
-                        targetId = _var14[_var16];
-                        record = _var15[targetId];
-                        createLianaSocket(visuals, record, source);
-                        _var16++;
-                        __state = '13';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '15':
-                    _var13++;
-                    __state = '16';
-                    break;
-                case '16':
-                    if (_var13 < _var11.length) {
-                        targetId = _var11[_var13];
-                        record = _var12[targetId];
-                        if (source.role === 'right-loop') {
-                            __state = '15';
+                        break;
+                    case '7':
+                        _var12 = source.inner.outer;
+                        _var11 = Object.keys(_var12);
+                        _var13 = 0;
+                        __state = '16';
+                        break;
+                    case '8':
+                        _var9 = source.outer.inner;
+                        _var8 = Object.keys(_var9);
+                        _var10 = 0;
+                        __state = '24';
+                        break;
+                    case '9':
+                        if (source.arrow) {
+                            __state = '8';
                         } else {
-                            if (source.vertical) {
-                                __state = '42';
+                            _var6 = source.outer.outerArrPads;
+                            _var5 = Object.keys(_var6);
+                            _var7 = 0;
+                            __state = '32';
+                        }
+                        break;
+                    case '10':
+                        if (source.outer) {
+                            _var3 = source.outer.outer;
+                            _var2 = Object.keys(_var3);
+                            _var4 = 0;
+                            __state = '36';
+                        } else {
+                            __state = '7';
+                        }
+                        break;
+                    case '13':
+                        if (_var16 < _var14.length) {
+                            targetId = _var14[_var16];
+                            record = _var15[targetId];
+                            createLianaSocket(visuals, record, source);
+                            _var16++;
+                            __state = '13';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    case '15':
+                        _var13++;
+                        __state = '16';
+                        break;
+                    case '16':
+                        if (_var13 < _var11.length) {
+                            targetId = _var11[_var13];
+                            record = _var12[targetId];
+                            if (source.role === 'right-loop') {
+                                __state = '15';
                             } else {
-                                _var18 = isLower(record, source);
-                                if (_var18) {
+                                if (source.vertical) {
                                     __state = '42';
                                 } else {
-                                    __state = '15';
+                                    _var18 = isLower(record, source);
+                                    if (_var18) {
+                                        __state = '42';
+                                    } else {
+                                        __state = '15';
+                                    }
                                 }
                             }
-                        }
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '23':
-                    _var10++;
-                    __state = '24';
-                    break;
-                case '24':
-                    if (_var10 < _var8.length) {
-                        targetId = _var8[_var10];
-                        record = _var9[targetId];
-                        _var19 = canOuterToInner(record, source);
-                        if (_var19) {
-                            createLianaSocket(visuals, record, source);
-                            __state = '23';
                         } else {
-                            __state = '23';
+                            __state = '6';
                         }
-                    } else {
-                        if (source.arrow) {
-                            __state = '4';
+                        break;
+                    case '23':
+                        _var10++;
+                        __state = '24';
+                        break;
+                    case '24':
+                        if (_var10 < _var8.length) {
+                            targetId = _var8[_var10];
+                            record = _var9[targetId];
+                            _var19 = canOuterToInner(record, source);
+                            if (_var19) {
+                                createLianaSocket(visuals, record, source);
+                                __state = '23';
+                            } else {
+                                __state = '23';
+                            }
                         } else {
-                            if (source.role === 'up') {
+                            if (source.arrow) {
                                 __state = '4';
                             } else {
-                                if (source.inner) {
-                                    __state = '7';
-                                } else {
+                                if (source.role === 'up') {
                                     __state = '4';
+                                } else {
+                                    if (source.inner) {
+                                        __state = '7';
+                                    } else {
+                                        __state = '4';
+                                    }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '32':
-                    if (_var7 < _var5.length) {
-                        id = _var5[_var7];
-                        downEdge = _var6[id];
-                        createArrowSocket(visuals, downEdge, source);
-                        _var7++;
-                        __state = '32';
-                    } else {
-                        __state = '8';
-                    }
-                    break;
-                case '35':
-                    _var4++;
-                    __state = '36';
-                    break;
-                case '36':
-                    if (_var4 < _var2.length) {
-                        targetId = _var2[_var4];
-                        record = _var3[targetId];
-                        _var20 = isLower(record, source);
-                        if (_var20) {
-                            createLianaSocket(visuals, record, source);
-                            __state = '35';
+                        break;
+                    case '32':
+                        if (_var7 < _var5.length) {
+                            id = _var5[_var7];
+                            downEdge = _var6[id];
+                            createArrowSocket(visuals, downEdge, source);
+                            _var7++;
+                            __state = '32';
                         } else {
-                            __state = '35';
+                            __state = '8';
                         }
-                    } else {
-                        __state = '9';
-                    }
-                    break;
-                case '42':
-                    createLianaSocket(visuals, record, source);
-                    __state = '15';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '35':
+                        _var4++;
+                        __state = '36';
+                        break;
+                    case '36':
+                        if (_var4 < _var2.length) {
+                            targetId = _var2[_var4];
+                            record = _var3[targetId];
+                            _var20 = isLower(record, source);
+                            if (_var20) {
+                                createLianaSocket(visuals, record, source);
+                                __state = '35';
+                            } else {
+                                __state = '35';
+                            }
+                        } else {
+                            __state = '9';
+                        }
+                        break;
+                    case '42':
+                        createLianaSocket(visuals, record, source);
+                        __state = '15';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -4675,38 +5120,38 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (record.type === 'node') {
-                        targetNode = record.element;
-                        __state = '10';
-                    } else {
-                        if (record.element.vertical) {
-                            targetNode = record.element.tail;
+                    case '2':
+                        if (record.type === 'node') {
+                            targetNode = record.element;
                             __state = '10';
                         } else {
-                            return true;
+                            if (record.element.vertical) {
+                                targetNode = record.element.tail;
+                                __state = '10';
+                            } else {
+                                return true;
+                            }
                         }
-                    }
-                    break;
-                case '10':
-                    targetTop = goUp(targetNode);
-                    if (targetTop.y <= source.head.y) {
-                        targetStop = goDown(targetNode);
-                        sourceBottom = goDown(source.head);
-                        sourceStop = goLeft(sourceBottom);
-                        if (sourceStop === targetStop) {
-                            __state = '14';
+                        break;
+                    case '10':
+                        targetTop = goUp(targetNode);
+                        if (targetTop.y <= source.head.y) {
+                            targetStop = goDown(targetNode);
+                            sourceBottom = goDown(source.head);
+                            sourceStop = goLeft(sourceBottom);
+                            if (sourceStop === targetStop) {
+                                __state = '14';
+                            } else {
+                                return true;
+                            }
                         } else {
-                            return true;
+                            __state = '14';
                         }
-                    } else {
-                        __state = '14';
-                    }
-                    break;
-                case '14':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '14':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -4714,25 +5159,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (edge.vertical) {
-                        __state = '7';
-                    } else {
-                        if (edge.head.type === 'question') {
-                            if (edge.tail.up) {
-                                return true;
+                    case '2':
+                        if (edge.vertical) {
+                            __state = '7';
+                        } else {
+                            if (edge.head.type === 'question') {
+                                if (edge.tail.up) {
+                                    return true;
+                                } else {
+                                    __state = '7';
+                                }
                             } else {
                                 __state = '7';
                             }
-                        } else {
-                            __state = '7';
                         }
-                    }
-                    break;
-                case '7':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -4741,20 +5186,20 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edits = [];
-                    redirectUpperItems(edits, socket.links, socket.target);
-                    if (socket.arrow) {
-                        popFromSkewer(socket.arrow.finalTarget, edits);
-                        __state = '7';
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    return edits;
-                default:
-                    return;
+                    case '2':
+                        edits = [];
+                        redirectUpperItems(edits, socket.links, socket.target);
+                        if (socket.arrow) {
+                            popFromSkewer(socket.arrow.finalTarget, edits);
+                            __state = '7';
+                        } else {
+                            __state = '7';
+                        }
+                        break;
+                    case '7':
+                        return edits;
+                    default:
+                        return;
                 }
             }
         }
@@ -4771,22 +5216,22 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.down) {
-                        below = getDown(node);
-                        if (below.type == 'branch') {
-                            return true;
+                    case '2':
+                        if (node.down) {
+                            below = getDown(node);
+                            if (below.type == 'branch') {
+                                return true;
+                            } else {
+                                __state = '7';
+                            }
                         } else {
                             __state = '7';
                         }
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -4794,21 +5239,21 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (record.element.noBranch) {
-                        if (source.tail.type === 'address') {
-                            return true;
+                    case '2':
+                        if (record.element.noBranch) {
+                            if (source.tail.type === 'address') {
+                                return true;
+                            } else {
+                                __state = '6';
+                            }
                         } else {
                             __state = '6';
                         }
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -4819,18 +5264,18 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (self.mouseEvents) {
-                        self.mouseEvents.mouseUp(evt);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (self.mouseEvents) {
+                            self.mouseEvents.mouseUp(evt);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -4844,22 +5289,22 @@ function createDrakonWidget() {
                 try {
                     while (true) {
                         switch (me.state) {
-                        case '2':
-                            me.state = '16';
-                            return;
-                        case '6':
-                            me.state = '11';
-                            return;
-                        case '21':
-                            scroller = createMouseScroll(widget, evt);
-                            me.state = '6';
-                            break;
-                        case '22':
-                            onMouseScroll(scroller, widget, evt);
-                            me.state = '6';
-                            break;
-                        default:
-                            return;
+                            case '2':
+                                me.state = '16';
+                                return;
+                            case '6':
+                                me.state = '11';
+                                return;
+                            case '21':
+                                scroller = createMouseScroll(widget, evt);
+                                me.state = '6';
+                                break;
+                            case '22':
+                                onMouseScroll(scroller, widget, evt);
+                                me.state = '6';
+                                break;
+                            default:
+                                return;
                         }
                     }
                 } catch (ex) {
@@ -4874,45 +5319,45 @@ function createDrakonWidget() {
                     me.mouseMove = function (_evt_) {
                         evt = _evt_;
                         switch (me.state) {
-                        case '11':
-                            me.state = '22';
-                            _main_NoSelectBehavior(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '11':
+                                me.state = '22';
+                                _main_NoSelectBehavior(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     me.mouseUp = function (_evt_) {
                         evt = _evt_;
                         switch (me.state) {
-                        case '11':
-                            me.state = '2';
-                            _main_NoSelectBehavior(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '11':
+                                me.state = '2';
+                                _main_NoSelectBehavior(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     me.mouseLeave = function (_evt_) {
                         evt = _evt_;
                         switch (me.state) {
-                        case '11':
-                            me.state = '2';
-                            _main_NoSelectBehavior(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '11':
+                                me.state = '2';
+                                _main_NoSelectBehavior(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     me.mouseDown = function (_evt_) {
                         evt = _evt_;
                         switch (me.state) {
-                        case '16':
-                            me.state = '21';
-                            _main_NoSelectBehavior(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '16':
+                                me.state = '21';
+                                _main_NoSelectBehavior(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     _main_NoSelectBehavior(__resolve, __reject);
@@ -4934,144 +5379,144 @@ function createDrakonWidget() {
                 try {
                     while (true) {
                         switch (me.state) {
-                        case '2':
-                            me.state = '59';
-                            return;
-                        case '6':
-                            me.state = '11';
-                            return;
-                        case '29':
-                            me.state = '31';
-                            return;
-                        case '39':
-                            me.state = '40';
-                            return;
-                        case '46':
-                            pos = toDiagram(widget, evt);
-                            mouseClick(widget, pos.x, pos.y, evt);
-                            me.state = '2';
-                            break;
-                        case '47':
-                            deltaX = evt.clientX - startX;
-                            deltaY = evt.clientY - startY;
-                            _var3 = Math.abs(deltaX);
-                            if (_var3 > 2) {
-                                me.state = '104';
-                            } else {
-                                _var4 = Math.abs(deltaY);
-                                if (_var4 > 2) {
+                            case '2':
+                                me.state = '59';
+                                return;
+                            case '6':
+                                me.state = '11';
+                                return;
+                            case '29':
+                                me.state = '31';
+                                return;
+                            case '39':
+                                me.state = '40';
+                                return;
+                            case '46':
+                                pos = toDiagram(widget, evt);
+                                mouseClick(widget, pos.x, pos.y, evt);
+                                me.state = '2';
+                                break;
+                            case '47':
+                                deltaX = evt.clientX - startX;
+                                deltaY = evt.clientY - startY;
+                                _var3 = Math.abs(deltaX);
+                                if (_var3 > 2) {
                                     me.state = '104';
                                 } else {
-                                    me.state = '29';
+                                    _var4 = Math.abs(deltaY);
+                                    if (_var4 > 2) {
+                                        me.state = '104';
+                                    } else {
+                                        me.state = '29';
+                                    }
                                 }
-                            }
-                            break;
-                        case '51':
-                            widget.visuals.selectionFrame = undefined;
-                            paint(widget);
-                            me.state = '2';
-                            break;
-                        case '56':
-                            updateSelectionFrame(widget, startX, startY, evt);
-                            blockSelect(widget);
-                            paint(widget);
-                            me.state = '39';
-                            break;
-                        case '64':
-                            pos = toDiagram(widget, evt);
-                            currentSocket = findSocket(widget.visuals, pos.x, pos.y);
-                            if (currentSocket) {
-                                me.state = '67';
-                            } else {
-                                prim = findVisualItem(widget.visuals, pos.x, pos.y);
-                                if (prim) {
+                                break;
+                            case '51':
+                                widget.visuals.selectionFrame = undefined;
+                                paint(widget);
+                                me.state = '2';
+                                break;
+                            case '56':
+                                updateSelectionFrame(widget, startX, startY, evt);
+                                blockSelect(widget);
+                                paint(widget);
+                                me.state = '39';
+                                break;
+                            case '64':
+                                pos = toDiagram(widget, evt);
+                                currentSocket = findSocket(widget.visuals, pos.x, pos.y);
+                                if (currentSocket) {
                                     me.state = '67';
                                 } else {
-                                    setCursor(evt.target, 'default');
-                                    me.state = '2';
+                                    prim = findVisualItem(widget.visuals, pos.x, pos.y);
+                                    if (prim) {
+                                        me.state = '67';
+                                    } else {
+                                        setCursor(evt.target, 'default');
+                                        me.state = '2';
+                                    }
                                 }
-                            }
-                            break;
-                        case '67':
-                            setCursor(evt.target, 'pointer');
-                            me.state = '2';
-                            break;
-                        case '72':
-                            me.state = '73';
-                            return;
-                        case '78':
-                            pos = toDiagram(widget, evt);
-                            currentSocket = findSocket(widget.visuals, pos.x, pos.y);
-                            if (currentSocket === widget.visuals.currentSocket) {
-                                me.state = '72';
-                            } else {
-                                widget.visuals.onSocket = false;
-                                paint(widget);
-                                me.state = '81';
-                            }
-                            break;
-                        case '80':
-                            runCurrentSocket(widget);
-                            me.state = '2';
-                            break;
-                        case '81':
-                            me.state = '82';
-                            return;
-                        case '86':
-                            pos = toDiagram(widget, evt);
-                            currentSocket = findSocket(widget.visuals, pos.x, pos.y);
-                            if (currentSocket === widget.visuals.currentSocket) {
-                                widget.visuals.onSocket = true;
-                                paint(widget);
-                                me.state = '72';
-                            } else {
-                                me.state = '81';
-                            }
-                            break;
-                        case '104':
-                            clearSockets(widget.visuals);
-                            me.state = '39';
-                            break;
-                        case '107':
-                            onMouseScroll(scroller, widget, evt);
-                            me.state = '6';
-                            break;
-                        case '_item2':
-                            _var2 = evt.button;
-                            if (_var2 === 0) {
-                                startX = evt.clientX;
-                                startY = evt.clientY;
+                                break;
+                            case '67':
+                                setCursor(evt.target, 'pointer');
+                                me.state = '2';
+                                break;
+                            case '72':
+                                me.state = '73';
+                                return;
+                            case '78':
                                 pos = toDiagram(widget, evt);
-                                widget.visuals.currentSocket = findSocket(widget.visuals, pos.x, pos.y);
-                                if (widget.visuals.currentSocket) {
+                                currentSocket = findSocket(widget.visuals, pos.x, pos.y);
+                                if (currentSocket === widget.visuals.currentSocket) {
+                                    me.state = '72';
+                                } else {
+                                    widget.visuals.onSocket = false;
+                                    paint(widget);
+                                    me.state = '81';
+                                }
+                                break;
+                            case '80':
+                                runCurrentSocket(widget);
+                                me.state = '2';
+                                break;
+                            case '81':
+                                me.state = '82';
+                                return;
+                            case '86':
+                                pos = toDiagram(widget, evt);
+                                currentSocket = findSocket(widget.visuals, pos.x, pos.y);
+                                if (currentSocket === widget.visuals.currentSocket) {
                                     widget.visuals.onSocket = true;
-                                    setCursor(evt.target, 'pointer');
                                     paint(widget);
                                     me.state = '72';
                                 } else {
-                                    me.state = '29';
+                                    me.state = '81';
                                 }
-                            } else {
-                                if (_var2 === 1) {
-                                    scroller = createMouseScroll(widget, evt);
-                                    me.state = '6';
-                                } else {
-                                    if (_var2 === 2) {
-                                        pos = toDiagram(widget, evt);
-                                        handleRightClick(widget, pos, evt);
-                                        me.state = '2';
+                                break;
+                            case '104':
+                                clearSockets(widget.visuals);
+                                me.state = '39';
+                                break;
+                            case '107':
+                                onMouseScroll(scroller, widget, evt);
+                                me.state = '6';
+                                break;
+                            case '_item2':
+                                _var2 = evt.button;
+                                if (_var2 === 0) {
+                                    startX = evt.clientX;
+                                    startY = evt.clientY;
+                                    pos = toDiagram(widget, evt);
+                                    widget.visuals.currentSocket = findSocket(widget.visuals, pos.x, pos.y);
+                                    if (widget.visuals.currentSocket) {
+                                        widget.visuals.onSocket = true;
+                                        setCursor(evt.target, 'pointer');
+                                        paint(widget);
+                                        me.state = '72';
                                     } else {
-                                        _var5 = new Error('Unexpected case value: ' + _var2);
-                                        unit.onError(_var5);
-                                        me.state = undefined;
-                                        __reject(_var5);
-                                        return;
+                                        me.state = '29';
+                                    }
+                                } else {
+                                    if (_var2 === 1) {
+                                        scroller = createMouseScroll(widget, evt);
+                                        me.state = '6';
+                                    } else {
+                                        if (_var2 === 2) {
+                                            pos = toDiagram(widget, evt);
+                                            handleRightClick(widget, pos, evt);
+                                            me.state = '2';
+                                        } else {
+                                            _var5 = new Error('Unexpected case value: ' + _var2);
+                                            unit.onError(_var5);
+                                            me.state = undefined;
+                                            __reject(_var5);
+                                            return;
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        default:
-                            return;
+                                break;
+                            default:
+                                return;
                         }
                     }
                 } catch (ex) {
@@ -5086,97 +5531,97 @@ function createDrakonWidget() {
                     me.mouseMove = function (_evt_) {
                         evt = _evt_;
                         switch (me.state) {
-                        case '11':
-                            me.state = '107';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '31':
-                            me.state = '47';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '40':
-                            me.state = '56';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '59':
-                            me.state = '64';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '73':
-                            me.state = '78';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '82':
-                            me.state = '86';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '11':
+                                me.state = '107';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '31':
+                                me.state = '47';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '40':
+                                me.state = '56';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '59':
+                                me.state = '64';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '73':
+                                me.state = '78';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '82':
+                                me.state = '86';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     me.mouseUp = function (_evt_) {
                         evt = _evt_;
                         switch (me.state) {
-                        case '11':
-                            me.state = '2';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '31':
-                            me.state = '46';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '40':
-                            me.state = '51';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '73':
-                            me.state = '80';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '82':
-                            me.state = '2';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '11':
+                                me.state = '2';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '31':
+                                me.state = '46';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '40':
+                                me.state = '51';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '73':
+                                me.state = '80';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '82':
+                                me.state = '2';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     me.mouseLeave = function (_evt_) {
                         evt = _evt_;
                         switch (me.state) {
-                        case '11':
-                            me.state = '2';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '31':
-                            me.state = '2';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '40':
-                            me.state = '51';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '73':
-                            me.state = '80';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        case '82':
-                            me.state = '2';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '11':
+                                me.state = '2';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '31':
+                                me.state = '2';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '40':
+                                me.state = '51';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '73':
+                                me.state = '80';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            case '82':
+                                me.state = '2';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     me.mouseDown = function (_evt_) {
                         evt = _evt_;
                         switch (me.state) {
-                        case '59':
-                            me.state = '_item2';
-                            _main_SelectBehavior(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '59':
+                                me.state = '_item2';
+                                _main_SelectBehavior(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     _main_SelectBehavior(__resolve, __reject);
@@ -5212,110 +5657,40 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var3 = isReadonly(self);
-                    if (_var3) {
-                        __state = '1';
-                    } else {
-                        clipboard = self.visuals.config.getClipboard();
-                        if (clipboard) {
-                            _var2 = clipboard.type;
-                            if (_var2 === 'case') {
-                                __state = '12';
-                            } else {
-                                if (_var2 === 'branch') {
+                    case '1':
+                        return;
+                    case '2':
+                        _var3 = isReadonly(self);
+                        if (_var3) {
+                            __state = '1';
+                        } else {
+                            clipboard = self.visuals.config.getClipboard();
+                            if (clipboard) {
+                                _var2 = clipboard.type;
+                                if (_var2 === 'case') {
                                     __state = '12';
                                 } else {
-                                    if (_var2 === 'block') {
+                                    if (_var2 === 'branch') {
                                         __state = '12';
                                     } else {
-                                        __state = '1';
-                                    }
-                                }
-                            }
-                        } else {
-                            __state = '1';
-                        }
-                    }
-                    break;
-                case '12':
-                    self.showPasteSockets(clipboard.type);
-                    __state = '1';
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function buildContent(container, node, config) {
-            var textDiv, smallerPadding, color, type, content, _var2;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    type = node.type;
-                    content = node.content;
-                    color = getThemeValue(config, node, 'color');
-                    _var2 = type;
-                    if (_var2 === 'question') {
-                        textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
-                        textDiv.style.paddingLeft = config.metre + 'px';
-                        textDiv.style.paddingRight = config.metre + 'px';
-                        __state = '5';
-                    } else {
-                        if (_var2 === 'header') {
-                            textDiv = buildTextDiv(type, content, config, config.headerFont, 'center', color);
-                            smallerPadding = config.padding / 2 + 'px';
-                            textDiv.style.paddingTop = smallerPadding;
-                            textDiv.style.paddingBottom = smallerPadding;
-                            __state = '5';
-                        } else {
-                            if (_var2 === 'branch') {
-                                textDiv = buildMulitlineDiv(type, content, config, config.font, 'center', color);
-                                textDiv.style.fontWeight = 'bold';
-                                __state = '5';
-                            } else {
-                                if (_var2 === 'select') {
-                                    textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
-                                    textDiv.style.paddingLeft = config.padding * 1.5 + 'px';
-                                    textDiv.style.paddingRight = config.padding * 1.5 + 'px';
-                                    __state = '5';
-                                } else {
-                                    if (_var2 === 'case') {
-                                        __state = '22';
-                                    } else {
-                                        if (_var2 === 'address') {
-                                            __state = '22';
+                                        if (_var2 === 'block') {
+                                            __state = '12';
                                         } else {
-                                            if (_var2 === 'end') {
-                                                textDiv = buildTextDiv(type, content, config, config.font, 'center', color);
-                                                textDiv.style.minWidth = '';
-                                                smallerPadding = config.padding / 2 + 'px';
-                                                textDiv.style.paddingTop = smallerPadding;
-                                                textDiv.style.paddingBottom = smallerPadding;
-                                                __state = '5';
-                                            } else {
-                                                textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
-                                                __state = '5';
-                                            }
+                                            __state = '1';
                                         }
                                     }
                                 }
+                            } else {
+                                __state = '1';
                             }
                         }
-                    }
-                    break;
-                case '5':
-                    html.add(container, textDiv);
-                    return textDiv;
-                case '22':
-                    textDiv = config.buildContentDiv(type, content, config, config.font, 'center', color);
-                    __state = '5';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '12':
+                        self.showPasteSockets(clipboard.type);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5324,91 +5699,89 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    doubleClickTime = 500;
-                    visuals = widget.visuals;
-                    now = getNowMs();
-                    lastClick = widget.lastClick;
-                    lastPrimId = widget.lastPrimId;
-                    prim = findVisualItem(visuals, x, y);
-                    if (prim) {
-                        widget.lastPrimId = prim.id;
-                        primId = prim.id;
-                        __state = '19';
-                    } else {
-                        widget.lastPrimId = undefined;
-                        primId = undefined;
-                        __state = '19';
-                    }
-                    break;
-                case '19':
-                    if (lastClick) {
-                        diff = now - lastClick;
-                        if (diff <= doubleClickTime) {
-                            if (primId === lastPrimId) {
-                                widget.lastClick = undefined;
-                                __state = '42';
+                    case '2':
+                        doubleClickTime = 500;
+                        visuals = widget.visuals;
+                        now = getNowMs();
+                        lastClick = widget.lastClick;
+                        lastPrimId = widget.lastPrimId;
+                        prim = findVisualItem(visuals, x, y);
+                        if (prim) {
+                            widget.lastPrimId = prim.id;
+                            primId = prim.id;
+                            __state = '19';
+                        } else {
+                            widget.lastPrimId = undefined;
+                            primId = undefined;
+                            __state = '19';
+                        }
+                        break;
+                    case '19':
+                        if (lastClick) {
+                            diff = now - lastClick;
+                            if (diff <= doubleClickTime) {
+                                if (primId === lastPrimId) {
+                                    widget.lastClick = undefined;
+                                    __state = '42';
+                                } else {
+                                    __state = '24';
+                                }
                             } else {
                                 __state = '24';
                             }
                         } else {
                             __state = '24';
                         }
-                    } else {
-                        __state = '24';
-                    }
-                    break;
-                case '24':
-                    widget.lastClick = now;
-                    __state = '27';
-                    break;
-                case '26':
-                    return;
-                case '27':
-                    if (prim) {
-                        console.log('mouseClick: found', prim);
-                        if (prim.id) {
-                            printPrim(visuals, prim);
-                            _var2 = isSelected(widget, prim.id);
-                            if (_var2) {
-                                __state = '32';
+                        break;
+                    case '24':
+                        widget.lastClick = now;
+                        __state = '27';
+                        break;
+                    case '26':
+                        return;
+                    case '27':
+                        if (prim) {
+                            if (prim.id) {
+                                printPrim(visuals, prim);
+                                _var2 = isSelected(widget, prim.id);
+                                if (_var2) {
+                                    __state = '32';
+                                } else {
+                                    selectPrim(widget, prim.id);
+                                    showLianaSockets(widget, prim);
+                                    __state = '32';
+                                }
                             } else {
-                                deselectAll(widget);
-                                selectPrim(widget, prim.id);
-                                showLianaSockets(widget, prim);
                                 __state = '32';
                             }
                         } else {
+                            deselectAll(widget);
                             __state = '32';
                         }
-                    } else {
-                        deselectAll(widget);
-                        __state = '32';
-                    }
-                    break;
-                case '32':
-                    paint(widget);
-                    __state = '26';
-                    break;
-                case '42':
-                    if (prim) {
-                        if (prim.elType === 'node') {
-                            evt.stopPropagation();
-                            evt.preventDefault();
-                            primToClient(widget, prim);
-                            setTimeout(function () {
-                                startEditContent(widget, prim);
-                            }, 0);
-                            __state = '26';
+                        break;
+                    case '32':
+                        paint(widget);
+                        __state = '26';
+                        break;
+                    case '42':
+                        if (prim) {
+                            if (prim.elType === 'node') {
+                                evt.stopPropagation();
+                                evt.preventDefault();
+                                primToClient(widget, prim);
+                                setTimeout(function () {
+                                    startEditContent(widget, prim);
+                                }, 0);
+                                __state = '26';
+                            } else {
+                                __state = '26';
+                            }
                         } else {
                             __state = '26';
                         }
-                    } else {
-                        __state = '26';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5417,29 +5790,29 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = canEditNodeText(prim);
-                    if (_var2) {
-                        callback = widget.config.startEditContent;
-                        if (callback) {
-                            ro = isReadonly(widget);
-                            delayed = function () {
-                                callback(prim, ro);
-                            };
-                            setTimeout(delayed, 1);
-                            __state = '1';
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = canEditNodeText(prim);
+                        if (_var2) {
+                            callback = widget.config.startEditContent;
+                            if (callback) {
+                                ro = isReadonly(widget);
+                                delayed = function () {
+                                    callback(prim, ro);
+                                };
+                                setTimeout(delayed, 1);
+                                __state = '1';
+                            } else {
+                                console.error('startEditContent is missing in config');
+                                __state = '1';
+                            }
                         } else {
-                            console.error('startEditContent is missing in config');
                             __state = '1';
                         }
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5458,27 +5831,27 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    node = getNode(widget.visuals, prim.id);
-                    change = {
-                        id: prim.id,
-                        fields: {},
-                        op: 'update'
-                    };
-                    if (node.flag1) {
-                        change.fields.flag1 = 0;
-                        __state = '11';
-                    } else {
-                        change.fields.flag1 = 1;
-                        __state = '11';
-                    }
-                    break;
-                case '11':
-                    doEdit(widget, [change], true);
-                    widget.redraw();
-                    return;
-                default:
-                    return;
+                    case '2':
+                        node = getNode(widget.visuals, prim.id);
+                        change = {
+                            id: prim.id,
+                            fields: {},
+                            op: 'update'
+                        };
+                        if (node.flag1) {
+                            change.fields.flag1 = 0;
+                            __state = '11';
+                        } else {
+                            change.fields.flag1 = 1;
+                            __state = '11';
+                        }
+                        break;
+                    case '11':
+                        doEdit(widget, [change], true);
+                        widget.redraw();
+                        return;
+                    default:
+                        return;
                 }
             }
         }
@@ -5486,18 +5859,18 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (self.mouseEvents) {
-                        self.mouseEvents.mouseLeave(evt);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (self.mouseEvents) {
+                            self.mouseEvents.mouseLeave(evt);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5506,19 +5879,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = isReadonly(self);
-                    if (_var2) {
-                        __state = '1';
-                    } else {
-                        cut(self);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = isReadonly(self);
+                        if (_var2) {
+                            __state = '1';
+                        } else {
+                            cut(self);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5539,73 +5912,72 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visuals = widget.visuals;
-                    prim = findVisualItem(visuals, pos.x, pos.y);
-                    if (prim) {
-                        primToClient(widget, prim);
-                        if (prim.elType === 'node') {
-                            node = getNode(visuals, prim.id);
-                            if (node.type == 'end') {
-                                __state = '14';
-                            } else {
-                                if (node.type == 'junction') {
+                    case '2':
+                        visuals = widget.visuals;
+                        prim = findVisualItem(visuals, pos.x, pos.y);
+                        if (prim) {
+                            primToClient(widget, prim);
+                            if (prim.elType === 'node') {
+                                node = getNode(visuals, prim.id);
+                                if (node.type == 'end') {
                                     __state = '14';
                                 } else {
-                                    _var2 = isSelected(widget, prim.id);
-                                    if (_var2) {
-                                        nodes = getNodesFromSelection(widget);
-                                        if (nodes.length > 1) {
-                                            menu = buildBlockMenu(widget);
-                                            __state = '28';
+                                    if (node.type == 'junction') {
+                                        __state = '14';
+                                    } else {
+                                        _var2 = isSelected(widget, prim.id);
+                                        if (_var2) {
+                                            nodes = getNodesFromSelection(widget);
+                                            if (nodes.length > 1) {
+                                                menu = buildBlockMenu(widget);
+                                                __state = '28';
+                                            } else {
+                                                __state = '27';
+                                            }
                                         } else {
+                                            selectPrim(widget, prim.id);
                                             __state = '27';
                                         }
-                                    } else {
-                                        deselectAll(widget);
-                                        selectPrim(widget, prim.id);
-                                        __state = '27';
                                     }
                                 }
+                            } else {
+                                __state = '14';
                             }
                         } else {
-                            __state = '14';
+                            menu = buildBackgroundMenu(widget);
+                            __state = '30';
                         }
-                    } else {
-                        menu = buildBackgroundMenu(widget);
+                        break;
+                    case '14':
+                        menu = [];
                         __state = '30';
-                    }
-                    break;
-                case '14':
-                    menu = [];
-                    __state = '30';
-                    break;
-                case '27':
-                    menu = buildMenuByType(widget, prim, node);
-                    __state = '28';
-                    break;
-                case '28':
-                    paint(widget);
-                    __state = '30';
-                    break;
-                case '29':
-                    return;
-                case '30':
-                    if (menu.length === 0) {
-                        __state = '29';
-                    } else {
-                        callback = widget.config.showContextMenu;
-                        if (callback) {
-                            callback(evt.clientX, evt.clientY, menu);
+                        break;
+                    case '27':
+                        menu = buildMenuByType(widget, prim, node);
+                        __state = '28';
+                        break;
+                    case '28':
+                        paint(widget);
+                        __state = '30';
+                        break;
+                    case '29':
+                        return;
+                    case '30':
+                        if (menu.length === 0) {
                             __state = '29';
                         } else {
-                            console.error('showContextMenu is missing in config');
-                            __state = '29';
+                            callback = widget.config.showContextMenu;
+                            if (callback) {
+                                callback(evt.clientX, evt.clientY, menu);
+                                __state = '29';
+                            } else {
+                                console.error('showContextMenu is missing in config');
+                                __state = '29';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5631,21 +6003,21 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    render = visuals.config.iconRender[node.type];
-                    if (render) {
-                        __state = '9';
-                    } else {
-                        render = visuals.config.iconRender.action;
-                        console.error('iconRender callback not found for node of type: ' + node.type);
-                        __state = '9';
-                    }
-                    break;
-                case '9':
-                    render(visuals, node, ctx);
-                    return;
-                default:
-                    return;
+                    case '2':
+                        render = visuals.config.iconRender[node.type];
+                        if (render) {
+                            __state = '9';
+                        } else {
+                            render = visuals.config.iconRender.action;
+                            console.error('iconRender callback not found for node of type: ' + node.type);
+                            __state = '9';
+                        }
+                        break;
+                    case '9':
+                        render(visuals, node, ctx);
+                        return;
+                    default:
+                        return;
                 }
             }
         }
@@ -5654,47 +6026,47 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    x1 = getX(edge.head);
-                    y1 = getY(edge.head);
-                    x2 = getX(edge.tail);
-                    y2 = getY(edge.tail);
-                    thickness = visuals.config.theme.lineWidth || 1;
-                    color = visuals.config.theme.lines;
-                    ctx.fillStyle = color;
-                    if (edge.vertical) {
-                        if (edge.head.skewer.main) {
-                            thickness *= 3;
-                            __state = '10';
+                    case '1':
+                        return;
+                    case '2':
+                        x1 = getX(edge.head);
+                        y1 = getY(edge.head);
+                        x2 = getX(edge.tail);
+                        y2 = getY(edge.tail);
+                        thickness = visuals.config.theme.lineWidth || 1;
+                        color = visuals.config.theme.lines;
+                        ctx.fillStyle = color;
+                        if (edge.vertical) {
+                            if (edge.head.skewer.main) {
+                                thickness *= 3;
+                                __state = '10';
+                            } else {
+                                __state = '10';
+                            }
                         } else {
-                            __state = '10';
-                        }
-                    } else {
-                        w = x2 - x1;
-                        ctx.fillRect(x1, y1, w, thickness);
-                        _var2 = edge.role;
-                        if (_var2 === 'arrow') {
-                            drawArrowHead(ctx, color, x1 + thickness, y1, Math.PI);
-                            __state = '1';
-                        } else {
-                            if (_var2 === 'rarrow') {
-                                drawArrowHead(ctx, color, x2 - thickness, y1, 0);
+                            w = x2 - x1;
+                            ctx.fillRect(x1, y1, w, thickness);
+                            _var2 = edge.role;
+                            if (_var2 === 'arrow') {
+                                drawArrowHead(ctx, color, x1 + thickness, y1, Math.PI);
                                 __state = '1';
                             } else {
-                                __state = '1';
+                                if (_var2 === 'rarrow') {
+                                    drawArrowHead(ctx, color, x2 - thickness, y1, 0);
+                                    __state = '1';
+                                } else {
+                                    __state = '1';
+                                }
                             }
                         }
-                    }
-                    break;
-                case '10':
-                    h = y2 - y1;
-                    ctx.fillRect(x1, y1, thickness, h);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '10':
+                        h = y2 - y1;
+                        ctx.fillRect(x1, y1, thickness, h);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5706,35 +6078,35 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visuals = widget.visuals;
-                    result = [];
-                    _var3 = widget.selection.prims;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '6';
-                    break;
-                case '5':
-                    _var4++;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        elType = _var3[id];
-                        if (elType === 'node') {
-                            node = getNode(visuals, id);
-                            result.push(node);
-                            __state = '5';
+                    case '2':
+                        visuals = widget.visuals;
+                        result = [];
+                        _var3 = widget.selection.prims;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '6';
+                        break;
+                    case '5':
+                        _var4++;
+                        __state = '6';
+                        break;
+                    case '6':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            elType = _var3[id];
+                            if (elType === 'node') {
+                                node = getNode(visuals, id);
+                                result.push(node);
+                                __state = '5';
+                            } else {
+                                __state = '5';
+                            }
                         } else {
-                            __state = '5';
+                            return result;
                         }
-                    } else {
-                        return result;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5765,44 +6137,44 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    leftUp = createJunction(visuals, undefined);
-                    leftDown = createJunction(visuals, undefined);
-                    createEdge(visuals, leftUp, leftDown, true);
-                    upper = leftUp;
-                    lower = leftDown;
-                    __state = '5';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    _var2 = visuals.branches;
-                    _var3 = 0;
-                    __state = '14';
-                    break;
-                case '6':
-                    leftUp.right.role = 'rarrow';
-                    firstId = visuals.branches[0];
-                    first = visuals.nodes[firstId];
-                    createEdge(visuals, visuals.header, first.topNode, true);
-                    __state = '4';
-                    break;
-                case '14':
-                    if (_var3 < _var2.length) {
-                        branchId = _var2[_var3];
-                        branch = visuals.nodes[branchId];
-                        buildManhattan(visuals, branch);
-                        connectBranch(visuals, branch, upper, lower);
-                        upper = branch.topNode;
-                        lower = branch.bottomNode;
-                        _var3++;
+                    case '2':
+                        leftUp = createJunction(visuals, undefined);
+                        leftDown = createJunction(visuals, undefined);
+                        createEdge(visuals, leftUp, leftDown, true);
+                        upper = leftUp;
+                        lower = leftDown;
+                        __state = '5';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        _var2 = visuals.branches;
+                        _var3 = 0;
                         __state = '14';
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        leftUp.right.role = 'rarrow';
+                        firstId = visuals.branches[0];
+                        first = visuals.nodes[firstId];
+                        createEdge(visuals, visuals.header, first.topNode, true);
+                        __state = '4';
+                        break;
+                    case '14':
+                        if (_var3 < _var2.length) {
+                            branchId = _var2[_var3];
+                            branch = visuals.nodes[branchId];
+                            buildManhattan(visuals, branch);
+                            connectBranch(visuals, branch, upper, lower);
+                            upper = branch.topNode;
+                            lower = branch.bottomNode;
+                            _var3++;
+                            __state = '14';
+                        } else {
+                            __state = '6';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5811,24 +6183,24 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    lowest = goDown(node);
-                    if (lowest.type === 'end') {
-                        __state = '1';
-                    } else {
-                        radius = visuals.config.socketTouchRadius;
-                        socket = createSocket(visuals, node.x - node.w, node.y, op, 'branch', radius);
-                        socket.node = node;
-                        socket.left = true;
-                        socket2 = createSocket(visuals, node.x + node.w, node.y, op, 'branch', radius);
-                        socket2.node = node;
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        lowest = goDown(node);
+                        if (lowest.type === 'end') {
+                            __state = '1';
+                        } else {
+                            radius = visuals.config.socketTouchRadius;
+                            socket = createSocket(visuals, node.x - node.w, node.y, op, 'branch', radius);
+                            socket.node = node;
+                            socket.left = true;
+                            socket2 = createSocket(visuals, node.x + node.w, node.y, op, 'branch', radius);
+                            socket2.node = node;
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5837,69 +6209,69 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    radius = visuals.config.socketRadius;
-                    head = edge.head;
-                    tail = edge.tail;
-                    Min = 10;
-                    hw = Math.max(Min, head.w);
-                    hh = Math.max(Min, head.h);
-                    tw = Math.max(Min, tail.w);
-                    th = Math.max(Min, tail.h);
-                    if (edge.vertical) {
-                        _var4 = getY(head);
-                        _var5 = getY(tail);
-                        x1 = getX(head);
-                        y1 = _var4 + hh;
-                        x2 = x1;
-                        y2 = _var5 - th;
-                        startPos = edge.head.y + edge.head.h;
-                        endPos = edge.tail.y - edge.tail.h;
-                        length = endPos - startPos;
-                        box = createBox(x1 - radius, startPos, radius * 2, length);
-                        __state = '9';
-                    } else {
-                        _var2 = getX(head);
-                        _var3 = getX(tail);
-                        x1 = _var2 + hw;
-                        y1 = getY(head);
-                        x2 = _var3 - tw;
-                        y2 = y1;
-                        startPos = edge.head.x + edge.head.w;
-                        endPos = edge.tail.x - edge.tail.w;
-                        length = endPos - startPos;
-                        box = createBox(startPos, y1 - radius, length, radius * 2);
-                        __state = '9';
-                    }
-                    break;
-                case '9':
-                    x = (x1 + x2) / 2;
-                    y = (y1 + y2) / 2;
-                    radius = visuals.config.socketTouchRadius;
-                    socket = createSocket(visuals, x, y, op, type, radius);
-                    socket.edge = edge;
-                    if (edge.role === 'floor') {
-                        socket.target = getFloorTarget(visuals, edge);
-                        __state = '19';
-                    } else {
-                        socket.target = edge.finalTarget.itemId;
-                        __state = '19';
-                    }
-                    break;
-                case '13':
-                    return socket;
-                case '19':
-                    if (length > radius * 2) {
-                        socket.box = box;
-                        socket.startPos = startPos;
-                        socket.endPos = endPos;
-                        __state = '13';
-                    } else {
-                        __state = '13';
-                    }
-                    break;
-                default:
-                    return;
+                    case '2':
+                        radius = visuals.config.socketRadius;
+                        head = edge.head;
+                        tail = edge.tail;
+                        Min = 10;
+                        hw = Math.max(Min, head.w);
+                        hh = Math.max(Min, head.h);
+                        tw = Math.max(Min, tail.w);
+                        th = Math.max(Min, tail.h);
+                        if (edge.vertical) {
+                            _var4 = getY(head);
+                            _var5 = getY(tail);
+                            x1 = getX(head);
+                            y1 = _var4 + hh;
+                            x2 = x1;
+                            y2 = _var5 - th;
+                            startPos = edge.head.y + edge.head.h;
+                            endPos = edge.tail.y - edge.tail.h;
+                            length = endPos - startPos;
+                            box = createBox(x1 - radius, startPos, radius * 2, length);
+                            __state = '9';
+                        } else {
+                            _var2 = getX(head);
+                            _var3 = getX(tail);
+                            x1 = _var2 + hw;
+                            y1 = getY(head);
+                            x2 = _var3 - tw;
+                            y2 = y1;
+                            startPos = edge.head.x + edge.head.w;
+                            endPos = edge.tail.x - edge.tail.w;
+                            length = endPos - startPos;
+                            box = createBox(startPos, y1 - radius, length, radius * 2);
+                            __state = '9';
+                        }
+                        break;
+                    case '9':
+                        x = (x1 + x2) / 2;
+                        y = (y1 + y2) / 2;
+                        radius = visuals.config.socketTouchRadius;
+                        socket = createSocket(visuals, x, y, op, type, radius);
+                        socket.edge = edge;
+                        if (edge.role === 'floor') {
+                            socket.target = getFloorTarget(visuals, edge);
+                            __state = '19';
+                        } else {
+                            socket.target = edge.finalTarget.itemId;
+                            __state = '19';
+                        }
+                        break;
+                    case '13':
+                        return socket;
+                    case '19':
+                        if (length > radius * 2) {
+                            socket.box = box;
+                            socket.startPos = startPos;
+                            socket.endPos = endPos;
+                            __state = '13';
+                        } else {
+                            __state = '13';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5963,28 +6335,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    ctx.beginPath();
-                    ctx.arc(cx, topY + config.socketRadius, config.socketRadius, Math.PI, Math.PI * 2, false);
-                    ctx.lineTo(cx + config.socketRadius, bottomY - config.socketRadius);
-                    ctx.arc(cx, bottomY - config.socketRadius, config.socketRadius, 0, Math.PI, false);
-                    ctx.lineTo(cx - config.socketRadius, topY + config.socketRadius);
-                    ctx.fillStyle = fill;
-                    ctx.fill();
-                    ctx.lineWidth = 2;
-                    ctx.strokeStyle = border;
-                    ctx.stroke();
-                    __state = '10';
-                    break;
-                case '9':
-                    return;
-                case '10':
-                    cy = (bottomY + topY) / 2;
-                    drawCross(ctx, cx, cy, config.socketRadius / 2, 2, border);
-                    __state = '9';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        ctx.beginPath();
+                        ctx.arc(cx, topY + config.socketRadius, config.socketRadius, Math.PI, Math.PI * 2, false);
+                        ctx.lineTo(cx + config.socketRadius, bottomY - config.socketRadius);
+                        ctx.arc(cx, bottomY - config.socketRadius, config.socketRadius, 0, Math.PI, false);
+                        ctx.lineTo(cx - config.socketRadius, topY + config.socketRadius);
+                        ctx.fillStyle = fill;
+                        ctx.fill();
+                        ctx.lineWidth = 2;
+                        ctx.strokeStyle = border;
+                        ctx.stroke();
+                        __state = '10';
+                        break;
+                    case '9':
+                        return;
+                    case '10':
+                        cy = (bottomY + topY) / 2;
+                        drawCross(ctx, cx, cy, config.socketRadius / 2, 2, border);
+                        __state = '9';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -5993,28 +6365,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    ctx.beginPath();
-                    ctx.arc(leftX + config.socketRadius, cy, config.socketRadius, Math.PI / 2, Math.PI * 3 / 2, false);
-                    ctx.lineTo(rightX - config.socketRadius, cy - config.socketRadius);
-                    ctx.arc(rightX - config.socketRadius, cy, config.socketRadius, Math.PI * 3 / 2, Math.PI / 2, false);
-                    ctx.lineTo(leftX + config.socketRadius, cy + config.socketRadius);
-                    ctx.fillStyle = fill;
-                    ctx.fill();
-                    ctx.lineWidth = 2;
-                    ctx.strokeStyle = border;
-                    ctx.stroke();
-                    __state = '10';
-                    break;
-                case '9':
-                    return;
-                case '10':
-                    cx = (leftX + rightX) / 2;
-                    drawCross(ctx, cx, cy, config.socketRadius / 2, 2, border);
-                    __state = '9';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        ctx.beginPath();
+                        ctx.arc(leftX + config.socketRadius, cy, config.socketRadius, Math.PI / 2, Math.PI * 3 / 2, false);
+                        ctx.lineTo(rightX - config.socketRadius, cy - config.socketRadius);
+                        ctx.arc(rightX - config.socketRadius, cy, config.socketRadius, Math.PI * 3 / 2, Math.PI / 2, false);
+                        ctx.lineTo(leftX + config.socketRadius, cy + config.socketRadius);
+                        ctx.fillStyle = fill;
+                        ctx.fill();
+                        ctx.lineWidth = 2;
+                        ctx.strokeStyle = border;
+                        ctx.stroke();
+                        __state = '10';
+                        break;
+                    case '9':
+                        return;
+                    case '10':
+                        cx = (leftX + rightX) / 2;
+                        drawCross(ctx, cx, cy, config.socketRadius / 2, 2, border);
+                        __state = '9';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6023,54 +6395,54 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edges = visuals.edges;
-                    result = [];
-                    _var3 = edges;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '7';
-                    break;
-                case '6':
-                    _var4++;
-                    __state = '7';
-                    break;
-                case '7':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        edge = _var3[id];
-                        if (edge.finalTarget) {
-                            if (edge.role) {
-                                targetId = edge.finalTarget.itemId;
-                                if (edge.role === 'down') {
-                                    __state = '15';
-                                } else {
-                                    if (edge.role === 'right') {
-                                        if (edge.tail.up) {
-                                            __state = '15';
+                    case '2':
+                        edges = visuals.edges;
+                        result = [];
+                        _var3 = edges;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '7';
+                        break;
+                    case '6':
+                        _var4++;
+                        __state = '7';
+                        break;
+                    case '7':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            edge = _var3[id];
+                            if (edge.finalTarget) {
+                                if (edge.role) {
+                                    targetId = edge.finalTarget.itemId;
+                                    if (edge.role === 'down') {
+                                        __state = '15';
+                                    } else {
+                                        if (edge.role === 'right') {
+                                            if (edge.tail.up) {
+                                                __state = '15';
+                                            } else {
+                                                __state = '6';
+                                            }
                                         } else {
                                             __state = '6';
                                         }
-                                    } else {
-                                        __state = '6';
                                     }
+                                } else {
+                                    __state = '6';
                                 }
                             } else {
                                 __state = '6';
                             }
                         } else {
-                            __state = '6';
+                            return result;
                         }
-                    } else {
-                        return result;
-                    }
-                    break;
-                case '15':
-                    result.push(edge);
-                    __state = '6';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '15':
+                        result.push(edge);
+                        __state = '6';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6079,37 +6451,37 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    left = getUp(floorEdge.head);
-                    right = getUp(floorEdge.tail);
-                    leftBranch = left.branch.itemId;
-                    rightBranch = right.branch.itemId;
-                    _var2 = visuals.branches;
-                    _var3 = 0;
-                    __state = '6';
-                    break;
-                case '5':
-                    _var3++;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var3 < _var2.length) {
-                        itemId = _var2[_var3];
-                        if (itemId === leftBranch) {
-                            __state = '5';
-                        } else {
-                            if (itemId === rightBranch) {
+                    case '2':
+                        left = getUp(floorEdge.head);
+                        right = getUp(floorEdge.tail);
+                        leftBranch = left.branch.itemId;
+                        rightBranch = right.branch.itemId;
+                        _var2 = visuals.branches;
+                        _var3 = 0;
+                        __state = '6';
+                        break;
+                    case '5':
+                        _var3++;
+                        __state = '6';
+                        break;
+                    case '6':
+                        if (_var3 < _var2.length) {
+                            itemId = _var2[_var3];
+                            if (itemId === leftBranch) {
                                 __state = '5';
                             } else {
-                                return itemId;
+                                if (itemId === rightBranch) {
+                                    __state = '5';
+                                } else {
+                                    return itemId;
+                                }
                             }
+                        } else {
+                            return rightBranch;
                         }
-                    } else {
-                        return rightBranch;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6118,22 +6490,22 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = isSilhouette(visuals);
-                    if (_var2) {
-                        showInsert = function (visuals, node) {
-                            showBranchSockets(visuals, node, op);
-                        };
-                        forType(visuals, 'branch', showInsert);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = isSilhouette(visuals);
+                        if (_var2) {
+                            showInsert = function (visuals, node) {
+                                showBranchSockets(visuals, node, op);
+                            };
+                            forType(visuals, 'branch', showInsert);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6142,27 +6514,27 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = visuals.sockets;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        socket = _var2[_var3];
-                        _var4 = hitBox(socket.box, x, y);
-                        if (_var4) {
-                            return socket.id;
+                    case '2':
+                        _var2 = visuals.sockets;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            socket = _var2[_var3];
+                            _var4 = hitBox(socket.box, x, y);
+                            if (_var4) {
+                                return socket.id;
+                            } else {
+                                _var3++;
+                                __state = '5';
+                            }
                         } else {
-                            _var3++;
-                            __state = '5';
+                            return undefined;
                         }
-                    } else {
-                        return undefined;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6171,62 +6543,62 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    radius = config.socketRadius;
-                    if (visuals.currentSocket === socket.id) {
-                        if (visuals.onSocket) {
-                            fill = config.socketBorder;
-                            border = config.socketBody;
-                            __state = '30';
+                    case '2':
+                        radius = config.socketRadius;
+                        if (visuals.currentSocket === socket.id) {
+                            if (visuals.onSocket) {
+                                fill = config.socketBorder;
+                                border = config.socketBody;
+                                __state = '30';
+                            } else {
+                                __state = '29';
+                            }
                         } else {
                             __state = '29';
                         }
-                    } else {
-                        __state = '29';
-                    }
-                    break;
-                case '15':
-                    return;
-                case '16':
-                    drawPointSocket(ctx, socket.x, socket.y, fill, border, config);
-                    __state = '15';
-                    break;
-                case '29':
-                    fill = config.socketBody;
-                    border = config.socketBorder;
-                    __state = '30';
-                    break;
-                case '30':
-                    if (socket.node) {
-                        __state = '16';
-                    } else {
-                        if (socket.edge.vertical) {
-                            __state = '31';
+                        break;
+                    case '15':
+                        return;
+                    case '16':
+                        drawPointSocket(ctx, socket.x, socket.y, fill, border, config);
+                        __state = '15';
+                        break;
+                    case '29':
+                        fill = config.socketBody;
+                        border = config.socketBorder;
+                        __state = '30';
+                        break;
+                    case '30':
+                        if (socket.node) {
+                            __state = '16';
                         } else {
-                            __state = '32';
+                            if (socket.edge.vertical) {
+                                __state = '31';
+                            } else {
+                                __state = '32';
+                            }
                         }
-                    }
-                    break;
-                case '31':
-                    if (socket.startPos === undefined) {
-                        drawPointSocket(ctx, socket.x, socket.y, fill, border, config);
-                        __state = '15';
-                    } else {
-                        drawVerticalSocket(ctx, socket.x, socket.startPos, socket.endPos, fill, border, config);
-                        __state = '15';
-                    }
-                    break;
-                case '32':
-                    if (socket.startPos === undefined) {
-                        drawPointSocket(ctx, socket.x, socket.y, fill, border, config);
-                        __state = '15';
-                    } else {
-                        drawHorizontalSocket(ctx, socket.startPos, socket.endPos, socket.y, fill, border, config);
-                        __state = '15';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '31':
+                        if (socket.startPos === undefined) {
+                            drawPointSocket(ctx, socket.x, socket.y, fill, border, config);
+                            __state = '15';
+                        } else {
+                            drawVerticalSocket(ctx, socket.x, socket.startPos, socket.endPos, fill, border, config);
+                            __state = '15';
+                        }
+                        break;
+                    case '32':
+                        if (socket.startPos === undefined) {
+                            drawPointSocket(ctx, socket.x, socket.y, fill, border, config);
+                            __state = '15';
+                        } else {
+                            drawHorizontalSocket(ctx, socket.startPos, socket.endPos, socket.y, fill, border, config);
+                            __state = '15';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6246,20 +6618,20 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    showRightCaseSocket(visuals, node, op);
-                    _var2 = firstCase(node.select);
-                    if (node == _var2) {
-                        showFirstCaseSocket(visuals, node, op);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        showRightCaseSocket(visuals, node, op);
+                        _var2 = firstCase(node.select);
+                        if (node == _var2) {
+                            showFirstCaseSocket(visuals, node, op);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6295,27 +6667,27 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    node = visuals.nodes[id];
-                    if (node.type === 'junction') {
-                        __state = '8';
-                    } else {
-                        if (node.type === 'arrow-loop') {
+                    case '1':
+                        return;
+                    case '2':
+                        node = visuals.nodes[id];
+                        if (node.type === 'junction') {
                             __state = '8';
                         } else {
-                            standardCandy(node, ctx, config);
-                            __state = '1';
+                            if (node.type === 'arrow-loop') {
+                                __state = '8';
+                            } else {
+                                standardCandy(node, ctx, config);
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                case '8':
-                    juncCandy(node, ctx, config);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '8':
+                        juncCandy(node, ctx, config);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6324,38 +6696,38 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    left = node.x - node.w;
-                    top = node.y - node.h;
-                    right = node.x + node.w;
-                    bottom = node.y + node.h;
-                    fill = config.theme.candyFill;
-                    border = config.theme.candyBorder;
-                    size = 10;
-                    lineWidth = 2;
-                    __state = '10';
-                    break;
-                case '9':
-                    return;
-                case '10':
-                    centerSquare(ctx, left, top, size, fill, border, lineWidth);
-                    centerSquare(ctx, node.x, top, size, fill, border, lineWidth);
-                    centerSquare(ctx, right, top, size, fill, border, lineWidth);
-                    __state = '14';
-                    break;
-                case '14':
-                    centerSquare(ctx, left, node.y, size, fill, border, lineWidth);
-                    centerSquare(ctx, right, node.y, size, fill, border, lineWidth);
-                    __state = '15';
-                    break;
-                case '15':
-                    centerSquare(ctx, left, bottom, size, fill, border, lineWidth);
-                    centerSquare(ctx, node.x, bottom, size, fill, border, lineWidth);
-                    centerSquare(ctx, right, bottom, size, fill, border, lineWidth);
-                    __state = '9';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        left = node.x - node.w;
+                        top = node.y - node.h;
+                        right = node.x + node.w;
+                        bottom = node.y + node.h;
+                        fill = config.theme.candyFill;
+                        border = config.theme.candyBorder;
+                        size = 10;
+                        lineWidth = 2;
+                        __state = '10';
+                        break;
+                    case '9':
+                        return;
+                    case '10':
+                        centerSquare(ctx, left, top, size, fill, border, lineWidth);
+                        centerSquare(ctx, node.x, top, size, fill, border, lineWidth);
+                        centerSquare(ctx, right, top, size, fill, border, lineWidth);
+                        __state = '14';
+                        break;
+                    case '14':
+                        centerSquare(ctx, left, node.y, size, fill, border, lineWidth);
+                        centerSquare(ctx, right, node.y, size, fill, border, lineWidth);
+                        __state = '15';
+                        break;
+                    case '15':
+                        centerSquare(ctx, left, bottom, size, fill, border, lineWidth);
+                        centerSquare(ctx, node.x, bottom, size, fill, border, lineWidth);
+                        centerSquare(ctx, right, bottom, size, fill, border, lineWidth);
+                        __state = '9';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6364,20 +6736,20 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    edge = visuals.edges[id];
-                    if (edge.vertical) {
-                        verticalCandy(edge, ctx, config);
-                        __state = '1';
-                    } else {
-                        horizontalCandy(edge, ctx, config);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        edge = visuals.edges[id];
+                        if (edge.vertical) {
+                            verticalCandy(edge, ctx, config);
+                            __state = '1';
+                        } else {
+                            horizontalCandy(edge, ctx, config);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6422,6 +6794,33 @@ function createDrakonWidget() {
             ctx.fillRect(x, y + 2, 2, h - 4);
             return;
         }
+        function reflowContent(visuals) {
+            var _var3, _var2, _var4, id, node;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        _var3 = visuals.nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            reflowIcon(node, visuals.config);
+                            _var4++;
+                            __state = '5';
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function resetContainer(widget) {
             html.clear(widget.contentContainer);
             widget.contentContainer.style.transform = '';
@@ -6448,31 +6847,31 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (visuals.branches.length === 1) {
-                        crawlSubdiagram(visuals, visuals.header.down);
-                        __state = '1';
-                    } else {
-                        _var2 = visuals.branches;
-                        _var3 = 0;
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    if (_var3 < _var2.length) {
-                        branch = _var2[_var3];
-                        branchNode = getNode(visuals, branch);
-                        crawlSubdiagram(visuals, branchNode.down);
-                        _var3++;
-                        __state = '6';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (visuals.branches.length === 1) {
+                            crawlSubdiagram(visuals, visuals.header.down);
+                            __state = '1';
+                        } else {
+                            _var2 = visuals.branches;
+                            _var3 = 0;
+                            __state = '6';
+                        }
+                        break;
+                    case '6':
+                        if (_var3 < _var2.length) {
+                            branch = _var2[_var3];
+                            branchNode = getNode(visuals, branch);
+                            crawlSubdiagram(visuals, branchNode.down);
+                            _var3++;
+                            __state = '6';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6486,19 +6885,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    model.items[item.id] = item;
-                    if (item.type === 'branch') {
-                        model.branches.push(item.id);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        model.items[item.id] = item;
+                        if (item.type === 'branch') {
+                            model.branches.push(item.id);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6507,23 +6906,23 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = select.cases;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        caseIcon = _var2[_var3];
-                        Object.assign(caseIcon.loops, select.loops);
-                        _var3++;
+                    case '2':
+                        _var2 = select.cases;
+                        _var3 = 0;
                         __state = '5';
-                    } else {
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            caseIcon = _var2[_var3];
+                            Object.assign(caseIcon.loops, select.loops);
+                            _var3++;
+                            __state = '5';
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -6532,128 +6931,128 @@ function createDrakonWidget() {
             var __state = '27';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (prim.type === 'header') {
-                        _var6 = tr(widget, 'Rename');
-                        pushMenuItem(menu, _var6, undefined, function () {
-                            startEditContent(widget, prim);
-                        });
-                        if (widget.visuals.params) {
-                            __state = '_item19';
-                        } else {
-                            _var15 = isReadonly(widget);
-                            if (_var15) {
-                                __state = '_item19';
-                            } else {
-                                _var7 = tr(widget, 'Add parameters');
-                                pushMenuItem(menu, _var7, undefined, function () {
-                                    addParameters(widget, prim);
-                                });
-                                __state = '_item19';
-                            }
-                        }
-                    } else {
-                        _var8 = canEditNodeText(prim);
-                        if (_var8) {
-                            _var9 = tr(widget, 'Edit content');
-                            pushMenuItem(menu, _var9, undefined, function () {
+                    case '2':
+                        if (prim.type === 'header') {
+                            _var6 = tr(widget, 'Rename');
+                            pushMenuItem(menu, _var6, undefined, function () {
                                 startEditContent(widget, prim);
                             });
-                            __state = '_item19';
+                            if (widget.visuals.params) {
+                                __state = '_item19';
+                            } else {
+                                _var15 = isReadonly(widget);
+                                if (_var15) {
+                                    __state = '_item19';
+                                } else {
+                                    _var7 = tr(widget, 'Add parameters');
+                                    pushMenuItem(menu, _var7, undefined, function () {
+                                        addParameters(widget, prim);
+                                    });
+                                    __state = '_item19';
+                                }
+                            }
                         } else {
-                            __state = '_item19';
+                            _var8 = canEditNodeText(prim);
+                            if (_var8) {
+                                _var9 = tr(widget, 'Edit content');
+                                pushMenuItem(menu, _var9, undefined, function () {
+                                    startEditContent(widget, prim);
+                                });
+                                __state = '_item19';
+                            } else {
+                                __state = '_item19';
+                            }
                         }
-                    }
-                    break;
-                case '8':
-                    return menu;
-                case '9':
-                    _var2 = prim.type;
-                    if (_var2 === 'question') {
-                        _var3 = tr(widget, 'Swap "Yes" and "No"');
-                        pushMenuItem(menu, _var3, undefined, function () {
-                            swapYesNo(widget, prim);
-                        });
-                        __state = '16';
-                    } else {
-                        if (_var2 === 'address') {
-                            addressDestinations(widget, node, menu);
+                        break;
+                    case '8':
+                        return menu;
+                    case '9':
+                        _var2 = prim.type;
+                        if (_var2 === 'question') {
+                            _var3 = tr(widget, 'Swap "Yes" and "No"');
+                            pushMenuItem(menu, _var3, undefined, function () {
+                                swapYesNo(widget, prim);
+                            });
                             __state = '16';
                         } else {
-                            if (_var2 === 'branch') {
-                                if (widget.visuals.end) {
-                                    __state = '16';
-                                } else {
-                                    if (node.itemId === widget.visuals.branches[widget.visuals.branches.length - 1]) {
-                                        _var13 = tr(widget, 'Insert branch with End');
-                                        pushMenuItem(menu, _var13, undefined, function () {
-                                            branchInsertEnd(widget);
-                                        });
+                            if (_var2 === 'address') {
+                                addressDestinations(widget, node, menu);
+                                __state = '16';
+                            } else {
+                                if (_var2 === 'branch') {
+                                    if (widget.visuals.end) {
                                         __state = '16';
                                     } else {
-                                        __state = '16';
+                                        if (node.itemId === widget.visuals.branches[widget.visuals.branches.length - 1]) {
+                                            _var13 = tr(widget, 'Insert branch with End');
+                                            pushMenuItem(menu, _var13, undefined, function () {
+                                                branchInsertEnd(widget);
+                                            });
+                                            __state = '16';
+                                        } else {
+                                            __state = '16';
+                                        }
                                     }
+                                } else {
+                                    __state = '16';
                                 }
-                            } else {
-                                __state = '16';
                             }
                         }
-                    }
-                    break;
-                case '16':
-                    _var4 = canDelete(widget.visuals, node);
-                    if (_var4) {
-                        menu.push({ type: 'separator' });
-                        _var5 = tr(widget, 'Delete');
-                        pushMenuItem(menu, _var5, undefined, function () {
-                            deleteOne(widget, node);
-                        });
-                        __state = '8';
-                    } else {
-                        __state = '8';
-                    }
-                    break;
-                case '27':
-                    menu = [];
-                    func = getCopyFunction(node);
-                    if (func) {
-                        _var10 = tr(widget, 'Copy');
-                        pushMenuItem(menu, _var10, undefined, function () {
-                            copy(widget);
-                        });
-                        _var14 = isReadonly(widget);
-                        if (_var14) {
-                            __state = '31';
+                        break;
+                    case '16':
+                        _var4 = canDelete(widget.visuals, node);
+                        if (_var4) {
+                            menu.push({ type: 'separator' });
+                            _var5 = tr(widget, 'Delete');
+                            pushMenuItem(menu, _var5, undefined, function () {
+                                deleteOne(widget, node);
+                            });
+                            __state = '8';
                         } else {
-                            _var11 = canDelete(widget.visuals, node);
-                            if (_var11) {
-                                _var12 = tr(widget, 'Cut');
-                                pushMenuItem(menu, _var12, undefined, function () {
-                                    cutOneItem(widget, node);
-                                });
+                            __state = '8';
+                        }
+                        break;
+                    case '27':
+                        menu = [];
+                        func = getCopyFunction(node);
+                        if (func) {
+                            _var10 = tr(widget, 'Copy');
+                            pushMenuItem(menu, _var10, undefined, function () {
+                                copy(widget);
+                            });
+                            _var14 = isReadonly(widget);
+                            if (_var14) {
                                 __state = '31';
                             } else {
-                                __state = '31';
+                                _var11 = canDelete(widget.visuals, node);
+                                if (_var11) {
+                                    _var12 = tr(widget, 'Cut');
+                                    pushMenuItem(menu, _var12, undefined, function () {
+                                        cutOneItem(widget, node);
+                                    });
+                                    __state = '31';
+                                } else {
+                                    __state = '31';
+                                }
                             }
+                        } else {
+                            __state = '2';
                         }
-                    } else {
+                        break;
+                    case '31':
+                        menu.push({ type: 'separator' });
                         __state = '2';
-                    }
-                    break;
-                case '31':
-                    menu.push({ type: 'separator' });
-                    __state = '2';
-                    break;
-                case '_item19':
-                    _var16 = isReadonly(widget);
-                    if (_var16) {
-                        __state = '8';
-                    } else {
-                        __state = '9';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '_item19':
+                        _var16 = isReadonly(widget);
+                        if (_var16) {
+                            __state = '8';
+                        } else {
+                            __state = '9';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6681,28 +7080,32 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    notCurrent = function (itemId) {
-                        return itemId != address.branch.itemId;
-                    };
-                    selected = widget.visuals.branches.filter(notCurrent);
-                    if (selected.length === 0) {
-                        __state = '1';
-                    } else {
-                        makeItem = function (itemId) {
-                            target = getNode(widget.visuals, itemId);
-                            makePointToItem(widget, address, target, menu);
+                    case '1':
+                        return;
+                    case '2':
+                        notCurrent = function (itemId) {
+                            return itemId != address.branch.itemId;
                         };
-                        selected.forEach(makeItem);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        selected = widget.visuals.branches.filter(notCurrent);
+                        if (selected.length === 0) {
+                            __state = '1';
+                        } else {
+                            makeItem = function (itemId) {
+                                target = getNode(widget.visuals, itemId);
+                                makePointToItem(widget, address, target, menu);
+                            };
+                            selected.forEach(makeItem);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
+        }
+        function onItemSelected(item) {
+            console.log('onItemSelected', item);
+            return;
         }
         function copyTheme(userTheme) {
             var theme;
@@ -6717,13 +7120,15 @@ function createDrakonWidget() {
                 'candyFill': '#00ff00',
                 'candyBorder': 'black',
                 'valFill': 'yellow',
+                'internalLine': 'black',
                 'valBorder': 'black',
                 'scrollBar': 'rgba(0, 0, 0, 0.3)',
                 'scrollBarHover': 'black',
                 'shadowColor': 'rgba(0, 0, 0, 0.2)',
                 'shadowBlur': 6,
                 'lineWidth': 1,
-                'borderWidth': 1
+                'borderWidth': 1,
+                'commentBack': 'grey'
             };
             Object.assign(theme, userTheme);
             return theme;
@@ -6741,25 +7146,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    nodes = getCreateList(visuals.byType, type);
-                    _var2 = nodes;
-                    _var3 = 0;
-                    __state = '8';
-                    break;
-                case '8':
-                    if (_var3 < _var2.length) {
-                        nodeId = _var2[_var3];
-                        node = visuals.nodes[nodeId];
-                        action(visuals, node);
-                        _var3++;
+                    case '2':
+                        nodes = getCreateList(visuals.byType, type);
+                        _var2 = nodes;
+                        _var3 = 0;
                         __state = '8';
-                    } else {
+                        break;
+                    case '8':
+                        if (_var3 < _var2.length) {
+                            nodeId = _var2[_var3];
+                            node = visuals.nodes[nodeId];
+                            action(visuals, node);
+                            _var3++;
+                            __state = '8';
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -6767,19 +7172,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    __state = '6';
-                    break;
-                case '6':
-                    if (node.right) {
-                        node = getRight(node);
+                    case '2':
                         __state = '6';
-                    } else {
-                        return node;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        if (node.right) {
+                            node = getRight(node);
+                            __state = '6';
+                        } else {
+                            return node;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6792,26 +7197,26 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.type === 'junction') {
-                        if (node.left) {
-                            left = getLeft(node);
-                            if (left.type === 'question') {
-                                return left.h;
+                    case '2':
+                        if (node.type === 'junction') {
+                            if (node.left) {
+                                left = getLeft(node);
+                                if (left.type === 'question') {
+                                    return left.h;
+                                } else {
+                                    __state = '6';
+                                }
                             } else {
                                 __state = '6';
                             }
                         } else {
                             __state = '6';
                         }
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    return 0;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        return 0;
+                    default:
+                        return;
                 }
             }
         }
@@ -6834,20 +7239,20 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    metre = visuals.config.metre;
-                    boundary = skewer.boundary + metre;
-                    if (skewer.main) {
-                        boundary += metre;
-                        __state = '6';
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    return boundary;
-                default:
-                    return;
+                    case '2':
+                        metre = visuals.config.metre;
+                        boundary = skewer.boundary + metre;
+                        if (skewer.main) {
+                            boundary += metre;
+                            __state = '6';
+                        } else {
+                            __state = '6';
+                        }
+                        break;
+                    case '6':
+                        return boundary;
+                    default:
+                        return;
                 }
             }
         }
@@ -6856,39 +7261,39 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (skewer.coord < pos) {
-                        skewer.coord = pos;
-                        closest = getLinksWithLow(links, skewer.id);
-                        if (closest) {
-                            _var3 = closest;
-                            _var2 = Object.keys(_var3);
-                            _var4 = 0;
+                    case '1':
+                        return;
+                    case '2':
+                        if (skewer.coord < pos) {
+                            skewer.coord = pos;
+                            closest = getLinksWithLow(links, skewer.id);
+                            if (closest) {
+                                _var3 = closest;
+                                _var2 = Object.keys(_var3);
+                                _var4 = 0;
+                                __state = '9';
+                            } else {
+                                __state = '1';
+                            }
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    case '9':
+                        if (_var4 < _var2.length) {
+                            _ = _var2[_var4];
+                            link = _var3[_];
+                            nextPos = pos + link.distance;
+                            next = skewers[link.high];
+                            calculateSkewerPos(skewers, links, next, nextPos);
+                            _var4++;
                             __state = '9';
                         } else {
                             __state = '1';
                         }
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                case '9':
-                    if (_var4 < _var2.length) {
-                        _ = _var2[_var4];
-                        link = _var3[_];
-                        nextPos = pos + link.distance;
-                        next = skewers[link.high];
-                        calculateSkewerPos(skewers, links, next, nextPos);
-                        _var4++;
-                        __state = '9';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -6897,21 +7302,21 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    level = createLevel(visuals);
-                    __state = '7';
-                    break;
-                case '7':
-                    linkNodeToLevel(level, node);
-                    if (node.right) {
-                        node = getRight(node);
+                    case '2':
+                        level = createLevel(visuals);
                         __state = '7';
-                    } else {
+                        break;
+                    case '7':
+                        linkNodeToLevel(level, node);
+                        if (node.right) {
+                            node = getRight(node);
+                            __state = '7';
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -6920,86 +7325,86 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    tr = visuals.config.touchRadius;
-                    nodes = visuals.nodes;
-                    _var3 = nodes;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '8';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    edges = visuals.edges;
-                    _var6 = edges;
-                    _var5 = Object.keys(_var6);
-                    _var7 = 0;
-                    __state = '16';
-                    break;
-                case '7':
-                    _var4++;
-                    __state = '8';
-                    break;
-                case '8':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        node = _var3[id];
-                        _var8 = isDrawableNode(node);
-                        if (_var8) {
-                            node.x = getX(node);
-                            node.y = getY(node);
-                            if (node.type === 'junction') {
-                                __state = '22';
-                            } else {
-                                if (node.type === 'arrow-loop') {
+                    case '2':
+                        tr = visuals.config.touchRadius;
+                        nodes = visuals.nodes;
+                        _var3 = nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '8';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        edges = visuals.edges;
+                        _var6 = edges;
+                        _var5 = Object.keys(_var6);
+                        _var7 = 0;
+                        __state = '16';
+                        break;
+                    case '7':
+                        _var4++;
+                        __state = '8';
+                        break;
+                    case '8':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            _var8 = isDrawableNode(node);
+                            if (_var8) {
+                                node.x = getX(node);
+                                node.y = getY(node);
+                                if (node.type === 'junction') {
                                     __state = '22';
                                 } else {
-                                    node.box = boxFromPoint(node.x, node.y, node.w, node.h);
-                                    __state = '7';
+                                    if (node.type === 'arrow-loop') {
+                                        __state = '22';
+                                    } else {
+                                        node.box = boxFromPoint(node.x, node.y, node.w, node.h);
+                                        __state = '7';
+                                    }
                                 }
+                            } else {
+                                __state = '7';
                             }
                         } else {
-                            __state = '7';
+                            __state = '5';
                         }
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '16':
-                    if (_var7 < _var5.length) {
-                        id = _var5[_var7];
-                        edge = _var6[id];
-                        if (edge.vertical) {
-                            left = edge.head.x - tr;
-                            top = edge.head.y;
-                            bottom = edge.tail.y;
-                            width = tr * 2;
-                            height = bottom - top;
-                            __state = '21';
+                        break;
+                    case '16':
+                        if (_var7 < _var5.length) {
+                            id = _var5[_var7];
+                            edge = _var6[id];
+                            if (edge.vertical) {
+                                left = edge.head.x - tr;
+                                top = edge.head.y;
+                                bottom = edge.tail.y;
+                                width = tr * 2;
+                                height = bottom - top;
+                                __state = '21';
+                            } else {
+                                left = edge.head.x;
+                                top = edge.head.y - tr;
+                                right = edge.tail.x;
+                                width = right - left;
+                                height = tr * 2;
+                                __state = '21';
+                            }
                         } else {
-                            left = edge.head.x;
-                            top = edge.head.y - tr;
-                            right = edge.tail.x;
-                            width = right - left;
-                            height = tr * 2;
-                            __state = '21';
+                            __state = '4';
                         }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '21':
-                    edge.box = createBox(left, top, width, height);
-                    _var7++;
-                    __state = '16';
-                    break;
-                case '22':
-                    node.box = boxFromPoint(node.x, node.y, tr, tr);
-                    __state = '7';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '21':
+                        edge.box = createBox(left, top, width, height);
+                        _var7++;
+                        __state = '16';
+                        break;
+                    case '22':
+                        node.box = boxFromPoint(node.x, node.y, tr, tr);
+                        __state = '7';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7008,55 +7413,55 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = visuals.tempEdges;
-                    _var3 = 0;
-                    __state = '7';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    if (visuals.branches.length === 1) {
-                        __state = '4';
-                    } else {
-                        if (visuals.end) {
-                            oldLevel = visuals.end.level;
-                            remove(oldLevel.nodes, visuals.end);
-                            newLevel = createLevel(visuals);
-                            newLevel.coord = oldLevel.coord;
-                            newLevel.nodes.push(visuals.end);
-                            visuals.end.level = newLevel;
-                            removeEdge(visuals, visuals.end.left.id);
-                            moveEndUp(visuals);
+                    case '2':
+                        _var2 = visuals.tempEdges;
+                        _var3 = 0;
+                        __state = '7';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        if (visuals.branches.length === 1) {
                             __state = '4';
                         } else {
-                            __state = '4';
+                            if (visuals.end) {
+                                oldLevel = visuals.end.level;
+                                remove(oldLevel.nodes, visuals.end);
+                                newLevel = createLevel(visuals);
+                                newLevel.coord = oldLevel.coord;
+                                newLevel.nodes.push(visuals.end);
+                                visuals.end.level = newLevel;
+                                removeEdge(visuals, visuals.end.left.id);
+                                moveEndUp(visuals);
+                                __state = '4';
+                            } else {
+                                __state = '4';
+                            }
                         }
-                    }
-                    break;
-                case '7':
-                    if (_var3 < _var2.length) {
-                        tmpEdge = _var2[_var3];
-                        tmpJun = tmpEdge.head;
-                        removeEdge(visuals, tmpEdge.id);
-                        edgeUp = tmpJun.up;
-                        upper = edgeUp.head;
-                        edgeDown = tmpJun.down;
-                        lower = edgeDown.tail;
-                        finalTarget = edgeUp.finalTarget;
-                        removeEdge(visuals, edgeUp.id);
-                        removeEdge(visuals, edgeDown.id);
-                        removeNode(visuals, tmpJun.id);
-                        makeDownEdge(visuals, upper, lower, finalTarget);
-                        _var3++;
-                        __state = '7';
-                    } else {
-                        visuals.tempEdges = [];
-                        __state = '5';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        if (_var3 < _var2.length) {
+                            tmpEdge = _var2[_var3];
+                            tmpJun = tmpEdge.head;
+                            removeEdge(visuals, tmpEdge.id);
+                            edgeUp = tmpJun.up;
+                            upper = edgeUp.head;
+                            edgeDown = tmpJun.down;
+                            lower = edgeDown.tail;
+                            finalTarget = edgeUp.finalTarget;
+                            removeEdge(visuals, edgeUp.id);
+                            removeEdge(visuals, edgeDown.id);
+                            removeNode(visuals, tmpJun.id);
+                            makeDownEdge(visuals, upper, lower, finalTarget);
+                            _var3++;
+                            __state = '7';
+                        } else {
+                            visuals.tempEdges = [];
+                            __state = '5';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7092,19 +7497,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    __state = '5';
-                    break;
-                case '5':
-                    node = getLeft(node);
-                    if (node.down) {
-                        return node;
-                    } else {
+                    case '2':
                         __state = '5';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '5':
+                        node = getLeft(node);
+                        if (node.down) {
+                            return node;
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7120,94 +7525,94 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    metre = visuals.config.metre;
-                    head = skewerHead(skewer);
-                    tail = skewerTail(skewer);
-                    if (head.left) {
-                        if (tail.left) {
-                            start = getNextDown(head);
-                            finish = getNextUp(tail);
-                            linkSkewers(visuals, start.skewer, skewer, start.w + metre);
-                            node = getDown(start);
-                            boundary = getBoundary(visuals, skewer);
-                            linkSkewers(visuals, finish.skewer, skewer, boundary);
-                            __state = '5';
-                        } else {
-                            __state = '4';
-                        }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '4':
-                    if (visuals.branches.length === 1) {
-                        __state = '1';
-                    } else {
-                        left = getSilCorner(visuals);
-                        hskewer = visuals.header.skewer;
-                        boundary = hskewer.boundary + metre;
-                        linkSkewers(visuals, left.skewer, hskewer, boundary);
-                        __state = '1';
-                    }
-                    break;
-                case '5':
-                    if (node === finish) {
-                        if (node.type === 'question') {
-                            linkSkewers(visuals, node.skewer, skewer, node.w + boundary + metre);
-                            __state = '4';
-                        } else {
-                            __state = '4';
-                        }
-                    } else {
-                        _var2 = node.type;
-                        if (_var2 === 'question') {
-                            rightJ = getRight(node);
-                            if (rightJ.up) {
-                                linkSkewers(visuals, node.skewer, skewer, node.w + boundary + metre);
-                                node = getDown(node);
+                    case '1':
+                        return;
+                    case '2':
+                        metre = visuals.config.metre;
+                        head = skewerHead(skewer);
+                        tail = skewerTail(skewer);
+                        if (head.left) {
+                            if (tail.left) {
+                                start = getNextDown(head);
+                                finish = getNextUp(tail);
+                                linkSkewers(visuals, start.skewer, skewer, start.w + metre);
+                                node = getDown(start);
+                                boundary = getBoundary(visuals, skewer);
+                                linkSkewers(visuals, finish.skewer, skewer, boundary);
                                 __state = '5';
                             } else {
-                                linkSkewers(visuals, rightJ.skewer, skewer, boundary);
-                                corner = goRight(node);
-                                node = getDown(corner);
-                                __state = '5';
+                                __state = '4';
                             }
                         } else {
-                            if (_var2 === 'arrow-loop') {
-                                rightJ = getRight(node);
-                                linkSkewers(visuals, rightJ.skewer, skewer, boundary);
-                                node = getDown(node);
-                                __state = '5';
+                            __state = '4';
+                        }
+                        break;
+                    case '4':
+                        if (visuals.branches.length === 1) {
+                            __state = '1';
+                        } else {
+                            left = getSilCorner(visuals);
+                            hskewer = visuals.header.skewer;
+                            boundary = hskewer.boundary + metre;
+                            linkSkewers(visuals, left.skewer, hskewer, boundary);
+                            __state = '1';
+                        }
+                        break;
+                    case '5':
+                        if (node === finish) {
+                            if (node.type === 'question') {
+                                linkSkewers(visuals, node.skewer, skewer, node.w + boundary + metre);
+                                __state = '4';
                             } else {
-                                if (_var2 === 'junction') {
-                                    linkSkewers(visuals, node.skewer, skewer, node.w + boundary);
-                                    if (node.down) {
-                                        node = getDown(node);
-                                        __state = '5';
-                                    } else {
-                                        node = goLeft(node);
-                                        __state = '5';
-                                    }
+                                __state = '4';
+                            }
+                        } else {
+                            _var2 = node.type;
+                            if (_var2 === 'question') {
+                                rightJ = getRight(node);
+                                if (rightJ.up) {
+                                    linkSkewers(visuals, node.skewer, skewer, node.w + boundary + metre);
+                                    node = getDown(node);
+                                    __state = '5';
                                 } else {
-                                    if (_var2 === 'select') {
+                                    linkSkewers(visuals, rightJ.skewer, skewer, boundary);
+                                    corner = goRight(node);
+                                    node = getDown(corner);
+                                    __state = '5';
+                                }
+                            } else {
+                                if (_var2 === 'arrow-loop') {
+                                    rightJ = getRight(node);
+                                    linkSkewers(visuals, rightJ.skewer, skewer, boundary);
+                                    node = getDown(node);
+                                    __state = '5';
+                                } else {
+                                    if (_var2 === 'junction') {
                                         linkSkewers(visuals, node.skewer, skewer, node.w + boundary);
-                                        node = lastCase(node);
-                                        __state = '5';
+                                        if (node.down) {
+                                            node = getDown(node);
+                                            __state = '5';
+                                        } else {
+                                            node = goLeft(node);
+                                            __state = '5';
+                                        }
                                     } else {
-                                        linkSkewers(visuals, node.skewer, skewer, node.w + boundary);
-                                        node = getDown(node);
-                                        __state = '5';
+                                        if (_var2 === 'select') {
+                                            linkSkewers(visuals, node.skewer, skewer, node.w + boundary);
+                                            node = lastCase(node);
+                                            __state = '5';
+                                        } else {
+                                            linkSkewers(visuals, node.skewer, skewer, node.w + boundary);
+                                            node = getDown(node);
+                                            __state = '5';
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7216,42 +7621,42 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    metre = visuals.config.metre;
-                    if (visuals.end) {
-                        _var4 = last(visuals.branches);
-                        lastBranch = getNode(visuals, _var4);
-                        below = getDown(lastBranch);
-                        distance = below.level.coord - lastBranch.level.coord - below.h - lastBranch.h - metre;
-                        if (distance > 0) {
-                            __state = '5';
+                    case '2':
+                        metre = visuals.config.metre;
+                        if (visuals.end) {
+                            _var4 = last(visuals.branches);
+                            lastBranch = getNode(visuals, _var4);
+                            below = getDown(lastBranch);
+                            distance = below.level.coord - lastBranch.level.coord - below.h - lastBranch.h - metre;
+                            if (distance > 0) {
+                                __state = '5';
+                            } else {
+                                __state = '4';
+                            }
                         } else {
                             __state = '4';
                         }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    levels = collectLevels(visuals, lastBranch);
-                    _var2 = levels;
-                    _var3 = 0;
-                    __state = '12';
-                    break;
-                case '12':
-                    if (_var3 < _var2.length) {
-                        level = _var2[_var3];
-                        level.coord -= distance;
-                        _var3++;
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        levels = collectLevels(visuals, lastBranch);
+                        _var2 = levels;
+                        _var3 = 0;
                         __state = '12';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '12':
+                        if (_var3 < _var2.length) {
+                            level = _var2[_var3];
+                            level.coord -= distance;
+                            _var3++;
+                            __state = '12';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7260,120 +7665,120 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    metre = visuals.config.metre;
-                    _var3 = visuals.nodes;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '9';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    lowest = getLowestLevel(visuals);
-                    calculateSkewerPos(visuals.levels, visuals.levelLinks, lowest, 0);
-                    __state = '6';
-                    break;
-                case '6':
-                    max = 0;
-                    _var6 = visuals.levels;
-                    _var5 = Object.keys(_var6);
-                    _var7 = 0;
-                    __state = '21';
-                    break;
-                case '7':
-                    _var12 = visuals.nodes;
-                    _var11 = Object.keys(_var12);
-                    _var13 = 0;
-                    __state = '27';
-                    break;
-                case '8':
-                    _var4++;
-                    __state = '9';
-                    break;
-                case '9':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        node = _var3[id];
-                        if (node.down) {
-                            down = getDown(node);
-                            leftHeight = getLeftHeight(node);
-                            if (leftHeight === 0) {
-                                h = node.h;
-                                __state = '15';
+                    case '2':
+                        metre = visuals.config.metre;
+                        _var3 = visuals.nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '9';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        lowest = getLowestLevel(visuals);
+                        calculateSkewerPos(visuals.levels, visuals.levelLinks, lowest, 0);
+                        __state = '6';
+                        break;
+                    case '6':
+                        max = 0;
+                        _var6 = visuals.levels;
+                        _var5 = Object.keys(_var6);
+                        _var7 = 0;
+                        __state = '21';
+                        break;
+                    case '7':
+                        _var12 = visuals.nodes;
+                        _var11 = Object.keys(_var12);
+                        _var13 = 0;
+                        __state = '27';
+                        break;
+                    case '8':
+                        _var4++;
+                        __state = '9';
+                        break;
+                    case '9':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            if (node.down) {
+                                down = getDown(node);
+                                leftHeight = getLeftHeight(node);
+                                if (leftHeight === 0) {
+                                    h = node.h;
+                                    __state = '15';
+                                } else {
+                                    h = leftHeight;
+                                    __state = '15';
+                                }
                             } else {
-                                h = leftHeight;
-                                __state = '15';
+                                __state = '8';
                             }
                         } else {
-                            __state = '8';
+                            __state = '5';
                         }
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '15':
-                    distance = h + down.h + metre;
-                    linkLevels(visuals, down.level, node.level, distance);
-                    __state = '8';
-                    break;
-                case '21':
-                    if (_var7 < _var5.length) {
-                        id = _var5[_var7];
-                        level = _var6[id];
-                        max = Math.max(max, level.coord);
-                        _var7++;
-                        __state = '21';
-                    } else {
-                        _var9 = visuals.levels;
-                        _var8 = Object.keys(_var9);
-                        _var10 = 0;
-                        __state = '23';
-                    }
-                    break;
-                case '23':
-                    if (_var10 < _var8.length) {
-                        id = _var8[_var10];
-                        level = _var9[id];
-                        level.coord = max - level.coord;
-                        _var10++;
-                        __state = '23';
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '26':
-                    _var13++;
-                    __state = '27';
-                    break;
-                case '27':
-                    if (_var13 < _var11.length) {
-                        id = _var11[_var13];
-                        node = _var12[id];
-                        if (node.type === 'case') {
-                            __state = '31';
+                        break;
+                    case '15':
+                        distance = h + down.h + metre;
+                        linkLevels(visuals, down.level, node.level, distance);
+                        __state = '8';
+                        break;
+                    case '21':
+                        if (_var7 < _var5.length) {
+                            id = _var5[_var7];
+                            level = _var6[id];
+                            max = Math.max(max, level.coord);
+                            _var7++;
+                            __state = '21';
                         } else {
-                            if (node.type === 'branch') {
-                                if (node.up) {
-                                    __state = '31';
+                            _var9 = visuals.levels;
+                            _var8 = Object.keys(_var9);
+                            _var10 = 0;
+                            __state = '23';
+                        }
+                        break;
+                    case '23':
+                        if (_var10 < _var8.length) {
+                            id = _var8[_var10];
+                            level = _var9[id];
+                            level.coord = max - level.coord;
+                            _var10++;
+                            __state = '23';
+                        } else {
+                            __state = '7';
+                        }
+                        break;
+                    case '26':
+                        _var13++;
+                        __state = '27';
+                        break;
+                    case '27':
+                        if (_var13 < _var11.length) {
+                            id = _var11[_var13];
+                            node = _var12[id];
+                            if (node.type === 'case') {
+                                __state = '31';
+                            } else {
+                                if (node.type === 'branch') {
+                                    if (node.up) {
+                                        __state = '31';
+                                    } else {
+                                        __state = '26';
+                                    }
                                 } else {
                                     __state = '26';
                                 }
-                            } else {
-                                __state = '26';
                             }
+                        } else {
+                            __state = '4';
                         }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '31':
-                    jun = getUp(node);
-                    node.level.coord = jun.level.coord + metre + node.h;
-                    __state = '26';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '31':
+                        jun = getUp(node);
+                        node.level.coord = jun.level.coord + metre + node.h;
+                        __state = '26';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7387,39 +7792,39 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    skewer = createSkewer(visuals, true);
-                    if (node.type === 'header') {
-                        __state = '9';
-                    } else {
-                        beneath = getDown(node);
-                        if (beneath.type == 'branch') {
+                    case '2':
+                        skewer = createSkewer(visuals, true);
+                        if (node.type === 'header') {
                             __state = '9';
                         } else {
-                            __state = '5';
+                            beneath = getDown(node);
+                            if (beneath.type == 'branch') {
+                                __state = '9';
+                            } else {
+                                __state = '5';
+                            }
                         }
-                    }
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    __state = '13';
-                    break;
-                case '9':
-                    skewer.main = true;
-                    __state = '5';
-                    break;
-                case '13':
-                    linkNodeToSkewer(skewer, node);
-                    if (node.down) {
-                        node = getDown(node);
+                        break;
+                    case '4':
+                        return;
+                    case '5':
                         __state = '13';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '9':
+                        skewer.main = true;
+                        __state = '5';
+                        break;
+                    case '13':
+                        linkNodeToSkewer(skewer, node);
+                        if (node.down) {
+                            node = getDown(node);
+                            __state = '13';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7428,25 +7833,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    link = findLink(links, low, high);
-                    if (link) {
-                        __state = '4';
-                    } else {
-                        link = {
-                            low: low,
-                            high: high,
-                            distance: 0
-                        };
-                        addLink(links, link);
-                        __state = '4';
-                    }
-                    break;
-                case '4':
-                    link.distance = Math.max(link.distance, distance);
-                    return;
-                default:
-                    return;
+                    case '2':
+                        link = findLink(links, low, high);
+                        if (link) {
+                            __state = '4';
+                        } else {
+                            link = {
+                                low: low,
+                                high: high,
+                                distance: 0
+                            };
+                            addLink(links, link);
+                            __state = '4';
+                        }
+                        break;
+                    case '4':
+                        link.distance = Math.max(link.distance, distance);
+                        return;
+                    default:
+                        return;
                 }
             }
         }
@@ -7455,40 +7860,40 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    metre = visuals.config.metre;
-                    if (visuals.params) {
-                        skewer = createSkewer(visuals);
-                        header = visuals.header;
-                        params = visuals.params;
-                        level = header.level;
-                        hx = getX(header);
-                        hy = getY(header);
-                        x = hx + header.w + metre + params.w;
-                        if (params.h > header.h) {
-                            delta = params.h - header.h;
-                            y = hy - delta;
-                            __state = '10';
+                    case '1':
+                        return;
+                    case '2':
+                        metre = visuals.config.metre;
+                        if (visuals.params) {
+                            skewer = createSkewer(visuals);
+                            header = visuals.header;
+                            params = visuals.params;
+                            level = header.level;
+                            hx = getX(header);
+                            hy = getY(header);
+                            x = hx + header.w + metre + params.w;
+                            if (params.h > header.h) {
+                                delta = params.h - header.h;
+                                y = hy - delta;
+                                __state = '10';
+                            } else {
+                                y = hy;
+                                __state = '10';
+                            }
                         } else {
-                            y = hy;
-                            __state = '10';
+                            __state = '1';
                         }
-                    } else {
+                        break;
+                    case '10':
+                        level.coord = y;
+                        skewer.coord = x;
+                        params.level = level;
+                        params.skewer = skewer;
+                        createEdge(visuals, header, params, false);
                         __state = '1';
-                    }
-                    break;
-                case '10':
-                    level.coord = y;
-                    skewer.coord = x;
-                    params.level = level;
-                    params.skewer = skewer;
-                    createEdge(visuals, header, params, false);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7497,37 +7902,37 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var3 = visuals.skewers;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '7';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    if (visuals.branches.length === 1) {
-                        calculateSkewerPos(visuals.skewers, visuals.skewerLinks, visuals.header.skewer, 0);
-                        __state = '4';
-                    } else {
-                        left = getSilCorner(visuals);
-                        calculateSkewerPos(visuals.skewers, visuals.skewerLinks, left.skewer, 0);
-                        __state = '4';
-                    }
-                    break;
-                case '7':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        skewer = _var3[id];
-                        findLeftLinks(visuals, skewer);
-                        _var4++;
+                    case '2':
+                        _var3 = visuals.skewers;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
                         __state = '7';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        if (visuals.branches.length === 1) {
+                            calculateSkewerPos(visuals.skewers, visuals.skewerLinks, visuals.header.skewer, 0);
+                            __state = '4';
+                        } else {
+                            left = getSilCorner(visuals);
+                            calculateSkewerPos(visuals.skewers, visuals.skewerLinks, left.skewer, 0);
+                            __state = '4';
+                        }
+                        break;
+                    case '7':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            skewer = _var3[id];
+                            findLeftLinks(visuals, skewer);
+                            _var4++;
+                            __state = '7';
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7548,37 +7953,37 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visited = {};
-                    visited[branch.id] = true;
-                    _var5 = getDown(branch);
-                    scanManhattan(visited, _var5);
-                    delete visited[branch.id];
-                    levelIds = {};
-                    _var3 = visited;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '8';
-                    break;
-                case '8':
-                    if (_var4 < _var2.length) {
-                        nodeId = _var2[_var4];
-                        _ = _var3[nodeId];
-                        node = visuals.nodes[nodeId];
-                        levelIds[node.level.id] = true;
-                        _var4++;
+                    case '2':
+                        visited = {};
+                        visited[branch.id] = true;
+                        _var5 = getDown(branch);
+                        scanManhattan(visited, _var5);
+                        delete visited[branch.id];
+                        levelIds = {};
+                        _var3 = visited;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
                         __state = '8';
-                    } else {
-                        getLevel = function (levelId) {
-                            return visuals.levels[levelId];
-                        };
-                        _var7 = Object.keys(levelIds);
-                        _var6 = _var7.map(getLevel);
-                        return _var6;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '8':
+                        if (_var4 < _var2.length) {
+                            nodeId = _var2[_var4];
+                            _ = _var3[nodeId];
+                            node = visuals.nodes[nodeId];
+                            levelIds[node.level.id] = true;
+                            _var4++;
+                            __state = '8';
+                        } else {
+                            getLevel = function (levelId) {
+                                return visuals.levels[levelId];
+                            };
+                            _var7 = Object.keys(levelIds);
+                            _var6 = _var7.map(getLevel);
+                            return _var6;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7608,57 +8013,57 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    width = 0;
-                    _var2 = skewer.nodes;
-                    _var3 = 0;
-                    __state = '7';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    skewer.boundary = width;
-                    _var4 = skewer.nodes;
-                    _var5 = 0;
-                    __state = '12';
-                    break;
-                case '6':
-                    _var3++;
-                    __state = '7';
-                    break;
-                case '7':
-                    if (_var3 < _var2.length) {
-                        node = _var2[_var3];
-                        if (node.type === 'header') {
-                            __state = '6';
+                    case '2':
+                        width = 0;
+                        _var2 = skewer.nodes;
+                        _var3 = 0;
+                        __state = '7';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        skewer.boundary = width;
+                        _var4 = skewer.nodes;
+                        _var5 = 0;
+                        __state = '12';
+                        break;
+                    case '6':
+                        _var3++;
+                        __state = '7';
+                        break;
+                    case '7':
+                        if (_var3 < _var2.length) {
+                            node = _var2[_var3];
+                            if (node.type === 'header') {
+                                __state = '6';
+                            } else {
+                                width = Math.max(width, node.w);
+                                __state = '6';
+                            }
                         } else {
-                            width = Math.max(width, node.w);
-                            __state = '6';
+                            __state = '5';
                         }
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '11':
-                    _var5++;
-                    __state = '12';
-                    break;
-                case '12':
-                    if (_var5 < _var4.length) {
-                        node = _var4[_var5];
-                        _var6 = shouldAlignWidth(visuals, node);
-                        if (_var6) {
-                            node.w = width;
-                            __state = '11';
+                        break;
+                    case '11':
+                        _var5++;
+                        __state = '12';
+                        break;
+                    case '12':
+                        if (_var5 < _var4.length) {
+                            node = _var4[_var5];
+                            _var6 = shouldAlignWidth(visuals, node);
+                            if (_var6) {
+                                node.w = width;
+                                __state = '11';
+                            } else {
+                                __state = '11';
+                            }
                         } else {
-                            __state = '11';
+                            __state = '4';
                         }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7670,66 +8075,66 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var3 = visuals.nodes;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '7';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    _var6 = visuals.nodes;
-                    _var5 = Object.keys(_var6);
-                    _var7 = 0;
-                    __state = '13';
-                    break;
-                case '6':
-                    _var4++;
-                    __state = '7';
-                    break;
-                case '7':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        node = _var3[id];
-                        if (node.up) {
-                            __state = '6';
-                        } else {
-                            if (node.down) {
-                                if (node.skewer) {
-                                    __state = '6';
+                    case '2':
+                        _var3 = visuals.nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '7';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        _var6 = visuals.nodes;
+                        _var5 = Object.keys(_var6);
+                        _var7 = 0;
+                        __state = '13';
+                        break;
+                    case '6':
+                        _var4++;
+                        __state = '7';
+                        break;
+                    case '7':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            if (node.up) {
+                                __state = '6';
+                            } else {
+                                if (node.down) {
+                                    if (node.skewer) {
+                                        __state = '6';
+                                    } else {
+                                        traceSkewer(visuals, node);
+                                        __state = '6';
+                                    }
                                 } else {
-                                    traceSkewer(visuals, node);
                                     __state = '6';
                                 }
-                            } else {
-                                __state = '6';
                             }
-                        }
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '12':
-                    _var7++;
-                    __state = '13';
-                    break;
-                case '13':
-                    if (_var7 < _var5.length) {
-                        id = _var5[_var7];
-                        node = _var6[id];
-                        if (node.left) {
-                            __state = '12';
                         } else {
-                            traceLevel(visuals, node);
-                            __state = '12';
+                            __state = '5';
                         }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '12':
+                        _var7++;
+                        __state = '13';
+                        break;
+                    case '13':
+                        if (_var7 < _var5.length) {
+                            id = _var5[_var7];
+                            node = _var6[id];
+                            if (node.left) {
+                                __state = '12';
+                            } else {
+                                traceLevel(visuals, node);
+                                __state = '12';
+                            }
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7749,19 +8154,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    __state = '6';
-                    break;
-                case '6':
-                    if (node.left) {
-                        node = getLeft(node);
+                    case '2':
                         __state = '6';
-                    } else {
-                        return node;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        if (node.left) {
+                            node = getLeft(node);
+                            __state = '6';
+                        } else {
+                            return node;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7769,19 +8174,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    __state = '5';
-                    break;
-                case '5':
-                    node = getLeft(node);
-                    if (node.up) {
-                        return node;
-                    } else {
+                    case '2':
                         __state = '5';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '5':
+                        node = getLeft(node);
+                        if (node.up) {
+                            return node;
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7804,33 +8209,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = links;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var3++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        link = _var2[_var3];
-                        if (link.low === low) {
-                            if (link.high === high) {
-                                return link;
+                    case '2':
+                        _var2 = links;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var3++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            link = _var2[_var3];
+                            if (link.low === low) {
+                                if (link.high === high) {
+                                    return link;
+                                } else {
+                                    __state = '4';
+                                }
                             } else {
                                 __state = '4';
                             }
                         } else {
-                            __state = '4';
+                            return undefined;
                         }
-                    } else {
-                        return undefined;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7845,48 +8250,53 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    userConfig = userConfig || {};
-                    config = {
-                        'font': '14px Arial',
-                        'headerFont': 'bold 18px Arial',
-                        'metre': 20,
-                        'padding': 10,
-                        'width': 500,
-                        'lineHeight': 1.3,
-                        'maxHeight': 600,
-                        'minWidth': 100,
-                        'touchRadius': 5,
-                        'socketTouchRadius': 10,
-                        'yes': 'Yes',
-                        'no': 'No',
-                        'end': 'End',
-                        'exit': 'Exit',
-                        'branch': 'Branch',
-                        'canSelect': true,
-                        'drawZones': false,
-                        'socketRadius': 10,
-                        'socketBody': 'yellow',
-                        'socketBorder': 'black',
-                        'canvasLabels': '14px Arial',
-                        'buildContentDiv': buildMulitlineDiv,
-                        'getClipboard': getClipboard,
-                        'setClipboard': setClipboard
-                    };
-                    Object.assign(config, userConfig);
-                    __state = '12';
-                    break;
-                case '11':
-                    return config;
-                case '12':
-                    config.theme = copyTheme(userConfig.theme);
-                    buildAlignedNodes(config, userConfig);
-                    buildIconRender(config, userConfig);
-                    buildIconContent(config, userConfig);
-                    __state = '11';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        userConfig = userConfig || {};
+                        config = {
+                            'font': '14px Arial',
+                            'headerFont': 'bold 18px Arial',
+                            'branchFont': 'bold 14px Arial',
+                            'metre': 20,
+                            'triangleHeight': 20,
+                            'padding': 10,
+                            'maxWidth': 500,
+                            'lineHeight': 1.3,
+                            'maxHeight': 600,
+                            'minWidth': 100,
+                            'touchRadius': 5,
+                            'socketTouchRadius': 10,
+                            'yes': 'Yes',
+                            'no': 'No',
+                            'end': 'End',
+                            'exit': 'Exit',
+                            'branch': 'Branch',
+                            'canSelect': true,
+                            'drawZones': false,
+                            'socketRadius': 10,
+                            'socketBody': 'yellow',
+                            'socketBorder': 'black',
+                            'canvasLabels': '14px Arial',
+                            'insertionPadding': 10,
+                            'commentPadding': 10,
+                            'buildIconCore': buildIconCore,
+                            'getClipboard': getClipboard,
+                            'setClipboard': setClipboard,
+                            'onItemSelected': onItemSelected
+                        };
+                        Object.assign(config, userConfig);
+                        __state = '12';
+                        break;
+                    case '11':
+                        return config;
+                    case '12':
+                        config.theme = copyTheme(userConfig.theme);
+                        initAlignedNodes(config, userConfig);
+                        initIconRender(config, userConfig);
+                        initIconContent(config, userConfig);
+                        __state = '11';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -7899,166 +8309,166 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    zoom = widget.zoom / 10000;
-                    factor = html.getRetinaFactor();
-                    visuals = widget.visuals;
-                    config = widget.config;
-                    tx = visuals.scrollX;
-                    ty = visuals.scrollY;
-                    translate = 'translate(' + -tx + 'px, ' + -ty + 'px)';
-                    scale = 'scale(' + zoom + ', ' + zoom + ')';
-                    widget.contentContainer.style.transformOrigin = 'top left';
-                    widget.contentContainer.style.transform = scale + ' ' + translate;
-                    width = widget.width;
-                    height = widget.height;
-                    ctx = widget.canvas.getContext('2d');
-                    ctx.resetTransform();
-                    ctx.fillStyle = widget.config.theme.background;
-                    ctx.fillRect(0, 0, width * factor, height * factor);
-                    ctx.strokeStyle = 'yellow';
-                    ctx.lineWidth = 4;
-                    __state = '13';
-                    break;
-                case '10':
-                    return;
-                case '11':
-                    _var3 = visuals.edges;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '18';
-                    break;
-                case '13':
-                    if (widget.visuals.config.drawCross) {
-                        padding = 20;
-                        ctx.beginPath();
-                        ctx.moveTo(padding, padding);
-                        ctx.lineTo(width * zoom - padding, height * zoom - padding);
-                        ctx.stroke();
-                        ctx.beginPath();
-                        ctx.moveTo(width * zoom - padding, padding);
-                        ctx.lineTo(padding, height * zoom - padding);
-                        ctx.stroke();
-                        __state = '54';
-                    } else {
-                        __state = '54';
-                    }
-                    break;
-                case '18':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        edge = _var3[id];
-                        drawEdge(visuals, edge, ctx);
-                        _var4++;
+                    case '2':
+                        zoom = widget.zoom / 10000;
+                        factor = html.getRetinaFactor();
+                        visuals = widget.visuals;
+                        config = widget.config;
+                        tx = visuals.scrollX;
+                        ty = visuals.scrollY;
+                        translate = 'translate(' + -tx + 'px, ' + -ty + 'px)';
+                        scale = 'scale(' + zoom + ', ' + zoom + ')';
+                        widget.contentContainer.style.transformOrigin = 'top left';
+                        widget.contentContainer.style.transform = scale + ' ' + translate;
+                        width = widget.width;
+                        height = widget.height;
+                        ctx = widget.canvas.getContext('2d');
+                        ctx.resetTransform();
+                        ctx.fillStyle = widget.config.theme.background;
+                        ctx.fillRect(0, 0, width * factor, height * factor);
+                        ctx.strokeStyle = 'yellow';
+                        ctx.lineWidth = 4;
+                        __state = '13';
+                        break;
+                    case '10':
+                        return;
+                    case '11':
+                        _var3 = visuals.edges;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
                         __state = '18';
-                    } else {
-                        _var6 = widget.selection.prims;
-                        _var5 = Object.keys(_var6);
-                        _var7 = 0;
+                        break;
+                    case '13':
+                        if (widget.visuals.config.drawCross) {
+                            padding = 20;
+                            ctx.beginPath();
+                            ctx.moveTo(padding, padding);
+                            ctx.lineTo(width * zoom - padding, height * zoom - padding);
+                            ctx.stroke();
+                            ctx.beginPath();
+                            ctx.moveTo(width * zoom - padding, padding);
+                            ctx.lineTo(padding, height * zoom - padding);
+                            ctx.stroke();
+                            __state = '54';
+                        } else {
+                            __state = '54';
+                        }
+                        break;
+                    case '18':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            edge = _var3[id];
+                            drawEdge(visuals, edge, ctx);
+                            _var4++;
+                            __state = '18';
+                        } else {
+                            _var6 = widget.selection.prims;
+                            _var5 = Object.keys(_var6);
+                            _var7 = 0;
+                            __state = '39';
+                        }
+                        break;
+                    case '21':
+                        _var9 = visuals.nodes;
+                        _var8 = Object.keys(_var9);
+                        _var10 = 0;
+                        __state = '23';
+                        break;
+                    case '22':
+                        _var10++;
+                        __state = '23';
+                        break;
+                    case '23':
+                        if (_var10 < _var8.length) {
+                            id = _var8[_var10];
+                            node = _var9[id];
+                            _var16 = isDrawableNode(node);
+                            if (_var16) {
+                                drawIcon(visuals, node, ctx);
+                                __state = '22';
+                            } else {
+                                __state = '22';
+                            }
+                        } else {
+                            _var12 = widget.selection.prims;
+                            _var11 = Object.keys(_var12);
+                            _var13 = 0;
+                            __state = '43';
+                        }
+                        break;
+                    case '34':
+                        if (visuals.selectionFrame) {
+                            ctx.strokeStyle = visuals.config.theme.lines;
+                            ctx.lineWidth = 2;
+                            ctx.strokeRect(visuals.selectionFrame.left, visuals.selectionFrame.top, visuals.selectionFrame.width, visuals.selectionFrame.height);
+                            __state = '10';
+                        } else {
+                            __state = '10';
+                        }
+                        break;
+                    case '38':
+                        _var7++;
                         __state = '39';
-                    }
-                    break;
-                case '21':
-                    _var9 = visuals.nodes;
-                    _var8 = Object.keys(_var9);
-                    _var10 = 0;
-                    __state = '23';
-                    break;
-                case '22':
-                    _var10++;
-                    __state = '23';
-                    break;
-                case '23':
-                    if (_var10 < _var8.length) {
-                        id = _var8[_var10];
-                        node = _var9[id];
-                        _var16 = isDrawableNode(node);
-                        if (_var16) {
-                            drawIcon(visuals, node, ctx);
-                            __state = '22';
+                        break;
+                    case '39':
+                        if (_var7 < _var5.length) {
+                            id = _var5[_var7];
+                            type = _var6[id];
+                            if (type === 'edge') {
+                                drawEdgeCandy(visuals, id, ctx, config);
+                                __state = '38';
+                            } else {
+                                __state = '38';
+                            }
                         } else {
-                            __state = '22';
+                            __state = '21';
                         }
-                    } else {
-                        _var12 = widget.selection.prims;
-                        _var11 = Object.keys(_var12);
-                        _var13 = 0;
+                        break;
+                    case '42':
+                        _var13++;
                         __state = '43';
-                    }
-                    break;
-                case '34':
-                    if (visuals.selectionFrame) {
-                        ctx.strokeStyle = visuals.config.theme.lines;
-                        ctx.lineWidth = 2;
-                        ctx.strokeRect(visuals.selectionFrame.left, visuals.selectionFrame.top, visuals.selectionFrame.width, visuals.selectionFrame.height);
-                        __state = '10';
-                    } else {
-                        __state = '10';
-                    }
-                    break;
-                case '38':
-                    _var7++;
-                    __state = '39';
-                    break;
-                case '39':
-                    if (_var7 < _var5.length) {
-                        id = _var5[_var7];
-                        type = _var6[id];
-                        if (type === 'edge') {
-                            drawEdgeCandy(visuals, id, ctx, config);
-                            __state = '38';
+                        break;
+                    case '43':
+                        if (_var13 < _var11.length) {
+                            id = _var11[_var13];
+                            type = _var12[id];
+                            if (type === 'node') {
+                                drawNodeCandy(visuals, id, ctx, config);
+                                __state = '42';
+                            } else {
+                                __state = '42';
+                            }
                         } else {
-                            __state = '38';
+                            __state = '50';
                         }
-                    } else {
-                        __state = '21';
-                    }
-                    break;
-                case '42':
-                    _var13++;
-                    __state = '43';
-                    break;
-                case '43':
-                    if (_var13 < _var11.length) {
-                        id = _var11[_var13];
-                        type = _var12[id];
-                        if (type === 'node') {
-                            drawNodeCandy(visuals, id, ctx, config);
-                            __state = '42';
-                        } else {
-                            __state = '42';
-                        }
-                    } else {
-                        __state = '50';
-                    }
-                    break;
-                case '50':
-                    _var14 = visuals.sockets;
-                    _var15 = 0;
-                    __state = '52';
-                    break;
-                case '52':
-                    if (_var15 < _var14.length) {
-                        socket = _var14[_var15];
-                        drawSocket(visuals, socket, ctx, config);
-                        _var15++;
+                        break;
+                    case '50':
+                        _var14 = visuals.sockets;
+                        _var15 = 0;
                         __state = '52';
-                    } else {
-                        __state = '34';
-                    }
-                    break;
-                case '54':
-                    ctx.scale(factor * zoom, factor * zoom);
-                    ctx.translate(-visuals.scrollX, -visuals.scrollY);
-                    if (widget.visuals.config.drawZones) {
-                        drawSubspaces(widget.visuals, ctx);
-                        __state = '11';
-                    } else {
-                        __state = '11';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '52':
+                        if (_var15 < _var14.length) {
+                            socket = _var14[_var15];
+                            drawSocket(visuals, socket, ctx, config);
+                            _var15++;
+                            __state = '52';
+                        } else {
+                            __state = '34';
+                        }
+                        break;
+                    case '54':
+                        ctx.scale(factor * zoom, factor * zoom);
+                        ctx.translate(-visuals.scrollX, -visuals.scrollY);
+                        if (widget.visuals.config.drawZones) {
+                            drawSubspaces(widget.visuals, ctx);
+                            __state = '11';
+                        } else {
+                            __state = '11';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -8067,28 +8477,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visuals = widget.visuals;
-                    savedOrigin = widget.origins[widget.diagramId];
-                    if (savedOrigin) {
-                        left = savedOrigin.x;
-                        top = savedOrigin.y;
-                        __state = '10';
-                    } else {
-                        left = visuals.box.left;
-                        top = visuals.box.top;
-                        __state = '10';
-                    }
-                    break;
-                case '10':
-                    setScroll(widget, left, top);
-                    zoom = widget.zoom / 10000;
-                    widget.scrollable.style.width = visuals.box.width * zoom + 'px';
-                    widget.scrollable.style.height = visuals.box.height * zoom + 'px';
-                    copyScrollToScrollable(widget);
-                    return;
-                default:
-                    return;
+                    case '2':
+                        visuals = widget.visuals;
+                        savedOrigin = widget.origins[widget.diagramId];
+                        if (savedOrigin) {
+                            left = savedOrigin.x;
+                            top = savedOrigin.y;
+                            __state = '10';
+                        } else {
+                            left = visuals.box.left;
+                            top = visuals.box.top;
+                            __state = '10';
+                        }
+                        break;
+                    case '10':
+                        setScroll(widget, left, top);
+                        zoom = widget.zoom / 10000;
+                        widget.scrollable.style.width = visuals.box.width * zoom + 'px';
+                        widget.scrollable.style.height = visuals.box.height * zoom + 'px';
+                        copyScrollToScrollable(widget);
+                        return;
+                    default:
+                        return;
                 }
             }
         }
@@ -8106,33 +8516,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.type === 'junction') {
-                        if (node.left) {
-                            if (node.up) {
-                                __state = '9';
-                            } else {
-                                if (node.right) {
+                    case '2':
+                        if (node.type === 'junction') {
+                            if (node.left) {
+                                if (node.up) {
                                     __state = '9';
                                 } else {
-                                    if (node.down) {
-                                        return true;
-                                    } else {
+                                    if (node.right) {
                                         __state = '9';
+                                    } else {
+                                        if (node.down) {
+                                            return true;
+                                        } else {
+                                            __state = '9';
+                                        }
                                     }
                                 }
+                            } else {
+                                __state = '9';
                             }
                         } else {
                             __state = '9';
                         }
-                    } else {
-                        __state = '9';
-                    }
-                    break;
-                case '9':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '9':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -8147,34 +8557,34 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edge = visuals.edges[id];
-                    head = edge.head;
-                    tail = edge.tail;
-                    if (edge.vertical) {
-                        head.down = null;
-                        tail.up = null;
-                        __state = '10';
-                    } else {
-                        head.right = null;
-                        tail.left = null;
-                        __state = '10';
-                    }
-                    break;
-                case '10':
-                    remove(head.sources, edge);
-                    remove(head.targets, edge);
-                    remove(tail.sources, edge);
-                    remove(tail.targets, edge);
-                    edge.head = null;
-                    edge.tail = null;
-                    edge.source = null;
-                    edge.target = null;
-                    edge.finalTarget = null;
-                    delete visuals.edges[id];
-                    return;
-                default:
-                    return;
+                    case '2':
+                        edge = visuals.edges[id];
+                        head = edge.head;
+                        tail = edge.tail;
+                        if (edge.vertical) {
+                            head.down = null;
+                            tail.up = null;
+                            __state = '10';
+                        } else {
+                            head.right = null;
+                            tail.left = null;
+                            __state = '10';
+                        }
+                        break;
+                    case '10':
+                        remove(head.sources, edge);
+                        remove(head.targets, edge);
+                        remove(tail.sources, edge);
+                        remove(tail.targets, edge);
+                        edge.head = null;
+                        edge.tail = null;
+                        edge.source = null;
+                        edge.target = null;
+                        edge.finalTarget = null;
+                        delete visuals.edges[id];
+                        return;
+                    default:
+                        return;
                 }
             }
         }
@@ -8199,18 +8609,21 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.type === 'junction') {
-                        if (node.left) {
-                            if (node.up) {
-                                if (node.right) {
-                                    __state = '9';
-                                } else {
-                                    if (node.down) {
+                    case '2':
+                        if (node.type === 'junction') {
+                            if (node.left) {
+                                if (node.up) {
+                                    if (node.right) {
                                         __state = '9';
                                     } else {
-                                        return true;
+                                        if (node.down) {
+                                            __state = '9';
+                                        } else {
+                                            return true;
+                                        }
                                     }
+                                } else {
+                                    __state = '9';
                                 }
                             } else {
                                 __state = '9';
@@ -8218,14 +8631,11 @@ function createDrakonWidget() {
                         } else {
                             __state = '9';
                         }
-                    } else {
-                        __state = '9';
-                    }
-                    break;
-                case '9':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '9':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -8234,36 +8644,36 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    node = visuals.nodes[id];
-                    if (node.left) {
-                        __state = '12';
-                    } else {
-                        if (node.up) {
+                    case '1':
+                        return;
+                    case '2':
+                        node = visuals.nodes[id];
+                        if (node.left) {
                             __state = '12';
                         } else {
-                            if (node.right) {
+                            if (node.up) {
                                 __state = '12';
                             } else {
-                                if (node.down) {
+                                if (node.right) {
                                     __state = '12';
                                 } else {
-                                    node.finalTarget = undefined;
-                                    remove(node.skewer.nodes, node);
-                                    remove(node.level.nodes, node);
-                                    delete visuals.nodes[id];
-                                    __state = '1';
+                                    if (node.down) {
+                                        __state = '12';
+                                    } else {
+                                        node.finalTarget = undefined;
+                                        remove(node.skewer.nodes, node);
+                                        remove(node.level.nodes, node);
+                                        delete visuals.nodes[id];
+                                        __state = '1';
+                                    }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '12':
-                    throw new Error('removeNode: Node is connected: ' + id);
-                default:
-                    return;
+                        break;
+                    case '12':
+                        throw new Error('removeNode: Node is connected: ' + id);
+                    default:
+                        return;
                 }
             }
         }
@@ -8271,33 +8681,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.type === 'junction') {
-                        if (node.left) {
-                            __state = '9';
-                        } else {
-                            if (node.up) {
-                                if (node.right) {
-                                    if (node.down) {
-                                        __state = '9';
+                    case '2':
+                        if (node.type === 'junction') {
+                            if (node.left) {
+                                __state = '9';
+                            } else {
+                                if (node.up) {
+                                    if (node.right) {
+                                        if (node.down) {
+                                            __state = '9';
+                                        } else {
+                                            return true;
+                                        }
                                     } else {
-                                        return true;
+                                        __state = '9';
                                     }
                                 } else {
                                     __state = '9';
                                 }
-                            } else {
-                                __state = '9';
                             }
+                        } else {
+                            __state = '9';
                         }
-                    } else {
-                        __state = '9';
-                    }
-                    break;
-                case '9':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '9':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -8343,26 +8753,26 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    step = {
-                        node1: node1,
-                        node2: node2,
-                        down: true,
-                        back: false
-                    };
-                    _var2 = isBackLink(node1, node2);
-                    if (_var2) {
-                        step.back = true;
-                        __state = '6';
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    stack.push(step);
-                    return step;
-                default:
-                    return;
+                    case '2':
+                        step = {
+                            node1: node1,
+                            node2: node2,
+                            down: true,
+                            back: false
+                        };
+                        _var2 = isBackLink(node1, node2);
+                        if (_var2) {
+                            step.back = true;
+                            __state = '6';
+                        } else {
+                            __state = '6';
+                        }
+                        break;
+                    case '6':
+                        stack.push(step);
+                        return step;
+                    default:
+                        return;
                 }
             }
         }
@@ -8371,24 +8781,24 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    leftTop = goUp(node);
-                    parTop = getLeft(leftTop);
-                    parNext = getDown(parTop);
-                    if (parNext.type == 'case') {
-                        parNext = getDown(parNext);
-                        __state = '6';
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    tmpJun = splitVertical(visuals, parNext);
-                    edge = createEdge(visuals, tmpJun, leftBottom, false);
-                    visuals.tempEdges.push(edge);
-                    return;
-                default:
-                    return;
+                    case '2':
+                        leftTop = goUp(node);
+                        parTop = getLeft(leftTop);
+                        parNext = getDown(parTop);
+                        if (parNext.type == 'case') {
+                            parNext = getDown(parNext);
+                            __state = '6';
+                        } else {
+                            __state = '6';
+                        }
+                        break;
+                    case '6':
+                        tmpJun = splitVertical(visuals, parNext);
+                        edge = createEdge(visuals, tmpJun, leftBottom, false);
+                        visuals.tempEdges.push(edge);
+                        return;
+                    default:
+                        return;
                 }
             }
         }
@@ -8406,115 +8816,115 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    stack = [];
-                    planNextSteps(visuals, stack, startNode);
-                    __state = '5';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    if (stack.length === 0) {
-                        __state = '4';
-                    } else {
-                        step = stack.pop();
-                        node1 = step.node1;
-                        node2 = step.node2;
-                        if (step.back) {
-                            if (step.down) {
-                                __state = '8';
-                            } else {
-                                __state = '9';
-                            }
+                    case '2':
+                        stack = [];
+                        planNextSteps(visuals, stack, startNode);
+                        __state = '5';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        if (stack.length === 0) {
+                            __state = '4';
                         } else {
-                            if (step.down) {
-                                __state = '17';
+                            step = stack.pop();
+                            node1 = step.node1;
+                            node2 = step.node2;
+                            if (step.back) {
+                                if (step.down) {
+                                    __state = '8';
+                                } else {
+                                    __state = '9';
+                                }
                             } else {
-                                node1 = turnDown(visuals, node1, node2);
-                                __state = '17';
+                                if (step.down) {
+                                    __state = '17';
+                                } else {
+                                    node1 = turnDown(visuals, node1, node2);
+                                    __state = '17';
+                                }
                             }
                         }
-                    }
-                    break;
-                case '6':
-                    makeDownEdge(visuals, node1, node2, node2);
-                    __state = '10';
-                    break;
-                case '7':
-                    if (mountUp) {
-                        _var2 = isUglyMountUp(node1, node2);
-                        if (_var2) {
-                            node2.mountUp = null;
-                            __state = '27';
-                        } else {
-                            makeDownEdge(visuals, node1, mountUp, node2);
-                            if (mountUp === node2.mountUp) {
+                        break;
+                    case '6':
+                        makeDownEdge(visuals, node1, node2, node2);
+                        __state = '10';
+                        break;
+                    case '7':
+                        if (mountUp) {
+                            _var2 = isUglyMountUp(node1, node2);
+                            if (_var2) {
                                 node2.mountUp = null;
-                                __state = '5';
+                                __state = '27';
                             } else {
-                                __state = '5';
+                                makeDownEdge(visuals, node1, mountUp, node2);
+                                if (mountUp === node2.mountUp) {
+                                    node2.mountUp = null;
+                                    __state = '5';
+                                } else {
+                                    __state = '5';
+                                }
+                            }
+                        } else {
+                            __state = '27';
+                        }
+                        break;
+                    case '8':
+                        if (node2.rightEdge) {
+                            jun2 = splitRight(visuals, node2.rightEdge);
+                            makeDownEdge(visuals, node1, jun2, node2);
+                            __state = '5';
+                        } else {
+                            turn180up(visuals, node1, node2);
+                            __state = '5';
+                        }
+                        break;
+                    case '9':
+                        top = getRight(node2);
+                        if (node2.upEdge) {
+                            bottom = splitVerticalUp(visuals, node2.upEdge);
+                            __state = '38';
+                        } else {
+                            bottom = createJunction(visuals, node2);
+                            makeUpEdge(visuals, top, bottom, node2);
+                            __state = '38';
+                        }
+                        break;
+                    case '10':
+                        planNextSteps(visuals, stack, node2);
+                        __state = '5';
+                        break;
+                    case '17':
+                        if (node2.prev.length === 1) {
+                            __state = '6';
+                        } else {
+                            if (node2.up) {
+                                mountUp = node2.mountUp;
+                                mountRight = node2.mountRight;
+                                __state = '7';
+                            } else {
+                                __state = '6';
                             }
                         }
-                    } else {
-                        __state = '27';
-                    }
-                    break;
-                case '8':
-                    if (node2.rightEdge) {
-                        jun2 = splitRight(visuals, node2.rightEdge);
+                        break;
+                    case '27':
+                        jun2 = createLeftUp(visuals, node2, node2);
                         makeDownEdge(visuals, node1, jun2, node2);
-                        __state = '5';
-                    } else {
-                        turn180up(visuals, node1, node2);
-                        __state = '5';
-                    }
-                    break;
-                case '9':
-                    top = getRight(node2);
-                    if (node2.upEdge) {
-                        bottom = splitVerticalUp(visuals, node2.upEdge);
-                        __state = '38';
-                    } else {
-                        bottom = createJunction(visuals, node2);
-                        makeUpEdge(visuals, top, bottom, node2);
-                        __state = '38';
-                    }
-                    break;
-                case '10':
-                    planNextSteps(visuals, stack, node2);
-                    __state = '5';
-                    break;
-                case '17':
-                    if (node2.prev.length === 1) {
-                        __state = '6';
-                    } else {
-                        if (node2.up) {
-                            mountUp = node2.mountUp;
-                            mountRight = node2.mountRight;
-                            __state = '7';
+                        if (mountRight) {
+                            makeLeftEdge(visuals, mountRight, jun2, node2);
+                            __state = '5';
                         } else {
-                            __state = '6';
+                            jun3 = splitVertical(visuals, node2);
+                            makeLeftEdge(visuals, jun3, jun2, node2);
+                            __state = '5';
                         }
-                    }
-                    break;
-                case '27':
-                    jun2 = createLeftUp(visuals, node2, node2);
-                    makeDownEdge(visuals, node1, jun2, node2);
-                    if (mountRight) {
-                        makeLeftEdge(visuals, mountRight, jun2, node2);
+                        break;
+                    case '38':
+                        node2.rightEdge = makeRightEdge(visuals, node1, bottom, node2);
                         __state = '5';
-                    } else {
-                        jun3 = splitVertical(visuals, node2);
-                        makeLeftEdge(visuals, jun3, jun2, node2);
-                        __state = '5';
-                    }
-                    break;
-                case '38':
-                    node2.rightEdge = makeRightEdge(visuals, node1, bottom, node2);
-                    __state = '5';
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -8523,39 +8933,39 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = node.type;
-                    if (_var2 === 'select') {
-                        layoutSelect(visuals, stack, node);
-                        __state = '1';
-                    } else {
-                        if (_var2 === 'question') {
-                            next1 = node.next[0];
-                            next2 = node.next[1];
-                            planRightStep(stack, node, next2);
-                            planStep(stack, node, next1);
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = node.type;
+                        if (_var2 === 'select') {
+                            layoutSelect(visuals, stack, node);
                             __state = '1';
                         } else {
-                            if (_var2 === 'arrow-loop') {
-                                next1 = buildArrowUp(visuals, node);
-                                planNextSteps(visuals, stack, next1);
+                            if (_var2 === 'question') {
+                                next1 = node.next[0];
+                                next2 = node.next[1];
+                                planRightStep(stack, node, next2);
+                                planStep(stack, node, next1);
                                 __state = '1';
                             } else {
-                                if (node.next.length === 0) {
+                                if (_var2 === 'arrow-loop') {
+                                    next1 = buildArrowUp(visuals, node);
+                                    planNextSteps(visuals, stack, next1);
                                     __state = '1';
                                 } else {
-                                    next1 = node.next[0];
-                                    planStep(stack, node, next1);
-                                    __state = '1';
+                                    if (node.next.length === 0) {
+                                        __state = '1';
+                                    } else {
+                                        next1 = node.next[0];
+                                        planStep(stack, node, next1);
+                                        __state = '1';
+                                    }
                                 }
                             }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -8564,21 +8974,21 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edge = makeDownEdgeCore(visuals, head, tail, finalTarget);
-                    _var2 = isLeftDown(head);
-                    if (_var2) {
-                        finalTarget.mountUp = head;
-                        __state = '6';
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    edge.role = 'down';
-                    return edge;
-                default:
-                    return;
+                    case '2':
+                        edge = makeDownEdgeCore(visuals, head, tail, finalTarget);
+                        _var2 = isLeftDown(head);
+                        if (_var2) {
+                            finalTarget.mountUp = head;
+                            __state = '6';
+                        } else {
+                            __state = '6';
+                        }
+                        break;
+                    case '6':
+                        edge.role = 'down';
+                        return edge;
+                    default:
+                        return;
                 }
             }
         }
@@ -8625,33 +9035,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.type === 'junction') {
-                        if (node.left) {
-                            __state = '9';
-                        } else {
-                            if (node.up) {
-                                if (node.right) {
-                                    if (node.down) {
-                                        return true;
+                    case '2':
+                        if (node.type === 'junction') {
+                            if (node.left) {
+                                __state = '9';
+                            } else {
+                                if (node.up) {
+                                    if (node.right) {
+                                        if (node.down) {
+                                            return true;
+                                        } else {
+                                            __state = '9';
+                                        }
                                     } else {
                                         __state = '9';
                                     }
                                 } else {
                                     __state = '9';
                                 }
-                            } else {
-                                __state = '9';
                             }
+                        } else {
+                            __state = '9';
                         }
-                    } else {
-                        __state = '9';
-                    }
-                    break;
-                case '9':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '9':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -8660,23 +9070,23 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = isArrowLoop(upper);
-                    if (_var2) {
-                        _var3 = contains(upper.aprev, lower);
-                        if (_var3) {
-                            return true;
+                    case '2':
+                        _var2 = isArrowLoop(upper);
+                        if (_var2) {
+                            _var3 = contains(upper.aprev, lower);
+                            if (_var3) {
+                                return true;
+                            } else {
+                                __state = '6';
+                            }
                         } else {
                             __state = '6';
                         }
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -8710,67 +9120,67 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    select.cases = [];
-                    node = select.next[0];
-                    __state = '10';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    left = null;
-                    _var2 = select.cases;
-                    _var3 = 0;
-                    __state = '13';
-                    break;
-                case '6':
-                    i = select.cases.length - 1;
-                    __state = '22';
-                    break;
-                case '10':
-                    node.select = select;
-                    select.cases.push(node);
-                    if (node.next.length === 2) {
-                        node = node.next[1];
+                    case '2':
+                        select.cases = [];
+                        node = select.next[0];
                         __state = '10';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '13':
-                    if (_var3 < _var2.length) {
-                        caseNode = _var2[_var3];
-                        jun = createJunction(visuals, undefined);
-                        makeDownEdgeCore(visuals, jun, caseNode, undefined);
-                        if (left) {
-                            createEdge(visuals, left, jun, false);
-                            __state = '19';
-                        } else {
-                            __state = '19';
-                        }
-                    } else {
-                        _var4 = getUp(select.cases[0]);
-                        makeDownEdgeCore(visuals, select, _var4, undefined);
-                        __state = '6';
-                    }
-                    break;
-                case '19':
-                    left = jun;
-                    _var3++;
-                    __state = '13';
-                    break;
-                case '22':
-                    if (i >= 0) {
-                        node = select.cases[i];
-                        planStep(stack, node, node.next[0]);
-                        i--;
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        left = null;
+                        _var2 = select.cases;
+                        _var3 = 0;
+                        __state = '13';
+                        break;
+                    case '6':
+                        i = select.cases.length - 1;
                         __state = '22';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '10':
+                        node.select = select;
+                        select.cases.push(node);
+                        if (node.next.length === 2) {
+                            node = node.next[1];
+                            __state = '10';
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    case '13':
+                        if (_var3 < _var2.length) {
+                            caseNode = _var2[_var3];
+                            jun = createJunction(visuals, undefined);
+                            makeDownEdgeCore(visuals, jun, caseNode, undefined);
+                            if (left) {
+                                createEdge(visuals, left, jun, false);
+                                __state = '19';
+                            } else {
+                                __state = '19';
+                            }
+                        } else {
+                            _var4 = getUp(select.cases[0]);
+                            makeDownEdgeCore(visuals, select, _var4, undefined);
+                            __state = '6';
+                        }
+                        break;
+                    case '19':
+                        left = jun;
+                        _var3++;
+                        __state = '13';
+                        break;
+                    case '22':
+                        if (i >= 0) {
+                            node = select.cases[i];
+                            planStep(stack, node, node.next[0]);
+                            i--;
+                            __state = '22';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -8789,19 +9199,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    __state = '6';
-                    break;
-                case '6':
-                    if (node.up) {
-                        node = getUp(node);
+                    case '2':
                         __state = '6';
-                    } else {
-                        return node;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        if (node.up) {
+                            node = getUp(node);
+                            __state = '6';
+                        } else {
+                            return node;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -8815,19 +9225,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    __state = '6';
-                    break;
-                case '6':
-                    if (node.down) {
-                        node = getDown(node);
+                    case '2':
                         __state = '6';
-                    } else {
-                        return node;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        if (node.down) {
+                            node = getDown(node);
+                            __state = '6';
+                        } else {
+                            return node;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -8839,51 +9249,51 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = getNextId(visuals);
-                    id = 'e' + _var2;
-                    edge = {
-                        id: id,
-                        head: head,
-                        tail: tail,
-                        vertical: vertical,
-                        links: []
-                    };
-                    if (vertical) {
-                        if (head.down) {
-                            _var6 = Error('head.down is busy');
-                            throw _var6;
-                        } else {
-                            if (tail.up) {
-                                _var5 = Error('tail.up is busy');
-                                throw _var5;
+                    case '2':
+                        _var2 = getNextId(visuals);
+                        id = 'e' + _var2;
+                        edge = {
+                            id: id,
+                            head: head,
+                            tail: tail,
+                            vertical: vertical,
+                            links: []
+                        };
+                        if (vertical) {
+                            if (head.down) {
+                                _var6 = Error('head.down is busy');
+                                throw _var6;
                             } else {
-                                head.down = edge;
-                                tail.up = edge;
-                                __state = '16';
+                                if (tail.up) {
+                                    _var5 = Error('tail.up is busy');
+                                    throw _var5;
+                                } else {
+                                    head.down = edge;
+                                    tail.up = edge;
+                                    __state = '16';
+                                }
+                            }
+                        } else {
+                            if (head.right) {
+                                _var4 = Error('head.right is busy');
+                                throw _var4;
+                            } else {
+                                if (tail.left) {
+                                    _var3 = Error('tail.left is busy');
+                                    throw _var3;
+                                } else {
+                                    head.right = edge;
+                                    tail.left = edge;
+                                    __state = '16';
+                                }
                             }
                         }
-                    } else {
-                        if (head.right) {
-                            _var4 = Error('head.right is busy');
-                            throw _var4;
-                        } else {
-                            if (tail.left) {
-                                _var3 = Error('tail.left is busy');
-                                throw _var3;
-                            } else {
-                                head.right = edge;
-                                tail.left = edge;
-                                __state = '16';
-                            }
-                        }
-                    }
-                    break;
-                case '16':
-                    visuals.edges[id] = edge;
-                    return edge;
-                default:
-                    return;
+                        break;
+                    case '16':
+                        visuals.edges[id] = edge;
+                        return edge;
+                    default:
+                        return;
                 }
             }
         }
@@ -8895,57 +9305,57 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (id) {
-                        __state = '3';
-                    } else {
-                        _var3 = getNextId(visuals);
-                        id = 'n' + _var3;
-                        __state = '3';
-                    }
-                    break;
-                case '3':
-                    node = {
-                        id: id,
-                        itemId: itemId,
-                        type: type,
-                        content: content,
-                        w: 0,
-                        h: 0,
-                        next: [],
-                        prev: [],
-                        aprev: [],
-                        targets: [],
-                        sources: [],
-                        loops: {}
-                    };
-                    visuals.nodes[id] = node;
-                    if (itemId) {
-                        visuals.itemsToNodes[itemId] = id;
-                        __state = '10';
-                    } else {
-                        __state = '10';
-                    }
-                    break;
-                case '9':
-                    return node;
-                case '10':
-                    addToMultiDict(visuals.byType, node.type, node.id);
-                    _var2 = node.type;
-                    if (_var2 === 'header') {
-                        visuals.header = node;
-                        __state = '9';
-                    } else {
-                        if (_var2 === 'end') {
-                            visuals.end = node;
+                    case '2':
+                        if (id) {
+                            __state = '3';
+                        } else {
+                            _var3 = getNextId(visuals);
+                            id = 'n' + _var3;
+                            __state = '3';
+                        }
+                        break;
+                    case '3':
+                        node = {
+                            id: id,
+                            itemId: itemId,
+                            type: type,
+                            content: content,
+                            w: 0,
+                            h: 0,
+                            next: [],
+                            prev: [],
+                            aprev: [],
+                            targets: [],
+                            sources: [],
+                            loops: {}
+                        };
+                        visuals.nodes[id] = node;
+                        if (itemId) {
+                            visuals.itemsToNodes[itemId] = id;
+                            __state = '10';
+                        } else {
+                            __state = '10';
+                        }
+                        break;
+                    case '9':
+                        return node;
+                    case '10':
+                        addToMultiDict(visuals.byType, node.type, node.id);
+                        _var2 = node.type;
+                        if (_var2 === 'header') {
+                            visuals.header = node;
                             __state = '9';
                         } else {
-                            __state = '9';
+                            if (_var2 === 'end') {
+                                visuals.end = node;
+                                __state = '9';
+                            } else {
+                                __state = '9';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -8964,58 +9374,6 @@ function createDrakonWidget() {
             widget.visuals = visuals;
             initScrollPos(widget);
             return;
-        }
-        function flowIcon(visuals, node) {
-            var flow, config, w, h;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    flow = visuals.config.iconContent[node.type];
-                    if (flow) {
-                        __state = '17';
-                    } else {
-                        flow = visuals.config.iconContent.action;
-                        console.error('iconContent callback not found for node of type: ' + node.type);
-                        __state = '17';
-                    }
-                    break;
-                case '8':
-                    config = visuals.config;
-                    node.w = makeHalfSize(config, w);
-                    node.h = makeHalfSize(config, h);
-                    if (node.type === 'arrow-loop') {
-                        __state = '1';
-                    } else {
-                        node.h = Math.max(node.h, visuals.config.metre);
-                        __state = '1';
-                    }
-                    break;
-                case '14':
-                    if ('h' in node.frame) {
-                        h = node.frame.h;
-                        __state = '8';
-                    } else {
-                        h = node.frame.height;
-                        __state = '8';
-                    }
-                    break;
-                case '17':
-                    node.frame = flow(node, visuals.config, visuals.container);
-                    if ('w' in node.frame) {
-                        w = node.frame.w;
-                        __state = '14';
-                    } else {
-                        w = node.frame.width;
-                        __state = '14';
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
         }
         function addEdgeSubRecord(records, edge) {
             var targetId, record;
@@ -9039,141 +9397,141 @@ function createDrakonWidget() {
                 try {
                     while (true) {
                         switch (me.state) {
-                        case '2':
-                            me.state = '10';
-                            return;
-                        case '4':
-                            me.state = undefined;
-                            __resolve({ ok: true });
-                            return;
-                        case '5':
-                            me.state = '47';
-                            return;
-                        case '6':
-                            me.state = '40';
-                            return;
-                        case '7':
-                            me.state = '42';
-                            return;
-                        case '8':
-                            me.state = '55';
-                            return;
-                        case '9':
-                            me.state = '61';
-                            return;
-                        case '11':
-                            addArrowPad(sub, edge);
-                            tail = edge.tail;
-                            if (tail.type === 'select') {
-                                addEdgeToSub(sub, edge);
-                                next = crawlSelect(visuals, tail);
-                                output.next = next.down;
-                                me.state = '2';
-                            } else {
-                                if (tail.right) {
-                                    _var2 = tail.type;
-                                    if (_var2 === 'arrow-loop') {
-                                        addEdgeToSub(sub, edge);
-                                        planSpace(me, tail);
-                                        output.next = tail.right;
-                                        me.state = '6';
-                                    } else {
-                                        if (_var2 === 'question') {
+                            case '2':
+                                me.state = '10';
+                                return;
+                            case '4':
+                                me.state = undefined;
+                                __resolve({ ok: true });
+                                return;
+                            case '5':
+                                me.state = '47';
+                                return;
+                            case '6':
+                                me.state = '40';
+                                return;
+                            case '7':
+                                me.state = '42';
+                                return;
+                            case '8':
+                                me.state = '55';
+                                return;
+                            case '9':
+                                me.state = '61';
+                                return;
+                            case '11':
+                                addArrowPad(sub, edge);
+                                tail = edge.tail;
+                                if (tail.type === 'select') {
+                                    addEdgeToSub(sub, edge);
+                                    next = crawlSelect(visuals, tail);
+                                    output.next = next.down;
+                                    me.state = '2';
+                                } else {
+                                    if (tail.right) {
+                                        _var2 = tail.type;
+                                        if (_var2 === 'arrow-loop') {
                                             addEdgeToSub(sub, edge);
                                             planSpace(me, tail);
                                             output.next = tail.right;
-                                            me.state = '8';
+                                            me.state = '6';
                                         } else {
-                                            output.next = undefined;
-                                            me.state = '4';
-                                        }
-                                    }
-                                } else {
-                                    if (tail.down) {
-                                        addEdgeToSub(sub, edge);
-                                        if (tail.type === 'address') {
-                                            markFloor(me, tail);
-                                            output.next = undefined;
-                                            me.state = '4';
-                                        } else {
-                                            output.next = tail.down;
-                                            me.state = '2';
+                                            if (_var2 === 'question') {
+                                                addEdgeToSub(sub, edge);
+                                                planSpace(me, tail);
+                                                output.next = tail.right;
+                                                me.state = '8';
+                                            } else {
+                                                output.next = undefined;
+                                                me.state = '4';
+                                            }
                                         }
                                     } else {
-                                        addEdgeToSub(sub, edge);
-                                        if (tail.left) {
-                                            addLowerCorner(sub, tail);
-                                            output.next = tail.left;
-                                            me.state = '9';
+                                        if (tail.down) {
+                                            addEdgeToSub(sub, edge);
+                                            if (tail.type === 'address') {
+                                                markFloor(me, tail);
+                                                output.next = undefined;
+                                                me.state = '4';
+                                            } else {
+                                                output.next = tail.down;
+                                                me.state = '2';
+                                            }
                                         } else {
-                                            output.next = undefined;
-                                            me.state = '4';
+                                            addEdgeToSub(sub, edge);
+                                            if (tail.left) {
+                                                addLowerCorner(sub, tail);
+                                                output.next = tail.left;
+                                                me.state = '9';
+                                            } else {
+                                                output.next = undefined;
+                                                me.state = '4';
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            break;
-                        case '41':
-                            output.next = edge.tail.down;
-                            me.state = '7';
-                            break;
-                        case '43':
-                            tail = edge.tail;
-                            if (tail.down) {
-                                output.next = tail.down;
+                                break;
+                            case '41':
+                                output.next = edge.tail.down;
                                 me.state = '7';
-                            } else {
-                                output.next = tail.left;
-                                me.state = '5';
-                            }
-                            break;
-                        case '48':
-                            head = edge.head;
-                            if (head.left) {
-                                output.next = head.left;
-                                me.state = '5';
-                            } else {
+                                break;
+                            case '43':
+                                tail = edge.tail;
+                                if (tail.down) {
+                                    output.next = tail.down;
+                                    me.state = '7';
+                                } else {
+                                    output.next = tail.left;
+                                    me.state = '5';
+                                }
+                                break;
+                            case '48':
+                                head = edge.head;
+                                if (head.left) {
+                                    output.next = head.left;
+                                    me.state = '5';
+                                } else {
+                                    if (head.down) {
+                                        head.zoned = true;
+                                        edge.inner = sub;
+                                        output.next = head.down;
+                                        me.state = '2';
+                                    } else {
+                                        output.next = markInnerSide(me, head);
+                                        me.state = '2';
+                                    }
+                                }
+                                break;
+                            case '56':
+                                tail = edge.tail;
+                                if (tail.up) {
+                                    output.next = undefined;
+                                    me.state = '4';
+                                } else {
+                                    addUpperCorner(sub, tail);
+                                    output.next = tail.down;
+                                    me.state = '2';
+                                }
+                                break;
+                            case '62':
+                                head = edge.head;
                                 if (head.down) {
-                                    head.zoned = true;
-                                    edge.inner = sub;
                                     output.next = head.down;
                                     me.state = '2';
                                 } else {
-                                    output.next = markInnerSide(me, head);
-                                    me.state = '2';
+                                    output.next = head.left;
+                                    me.state = '9';
                                 }
-                            }
-                            break;
-                        case '56':
-                            tail = edge.tail;
-                            if (tail.up) {
-                                output.next = undefined;
-                                me.state = '4';
-                            } else {
-                                addUpperCorner(sub, tail);
-                                output.next = tail.down;
+                                break;
+                            case '66':
+                                me.sub = sub;
+                                me.visuals = visuals;
+                                me.side = 'outer';
+                                me.plan = [];
                                 me.state = '2';
-                            }
-                            break;
-                        case '62':
-                            head = edge.head;
-                            if (head.down) {
-                                output.next = head.down;
-                                me.state = '2';
-                            } else {
-                                output.next = head.left;
-                                me.state = '9';
-                            }
-                            break;
-                        case '66':
-                            me.sub = sub;
-                            me.visuals = visuals;
-                            me.side = 'outer';
-                            me.plan = [];
-                            me.state = '2';
-                            break;
-                        default:
-                            return;
+                                break;
+                            default:
+                                return;
                         }
                     }
                 } catch (ex) {
@@ -9189,32 +9547,32 @@ function createDrakonWidget() {
                         edge = _edge_;
                         output = _output_;
                         switch (me.state) {
-                        case '10':
-                            me.state = '11';
-                            _main_OuterCrawler(__resolve, __reject);
-                            break;
-                        case '40':
-                            me.state = '41';
-                            _main_OuterCrawler(__resolve, __reject);
-                            break;
-                        case '42':
-                            me.state = '43';
-                            _main_OuterCrawler(__resolve, __reject);
-                            break;
-                        case '47':
-                            me.state = '48';
-                            _main_OuterCrawler(__resolve, __reject);
-                            break;
-                        case '55':
-                            me.state = '56';
-                            _main_OuterCrawler(__resolve, __reject);
-                            break;
-                        case '61':
-                            me.state = '62';
-                            _main_OuterCrawler(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '10':
+                                me.state = '11';
+                                _main_OuterCrawler(__resolve, __reject);
+                                break;
+                            case '40':
+                                me.state = '41';
+                                _main_OuterCrawler(__resolve, __reject);
+                                break;
+                            case '42':
+                                me.state = '43';
+                                _main_OuterCrawler(__resolve, __reject);
+                                break;
+                            case '47':
+                                me.state = '48';
+                                _main_OuterCrawler(__resolve, __reject);
+                                break;
+                            case '55':
+                                me.state = '56';
+                                _main_OuterCrawler(__resolve, __reject);
+                                break;
+                            case '61':
+                                me.state = '62';
+                                _main_OuterCrawler(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     _main_OuterCrawler(__resolve, __reject);
@@ -9231,25 +9589,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (record.type === 'node') {
-                        drawSubNode(record.element, ctx, color);
-                        __state = '1';
-                    } else {
-                        edge = record.element;
-                        if (edge.vertical) {
-                            drawVerticalSubEdge(edge, 0, ctx, color);
+                    case '1':
+                        return;
+                    case '2':
+                        if (record.type === 'node') {
+                            drawSubNode(record.element, ctx, color);
                             __state = '1';
                         } else {
-                            drawHorizontalSubEdge(edge, 0, ctx, color);
-                            __state = '1';
+                            edge = record.element;
+                            if (edge.vertical) {
+                                drawVerticalSubEdge(edge, 0, ctx, color);
+                                __state = '1';
+                            } else {
+                                drawHorizontalSubEdge(edge, 0, ctx, color);
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9258,40 +9616,40 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    step = {};
-                    edge = startEdge;
-                    __state = '9';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    _var2 = crawler.plan;
-                    _var3 = 0;
-                    __state = '13';
-                    break;
-                case '9':
-                    edge[crawler.side] = crawler.sub;
-                    crawler.onEdge(edge, step);
-                    edge = step.next;
-                    if (edge) {
+                    case '2':
+                        step = {};
+                        edge = startEdge;
                         __state = '9';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '13':
-                    if (_var3 < _var2.length) {
-                        node = _var2[_var3];
-                        createQSubspace(crawler, node);
-                        _var3++;
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        _var2 = crawler.plan;
+                        _var3 = 0;
                         __state = '13';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '9':
+                        edge[crawler.side] = crawler.sub;
+                        crawler.onEdge(edge, step);
+                        edge = step.next;
+                        if (edge) {
+                            __state = '9';
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    case '13':
+                        if (_var3 < _var2.length) {
+                            node = _var2[_var3];
+                            createQSubspace(crawler, node);
+                            _var3++;
+                            __state = '13';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9300,27 +9658,27 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    targetId = edge.finalTarget.itemId;
-                    existing = sub.outer[targetId];
-                    if (existing) {
-                        if (existing.type == 'edge') {
-                            __state = '8';
+                    case '1':
+                        return;
+                    case '2':
+                        targetId = edge.finalTarget.itemId;
+                        existing = sub.outer[targetId];
+                        if (existing) {
+                            if (existing.type == 'edge') {
+                                __state = '8';
+                            } else {
+                                __state = '1';
+                            }
                         } else {
-                            __state = '1';
+                            __state = '8';
                         }
-                    } else {
-                        __state = '8';
-                    }
-                    break;
-                case '8':
-                    addEdgeSubRecord(sub.outer, edge);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '8':
+                        addEdgeSubRecord(sub.outer, edge);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9336,54 +9694,54 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    upper = lower;
-                    __state = '9';
-                    break;
-                case '4':
-                    return result;
-                case '5':
-                    leftJun = getLeft(upper);
-                    leftCase = getDown(leftJun);
-                    leftJun.zoned = true;
-                    result = leftCase.down;
-                    __state = '4';
-                    break;
-                case '6':
-                    n2 = getDown(upper);
-                    crawler2 = createInner(crawler.visuals, crawler.sub);
-                    if (n2.type === 'case') {
-                        crawl(crawler2, n2.down);
-                        __state = '5';
-                    } else {
-                        crawl(crawler2, upper.down);
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    if (upper.up) {
-                        upper.left.inner = crawler.sub;
-                        __state = '18';
-                    } else {
-                        __state = '18';
-                    }
-                    break;
-                case '9':
-                    upper = getUp(upper);
-                    if (upper.left) {
-                        __state = '6';
-                    } else {
+                    case '2':
+                        upper = lower;
                         __state = '9';
-                    }
-                    break;
-                case '18':
-                    question = goLeft(upper);
-                    question.zoned = true;
-                    result = question.down;
-                    __state = '4';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '4':
+                        return result;
+                    case '5':
+                        leftJun = getLeft(upper);
+                        leftCase = getDown(leftJun);
+                        leftJun.zoned = true;
+                        result = leftCase.down;
+                        __state = '4';
+                        break;
+                    case '6':
+                        n2 = getDown(upper);
+                        crawler2 = createInner(crawler.visuals, crawler.sub);
+                        if (n2.type === 'case') {
+                            crawl(crawler2, n2.down);
+                            __state = '5';
+                        } else {
+                            crawl(crawler2, upper.down);
+                            __state = '7';
+                        }
+                        break;
+                    case '7':
+                        if (upper.up) {
+                            upper.left.inner = crawler.sub;
+                            __state = '18';
+                        } else {
+                            __state = '18';
+                        }
+                        break;
+                    case '9':
+                        upper = getUp(upper);
+                        if (upper.left) {
+                            __state = '6';
+                        } else {
+                            __state = '9';
+                        }
+                        break;
+                    case '18':
+                        question = goLeft(upper);
+                        question.zoned = true;
+                        result = question.down;
+                        __state = '4';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9404,24 +9762,24 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (record.type === 'node') {
-                        __state = '1';
-                    } else {
-                        edge = record.element;
-                        if (edge.vertical) {
-                            drawVerticalSubEdge(edge, -10, ctx, color);
+                    case '1':
+                        return;
+                    case '2':
+                        if (record.type === 'node') {
                             __state = '1';
                         } else {
-                            drawHorizontalSubEdge(edge, -10, ctx, color);
-                            __state = '1';
+                            edge = record.element;
+                            if (edge.vertical) {
+                                drawVerticalSubEdge(edge, -10, ctx, color);
+                                __state = '1';
+                            } else {
+                                drawHorizontalSubEdge(edge, -10, ctx, color);
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9443,19 +9801,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (edge.role === 'down') {
-                        targetId = edge.finalTarget.itemId;
-                        sub.outerArrPads[targetId] = edge;
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (edge.role === 'down') {
+                            targetId = edge.finalTarget.itemId;
+                            sub.outerArrPads[targetId] = edge;
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9468,22 +9826,22 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (question.zoned) {
-                        __state = '1';
-                    } else {
-                        sub = createSubspace(crawler.visuals);
-                        outer = createOuter(crawler.visuals, sub);
-                        inner = createInnerRight(crawler.visuals, sub);
-                        crawl(outer, question.down);
-                        crawl(inner, question.right);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (question.zoned) {
+                            __state = '1';
+                        } else {
+                            sub = createSubspace(crawler.visuals);
+                            outer = createOuter(crawler.visuals, sub);
+                            inner = createInnerRight(crawler.visuals, sub);
+                            crawl(outer, question.down);
+                            crawl(inner, question.right);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9505,21 +9863,21 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    branches = visuals.branches;
-                    if (branchNode.branchId === branches.length) {
-                        index = 0;
-                        __state = '_item2';
-                    } else {
-                        index = branchNode.branchId;
-                        __state = '_item2';
-                    }
-                    break;
-                case '_item2':
-                    _var2 = getNode(visuals, branches[index]);
-                    return _var2;
-                default:
-                    return;
+                    case '2':
+                        branches = visuals.branches;
+                        if (branchNode.branchId === branches.length) {
+                            index = 0;
+                            __state = '_item2';
+                        } else {
+                            index = branchNode.branchId;
+                            __state = '_item2';
+                        }
+                        break;
+                    case '_item2':
+                        _var2 = getNode(visuals, branches[index]);
+                        return _var2;
+                    default:
+                        return;
                 }
             }
         }
@@ -9528,50 +9886,50 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var8 = visuals.subs;
-                    _var9 = 0;
-                    __state = '7';
-                    break;
-                case '7':
-                    if (_var9 < _var8.length) {
-                        sub = _var8[_var9];
-                        _var3 = sub.inner;
-                        _var2 = Object.keys(_var3);
-                        _var4 = 0;
-                        __state = '9';
-                    } else {
-                        return;
-                    }
-                    break;
-                case '9':
-                    if (_var4 < _var2.length) {
-                        itemId = _var2[_var4];
-                        record = _var3[itemId];
-                        drawInnerSubItem(record, ctx, sub.color);
-                        _var4++;
-                        __state = '9';
-                    } else {
-                        _var6 = sub.outer;
-                        _var5 = Object.keys(_var6);
-                        _var7 = 0;
-                        __state = '14';
-                    }
-                    break;
-                case '14':
-                    if (_var7 < _var5.length) {
-                        itemId = _var5[_var7];
-                        record = _var6[itemId];
-                        drawOuterSubItem(record, ctx, sub.color);
-                        _var7++;
-                        __state = '14';
-                    } else {
-                        _var9++;
+                    case '2':
+                        _var8 = visuals.subs;
+                        _var9 = 0;
                         __state = '7';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        if (_var9 < _var8.length) {
+                            sub = _var8[_var9];
+                            _var3 = sub.inner;
+                            _var2 = Object.keys(_var3);
+                            _var4 = 0;
+                            __state = '9';
+                        } else {
+                            return;
+                        }
+                        break;
+                    case '9':
+                        if (_var4 < _var2.length) {
+                            itemId = _var2[_var4];
+                            record = _var3[itemId];
+                            drawInnerSubItem(record, ctx, sub.color);
+                            _var4++;
+                            __state = '9';
+                        } else {
+                            _var6 = sub.outer;
+                            _var5 = Object.keys(_var6);
+                            _var7 = 0;
+                            __state = '14';
+                        }
+                        break;
+                    case '14':
+                        if (_var7 < _var5.length) {
+                            itemId = _var5[_var7];
+                            record = _var6[itemId];
+                            drawOuterSubItem(record, ctx, sub.color);
+                            _var7++;
+                            __state = '14';
+                        } else {
+                            _var9++;
+                            __state = '7';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9585,94 +9943,94 @@ function createDrakonWidget() {
                 try {
                     while (true) {
                         switch (me.state) {
-                        case '2':
-                            me.state = '13';
-                            return;
-                        case '3':
-                            tail = edge.tail;
-                            if (tail.down) {
-                                addInnerEdgeToSub(sub, edge);
-                                if (tail.type === 'select') {
-                                    _var2 = getDown(tail);
-                                    caseNode = getDown(_var2);
-                                    output.next = caseNode.down;
-                                    me.state = '2';
-                                } else {
-                                    if (tail.type === 'address') {
-                                        me.state = '28';
+                            case '2':
+                                me.state = '13';
+                                return;
+                            case '3':
+                                tail = edge.tail;
+                                if (tail.down) {
+                                    addInnerEdgeToSub(sub, edge);
+                                    if (tail.type === 'select') {
+                                        _var2 = getDown(tail);
+                                        caseNode = getDown(_var2);
+                                        output.next = caseNode.down;
+                                        me.state = '2';
                                     } else {
-                                        if (tail.left) {
+                                        if (tail.type === 'address') {
                                             me.state = '28';
                                         } else {
-                                            output.next = tail.down;
-                                            me.state = '2';
+                                            if (tail.left) {
+                                                me.state = '28';
+                                            } else {
+                                                output.next = tail.down;
+                                                me.state = '2';
+                                            }
                                         }
                                     }
-                                }
-                            } else {
-                                if (tail.left) {
-                                    left = getLeft(tail);
-                                    if (left.type === 'question') {
+                                } else {
+                                    if (tail.left) {
+                                        left = getLeft(tail);
+                                        if (left.type === 'question') {
+                                            addInnerEdgeToSub(sub, edge);
+                                            output.next = undefined;
+                                            me.state = '4';
+                                        } else {
+                                            if (edge.role === 'up') {
+                                                addInnerEdgeToSub(sub, edge);
+                                                me.state = '33';
+                                            } else {
+                                                me.state = '33';
+                                            }
+                                        }
+                                    } else {
                                         addInnerEdgeToSub(sub, edge);
                                         output.next = undefined;
                                         me.state = '4';
-                                    } else {
-                                        if (edge.role === 'up') {
-                                            addInnerEdgeToSub(sub, edge);
-                                            me.state = '33';
-                                        } else {
-                                            me.state = '33';
-                                        }
                                     }
-                                } else {
-                                    addInnerEdgeToSub(sub, edge);
-                                    output.next = undefined;
-                                    me.state = '4';
                                 }
-                            }
-                            break;
-                        case '4':
-                            me.state = undefined;
-                            __resolve({ ok: true });
-                            return;
-                        case '5':
-                            me.state = '42';
-                            return;
-                        case '6':
-                            me.sub = sub;
-                            me.visuals = visuals;
-                            me.side = 'inner';
-                            me.plan = [];
-                            me.state = '11';
-                            return;
-                        case '12':
-                            me.state = '43';
-                            return;
-                        case '28':
-                            output.next = undefined;
-                            me.state = '4';
-                            break;
-                        case '33':
-                            output.next = tail.left;
-                            me.state = '5';
-                            break;
-                        case '40':
-                            addInnerEdgeToSub(sub, edge);
-                            output.next = undefined;
-                            me.state = '4';
-                            break;
-                        case '44':
-                            tail = edge.tail;
-                            if (tail.right) {
-                                output.next = tail.right;
-                                me.state = '12';
-                            } else {
-                                output.next = tail.down;
-                                me.state = '2';
-                            }
-                            break;
-                        default:
-                            return;
+                                break;
+                            case '4':
+                                me.state = undefined;
+                                __resolve({ ok: true });
+                                return;
+                            case '5':
+                                me.state = '42';
+                                return;
+                            case '6':
+                                me.sub = sub;
+                                me.visuals = visuals;
+                                me.side = 'inner';
+                                me.plan = [];
+                                me.state = '11';
+                                return;
+                            case '12':
+                                me.state = '43';
+                                return;
+                            case '28':
+                                output.next = undefined;
+                                me.state = '4';
+                                break;
+                            case '33':
+                                output.next = tail.left;
+                                me.state = '5';
+                                break;
+                            case '40':
+                                addInnerEdgeToSub(sub, edge);
+                                output.next = undefined;
+                                me.state = '4';
+                                break;
+                            case '44':
+                                tail = edge.tail;
+                                if (tail.right) {
+                                    output.next = tail.right;
+                                    me.state = '12';
+                                } else {
+                                    output.next = tail.down;
+                                    me.state = '2';
+                                }
+                                break;
+                            default:
+                                return;
                         }
                     }
                 } catch (ex) {
@@ -9686,42 +10044,42 @@ function createDrakonWidget() {
                 return new Promise(function (__resolve, __reject) {
                     me.down = function () {
                         switch (me.state) {
-                        case '11':
-                            me.state = '2';
-                            _main_InnerCrawler(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '11':
+                                me.state = '2';
+                                _main_InnerCrawler(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     me.right = function () {
                         switch (me.state) {
-                        case '11':
-                            me.state = '12';
-                            _main_InnerCrawler(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '11':
+                                me.state = '12';
+                                _main_InnerCrawler(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     me.onEdge = function (_edge_, _output_) {
                         edge = _edge_;
                         output = _output_;
                         switch (me.state) {
-                        case '13':
-                            me.state = '3';
-                            _main_InnerCrawler(__resolve, __reject);
-                            break;
-                        case '42':
-                            me.state = '40';
-                            _main_InnerCrawler(__resolve, __reject);
-                            break;
-                        case '43':
-                            me.state = '44';
-                            _main_InnerCrawler(__resolve, __reject);
-                            break;
-                        default:
-                            return;
+                            case '13':
+                                me.state = '3';
+                                _main_InnerCrawler(__resolve, __reject);
+                                break;
+                            case '42':
+                                me.state = '40';
+                                _main_InnerCrawler(__resolve, __reject);
+                                break;
+                            case '43':
+                                me.state = '44';
+                                _main_InnerCrawler(__resolve, __reject);
+                                break;
+                            default:
+                                return;
                         }
                     };
                     _main_InnerCrawler(__resolve, __reject);
@@ -9756,32 +10114,32 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    targetId = node.finalTarget.itemId;
-                    existing = sub.outer[targetId];
-                    if (existing) {
-                        if (existing.type === 'edge') {
-                            __state = '5';
-                        } else {
-                            oldNode = existing.element;
-                            if (oldNode.down) {
-                                __state = '1';
-                            } else {
+                    case '1':
+                        return;
+                    case '2':
+                        targetId = node.finalTarget.itemId;
+                        existing = sub.outer[targetId];
+                        if (existing) {
+                            if (existing.type === 'edge') {
                                 __state = '5';
+                            } else {
+                                oldNode = existing.element;
+                                if (oldNode.down) {
+                                    __state = '1';
+                                } else {
+                                    __state = '5';
+                                }
                             }
+                        } else {
+                            __state = '5';
                         }
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '5':
-                    addNodeSubRecord(sub.outer, node);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '5':
+                        addNodeSubRecord(sub.outer, node);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9790,28 +10148,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    sub = crawler.sub;
-                    bottom = goDown(address);
-                    next = getNextBranch(crawler.visuals, address.branch);
-                    floor = bottom.right;
-                    if (floor) {
-                        floor.finalTarget = next;
-                        floor.outer = sub;
-                        floor.noBranch = address.itemId;
-                        addEdgeSubRecord(sub.outer, floor);
-                        __state = '1';
-                    } else {
-                        bottom.finalTarget = next;
-                        bottom.noBranch = address.itemId;
-                        addNodeSubRecord(sub.outer, bottom);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        sub = crawler.sub;
+                        bottom = goDown(address);
+                        next = getNextBranch(crawler.visuals, address.branch);
+                        floor = bottom.right;
+                        if (floor) {
+                            floor.finalTarget = next;
+                            floor.outer = sub;
+                            floor.noBranch = address.itemId;
+                            addEdgeSubRecord(sub.outer, floor);
+                            __state = '1';
+                        } else {
+                            bottom.finalTarget = next;
+                            bottom.noBranch = address.itemId;
+                            addNodeSubRecord(sub.outer, bottom);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9824,36 +10182,36 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    cases = select.cases;
-                    i = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    i++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (i < cases.length - 1) {
-                        left = cases[i];
-                        right = cases[i + 1];
-                        jun = getUp(left);
-                        if (jun.zoned) {
-                            __state = '4';
+                    case '2':
+                        cases = select.cases;
+                        i = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        i++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (i < cases.length - 1) {
+                            left = cases[i];
+                            right = cases[i + 1];
+                            jun = getUp(left);
+                            if (jun.zoned) {
+                                __state = '4';
+                            } else {
+                                sub = createSubspace(visuals);
+                                outer = createOuter(visuals, sub);
+                                inner = createInner(visuals, sub);
+                                crawl(outer, left.down);
+                                crawl(inner, right.down);
+                                __state = '4';
+                            }
                         } else {
-                            sub = createSubspace(visuals);
-                            outer = createOuter(visuals, sub);
-                            inner = createInner(visuals, sub);
-                            crawl(outer, left.down);
-                            crawl(inner, right.down);
-                            __state = '4';
+                            return cases[cases.length - 1];
                         }
-                    } else {
-                        return cases[cases.length - 1];
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -9869,25 +10227,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var3 = visuals.edges;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        edge = _var3[id];
-                        findEdgeLinks(visuals, edge, edge);
-                        _var4++;
+                    case '2':
+                        _var3 = visuals.edges;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
                         __state = '5';
-                    } else {
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            edge = _var3[id];
+                            findEdgeLinks(visuals, edge, edge);
+                            _var4++;
+                            __state = '5';
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -9896,37 +10254,37 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (item.type === 'end') {
-                        content = visuals.config.end;
-                        __state = '6';
-                    } else {
-                        content = item.content || '';
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    node = createNode(visuals, item.id, item.type, content, item.id);
-                    setNotNull(item, node, 'flag1');
-                    setNotNull(item, node, 'branchId');
-                    setNotNull(item, node, 'text2');
-                    setNotNull(item, node, 'one');
-                    setNotNull(item, node, 'two');
-                    if (item.style) {
-                        try {
-                            node.style = JSON.parse(item.style);
-                        } catch (e) {
-                            console.error(e);
+                    case '2':
+                        if (item.type === 'end') {
+                            content = visuals.config.end;
+                            __state = '6';
+                        } else {
+                            content = item.content || '';
+                            __state = '6';
                         }
-                        __state = '8';
-                    } else {
-                        __state = '8';
-                    }
-                    break;
-                case '8':
-                    return node;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        node = createNode(visuals, item.id, item.type, content, item.id);
+                        setNotNull(item, node, 'flag1');
+                        setNotNull(item, node, 'branchId');
+                        setNotNull(item, node, 'text2');
+                        setNotNull(item, node, 'one');
+                        setNotNull(item, node, 'two');
+                        if (item.style) {
+                            try {
+                                node.style = JSON.parse(item.style);
+                            } catch (ex) {
+                                console.error('Error parsing style for item ' + item.id + ' ' + ex.message);
+                            }
+                            __state = '8';
+                        } else {
+                            __state = '8';
+                        }
+                        break;
+                    case '8':
+                        return node;
+                    default:
+                        return;
                 }
             }
         }
@@ -9944,32 +10302,32 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    menu = [];
-                    _var2 = tr(widget, 'Copy');
-                    pushMenuItem(menu, _var2, undefined, function () {
-                        copy(widget);
-                    });
-                    _var5 = isReadonly(widget);
-                    if (_var5) {
-                        __state = '3';
-                    } else {
-                        _var3 = tr(widget, 'Cut');
-                        pushMenuItem(menu, _var3, undefined, function () {
-                            cut(widget);
+                    case '2':
+                        menu = [];
+                        _var2 = tr(widget, 'Copy');
+                        pushMenuItem(menu, _var2, undefined, function () {
+                            copy(widget);
                         });
-                        menu.push({ type: 'separator' });
-                        _var4 = tr(widget, 'Delete');
-                        pushMenuItem(menu, _var4, undefined, function () {
-                            deleteSelection(widget);
-                        });
-                        __state = '3';
-                    }
-                    break;
-                case '3':
-                    return menu;
-                default:
-                    return;
+                        _var5 = isReadonly(widget);
+                        if (_var5) {
+                            __state = '3';
+                        } else {
+                            _var3 = tr(widget, 'Cut');
+                            pushMenuItem(menu, _var3, undefined, function () {
+                                cut(widget);
+                            });
+                            menu.push({ type: 'separator' });
+                            _var4 = tr(widget, 'Delete');
+                            pushMenuItem(menu, _var4, undefined, function () {
+                                deleteSelection(widget);
+                            });
+                            __state = '3';
+                        }
+                        break;
+                    case '3':
+                        return menu;
+                    default:
+                        return;
                 }
             }
         }
@@ -9978,44 +10336,44 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    menu = [];
-                    _var4 = isReadonly(widget);
-                    if (_var4) {
-                        __state = '3';
-                    } else {
-                        clipboard = widget.visuals.config.getClipboard();
-                        if (clipboard) {
-                            _var2 = clipboard.type;
-                            if (_var2 === 'case') {
-                                __state = '_item6';
-                            } else {
-                                if (_var2 === 'branch') {
+                    case '2':
+                        menu = [];
+                        _var4 = isReadonly(widget);
+                        if (_var4) {
+                            __state = '3';
+                        } else {
+                            clipboard = widget.visuals.config.getClipboard();
+                            if (clipboard) {
+                                _var2 = clipboard.type;
+                                if (_var2 === 'case') {
                                     __state = '_item6';
                                 } else {
-                                    if (_var2 === 'block') {
+                                    if (_var2 === 'branch') {
                                         __state = '_item6';
                                     } else {
-                                        __state = '3';
+                                        if (_var2 === 'block') {
+                                            __state = '_item6';
+                                        } else {
+                                            __state = '3';
+                                        }
                                     }
                                 }
+                            } else {
+                                __state = '3';
                             }
-                        } else {
-                            __state = '3';
                         }
-                    }
-                    break;
-                case '3':
-                    return menu;
-                case '_item6':
-                    _var3 = tr(widget, 'Paste');
-                    pushMenuItem(menu, _var3, undefined, function () {
-                        widget.showPasteSockets(clipboard.type);
-                    });
-                    __state = '3';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '3':
+                        return menu;
+                    case '_item6':
+                        _var3 = tr(widget, 'Paste');
+                        pushMenuItem(menu, _var3, undefined, function () {
+                            widget.showPasteSockets(clipboard.type);
+                        });
+                        __state = '3';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10024,35 +10382,35 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (node.id in visited) {
-                        __state = '1';
-                    } else {
-                        visited[node.id] = true;
-                        if (node.loopEnd === loopEnd) {
+                    case '1':
+                        return;
+                    case '2':
+                        if (node.id in visited) {
                             __state = '1';
                         } else {
-                            node.loops[loopEnd.id] = true;
-                            _var2 = node.prev;
-                            _var3 = 0;
-                            __state = '9';
+                            visited[node.id] = true;
+                            if (node.loopEnd === loopEnd) {
+                                __state = '1';
+                            } else {
+                                node.loops[loopEnd.id] = true;
+                                _var2 = node.prev;
+                                _var3 = 0;
+                                __state = '9';
+                            }
                         }
-                    }
-                    break;
-                case '9':
-                    if (_var3 < _var2.length) {
-                        prev = _var2[_var3];
-                        traceLoop(visited, prev, loopEnd);
-                        _var3++;
-                        __state = '9';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '9':
+                        if (_var3 < _var2.length) {
+                            prev = _var2[_var3];
+                            traceLoop(visited, prev, loopEnd);
+                            _var3++;
+                            __state = '9';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10087,68 +10445,68 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (nextItemId) {
-                        visuals = context.visuals;
-                        node2 = getNodeForItem(visuals, nextItemId);
-                        if (node2.type == 'branch') {
-                            address = last(context.addresses);
-                            if (address) {
-                                if (address.branch.id == nextItemId) {
-                                    __state = '17';
+                    case '1':
+                        return;
+                    case '2':
+                        if (nextItemId) {
+                            visuals = context.visuals;
+                            node2 = getNodeForItem(visuals, nextItemId);
+                            if (node2.type == 'branch') {
+                                address = last(context.addresses);
+                                if (address) {
+                                    if (address.branch.id == nextItemId) {
+                                        __state = '17';
+                                    } else {
+                                        __state = '20';
+                                    }
                                 } else {
                                     __state = '20';
                                 }
                             } else {
-                                __state = '20';
-                            }
-                        } else {
-                            _var2 = isArrowLoop(node2);
-                            if (_var2) {
-                                _var3 = isUpstream(visuals, node1, node2);
-                                if (_var3) {
-                                    node1.next.push(node2);
-                                    node2.aprev.push(node1);
-                                    __state = '1';
+                                _var2 = isArrowLoop(node2);
+                                if (_var2) {
+                                    _var3 = isUpstream(visuals, node1, node2);
+                                    if (_var3) {
+                                        node1.next.push(node2);
+                                        node2.aprev.push(node1);
+                                        __state = '1';
+                                    } else {
+                                        __state = '9';
+                                    }
                                 } else {
                                     __state = '9';
                                 }
-                            } else {
-                                __state = '9';
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
+                        break;
+                    case '9':
+                        prevCount = node2.prev.length;
+                        node1.next.push(node2);
+                        node2.prev.push(node1);
+                        if (prevCount === 0) {
+                            linkNodeToChildren(context, nextItemId);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    case '17':
+                        node1.next.push(address);
+                        address.prev.push(node1);
                         __state = '1';
-                    }
-                    break;
-                case '9':
-                    prevCount = node2.prev.length;
-                    node1.next.push(node2);
-                    node2.prev.push(node1);
-                    if (prevCount === 0) {
-                        linkNodeToChildren(context, nextItemId);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                case '17':
-                    node1.next.push(address);
-                    address.prev.push(node1);
-                    __state = '1';
-                    break;
-                case '20':
-                    address = createNode(visuals, undefined, 'address', node2.content, undefined);
-                    flowIcon(visuals, address);
-                    address.branch = node2;
-                    address.itemId = node2.itemId;
-                    context.addresses.push(address);
-                    __state = '17';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '20':
+                        address = createNode(visuals, undefined, 'address', node2.content, undefined);
+                        flowIcon(visuals, address);
+                        address.branch = node2;
+                        address.itemId = node2.itemId;
+                        context.addresses.push(address);
+                        __state = '17';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10157,35 +10515,35 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (context.found) {
-                        __state = '1';
-                    } else {
-                        if (lower.id === upper.id) {
-                            context.found = true;
+                    case '1':
+                        return;
+                    case '2':
+                        if (context.found) {
                             __state = '1';
                         } else {
-                            context.visited[lower.id] = true;
-                            _var2 = lower.prev;
-                            _var3 = 0;
-                            __state = '10';
+                            if (lower.id === upper.id) {
+                                context.found = true;
+                                __state = '1';
+                            } else {
+                                context.visited[lower.id] = true;
+                                _var2 = lower.prev;
+                                _var3 = 0;
+                                __state = '10';
+                            }
                         }
-                    }
-                    break;
-                case '10':
-                    if (_var3 < _var2.length) {
-                        prev = _var2[_var3];
-                        isUpstreamStep(prev, upper, context);
-                        _var3++;
-                        __state = '10';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '10':
+                        if (_var3 < _var2.length) {
+                            prev = _var2[_var3];
+                            isUpstreamStep(prev, upper, context);
+                            _var3++;
+                            __state = '10';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10208,54 +10566,54 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    arrow = loop.right;
-                    top = arrow.tail;
-                    upEdge = top.down;
-                    top.arrow = upEdge;
-                    arrow.arrow = upEdge;
-                    arrow.finalTarget = upEdge.finalTarget;
-                    arrow.links = upEdge.links;
-                    __state = '5';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    upEdge.arrow = upEdge;
-                    bottom = upEdge.tail;
-                    _var2 = isLeftUp(bottom);
-                    if (_var2) {
-                        bottom.arrow = upEdge;
-                        __state = '6';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '6':
-                    rightEdge = bottom.left;
-                    leftBottom = rightEdge.head;
-                    rightEdge.arrow = upEdge;
-                    _var3 = isRightUp(leftBottom);
-                    if (_var3) {
-                        leftBottom.arrow = upEdge;
-                        __state = '7';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '7':
-                    downEdge = leftBottom.up;
-                    start = downEdge.head;
-                    downEdge.arrow = upEdge;
-                    if (start.type === 'junction') {
-                        __state = '4';
-                    } else {
-                        start.arrow = upEdge;
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                    case '2':
+                        arrow = loop.right;
+                        top = arrow.tail;
+                        upEdge = top.down;
+                        top.arrow = upEdge;
+                        arrow.arrow = upEdge;
+                        arrow.finalTarget = upEdge.finalTarget;
+                        arrow.links = upEdge.links;
+                        __state = '5';
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        upEdge.arrow = upEdge;
+                        bottom = upEdge.tail;
+                        _var2 = isLeftUp(bottom);
+                        if (_var2) {
+                            bottom.arrow = upEdge;
+                            __state = '6';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    case '6':
+                        rightEdge = bottom.left;
+                        leftBottom = rightEdge.head;
+                        rightEdge.arrow = upEdge;
+                        _var3 = isRightUp(leftBottom);
+                        if (_var3) {
+                            leftBottom.arrow = upEdge;
+                            __state = '7';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    case '7':
+                        downEdge = leftBottom.up;
+                        start = downEdge.head;
+                        downEdge.arrow = upEdge;
+                        if (start.type === 'junction') {
+                            __state = '4';
+                        } else {
+                            start.arrow = upEdge;
+                            __state = '4';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10264,77 +10622,77 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    minLeft = Number.MAX_SAFE_INTEGER;
-                    maxRight = Number.MIN_SAFE_INTEGER;
-                    minTop = Number.MAX_SAFE_INTEGER;
-                    maxBottom = Number.MIN_SAFE_INTEGER;
-                    metre = visuals.config.metre;
-                    _var3 = visuals.nodes;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var4++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        node = _var3[id];
-                        left = node.x - node.w;
-                        top = node.y - node.h;
-                        right = node.x + node.w;
-                        bottom = node.y + node.h;
-                        _var5 = isNaN(left);
-                        if (_var5) {
-                            __state = '_item5';
+                    case '2':
+                        minLeft = Number.MAX_SAFE_INTEGER;
+                        maxRight = Number.MIN_SAFE_INTEGER;
+                        minTop = Number.MAX_SAFE_INTEGER;
+                        maxBottom = Number.MIN_SAFE_INTEGER;
+                        metre = visuals.config.metre;
+                        _var3 = visuals.nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var4++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            left = node.x - node.w;
+                            top = node.y - node.h;
+                            right = node.x + node.w;
+                            bottom = node.y + node.h;
+                            _var5 = isNaN(left);
+                            if (_var5) {
+                                __state = '_item5';
+                            } else {
+                                minLeft = Math.min(minLeft, left);
+                                __state = '_item5';
+                            }
                         } else {
-                            minLeft = Math.min(minLeft, left);
-                            __state = '_item5';
+                            visuals.box = {
+                                left: minLeft - metre,
+                                top: minTop - metre,
+                                right: maxRight + metre,
+                                bottom: maxBottom + metre,
+                                width: maxRight - minLeft + metre * 2,
+                                height: maxBottom - minTop + metre * 2
+                            };
+                            return;
                         }
-                    } else {
-                        visuals.box = {
-                            left: minLeft - metre,
-                            top: minTop - metre,
-                            right: maxRight + metre,
-                            bottom: maxBottom + metre,
-                            width: maxRight - minLeft + metre * 2,
-                            height: maxBottom - minTop + metre * 2
-                        };
+                        break;
+                    case '_item5':
+                        _var6 = isNaN(top);
+                        if (_var6) {
+                            __state = '_item6';
+                        } else {
+                            minTop = Math.min(minTop, top);
+                            __state = '_item6';
+                        }
+                        break;
+                    case '_item6':
+                        _var7 = isNaN(right);
+                        if (_var7) {
+                            __state = '_item7';
+                        } else {
+                            maxRight = Math.max(maxRight, right);
+                            __state = '_item7';
+                        }
+                        break;
+                    case '_item7':
+                        _var8 = isNaN(bottom);
+                        if (_var8) {
+                            __state = '4';
+                        } else {
+                            maxBottom = Math.max(maxBottom, bottom);
+                            __state = '4';
+                        }
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                case '_item5':
-                    _var6 = isNaN(top);
-                    if (_var6) {
-                        __state = '_item6';
-                    } else {
-                        minTop = Math.min(minTop, top);
-                        __state = '_item6';
-                    }
-                    break;
-                case '_item6':
-                    _var7 = isNaN(right);
-                    if (_var7) {
-                        __state = '_item7';
-                    } else {
-                        maxRight = Math.max(maxRight, right);
-                        __state = '_item7';
-                    }
-                    break;
-                case '_item7':
-                    _var8 = isNaN(bottom);
-                    if (_var8) {
-                        __state = '4';
-                    } else {
-                        maxBottom = Math.max(maxBottom, bottom);
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -10346,113 +10704,114 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    model = widget.model;
-                    _var10 = model.branches.slice();
-                    visuals = {
-                        nextId: 1,
-                        nodes: {},
-                        edges: {},
-                        skewers: {},
-                        levels: {},
-                        byType: {},
-                        skewerLinks: [],
-                        levelLinks: [],
-                        itemsToNodes: {},
-                        branches: _var10,
-                        tempEdges: [],
-                        blocks: [],
-                        sockets: [],
-                        subs: [],
-                        config: widget.config,
-                        container: widget.contentContainer
-                    };
-                    visuals.header = createNode(visuals, undefined, 'header', model.doc.name, 'header');
-                    flowIcon(visuals, visuals.header);
-                    visuals.params = createParamsNode(visuals, model.doc.params);
-                    __state = '14';
-                    break;
-                case '4':
-                    removeTempEdges(visuals);
-                    buildBoxes(visuals);
-                    forType(visuals, 'address', putCycleMark);
-                    calculateBox(visuals);
-                    connectLoops(visuals);
-                    traceLoops(visuals);
-                    forType(visuals, 'arrow-loop', markArrow);
-                    return visuals;
-                case '5':
-                    _var5 = visuals.branches;
-                    _var6 = 0;
-                    __state = '12';
-                    break;
-                case '12':
-                    if (_var6 < _var5.length) {
-                        bItemId = _var5[_var6];
-                        context = {
-                            visuals: visuals,
-                            addresses: []
+                    case '2':
+                        model = widget.model;
+                        _var10 = model.branches.slice();
+                        visuals = {
+                            nextId: 1,
+                            nodes: {},
+                            edges: {},
+                            skewers: {},
+                            levels: {},
+                            byType: {},
+                            skewerLinks: [],
+                            levelLinks: [],
+                            itemsToNodes: {},
+                            branches: _var10,
+                            tempEdges: [],
+                            blocks: [],
+                            sockets: [],
+                            subs: [],
+                            config: widget.config,
+                            container: widget.contentContainer
                         };
-                        linkNodeToChildren(context, bItemId);
-                        branch = getNode(visuals, bItemId);
-                        branch.addresses = context.addresses;
-                        _var6++;
+                        visuals.header = createNode(visuals, undefined, 'header', model.doc.name, 'header');
+                        flowIcon(visuals, visuals.header);
+                        visuals.params = createParamsNode(visuals, model.doc.params);
+                        __state = '14';
+                        break;
+                    case '4':
+                        removeTempEdges(visuals);
+                        buildBoxes(visuals);
+                        forType(visuals, 'address', putCycleMark);
+                        calculateBox(visuals);
+                        connectLoops(visuals);
+                        traceLoops(visuals);
+                        forType(visuals, 'arrow-loop', markArrow);
+                        return visuals;
+                    case '5':
+                        _var5 = visuals.branches;
+                        _var6 = 0;
                         __state = '12';
-                    } else {
-                        __state = '22';
-                    }
-                    break;
-                case '14':
-                    _var3 = model.items;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '16';
-                    break;
-                case '16':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        item = _var3[id];
-                        node = nodeFromItem(visuals, item);
-                        flowIcon(visuals, node);
-                        _var4++;
+                        break;
+                    case '12':
+                        if (_var6 < _var5.length) {
+                            bItemId = _var5[_var6];
+                            context = {
+                                visuals: visuals,
+                                addresses: []
+                            };
+                            linkNodeToChildren(context, bItemId);
+                            branch = getNode(visuals, bItemId);
+                            branch.addresses = context.addresses;
+                            _var6++;
+                            __state = '12';
+                        } else {
+                            __state = '22';
+                        }
+                        break;
+                    case '14':
+                        _var3 = model.items;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
                         __state = '16';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '22':
-                    if (model.branches.length > 1) {
-                        layoutSilhouette(visuals);
-                        __state = '26';
-                    } else {
-                        layoutPrimitive(visuals);
-                        __state = '26';
-                    }
-                    break;
-                case '26':
-                    buildSkewers(visuals);
-                    _var8 = visuals.skewers;
-                    _var7 = Object.keys(_var8);
-                    _var9 = 0;
-                    __state = '29';
-                    break;
-                case '29':
-                    if (_var9 < _var7.length) {
-                        id = _var7[_var9];
-                        skewer = _var8[id];
-                        setSameWidth(visuals, skewer);
-                        _var9++;
+                        break;
+                    case '16':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            item = _var3[id];
+                            node = nodeFromItem(visuals, item);
+                            flowIcon(visuals, node);
+                            _var4++;
+                            __state = '16';
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    case '22':
+                        if (model.branches.length > 1) {
+                            layoutSilhouette(visuals);
+                            __state = '26';
+                        } else {
+                            layoutPrimitive(visuals);
+                            __state = '26';
+                        }
+                        break;
+                    case '26':
+                        buildSkewers(visuals);
+                        _var8 = visuals.skewers;
+                        _var7 = Object.keys(_var8);
+                        _var9 = 0;
                         __state = '29';
-                    } else {
-                        setSameHeight(visuals);
-                        positionSkewers(visuals);
-                        positionLevels(visuals);
-                        drawParams(visuals);
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '29':
+                        if (_var9 < _var7.length) {
+                            id = _var7[_var9];
+                            skewer = _var8[id];
+                            setSameWidth(visuals, skewer);
+                            _var9++;
+                            __state = '29';
+                        } else {
+                            reflowContent(visuals);
+                            setSameHeight(visuals);
+                            positionSkewers(visuals);
+                            positionLevels(visuals);
+                            drawParams(visuals);
+                            __state = '4';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10461,35 +10820,35 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    scrollBarWidth = 20;
-                    rect = evt.target.getBoundingClientRect();
-                    diagramWidth = widget.visuals.box.width;
-                    diagramHeight = widget.visuals.box.height;
-                    if (rect.height < diagramHeight) {
-                        x = evt.clientX - rect.left;
-                        if (rect.width - x <= scrollBarWidth) {
-                            return true;
+                    case '2':
+                        scrollBarWidth = 20;
+                        rect = evt.target.getBoundingClientRect();
+                        diagramWidth = widget.visuals.box.width;
+                        diagramHeight = widget.visuals.box.height;
+                        if (rect.height < diagramHeight) {
+                            x = evt.clientX - rect.left;
+                            if (rect.width - x <= scrollBarWidth) {
+                                return true;
+                            } else {
+                                __state = '7';
+                            }
                         } else {
                             __state = '7';
                         }
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    if (rect.width < diagramWidth) {
-                        y = evt.clientY - rect.top;
-                        if (rect.height - y <= scrollBarWidth) {
-                            return true;
+                        break;
+                    case '7':
+                        if (rect.width < diagramWidth) {
+                            y = evt.clientY - rect.top;
+                            if (rect.height - y <= scrollBarWidth) {
+                                return true;
+                            } else {
+                                return false;
+                            }
                         } else {
                             return false;
                         }
-                    } else {
-                        return false;
-                    }
-                default:
-                    return;
+                    default:
+                        return;
                 }
             }
         }
@@ -10518,19 +10877,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (address.x >= address.branch.x) {
-                        address.mark = true;
-                        address.branch.mark = true;
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (address.x >= address.branch.x) {
+                            address.mark = true;
+                            address.branch.mark = true;
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10539,51 +10898,51 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (node.id in visited) {
-                        __state = '1';
-                    } else {
-                        visited[node.id] = true;
-                        if (node.left) {
-                            _var2 = getLeft(node);
-                            scanManhattan(visited, _var2);
-                            __state = '8';
+                    case '1':
+                        return;
+                    case '2':
+                        if (node.id in visited) {
+                            __state = '1';
                         } else {
-                            __state = '8';
+                            visited[node.id] = true;
+                            if (node.left) {
+                                _var2 = getLeft(node);
+                                scanManhattan(visited, _var2);
+                                __state = '8';
+                            } else {
+                                __state = '8';
+                            }
                         }
-                    }
-                    break;
-                case '8':
-                    if (node.up) {
-                        _var3 = getUp(node);
-                        scanManhattan(visited, _var3);
-                        __state = '10';
-                    } else {
-                        __state = '10';
-                    }
-                    break;
-                case '10':
-                    if (node.right) {
-                        _var4 = getRight(node);
-                        scanManhattan(visited, _var4);
-                        __state = '12';
-                    } else {
-                        __state = '12';
-                    }
-                    break;
-                case '12':
-                    if (node.down) {
-                        _var5 = getDown(node);
-                        scanManhattan(visited, _var5);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '8':
+                        if (node.up) {
+                            _var3 = getUp(node);
+                            scanManhattan(visited, _var3);
+                            __state = '10';
+                        } else {
+                            __state = '10';
+                        }
+                        break;
+                    case '10':
+                        if (node.right) {
+                            _var4 = getRight(node);
+                            scanManhattan(visited, _var4);
+                            __state = '12';
+                        } else {
+                            __state = '12';
+                        }
+                        break;
+                    case '12':
+                        if (node.down) {
+                            _var5 = getDown(node);
+                            scanManhattan(visited, _var5);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10592,42 +10951,42 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    depth = 0;
-                    node = getUp(end);
-                    __state = '5';
-                    break;
-                case '4':
-                    node = getUp(node);
-                    __state = '5';
-                    break;
-                case '5':
-                    if (node) {
-                        if (node.type === 'loopend') {
-                            depth++;
-                            __state = '4';
-                        } else {
-                            if (node.type === 'loopbegin') {
-                                if (depth === 0) {
-                                    node.loopEnd = end;
-                                    end.loopStart = node;
-                                    __state = '1';
+                    case '1':
+                        return;
+                    case '2':
+                        depth = 0;
+                        node = getUp(end);
+                        __state = '5';
+                        break;
+                    case '4':
+                        node = getUp(node);
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (node) {
+                            if (node.type === 'loopend') {
+                                depth++;
+                                __state = '4';
+                            } else {
+                                if (node.type === 'loopbegin') {
+                                    if (depth === 0) {
+                                        node.loopEnd = end;
+                                        end.loopStart = node;
+                                        __state = '1';
+                                    } else {
+                                        depth--;
+                                        __state = '4';
+                                    }
                                 } else {
-                                    depth--;
                                     __state = '4';
                                 }
-                            } else {
-                                __state = '4';
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10636,37 +10995,37 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    source = edge.source;
-                    if (source) {
-                        if (source.type === 'junction') {
-                            _var2 = source.sources;
-                            _var3 = 0;
-                            __state = '7';
+                    case '1':
+                        return;
+                    case '2':
+                        source = edge.source;
+                        if (source) {
+                            if (source.type === 'junction') {
+                                _var2 = source.sources;
+                                _var3 = 0;
+                                __state = '7';
+                            } else {
+                                itemId = getEffectiveItemId(visuals, source);
+                                link = createLink(itemId, edge.vertical ? 0 : 1);
+                                startEdge.links.push(link);
+                                __state = '1';
+                            }
                         } else {
-                            itemId = getEffectiveItemId(visuals, source);
-                            link = createLink(itemId, edge.vertical ? 0 : 1);
-                            startEdge.links.push(link);
                             __state = '1';
                         }
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                case '7':
-                    if (_var3 < _var2.length) {
-                        prevEdge = _var2[_var3];
-                        findEdgeLinks(visuals, startEdge, prevEdge);
-                        _var3++;
-                        __state = '7';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        if (_var3 < _var2.length) {
+                            prevEdge = _var2[_var3];
+                            findEdgeLinks(visuals, startEdge, prevEdge);
+                            _var3++;
+                            __state = '7';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10698,8 +11057,12 @@ function createDrakonWidget() {
             return;
         }
         function forTypeTogether(visuals, type, action) {
-            var nodes;
-            nodes = getCreateList(visuals.byType, type);
+            var ids, nodes, _var2;
+            ids = getCreateList(visuals.byType, type);
+            nodes = ids.map(function (id) {
+                _var2 = getNode(visuals, id);
+                return _var2;
+            });
             action(visuals, nodes);
             return;
         }
@@ -10736,19 +11099,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    oldToNew = generateNewIds(widget, items);
-                    __state = '5';
-                    break;
-                case '4':
-                    return oldToNew[startId];
-                case '5':
-                    oldToNew['finish'] = targetId;
-                    replaceTargets(items, oldToNew);
-                    __state = '4';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        oldToNew = generateNewIds(widget, items);
+                        __state = '5';
+                        break;
+                    case '4':
+                        return oldToNew[startId];
+                    case '5':
+                        oldToNew['finish'] = targetId;
+                        replaceTargets(items, oldToNew);
+                        __state = '4';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10766,66 +11129,66 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    branchNodes = {};
-                    scanBranchItems(node, branchNodes);
-                    end = widget.visuals.end;
-                    if (end) {
-                        delete branchNodes[end.itemId];
-                        __state = '9';
-                    } else {
-                        __state = '9';
-                    }
-                    break;
-                case '8':
-                    block = {
-                        start: node.itemId,
-                        items: items,
-                        targets: targets
-                    };
-                    widget.visuals.config.setClipboard('branch', block);
-                    return 'branch';
-                case '9':
-                    items = [];
-                    targets = {};
-                    _var5 = branchNodes;
-                    _var4 = Object.keys(_var5);
-                    _var6 = 0;
-                    __state = '12';
-                    break;
-                case '12':
-                    if (_var6 < _var4.length) {
-                        itemId = _var4[_var6];
-                        bnode = _var5[itemId];
-                        _var2 = bnode.next;
-                        _var3 = 0;
-                        __state = '14';
-                    } else {
-                        __state = '8';
-                    }
-                    break;
-                case '13':
-                    _var3++;
-                    __state = '14';
-                    break;
-                case '14':
-                    if (_var3 < _var2.length) {
-                        next = _var2[_var3];
-                        if (next.itemId in branchNodes) {
-                            __state = '13';
+                    case '2':
+                        branchNodes = {};
+                        scanBranchItems(node, branchNodes);
+                        end = widget.visuals.end;
+                        if (end) {
+                            delete branchNodes[end.itemId];
+                            __state = '9';
                         } else {
-                            targets[next.itemId] = next.content;
-                            __state = '13';
+                            __state = '9';
                         }
-                    } else {
-                        _var7 = copyItem(widget, itemId);
-                        items.push(_var7);
-                        _var6++;
+                        break;
+                    case '8':
+                        block = {
+                            start: node.itemId,
+                            items: items,
+                            targets: targets
+                        };
+                        widget.visuals.config.setClipboard('branch', block);
+                        return 'branch';
+                    case '9':
+                        items = [];
+                        targets = {};
+                        _var5 = branchNodes;
+                        _var4 = Object.keys(_var5);
+                        _var6 = 0;
                         __state = '12';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '12':
+                        if (_var6 < _var4.length) {
+                            itemId = _var4[_var6];
+                            bnode = _var5[itemId];
+                            _var2 = bnode.next;
+                            _var3 = 0;
+                            __state = '14';
+                        } else {
+                            __state = '8';
+                        }
+                        break;
+                    case '13':
+                        _var3++;
+                        __state = '14';
+                        break;
+                    case '14':
+                        if (_var3 < _var2.length) {
+                            next = _var2[_var3];
+                            if (next.itemId in branchNodes) {
+                                __state = '13';
+                            } else {
+                                targets[next.itemId] = next.content;
+                                __state = '13';
+                            }
+                        } else {
+                            _var7 = copyItem(widget, itemId);
+                            items.push(_var7);
+                            _var6++;
+                            __state = '12';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10834,26 +11197,26 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    oldToNew = {};
-                    _var2 = items;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        item = _var2[_var3];
-                        id = getNextId(widget.model);
-                        oldToNew[item.id] = id;
-                        item.id = id;
-                        _var3++;
+                    case '2':
+                        oldToNew = {};
+                        _var2 = items;
+                        _var3 = 0;
                         __state = '5';
-                    } else {
-                        return oldToNew;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            item = _var2[_var3];
+                            id = getNextId(widget.model);
+                            oldToNew[item.id] = id;
+                            item.id = id;
+                            _var3++;
+                            __state = '5';
+                        } else {
+                            return oldToNew;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10861,26 +11224,26 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (item.one) {
-                        item.one = oldToNew[item.one];
-                        __state = '5';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '5':
-                    if (item.two) {
-                        item.two = oldToNew[item.two];
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        if (item.one) {
+                            item.one = oldToNew[item.one];
+                            __state = '5';
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    case '5':
+                        if (item.two) {
+                            item.two = oldToNew[item.two];
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10889,19 +11252,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    copyType = copyCore(widget);
-                    if (copyType) {
-                        widget.showPasteSockets(copyType);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        copyType = copyCore(widget);
+                        if (copyType) {
+                            widget.showPasteSockets(copyType);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -10921,29 +11284,29 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    items = [];
-                    _var5 = copyItem(widget, node.itemId);
-                    items.push(_var5);
-                    _var2 = node.cases;
-                    _var3 = 0;
-                    __state = '7';
-                    break;
-                case '7':
-                    if (_var3 < _var2.length) {
-                        caseNode = _var2[_var3];
-                        caseItem = copyItem(widget, caseNode.itemId);
-                        caseItem.one = 'finish';
-                        items.push(caseItem);
-                        _var3++;
+                    case '2':
+                        items = [];
+                        _var5 = copyItem(widget, node.itemId);
+                        items.push(_var5);
+                        _var2 = node.cases;
+                        _var3 = 0;
                         __state = '7';
-                    } else {
-                        _var4 = copyBlock(widget, node.itemId, items);
-                        return _var4;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        if (_var3 < _var2.length) {
+                            caseNode = _var2[_var3];
+                            caseItem = copyItem(widget, caseNode.itemId);
+                            caseItem.one = 'finish';
+                            items.push(caseItem);
+                            _var3++;
+                            __state = '7';
+                        } else {
+                            _var4 = copyBlock(widget, node.itemId, items);
+                            return _var4;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11008,58 +11371,58 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edits = [];
-                    clipboard = widget.visuals.config.getClipboard();
-                    if (clipboard) {
-                        payload = clipboard.content;
-                        ctype = clipboard.type;
-                        _var2 = socket.type;
-                        if (_var2 === 'block') {
-                            if (socket.type === ctype) {
-                                edits = pasteBlock(widget, socket, payload);
-                                __state = '4';
-                            } else {
-                                __state = '4';
-                            }
-                        } else {
-                            if (_var2 === 'case') {
-                                if (ctype === 'case') {
-                                    edits = caseInsertCore(widget, socket.node, payload.items[0]);
+                    case '2':
+                        edits = [];
+                        clipboard = widget.visuals.config.getClipboard();
+                        if (clipboard) {
+                            payload = clipboard.content;
+                            ctype = clipboard.type;
+                            _var2 = socket.type;
+                            if (_var2 === 'block') {
+                                if (socket.type === ctype) {
+                                    edits = pasteBlock(widget, socket, payload);
                                     __state = '4';
                                 } else {
                                     __state = '4';
                                 }
                             } else {
-                                if (_var2 === 'first-case') {
+                                if (_var2 === 'case') {
                                     if (ctype === 'case') {
-                                        edits = firstCaseInsertCore(widget, socket.node, payload.items[0]);
+                                        edits = caseInsertCore(widget, socket.node, payload.items[0]);
                                         __state = '4';
                                     } else {
                                         __state = '4';
                                     }
                                 } else {
-                                    if (_var2 === 'branch') {
-                                        if (socket.type === ctype) {
-                                            edits = pasteBranch(widget, socket, payload);
+                                    if (_var2 === 'first-case') {
+                                        if (ctype === 'case') {
+                                            edits = firstCaseInsertCore(widget, socket.node, payload.items[0]);
                                             __state = '4';
                                         } else {
                                             __state = '4';
                                         }
                                     } else {
-                                        __state = '4';
+                                        if (_var2 === 'branch') {
+                                            if (socket.type === ctype) {
+                                                edits = pasteBranch(widget, socket, payload);
+                                                __state = '4';
+                                            } else {
+                                                __state = '4';
+                                            }
+                                        } else {
+                                            __state = '4';
+                                        }
                                     }
                                 }
                             }
+                        } else {
+                            __state = '4';
                         }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '4':
-                    return edits;
-                default:
-                    return;
+                        break;
+                    case '4':
+                        return edits;
+                    default:
+                        return;
                 }
             }
         }
@@ -11082,27 +11445,27 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = visuals.branches;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        itemId = _var2[_var3];
-                        branch = getNode(visuals, itemId);
-                        if (branch.content === name) {
-                            return branch;
+                    case '2':
+                        _var2 = visuals.branches;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            itemId = _var2[_var3];
+                            branch = getNode(visuals, itemId);
+                            if (branch.content === name) {
+                                return branch;
+                            } else {
+                                _var3++;
+                                __state = '5';
+                            }
                         } else {
-                            _var3++;
-                            __state = '5';
+                            return undefined;
                         }
-                    } else {
-                        return undefined;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11163,75 +11526,75 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visuals = widget.visuals;
-                    items = block.items;
-                    start = block.start;
-                    targets = block.targets;
-                    branchId = getSocketBranchId(socket);
-                    targetId = getBranchItemId(widget.visuals, branchId);
-                    edits = moveBranchIdsRight(visuals, branchId);
-                    __state = '8';
-                    break;
-                case '5':
-                    return edits;
-                case '6':
-                    create = function (item) {
-                        createPastedItem(edits, item);
-                    };
-                    items.forEach(create);
-                    __state = '5';
-                    break;
-                case '7':
-                    oldToNew = generateNewIds(widget, items);
-                    _var5 = targets;
-                    _var4 = Object.keys(_var5);
-                    _var6 = 0;
-                    __state = '20';
-                    break;
-                case '8':
-                    _var2 = items;
-                    _var3 = 0;
-                    __state = '15';
-                    break;
-                case '15':
-                    if (_var3 < _var2.length) {
-                        item = _var2[_var3];
-                        if (item.id === start) {
-                            item.branchId = branchId;
+                    case '2':
+                        visuals = widget.visuals;
+                        items = block.items;
+                        start = block.start;
+                        targets = block.targets;
+                        branchId = getSocketBranchId(socket);
+                        targetId = getBranchItemId(widget.visuals, branchId);
+                        edits = moveBranchIdsRight(visuals, branchId);
+                        __state = '8';
+                        break;
+                    case '5':
+                        return edits;
+                    case '6':
+                        create = function (item) {
+                            createPastedItem(edits, item);
+                        };
+                        items.forEach(create);
+                        __state = '5';
+                        break;
+                    case '7':
+                        oldToNew = generateNewIds(widget, items);
+                        _var5 = targets;
+                        _var4 = Object.keys(_var5);
+                        _var6 = 0;
+                        __state = '20';
+                        break;
+                    case '8':
+                        _var2 = items;
+                        _var3 = 0;
+                        __state = '15';
+                        break;
+                    case '15':
+                        if (_var3 < _var2.length) {
+                            item = _var2[_var3];
+                            if (item.id === start) {
+                                item.branchId = branchId;
+                                __state = '7';
+                            } else {
+                                _var3++;
+                                __state = '15';
+                            }
+                        } else {
                             __state = '7';
-                        } else {
-                            _var3++;
-                            __state = '15';
                         }
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '20':
-                    if (_var6 < _var4.length) {
-                        oldId = _var4[_var6];
-                        name = _var5[oldId];
-                        branch = getBranchByName(visuals, name);
-                        if (branch) {
-                            newId = branch.itemId;
-                            __state = '25';
+                        break;
+                    case '20':
+                        if (_var6 < _var4.length) {
+                            oldId = _var4[_var6];
+                            name = _var5[oldId];
+                            branch = getBranchByName(visuals, name);
+                            if (branch) {
+                                newId = branch.itemId;
+                                __state = '25';
+                            } else {
+                                newId = targetId;
+                                __state = '25';
+                            }
                         } else {
-                            newId = targetId;
-                            __state = '25';
+                            replaceTargets(items, oldToNew);
+                            __state = '6';
                         }
-                    } else {
-                        replaceTargets(items, oldToNew);
-                        __state = '6';
-                    }
-                    break;
-                case '25':
-                    oldToNew[oldId] = newId;
-                    _var6++;
-                    __state = '20';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '25':
+                        oldToNew[oldId] = newId;
+                        _var6++;
+                        __state = '20';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11277,44 +11640,44 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    branch.topNode = createJunction(visuals, undefined);
-                    createEdge(visuals, upper, branch.topNode, false);
-                    createEdge(visuals, branch.topNode, branch, true);
-                    if (branch.addresses.length === 0) {
-                        __state = '5';
-                    } else {
+                    case '2':
+                        branch.topNode = createJunction(visuals, undefined);
+                        createEdge(visuals, upper, branch.topNode, false);
+                        createEdge(visuals, branch.topNode, branch, true);
+                        if (branch.addresses.length === 0) {
+                            __state = '5';
+                        } else {
+                            __state = '6';
+                        }
+                        break;
+                    case '4':
+                        branch.bottomNode = lower;
+                        return;
+                    case '5':
+                        createEdge(visuals, lower, visuals.end, false);
                         __state = '6';
-                    }
-                    break;
-                case '4':
-                    branch.bottomNode = lower;
-                    return;
-                case '5':
-                    createEdge(visuals, lower, visuals.end, false);
-                    __state = '6';
-                    break;
-                case '6':
-                    _var2 = branch.addresses;
-                    _var3 = 0;
-                    __state = '13';
-                    break;
-                case '13':
-                    if (_var3 < _var2.length) {
-                        address = _var2[_var3];
-                        branchLower = createJunction(visuals, undefined);
-                        floor = createEdge(visuals, lower, branchLower, false);
-                        floor.role = 'floor';
-                        createEdge(visuals, address, branchLower, true);
-                        lower = branchLower;
-                        _var3++;
+                        break;
+                    case '6':
+                        _var2 = branch.addresses;
+                        _var3 = 0;
                         __state = '13';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '13':
+                        if (_var3 < _var2.length) {
+                            address = _var2[_var3];
+                            branchLower = createJunction(visuals, undefined);
+                            floor = createEdge(visuals, lower, branchLower, false);
+                            floor.role = 'floor';
+                            createEdge(visuals, address, branchLower, true);
+                            lower = branchLower;
+                            _var3++;
+                            __state = '13';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11328,44 +11691,44 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = node.type;
-                    if (_var2 === 'junction') {
-                        __state = '3';
-                    } else {
-                        if (_var2 === 'header') {
+                    case '2':
+                        _var2 = node.type;
+                        if (_var2 === 'junction') {
                             __state = '3';
                         } else {
-                            if (_var2 === 'arrow-loop') {
+                            if (_var2 === 'header') {
                                 __state = '3';
                             } else {
-                                if (_var2 === 'address') {
+                                if (_var2 === 'arrow-loop') {
                                     __state = '3';
                                 } else {
-                                    if (_var2 === 'end') {
+                                    if (_var2 === 'address') {
                                         __state = '3';
                                     } else {
-                                        if (_var2 === 'branch') {
-                                            _var3 = canDeleteBranch(visuals);
-                                            return _var3;
+                                        if (_var2 === 'end') {
+                                            __state = '3';
                                         } else {
-                                            if (_var2 === 'case') {
-                                                _var4 = canDeleteCase(node);
-                                                return _var4;
+                                            if (_var2 === 'branch') {
+                                                _var3 = canDeleteBranch(visuals);
+                                                return _var3;
                                             } else {
-                                                return true;
+                                                if (_var2 === 'case') {
+                                                    _var4 = canDeleteCase(node);
+                                                    return _var4;
+                                                } else {
+                                                    return true;
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '3':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '3':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -11374,28 +11737,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    model = widget.model;
-                    edits = [];
-                    popFromSkewer(node, edits);
-                    __state = '5';
-                    break;
-                case '4':
-                    return edits;
-                case '5':
-                    toKeep = {};
-                    toKeep[node.itemId] = true;
-                    one = node.next[0];
-                    markToStay(widget, node, one.itemId, toKeep);
-                    __state = '6';
-                    break;
-                case '6':
-                    two = node.next[1];
-                    markToDelete(widget, toKeep, node, two.itemId, edits);
-                    __state = '4';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        model = widget.model;
+                        edits = [];
+                        popFromSkewer(node, edits);
+                        __state = '5';
+                        break;
+                    case '4':
+                        return edits;
+                    case '5':
+                        toKeep = {};
+                        toKeep[node.itemId] = true;
+                        one = node.next[0];
+                        markToStay(widget, node, one.itemId, toKeep);
+                        __state = '6';
+                        break;
+                    case '6':
+                        two = node.next[1];
+                        markToDelete(widget, toKeep, node, two.itemId, edits);
+                        __state = '4';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11404,31 +11767,31 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    model = widget.model;
-                    edits = [];
-                    first = firstCase(node);
-                    below = first.next[0];
-                    edgeUp = node.up;
-                    redirectUpperItems(edits, edgeUp.links, below.itemId);
-                    deleteItem(edits, node.itemId);
-                    __state = '5';
-                    break;
-                case '4':
-                    return edits;
-                case '5':
-                    toKeep = {};
-                    toKeep[node.itemId] = true;
-                    one = node.next[0];
-                    markToStay(widget, undefined, below.itemId, toKeep);
-                    __state = '6';
-                    break;
-                case '6':
-                    markToDelete(widget, toKeep, node, first.itemId, edits);
-                    __state = '4';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        model = widget.model;
+                        edits = [];
+                        first = firstCase(node);
+                        below = first.next[0];
+                        edgeUp = node.up;
+                        redirectUpperItems(edits, edgeUp.links, below.itemId);
+                        deleteItem(edits, node.itemId);
+                        __state = '5';
+                        break;
+                    case '4':
+                        return edits;
+                    case '5':
+                        toKeep = {};
+                        toKeep[node.itemId] = true;
+                        one = node.next[0];
+                        markToStay(widget, undefined, below.itemId, toKeep);
+                        __state = '6';
+                        break;
+                    case '6':
+                        markToDelete(widget, toKeep, node, first.itemId, edits);
+                        __state = '4';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11453,22 +11816,22 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    select = caseNode.select;
-                    if (select.cases.length > 2) {
-                        if (select.cases[0] === caseNode) {
-                            __state = '7';
+                    case '2':
+                        select = caseNode.select;
+                        if (select.cases.length > 2) {
+                            if (select.cases[0] === caseNode) {
+                                __state = '7';
+                            } else {
+                                return true;
+                            }
                         } else {
-                            return true;
+                            __state = '7';
                         }
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -11499,43 +11862,43 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    model = widget.model;
-                    edits = [];
-                    left = node.prev[0];
-                    if (left === node.select) {
-                        right = node.next[1];
-                        updateItem(edits, left.itemId, { one: right.itemId });
-                        __state = '15';
-                    } else {
-                        if (node.next.length === 2) {
+                    case '2':
+                        model = widget.model;
+                        edits = [];
+                        left = node.prev[0];
+                        if (left === node.select) {
                             right = node.next[1];
-                            updateItem(edits, left.itemId, { two: right.itemId });
+                            updateItem(edits, left.itemId, { one: right.itemId });
                             __state = '15';
                         } else {
-                            updateItem(edits, left.itemId, { two: '' });
-                            __state = '15';
+                            if (node.next.length === 2) {
+                                right = node.next[1];
+                                updateItem(edits, left.itemId, { two: right.itemId });
+                                __state = '15';
+                            } else {
+                                updateItem(edits, left.itemId, { two: '' });
+                                __state = '15';
+                            }
                         }
-                    }
-                    break;
-                case '4':
-                    return edits;
-                case '5':
-                    toKeep = markOtherCasesToStay(widget, node);
-                    __state = '6';
-                    break;
-                case '6':
-                    below = node.next[0];
-                    toKeep[node.itemId] = true;
-                    markToDelete(widget, toKeep, node, below.itemId, edits);
-                    __state = '4';
-                    break;
-                case '15':
-                    deleteItem(edits, node.itemId);
-                    __state = '5';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '4':
+                        return edits;
+                    case '5':
+                        toKeep = markOtherCasesToStay(widget, node);
+                        __state = '6';
+                        break;
+                    case '6':
+                        below = node.next[0];
+                        toKeep[node.itemId] = true;
+                        markToDelete(widget, toKeep, node, below.itemId, edits);
+                        __state = '4';
+                        break;
+                    case '15':
+                        deleteItem(edits, node.itemId);
+                        __state = '5';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11552,62 +11915,61 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    edits = [];
-                    _var3 = canDelete(widget.visuals, node);
-                    if (_var3) {
-                        _var2 = node.type;
-                        if (_var2 === 'question') {
-                            edits = deleteQuestion(widget, node);
-                            __state = '26';
-                        } else {
-                            if (_var2 === 'loopbegin') {
-                                edits = deleteLoop(node);
-                                __state = '26';
+                    case '1':
+                        return;
+                    case '2':
+                        edits = [];
+                        _var3 = canDelete(widget.visuals, node);
+                        if (_var3) {
+                            _var2 = node.type;
+                            if (_var2 === 'question') {
+                                edits = deleteQuestion(widget, node);
+                                __state = '27';
                             } else {
-                                if (_var2 === 'loopend') {
-                                    edits = deleteLoop(node.loopStart);
-                                    __state = '26';
+                                if (_var2 === 'loopbegin') {
+                                    edits = deleteLoop(node);
+                                    __state = '27';
                                 } else {
-                                    if (_var2 === 'params') {
-                                        edits = deleteParams(node);
-                                        __state = '26';
+                                    if (_var2 === 'loopend') {
+                                        edits = deleteLoop(node.loopStart);
+                                        __state = '27';
                                     } else {
-                                        if (_var2 === 'case') {
-                                            edits = deleteCase(widget, node);
-                                            __state = '26';
+                                        if (_var2 === 'params') {
+                                            edits = deleteParams(node);
+                                            __state = '27';
                                         } else {
-                                            if (_var2 === 'select') {
-                                                edits = deleteSelect(widget, node);
-                                                __state = '26';
+                                            if (_var2 === 'case') {
+                                                edits = deleteCase(widget, node);
+                                                __state = '27';
                                             } else {
-                                                if (_var2 === 'branch') {
-                                                    edits = deleteBranch(widget, node);
-                                                    __state = '26';
+                                                if (_var2 === 'select') {
+                                                    edits = deleteSelect(widget, node);
+                                                    __state = '27';
                                                 } else {
-                                                    edits = deleteSimple(node);
-                                                    __state = '26';
+                                                    if (_var2 === 'branch') {
+                                                        edits = deleteBranch(widget, node);
+                                                        __state = '27';
+                                                    } else {
+                                                        edits = deleteSimple(node);
+                                                        __state = '27';
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
+                        break;
+                    case '27':
+                        doEdit(widget, edits, false);
+                        widget.redraw();
                         __state = '1';
-                    }
-                    break;
-                case '26':
-                    resetSelection(widget);
-                    doEdit(widget, edits, false);
-                    widget.redraw();
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11619,30 +11981,30 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visuals = widget.visuals;
-                    edits = moveBranchIdsLeft(visuals, node.branchId);
-                    next = getBranchById(visuals, node.branchId + 1);
-                    if (next) {
-                        __state = '8';
-                    } else {
-                        next = getBranchById(visuals, 1);
-                        __state = '8';
-                    }
-                    break;
-                case '8':
-                    toDelete = {};
-                    scanBranchItems(node, toDelete);
-                    remaining = subtract(widget.model.items, toDelete);
-                    redirectBranch(visuals, remaining, toDelete, next.itemId, edits);
-                    ditch = function (itemId) {
-                        deleteItem(edits, itemId);
-                    };
-                    _var2 = Object.keys(toDelete);
-                    _var2.forEach(ditch);
-                    return edits;
-                default:
-                    return;
+                    case '2':
+                        visuals = widget.visuals;
+                        edits = moveBranchIdsLeft(visuals, node.branchId);
+                        next = getBranchById(visuals, node.branchId + 1);
+                        if (next) {
+                            __state = '8';
+                        } else {
+                            next = getBranchById(visuals, 1);
+                            __state = '8';
+                        }
+                        break;
+                    case '8':
+                        toDelete = {};
+                        scanBranchItems(node, toDelete);
+                        remaining = subtract(widget.model.items, toDelete);
+                        redirectBranch(visuals, remaining, toDelete, next.itemId, edits);
+                        ditch = function (itemId) {
+                            deleteItem(edits, itemId);
+                        };
+                        _var2 = Object.keys(toDelete);
+                        _var2.forEach(ditch);
+                        return edits;
+                    default:
+                        return;
                 }
             }
         }
@@ -11651,23 +12013,23 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    visuals = widget.visuals;
-                    selection = widget.selection;
-                    node = getNode(visuals, selection.head);
-                    __state = '7';
-                    break;
-                case '7':
-                    next = node.next[0];
-                    if (next.id in selection.prims) {
-                        node = next;
+                    case '2':
+                        visuals = widget.visuals;
+                        selection = widget.selection;
+                        node = getNode(visuals, selection.head);
                         __state = '7';
-                    } else {
-                        return next.itemId;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        next = node.next[0];
+                        if (next.id in selection.prims) {
+                            node = next;
+                            __state = '7';
+                        } else {
+                            return next.itemId;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11682,26 +12044,26 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = node.aprev;
-                    _var3 = 0;
-                    __state = '7';
-                    break;
-                case '7':
-                    if (_var3 < _var2.length) {
-                        prev = _var2[_var3];
-                        if (prev.itemId in visited) {
-                            _var3++;
-                            __state = '7';
+                    case '2':
+                        _var2 = node.aprev;
+                        _var3 = 0;
+                        __state = '7';
+                        break;
+                    case '7':
+                        if (_var3 < _var2.length) {
+                            prev = _var2[_var3];
+                            if (prev.itemId in visited) {
+                                _var3++;
+                                __state = '7';
+                            } else {
+                                return true;
+                            }
                         } else {
-                            return true;
+                            return false;
                         }
-                    } else {
-                        return false;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11710,50 +12072,50 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    visited = context.visited;
-                    if (itemId) {
-                        if (itemId in visited) {
-                            __state = '1';
-                        } else {
-                            node = getNodeByItem(context.visuals, itemId);
-                            if (node.type === 'branch') {
+                    case '1':
+                        return;
+                    case '2':
+                        visited = context.visited;
+                        if (itemId) {
+                            if (itemId in visited) {
                                 __state = '1';
                             } else {
-                                _var2 = isBackLink(prev, node);
-                                if (_var2) {
-                                    _var4 = hasUntouchedArrows(visited, node);
-                                    if (_var4) {
-                                        __state = '1';
-                                    } else {
-                                        visited[itemId] = true;
-                                        context.deleteList.push(itemId);
-                                        unlinkArrow(node, visited, context.edits);
-                                        __state = '1';
-                                    }
+                                node = getNodeByItem(context.visuals, itemId);
+                                if (node.type === 'branch') {
+                                    __state = '1';
                                 } else {
-                                    _var3 = hasUntouchedUpstream(visited, node);
-                                    if (_var3) {
-                                        __state = '1';
+                                    _var2 = isBackLink(prev, node);
+                                    if (_var2) {
+                                        _var4 = hasUntouchedArrows(visited, node);
+                                        if (_var4) {
+                                            __state = '1';
+                                        } else {
+                                            visited[itemId] = true;
+                                            context.deleteList.push(itemId);
+                                            unlinkArrow(node, visited, context.edits);
+                                            __state = '1';
+                                        }
                                     } else {
-                                        visited[itemId] = true;
-                                        context.deleteList.push(itemId);
-                                        item = context.items[itemId];
-                                        traverseItemToDelete(context, node, item.one);
-                                        traverseItemToDelete(context, node, item.two);
-                                        __state = '1';
+                                        _var3 = hasUntouchedUpstream(visited, node);
+                                        if (_var3) {
+                                            __state = '1';
+                                        } else {
+                                            visited[itemId] = true;
+                                            context.deleteList.push(itemId);
+                                            item = context.items[itemId];
+                                            traverseItemToDelete(context, node, item.one);
+                                            traverseItemToDelete(context, node, item.two);
+                                            __state = '1';
+                                        }
                                     }
                                 }
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11762,35 +12124,35 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (itemId) {
-                        if (itemId in visited) {
-                            __state = '1';
-                        } else {
-                            visited[itemId] = false;
-                            node = getNodeByItem(widget.visuals, itemId);
-                            if (node.type === 'branch') {
+                    case '1':
+                        return;
+                    case '2':
+                        if (itemId) {
+                            if (itemId in visited) {
                                 __state = '1';
                             } else {
-                                _var2 = isBackLink(prev, node);
-                                if (_var2) {
+                                visited[itemId] = false;
+                                node = getNodeByItem(widget.visuals, itemId);
+                                if (node.type === 'branch') {
                                     __state = '1';
                                 } else {
-                                    item = widget.model.items[itemId];
-                                    traverseItem(widget, node, item.one, visited);
-                                    traverseItem(widget, node, item.two, visited);
-                                    __state = '1';
+                                    _var2 = isBackLink(prev, node);
+                                    if (_var2) {
+                                        __state = '1';
+                                    } else {
+                                        item = widget.model.items[itemId];
+                                        traverseItem(widget, node, item.one, visited);
+                                        traverseItem(widget, node, item.two, visited);
+                                        __state = '1';
+                                    }
                                 }
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11799,26 +12161,26 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    node = arrowNode;
-                    __state = '7';
-                    break;
-                case '4':
-                    return;
-                case '5':
-                    redirectUpperItems(edits, arrowNode.up.links, node.itemId);
-                    __state = '4';
-                    break;
-                case '7':
-                    node = node.next[0];
-                    if (visited[node.itemId]) {
+                    case '2':
+                        node = arrowNode;
                         __state = '7';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '4':
+                        return;
+                    case '5':
+                        redirectUpperItems(edits, arrowNode.up.links, node.itemId);
+                        __state = '4';
+                        break;
+                    case '7':
+                        node = node.next[0];
+                        if (visited[node.itemId]) {
+                            __state = '7';
+                        } else {
+                            __state = '5';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11827,30 +12189,30 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (node.type === 'case') {
-                        return false;
-                    } else {
-                        _var2 = node.prev;
-                        _var3 = 0;
-                        __state = '7';
-                    }
-                    break;
-                case '7':
-                    if (_var3 < _var2.length) {
-                        prev = _var2[_var3];
-                        if (prev.itemId in visited) {
-                            _var3++;
-                            __state = '7';
+                    case '2':
+                        if (node.type === 'case') {
+                            return false;
                         } else {
-                            return true;
+                            _var2 = node.prev;
+                            _var3 = 0;
+                            __state = '7';
                         }
-                    } else {
-                        return false;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '7':
+                        if (_var3 < _var2.length) {
+                            prev = _var2[_var3];
+                            if (prev.itemId in visited) {
+                                _var3++;
+                                __state = '7';
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            return false;
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11863,33 +12225,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edits = [];
-                    edgeUp = node.up;
-                    end = node.loopEnd;
-                    beforeEnd = getUp(end);
-                    if (beforeEnd === node) {
-                        __state = '6';
-                    } else {
-                        __state = '7';
-                    }
-                    break;
-                case '4':
-                    deleteItem(edits, node.itemId);
-                    deleteItem(edits, end.itemId);
-                    return edits;
-                case '6':
-                    redirectUpperItems(edits, edgeUp.links, end.one);
-                    __state = '4';
-                    break;
-                case '7':
-                    redirectUpperItems(edits, edgeUp.links, node.one);
-                    edgeUp2 = end.up;
-                    redirectUpperItems(edits, edgeUp2.links, end.one);
-                    __state = '4';
-                    break;
-                default:
-                    return;
+                    case '2':
+                        edits = [];
+                        edgeUp = node.up;
+                        end = node.loopEnd;
+                        beforeEnd = getUp(end);
+                        if (beforeEnd === node) {
+                            __state = '6';
+                        } else {
+                            __state = '7';
+                        }
+                        break;
+                    case '4':
+                        deleteItem(edits, node.itemId);
+                        deleteItem(edits, end.itemId);
+                        return edits;
+                    case '6':
+                        redirectUpperItems(edits, edgeUp.links, end.one);
+                        __state = '4';
+                        break;
+                    case '7':
+                        redirectUpperItems(edits, edgeUp.links, node.one);
+                        edgeUp2 = end.up;
+                        redirectUpperItems(edits, edgeUp2.links, end.one);
+                        __state = '4';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11898,24 +12260,24 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = nodes.length;
-                    if (_var2 === 0) {
-                        __state = '1';
-                    } else {
-                        if (_var2 === 1) {
-                            deleteOne(widget, nodes[0]);
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = nodes.length;
+                        if (_var2 === 0) {
                             __state = '1';
                         } else {
-                            deleteBlock(widget, nodes);
-                            __state = '1';
+                            if (_var2 === 1) {
+                                deleteOne(widget, nodes[0]);
+                                __state = '1';
+                            } else {
+                                deleteBlock(widget, nodes);
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11924,32 +12286,32 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    toKeep = {};
-                    _var2 = node.select.cases;
-                    _var3 = 0;
-                    __state = '6';
-                    break;
-                case '5':
-                    _var3++;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var3 < _var2.length) {
-                        caseNode = _var2[_var3];
-                        if (caseNode === node) {
-                            __state = '5';
+                    case '2':
+                        toKeep = {};
+                        _var2 = node.select.cases;
+                        _var3 = 0;
+                        __state = '6';
+                        break;
+                    case '5':
+                        _var3++;
+                        __state = '6';
+                        break;
+                    case '6':
+                        if (_var3 < _var2.length) {
+                            caseNode = _var2[_var3];
+                            if (caseNode === node) {
+                                __state = '5';
+                            } else {
+                                below = caseNode.next[0];
+                                markToStay(widget, caseNode, below.itemId, toKeep);
+                                __state = '5';
+                            }
                         } else {
-                            below = caseNode.next[0];
-                            markToStay(widget, caseNode, below.itemId, toKeep);
-                            __state = '5';
+                            return toKeep;
                         }
-                    } else {
-                        return toKeep;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -11981,39 +12343,39 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (self.visuals.config.canSelect) {
-                        nodes = getNodesFromSelection(self);
-                        if (nodes.length === 0) {
-                            __state = '1';
-                        } else {
-                            first = nodes[0];
-                            node = findNeighbour(first, 'up', 'head');
-                            if (node) {
-                                __state = '8';
+                    case '1':
+                        return;
+                    case '2':
+                        if (self.visuals.config.canSelect) {
+                            nodes = getNodesFromSelection(self);
+                            if (nodes.length === 0) {
+                                __state = '1';
                             } else {
-                                node = findClosestNode(self, function (n) {
-                                    return n.y < first.y;
-                                }, first, true);
+                                first = nodes[0];
+                                node = findNeighbour(first, 'up', 'head');
                                 if (node) {
                                     __state = '8';
                                 } else {
-                                    __state = '1';
+                                    node = findClosestNode(self, function (n) {
+                                        return n.y < first.y;
+                                    }, first, true);
+                                    if (node) {
+                                        __state = '8';
+                                    } else {
+                                        __state = '1';
+                                    }
                                 }
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
+                        break;
+                    case '8':
+                        self.showItem(node.id);
                         __state = '1';
-                    }
-                    break;
-                case '8':
-                    self.showItem(node.id);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12022,25 +12384,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = isReadonly(self);
-                    if (_var2) {
-                        __state = '1';
-                    } else {
-                        if (self.edit) {
-                            resetSelection(self);
-                            self.edit.redoEdit();
-                            self.redraw();
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = isReadonly(self);
+                        if (_var2) {
                             __state = '1';
                         } else {
-                            __state = '1';
+                            if (self.edit) {
+                                resetSelection(self);
+                                self.edit.redoEdit();
+                                self.redraw();
+                                __state = '1';
+                            } else {
+                                __state = '1';
+                            }
                         }
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12058,39 +12420,39 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (self.visuals.config.canSelect) {
-                        nodes = getNodesFromSelection(self);
-                        if (nodes.length === 0) {
-                            __state = '1';
-                        } else {
-                            first = nodes[0];
-                            node = findNeighbour(first, 'down', 'tail');
-                            if (node) {
-                                __state = '12';
+                    case '1':
+                        return;
+                    case '2':
+                        if (self.visuals.config.canSelect) {
+                            nodes = getNodesFromSelection(self);
+                            if (nodes.length === 0) {
+                                __state = '1';
                             } else {
-                                node = findClosestNode(self, function (n) {
-                                    return n.y > first.y;
-                                }, first, true);
+                                first = nodes[0];
+                                node = findNeighbour(first, 'down', 'tail');
                                 if (node) {
                                     __state = '12';
                                 } else {
-                                    __state = '1';
+                                    node = findClosestNode(self, function (n) {
+                                        return n.y > first.y;
+                                    }, first, true);
+                                    if (node) {
+                                        __state = '12';
+                                    } else {
+                                        __state = '1';
+                                    }
                                 }
                             }
+                        } else {
+                            __state = '1';
                         }
-                    } else {
+                        break;
+                    case '12':
+                        self.showItem(node.id);
                         __state = '1';
-                    }
-                    break;
-                case '12':
-                    self.showItem(node.id);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12105,19 +12467,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    widget.edit.updateDocument(edits);
-                    if (retainSelection) {
-                        __state = '1';
-                    } else {
-                        resetSelection(widget);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        widget.edit.updateDocument(edits);
+                        if (retainSelection) {
+                            __state = '1';
+                        } else {
+                            resetSelection(widget);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12141,33 +12503,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edits = [];
-                    _var2 = visuals.branches;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var3++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        itemId = _var2[_var3];
-                        branch = getNode(visuals, itemId);
-                        if (branch.branchId >= branchId) {
-                            newId = branch.branchId + 1;
-                            updateItem(edits, itemId, { branchId: newId });
-                            __state = '4';
+                    case '2':
+                        edits = [];
+                        _var2 = visuals.branches;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var3++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            itemId = _var2[_var3];
+                            branch = getNode(visuals, itemId);
+                            if (branch.branchId >= branchId) {
+                                newId = branch.branchId + 1;
+                                updateItem(edits, itemId, { branchId: newId });
+                                __state = '4';
+                            } else {
+                                __state = '4';
+                            }
                         } else {
-                            __state = '4';
+                            return edits;
                         }
-                    } else {
-                        return edits;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12230,33 +12592,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edits = [];
-                    _var2 = visuals.branches;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var3++;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        itemId = _var2[_var3];
-                        branch = getNode(visuals, itemId);
-                        if (branch.branchId > branchId) {
-                            newId = branch.branchId - 1;
-                            updateItem(edits, itemId, { branchId: newId });
-                            __state = '4';
+                    case '2':
+                        edits = [];
+                        _var2 = visuals.branches;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var3++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            itemId = _var2[_var3];
+                            branch = getNode(visuals, itemId);
+                            if (branch.branchId > branchId) {
+                                newId = branch.branchId - 1;
+                                updateItem(edits, itemId, { branchId: newId });
+                                __state = '4';
+                            } else {
+                                __state = '4';
+                            }
                         } else {
-                            __state = '4';
+                            return edits;
                         }
-                    } else {
-                        return edits;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12287,6 +12649,8 @@ function createDrakonWidget() {
         function initInsertFunctions(widget) {
             widget.insertActions = {};
             addSimpleInsert(widget, 'action');
+            addSimpleInsert(widget, 'insertion');
+            addSimpleInsert(widget, 'comment');
             widget.insertActions.question = questionInsert;
             widget.insertActions.branch = branchInsert;
             widget.insertActions.select = selectInsert;
@@ -12320,33 +12684,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = links;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        link = _var2[_var3];
-                        edit = createUpdate(link.source);
-                        if (link.index === 0) {
-                            edit.fields.one = newId;
-                            __state = '10';
+                    case '2':
+                        _var2 = links;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            link = _var2[_var3];
+                            edit = createUpdate(link.source);
+                            if (link.index === 0) {
+                                edit.fields.one = newId;
+                                __state = '10';
+                            } else {
+                                edit.fields.two = newId;
+                                __state = '10';
+                            }
                         } else {
-                            edit.fields.two = newId;
-                            __state = '10';
+                            return;
                         }
-                    } else {
+                        break;
+                    case '10':
+                        edits.push(edit);
+                        _var3++;
+                        __state = '5';
+                        break;
+                    default:
                         return;
-                    }
-                    break;
-                case '10':
-                    edits.push(edit);
-                    _var3++;
-                    __state = '5';
-                    break;
-                default:
-                    return;
                 }
             }
         }
@@ -12423,28 +12787,28 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    edits = [];
-                    model = widget.model;
-                    targetId = existing.next[0].itemId;
-                    item = item || {};
-                    fields = clone(item);
-                    fields.one = targetId;
-                    fields.type = 'case';
-                    if (existing.next.length === 2) {
-                        right = existing.next[1];
-                        fields.two = right.itemId;
-                        __state = '4';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '4':
-                    caseId = createItem(model, edits, fields);
-                    updateItem(edits, existing.itemId, { two: caseId });
-                    return edits;
-                default:
-                    return;
+                    case '2':
+                        edits = [];
+                        model = widget.model;
+                        targetId = existing.next[0].itemId;
+                        item = item || {};
+                        fields = clone(item);
+                        fields.one = targetId;
+                        fields.type = 'case';
+                        if (existing.next.length === 2) {
+                            right = existing.next[1];
+                            fields.two = right.itemId;
+                            __state = '4';
+                        } else {
+                            __state = '4';
+                        }
+                        break;
+                    case '4':
+                        caseId = createItem(model, edits, fields);
+                        updateItem(edits, existing.itemId, { two: caseId });
+                        return edits;
+                    default:
+                        return;
                 }
             }
         }
@@ -12453,23 +12817,23 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    zero = 48;
-                    nine = 57;
-                    if (c >= zero) {
-                        if (c <= nine) {
-                            return true;
+                    case '2':
+                        zero = 48;
+                        nine = 57;
+                        if (c >= zero) {
+                            if (c <= nine) {
+                                return true;
+                            } else {
+                                __state = '6';
+                            }
                         } else {
                             __state = '6';
                         }
-                    } else {
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    return false;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        return false;
+                    default:
+                        return;
                 }
             }
         }
@@ -12478,18 +12842,18 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = isReadonly(widget);
-                    if (_var2) {
-                        throw new Error('Cannot modify a read-only diagram');
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = isReadonly(widget);
+                        if (_var2) {
+                            throw new Error('Cannot modify a read-only diagram');
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12518,26 +12882,26 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    max = 0;
-                    _var2 = visuals.branches;
-                    _var3 = 0;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var3 < _var2.length) {
-                        id = _var2[_var3];
-                        branch = getNode(visuals, id);
-                        number = getNumberPart(branch.content);
-                        max = Math.max(max, number);
-                        _var3++;
+                    case '2':
+                        max = 0;
+                        _var2 = visuals.branches;
+                        _var3 = 0;
                         __state = '6';
-                    } else {
-                        return visuals.config.branch + (max + 1);
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    case '6':
+                        if (_var3 < _var2.length) {
+                            id = _var2[_var3];
+                            branch = getNode(visuals, id);
+                            number = getNumberPart(branch.content);
+                            max = Math.max(max, number);
+                            _var3++;
+                            __state = '6';
+                        } else {
+                            return visuals.config.branch + (max + 1);
+                        }
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12554,27 +12918,27 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    _var2 = visuals.branches;
-                    _var3 = 0;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (_var3 < _var2.length) {
-                        itemId = _var2[_var3];
-                        branch = getNode(visuals, itemId);
-                        if (branch.branchId === branchId) {
-                            return branch;
+                    case '2':
+                        _var2 = visuals.branches;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            itemId = _var2[_var3];
+                            branch = getNode(visuals, itemId);
+                            if (branch.branchId === branchId) {
+                                return branch;
+                            } else {
+                                _var3++;
+                                __state = '5';
+                            }
                         } else {
-                            _var3++;
-                            __state = '5';
+                            return undefined;
                         }
-                    } else {
-                        return undefined;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12583,19 +12947,19 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    if (socket.left) {
-                        branchId = socket.node.branchId;
-                        __state = '6';
-                    } else {
-                        branchId = socket.node.branchId + 1;
-                        __state = '6';
-                    }
-                    break;
-                case '6':
-                    return branchId;
-                default:
-                    return;
+                    case '2':
+                        if (socket.left) {
+                            branchId = socket.node.branchId;
+                            __state = '6';
+                        } else {
+                            branchId = socket.node.branchId + 1;
+                            __state = '6';
+                        }
+                        break;
+                    case '6':
+                        return branchId;
+                    default:
+                        return;
                 }
             }
         }
@@ -12604,31 +12968,31 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '2':
-                    last = text.length - 1;
-                    i = last;
-                    __state = '5';
-                    break;
-                case '5':
-                    if (i >= 0) {
-                        c = text.charCodeAt(i);
-                        _var2 = isDigit(c);
-                        if (_var2) {
-                            i--;
-                            __state = '5';
-                        } else {
-                            if (i === last) {
-                                return -1;
+                    case '2':
+                        last = text.length - 1;
+                        i = last;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (i >= 0) {
+                            c = text.charCodeAt(i);
+                            _var2 = isDigit(c);
+                            if (_var2) {
+                                i--;
+                                __state = '5';
                             } else {
-                                return i + 1;
+                                if (i === last) {
+                                    return -1;
+                                } else {
+                                    return i + 1;
+                                }
                             }
+                        } else {
+                            return 0;
                         }
-                    } else {
-                        return 0;
-                    }
-                    break;
-                default:
-                    return;
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12654,43 +13018,43 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    _var2 = socket.op;
-                    if (_var2 === 'insert') {
-                        action = widget.insertActions[socket.type];
-                        edits = action(widget, socket);
-                        __state = '16';
-                    } else {
-                        if (_var2 === 'paste') {
-                            edits = pasteInSocket(widget, socket);
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = socket.op;
+                        if (_var2 === 'insert') {
+                            action = widget.insertActions[socket.type];
+                            edits = action(widget, socket);
                             __state = '16';
                         } else {
-                            if (_var2 === 'arrow') {
-                                edits = clickArrowSocket(widget, socket);
+                            if (_var2 === 'paste') {
+                                edits = pasteInSocket(widget, socket);
                                 __state = '16';
                             } else {
-                                if (_var2 === 'liana') {
-                                    edits = clickLianaSocket(widget, socket);
+                                if (_var2 === 'arrow') {
+                                    edits = clickArrowSocket(widget, socket);
                                     __state = '16';
                                 } else {
-                                    if (_var2 === 'params') {
-                                        __state = '1';
+                                    if (_var2 === 'liana') {
+                                        edits = clickLianaSocket(widget, socket);
+                                        __state = '16';
                                     } else {
-                                        throw new Error('Unexpected case value: ' + _var2);
+                                        if (_var2 === 'params') {
+                                            __state = '1';
+                                        } else {
+                                            throw new Error('Unexpected case value: ' + _var2);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    break;
-                case '16':
-                    doEdit(widget, edits, false);
-                    __state = '1';
-                    break;
-                default:
-                    return;
+                        break;
+                    case '16':
+                        doEdit(widget, edits, false);
+                        __state = '1';
+                        break;
+                    default:
+                        return;
                 }
             }
         }
@@ -12749,6 +13113,9 @@ function createDrakonWidget() {
             };
             self.editContent = function () {
                 return DrakonCanvas_editContent(self);
+            };
+            self.getVersion = function () {
+                return DrakonCanvas_getVersion(self);
             };
             self.copySelection = function () {
                 return DrakonCanvas_copySelection(self);
@@ -12821,7 +13188,7 @@ function createDrakonWidget() {
         });
         return unit;
     }
-    
+
     var html = html_0_1()
     var edit = edit_tools()
     var drakon = drakon_canvas()

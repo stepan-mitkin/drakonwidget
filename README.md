@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 0.8.1
+Current version: 0.8.2
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -121,7 +121,7 @@ var config = {
     translate: tr, // My function
     drawZones: false,
     canSelect: true,
-    width: 300,
+    maxWidth: 300,
     theme: {
         lineWidth: 1,
         background: "#afddfa",
@@ -143,20 +143,25 @@ var config = {
 |Name|Description|Data type|Required|Default value|
 |---|---|---|---|---|
 |branch|The text label of new silhouette branches.|text||Branch|
-|buildContentDiv|Builds the content of an icon. See reference below.|function||buildMulitlineDiv|
+|branchFont|The font for the Branch icon.|CSS font||bold 14px Arial|
+|buildIconCore|Builds the content of an icon. See Core object reference below.|function|||
 |canSelect|When set to 'false' disables editing and selection.|boolean||true|
 |canvasLabels|The font for the "Yes", "No" labels.|CSS font||14px Arial|
+|commentPadding|The width of the grey border on Comment icon|integer||10|
 |drawZones|Technical visualization for lianas.|boolean||false|
 |end|The text label for the End icon.|text||End|
 |exit|The text label for the last silhouette branch.|text||Exit|
 |font|Icon font|CSS font||14px Arial|
 |getClipboard|Gets the current clipboard value. See reference below.|function|||
 |headerFont|The font for the header icon.|CSS font||bold 18px Arial|
-|lineHeight|Line height for icons.|double||44621|
+|insertionPadding|The width of side bars on Insertion icon|integer||10|
+|lineHeight|Line height for icons.|double||1.3|
 |maxHeight|The maximum icon height.|integer||600|
 |metre|The miminum distance between icons.|integer||20|
+|maxWidth|The maximum with of an icon.|integer||500|
 |minWidth|The miminum width of an icon.|integer||100|
 |no|The "No" label.|text||No|
+|onItemSelected|Runs when the currently selected item changes.|function|||
 |padding|Padding inside icons.|integer||10|
 |setClipboard|Puts a value to the clipboard. See reference below.|function|||
 |showContextMenu|Shows a context menu.|function|required||
@@ -168,7 +173,7 @@ var config = {
 |theme|The theme object. See the Theme reference.|object|||
 |touchRadius|The touch radius for junctions|integer||5|
 |translate|The text translation function.|function|||
-|width|The maximum with of an icon.|integer||500|
+|triangleHeight|The height of the triangle part of Branch, Address, and Case.|integer||20|
 |yes|The "Yes" label.|text||Yes|
 
 ## Theme reference
@@ -181,9 +186,11 @@ var config = {
 |candyBorder|The border color of the selection mark.|CSS color|black|
 |candyFill|The color of the selection mark.|CSS color|#00ff00|
 |color|The text color.|CSS color|black|
+|commentBack|The color of the border on Comment icon|CSS color|grey|
 |iconBack|The icon background.|CSS color|white|
 |iconBorder|The icon border color.|CSS color|black|
 |icons|Icon-specific configuration.|object||
+|internalLine|The color of internal lines for Case, Insertion icons and cycle marks.|CSS color|black|
 |lines|The lines color.|CSS color|black|
 |lineWidth|The width of connecting lines on the diagram.|integer|1|
 |scrollBar|The scrollbar color.|CSS color|rgba(0, 0, 0, 0.3)|
@@ -211,26 +218,33 @@ Icon types:
 - params
 - question
 - select
+- insertion
+- comment
 
-### buildContentDiv
+### buildIconCore
 
-Builds the content of an icon. Returns an HTML element.
+Creates a __Core__ object that builds the icon's content.
+Each icon must have a separate __Core__ object.
+
+See the Core reference.
 
 Signature
 
 ```
-function buildContentDiv(type, content, config, font, textAlign, color)
+function buildIconCore(context)
 ```
 
-Arguments
+Properties of the __context__ object
 
 |Name|Data type|Description|
 |---|---|---|
 |type|text|The node type: action, question, header, etc.|
 |content|text|The node content. Could be a string with JSON if you decide so.|
+|style|object|The node style. Can be null. Expected properties: iconBack, iconBorder, color, borderWidth, font|
 |config|object|The configuration object|
-|textAlign|CSS text-align|Text align: left, right, center|
-|color|CSS color|The text color|
+|flag1|integer|The Yes/No orientation (Question icon only)|
+|paddingLeft|integer|An additional left padding|
+|paddingRight|integer|An additional right padding|
 
 
 
@@ -249,6 +263,25 @@ The returned object
 |type|text|The type of the object|
 |content|object|The clipboard content|
 
+
+### onItemSelected
+
+A callback that is called every time the currently selected object is changed.
+
+```
+function onItemSelected(item)
+```
+
+The __item__ object. Can be null.
+
+|Name|Data type|Description|
+|---|---|---|
+|id|text|The id of the item.|
+|type|text|The type of the item: action, question, etc.|
+|content|string|The content of the icon|
+|style|object|The style of the icon|
+
+If there are no selected items on the diagram, the __item__ object is null.
 
 ### setClipboard
 
@@ -301,7 +334,7 @@ When the user wants to save the edited content, call the __setContent__ method o
 If the user cancels editing, do not do anything.
 
 Note that the content of the icon _must be a string_.
-It could be a JSON. The actual format is determined by the provided __startEditContent__ and __buildContentDiv__ functions.
+It could be a JSON. The actual format is determined by the provided __startEditContent__ and __buildIconCore__ functions.
 
 ```
 function startEditContent(item, isReadonly)
@@ -350,6 +383,8 @@ Text strings that will be translated:
 
 Note that the words that appear on the diagram (Yes, No, End, Exit, Branch) are set
 in the config. See the Configuration reference.
+
+
 
 ## DrakonWidget methods
 
@@ -416,6 +451,15 @@ Invokes the content editor for the currently selected item (if any).
 ```
 function editContent()
 ```
+
+### getVersion
+
+Returns the widget's version.
+
+```
+function getVersion()
+```
+
 
 ### redo
 
@@ -513,6 +557,8 @@ Item types that can be inserted:
 - case
 - foreach
 - branch
+- insertion
+- comment
 
 ### showPaste
 
@@ -539,6 +585,34 @@ Performs the undo of the previous action.
 ```
 function redo()
 ```
+
+## Core object
+
+
+Builds the content of an icon in the form of an HTML element.
+
+### buildDom
+
+Builds the HTML to be shown inside an icon.
+
+If __buildDom__ returns null, DrakonWidget will use a default method for building the content.
+This way, it is possible to override the content only for certain icons.
+
+For example, if you want to create your own content only for Action icons, add a check like this:
+
+```javascript
+if (self.type === "action ") { // self.type comes from context.type
+    return buildSomeContent()
+} else {
+    return undefined
+}
+```
+
+
+```
+function buildDom()
+```
+
 
 ## EditSender
 

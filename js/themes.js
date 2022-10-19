@@ -3,7 +3,7 @@ function createThemes() {
         {
             "name": "Bright questions",
             "id": "theme-bq",
-            "width": 300,
+            "maxWidth": 300,
             "theme": {
                 "lineWidth": 1,
                 "background": "#afddfa",
@@ -32,19 +32,19 @@ function createThemes() {
         {
             name: "Strict",
             id: "theme-str",
-            width: 300,
+            maxWidth: 300,
             theme: {
                 lineWidth: 1,
                 background: "#afddfa",
                 iconBorder: "#b0c0e0",
                 iconBack: "white",
                 shadowColor: "rgba(0, 0, 50, 0.15)"
-            }        
+            }
         },
         {
             name: "Classic",
             id: "theme-class",
-            width: 200,
+            maxWidth: 200,
             theme: {
                 lineWidth: 1,
                 background: "#97D3E1",
@@ -56,7 +56,7 @@ function createThemes() {
         {
             name: "Egg",
             id: "theme-egg",
-            width: 300,
+            maxWidth: 300,
             theme: {
                 lineWidth: 1,
                 borderWidth: 0,
@@ -65,16 +65,16 @@ function createThemes() {
                 iconBack: "#FFE26C",
                 shadowColor: "",
                 icons: {
-                    question: {iconBack: "#FFA849"},
-                    loopbegin: {iconBack: "#F2C371"},
-                    loopend: {iconBack: "#F2C371"}
+                    question: { iconBack: "#FFA849" },
+                    loopbegin: { iconBack: "#F2C371" },
+                    loopend: { iconBack: "#F2C371" }
                 }
             }
-        },        
+        },
         {
             "name": "Green",
             "id": "theme-green",
-            "width": 250,
+            "maxWidth": 250,
             "theme": {
                 "lineWidth": 2,
                 "borderWidth": 2,
@@ -94,15 +94,15 @@ function createThemes() {
                     }
                 }
             }
-        },         
+        },
         {
             "name": "Greys",
             "id": "theme-greys",
-            "width": 300,
+            "maxWidth": 300,
             "theme": {
                 "lineWidth": 1,
-                "background": "#cfcfcf",
-                "iconBorder": "#b0c0e0",
+                "background": "#dfdfdf",
+                "iconBorder": "#C0C0C0",
                 "iconBack": "white",
                 "shadowColor": "rgba(0, 0, 0, 0.15)"
             }
@@ -110,7 +110,7 @@ function createThemes() {
         {
             "name": "Grey on white",
             "id": "theme-gow",
-            "width": 300,
+            "maxWidth": 300,
             "theme": {
                 "lineWidth": 1,
                 "background": "white",
@@ -126,11 +126,11 @@ function createThemes() {
                     }
                 }
             }
-        },        
+        },
         {
             "name": "White",
             "id": "theme-white",
-            "width": 300,
+            "maxWidth": 300,
             "theme": {
                 "lineWidth": 1,
                 "background": "white",
@@ -138,7 +138,7 @@ function createThemes() {
                 "iconBack": "white",
                 "shadowColor": ""
             }
-        }             
+        }
 
     ]
 }
