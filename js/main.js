@@ -317,6 +317,8 @@
         addVSpace(toolbar)
         addInsertButton(toolbar, "insertion.png", "insertion", "Insertion")
         addInsertButton(toolbar, "comment.png", "comment", "Comment")
+        addInsertButton(toolbar, "sinput.png", "simpleinput", "Simple input")
+        addInsertButton(toolbar, "soutput.png", "simpleoutput", "Simple output")
     }
 
     function showMenu() {
@@ -526,7 +528,7 @@
         for (var theme of themes) {
             localStorage.setItem(theme.id, JSON.stringify(theme))
         }
-        localStorage.setItem("current-theme", "theme-egg")
+        localStorage.setItem("current-theme", "theme-gow")
     }
 
     function getDiagramList() {
