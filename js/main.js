@@ -652,6 +652,7 @@
         var config = JSON.parse(localStorage.getItem(currentTheme))
         config.startEditContent = startEditContent
         config.showContextMenu = widgets.showContextMenu
+        config.buildIconCore = buildIconCore
         config.translate = tr
         config.drawZones = false
         config.canSelect = canSelect
@@ -740,6 +741,187 @@
 
     function initDrakonWidget() {
         drakon = createDrakonWidget()
+    }
+
+    function buildIconCore(context) {
+        var core = {}
+        Object.assign(core, context)
+        core.buildDom = function () { return customBuildDom(core) }
+        return core
+    }
+
+    function getThemeValue(core, name) {
+        if (core.style && core.style[name]) {
+            return core.style[name]
+        }
+
+        var theme = core.config.theme
+        if (theme.icons && theme.icons.action && theme.icons.action[name]) {
+            return theme.icons.action[name]
+        }
+
+        return theme[name]
+    }
+
+    function customBuildDom(core) {
+        if (core.type !== "action") {
+            return undefined
+        }
+
+        var paddingTop = core.config.padding + "px"
+        var paddingBottom = core.config.padding + "px"
+        var paddingLeft = core.config.padding + core.paddingLeft + "px"
+        var paddingRight = core.config.padding + core.paddingRight + "px"
+        var color = getThemeValue(core, "color")
+        var font = getThemeValue(core, "font")
+        font = font || core.config.font
+
+        var container = div("icon-container")
+        container.style.display = "inline-block"
+        container.style.position = "absolute"
+        container.style.left = "0px"
+        container.style.top = "0px"
+        container.style.paddingLeft = paddingLeft
+        container.style.paddingTop = paddingTop
+        container.style.paddingRight = paddingRight
+        container.style.paddingBottom = paddingBottom
+        container.style.color = color
+        container.style.font = font
+        container.style.minWidth = core.config.minWidth + "px"
+        container.style.maxWidth = core.config.maxWidth + "px"
+        container.style.lineHeight = core.config.lineHeight * 100 + "%"
+
+        parseHomeMadeMarkdown(core.content, container)
+
+        return container
+    }
+
+    function parseHomeMadeMarkdown(text, container) {
+        if (!text) {
+            return
+        }
+
+        var lines = text.split("\n")
+
+
+        for (var line of lines) {
+            var element = parseParagraph(line)
+            add(container, element)
+        }
+    }
+
+
+    function createBuffer(type) {
+        return {
+            text: "",
+            type: type
+        }
+    }
+
+    function completeBuffer(buffer, par) {
+        if (buffer.text) {
+            switch (buffer.type) {
+                case "normal":
+                    addText(par, buffer.text)
+                    break
+                case "strong":
+                    var strong = document.createElement("strong")
+                    addText(strong, buffer.text)
+                    add(par, strong)
+                    break
+                case "em":
+                    var em = document.createElement("em")
+                    addText(em, buffer.text)
+                    add(par, em)
+                    break
+            }
+            buffer.text = ""
+        }
+    }
+
+    function addToBuffer(buffer, ch) {
+        buffer.text += ch
+    }
+
+    function parseParagraph(line) {
+        var par = document.createElement("p")
+        var buffer = createBuffer("normal")
+        var state = "start"
+        for (var c of line) {
+            switch (state) {
+                case "start":
+                    if (c === "-") {
+                        addToBuffer(buffer, "•")
+                        state = "normal"
+                    } else if (c === "_") {
+                        state = "under-1"
+                    } else {
+                        addToBuffer(buffer, c)
+                        state = "normal"
+                    }
+                    break
+                case "normal":
+                    if (c === "_") {
+                        state = "under-1"
+                    } else {
+                        addToBuffer(buffer, c)
+                        state = "normal"
+                    }
+                    break
+                case "under-1":
+                    if (c === "_") {
+                        state = "under-2"
+                    } else {
+                        completeBuffer(buffer, par)
+                        buffer = createBuffer("em")
+                        addToBuffer(buffer, c)
+                        state = "em"
+                    }
+                    break
+                case "under-2":
+                    if (c === "_") {
+                        addToBuffer(buffer, c)
+                        state = "normal"
+                    } else {
+                        completeBuffer(buffer, par)
+                        buffer = createBuffer("strong")
+                        addToBuffer(buffer, c)
+                        state = "strong"
+                    }
+                    break
+                case "strong":
+                    if (c === "_") {
+                        state = "end-under-1"
+                    } else {
+                        addToBuffer(buffer, c)
+                        state = "strong"
+                    }
+                    break
+                case "em":
+                    if (c === "_") {
+                        completeBuffer(buffer, par)
+                        buffer = createBuffer("normal")
+                        state = "normal"
+                    } else {
+                        addToBuffer(buffer, c)
+                        state = "em"
+                    }
+                    break
+                case "end-under-1":
+                    if (c === "_") {
+                        completeBuffer(buffer, par)
+                        buffer = createBuffer("normal")
+                        state = "normal"
+                    } else {
+                        addToBuffer(buffer, "_")
+                        addToBuffer(buffer, c)
+                        state = "strong"
+                    }
+                    break
+            }
+        }
+        completeBuffer(buffer, par)
+        return par
     }
 
     main()

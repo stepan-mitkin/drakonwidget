@@ -137,7 +137,7 @@ function createExamples() {
                 "5": {
                     "type": "action",
                     "one": "6",
-                    "content": "Take umbrella"
+                    "content": "- Take umbrella\n- Take rubber boots"
                 },
                 "6": {
                     "type": "action",
@@ -307,17 +307,17 @@ function createExamples() {
                 "6": {
                     "type": "action",
                     "one": "7",
-                    "content": "Form a hypothesis"
+                    "content": "Form a _hypothesis_"
                 },
                 "7": {
                     "type": "action",
                     "one": "8",
-                    "content": "Deduce predictions from the hypothesis"
+                    "content": "Deduce _predictions_ from the _hypothesis_"
                 },
                 "8": {
                     "type": "action",
                     "one": "9",
-                    "content": "Compare the predictions to REPRODUCIBLE facts"
+                    "content": "Compare the _predictions_ to __reproducible__ facts"
                 },
                 "9": {
                     "flag1": 0,
@@ -328,7 +328,7 @@ function createExamples() {
                 },
                 "10": {
                     "type": "action",
-                    "content": "The hypothesis is not valid",
+                    "content": "The _hypothesis_ is not valid",
                     "one": "1"
                 },
                 "11": {
@@ -340,17 +340,17 @@ function createExamples() {
                 },
                 "12": {
                     "type": "action",
-                    "content": "This hypothesis is a waste of time",
+                    "content": "This _hypothesis_ is a waste of time",
                     "one": "1"
                 },
                 "13": {
                     "type": "action",
-                    "content": "The hypothesis could be a valid explanation of the question. Or maybe not.",
+                    "content": "The _hypothesis_ could be a valid explanation of the question. Or maybe not.",
                     "one": "1"
                 }
             }
         }
     ]
-    
+
     return diagrams
 }

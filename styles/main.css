@@ -99,3 +99,11 @@ select {
 .menu-block p {
     margin-bottom: 15px;
 }
+
+.icon-container em {
+    font-style: italic;
+}
+
+.icon-container strong {
+    font-weight: bold;
+}
