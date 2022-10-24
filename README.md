@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 0.8.4
+Current version: 0.9.0
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -163,6 +163,8 @@ var config = {
 |no|The "No" label.|text||No|
 |onItemSelected|Runs when the currently selected item changes.|function|||
 |padding|Padding inside icons.|integer||10|
+|padding|Padding inside icons.|integer||10|
+|parallelWidth|The distance between the two horizontal lines (concurrent processes)|integer|5|
 |setClipboard|Puts a value to the clipboard. See reference below.|function|||
 |showContextMenu|Shows a context menu.|function|required||
 |socketBody|The color of sockets.|CSS color||yellow|
@@ -380,6 +382,7 @@ Text strings that will be translated:
 - Swap "Yes" and "No"
 - Add parameters
 - Insert branch with End
+- Delete path
 
 Note that the words that appear on the diagram (Yes, No, End, Exit, Branch) are set
 in the config. See the Configuration reference.

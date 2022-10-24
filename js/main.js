@@ -319,6 +319,8 @@
         addInsertButton(toolbar, "comment.png", "comment", "Comment")
         addInsertButton(toolbar, "sinput.png", "simpleinput", "Simple input")
         addInsertButton(toolbar, "soutput.png", "simpleoutput", "Simple output")
+        addInsertButton(toolbar, "parblock.png", "parblock", "Concurrent processes")
+        addInsertButton(toolbar, "par.png", "par", "Add path")
     }
 
     function showMenu() {
@@ -501,9 +503,16 @@
 
     function loadDiagrams() {
         var list = getDiagramList()
-        if (!list) {
+        if (list) {
+            var expectedVersion = drakon.getVersion()
+            var actualVersion = localStorage.getItem("drakon-widget-version")
+            if (actualVersion !== expectedVersion) {
+                saveMissingExamplesInStorage()
+            }
+        } else {
             saveExamplesInStorage()
         }
+
     }
 
     function loadThemes() {
@@ -528,7 +537,7 @@
         for (var theme of themes) {
             localStorage.setItem(theme.id, JSON.stringify(theme))
         }
-        localStorage.setItem("current-theme", "theme-gow")
+        localStorage.setItem("current-theme", "theme-class")
     }
 
     function getDiagramList() {
@@ -543,19 +552,38 @@
         return list
     }
 
+    function saveMissingExamplesInStorage() {
+        var examples = createExamples()
+        var existing = getDiagramObjects()
+        var list = getDiagramList()
+        var names = existing.diagrams.map(function (diagram) { return diagram.name })
+        for (var example of examples) {
+            if (names.indexOf(example.name) === -1) {
+                var id = generateId(list)
+                saveDiagram(example, id, list)
+            }
+        }
+        localStorage.setItem("diagram-list", JSON.stringify(list))
+    }
+
     function saveExamplesInStorage() {
         var examples = createExamples();
         var list = []
         for (var example of examples) {
             var id = generateId(list)
-            example.id = id
-            list.push(id)
-            var diagramStr = JSON.stringify(example)
-            localStorage.setItem(id, diagramStr)
+            saveDiagram(example, id, list)
         }
         localStorage.setItem("diagram-list", JSON.stringify(list))
         localStorage.setItem("current-diagram", examples[3].id)
     }
+
+    function saveDiagram(example, id, list) {
+        example.id = id;
+        list.push(id);
+        var diagramStr = JSON.stringify(example);
+        localStorage.setItem(id, diagramStr);
+    }
+
 
     function generateId(list) {
         var id = "diagram-" + Math.floor(Math.random() * 1000 + 100)
@@ -926,3 +954,4 @@
 
     main()
 })();
+
