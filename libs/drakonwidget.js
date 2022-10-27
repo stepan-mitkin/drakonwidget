@@ -780,7 +780,12 @@ function createDrakonWidget() {
                                             showBlockInsertSockets(self.visuals, 'paste', type);
                                             __state = '11';
                                         } else {
-                                            __state = '11';
+                                            if (_var2 === 'duration') {
+                                                showDurationSockets(self.visuals, 'paste');
+                                                __state = '11';
+                                            } else {
+                                                __state = '11';
+                                            }
                                         }
                                     }
                                 }
@@ -1545,8 +1550,13 @@ function createDrakonWidget() {
                                         showAllParSockets(self.visuals, 'insert');
                                         __state = '11';
                                     } else {
-                                        showBlockInsertSockets(self.visuals, 'insert', type);
-                                        __state = '11';
+                                        if (_var2 === 'duration') {
+                                            showDurationSockets(self.visuals, 'insert');
+                                            __state = '11';
+                                        } else {
+                                            showBlockInsertSockets(self.visuals, 'insert', type);
+                                            __state = '11';
+                                        }
                                     }
                                 }
                             }
@@ -1583,7 +1593,7 @@ function createDrakonWidget() {
                         redirectBranch(visuals, first, rest, endId, edits);
                         delete rest[firstId];
                         ditch = function (itemId) {
-                            deleteItem(edits, itemId);
+                            deleteWithDur(widget, itemId, edits);
                         };
                         _var4 = Object.keys(rest);
                         _var4.forEach(ditch);
@@ -1936,32 +1946,32 @@ function createDrakonWidget() {
             }
         }
         function blockSelect(widget) {
-            var snode, selection, visuals, _var6, _var5, _var7, id, node, _var3, _var2, _var4, prim, _var8, _var9, _var10, _var11;
+            var selection, visuals, selectionIds, id, prim, snode, _var3, _var2, _var4, node, _var5, _var6, _var7, _var8;
             var __state = '17';
             while (true) {
                 switch (__state) {
                     case '2':
-                        _var6 = visuals.nodes;
-                        _var5 = Object.keys(_var6);
-                        _var7 = 0;
+                        _var3 = visuals.nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
                         __state = '5';
                         break;
                     case '4':
-                        _var7++;
+                        _var4++;
                         __state = '5';
                         break;
                     case '5':
-                        if (_var7 < _var5.length) {
-                            id = _var5[_var7];
-                            node = _var6[id];
-                            _var10 = isSelected(widget, id);
-                            if (_var10) {
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            _var7 = isSelected(widget, id);
+                            if (_var7) {
                                 __state = '4';
                             } else {
-                                _var9 = canSelectNode(node);
-                                if (_var9) {
-                                    _var8 = boxesIntersect(visuals.selectionFrame, node.box);
-                                    if (_var8) {
+                                _var6 = canSelectNode(node);
+                                if (_var6) {
+                                    _var5 = boxesIntersect(visuals.selectionFrame, node.box);
+                                    if (_var5) {
                                         addToSelection(widget, node);
                                         __state = '4';
                                     } else {
@@ -1980,29 +1990,16 @@ function createDrakonWidget() {
                     case '17':
                         selection = widget.selection;
                         visuals = widget.visuals;
-                        _var3 = selection.prims;
-                        _var2 = Object.keys(_var3);
-                        _var4 = 0;
-                        __state = '19';
-                        break;
-                    case '18':
-                        _var4++;
-                        __state = '19';
-                        break;
-                    case '19':
-                        if (_var4 < _var2.length) {
-                            id = _var2[_var4];
-                            prim = _var3[id];
-                            if (prim === 'node') {
-                                snode = getNode(visuals, id);
-                                _var11 = canSelectNode(snode);
-                                if (_var11) {
-                                    __state = '18';
-                                } else {
-                                    __state = '15';
-                                }
+                        selectionIds = Object.keys(selection.prims);
+                        if (selectionIds.length === 1) {
+                            id = selectionIds[0];
+                            prim = selection.prims[id];
+                            snode = getNode(visuals, id);
+                            _var8 = canSelectNode(snode);
+                            if (_var8) {
+                                __state = '2';
                             } else {
-                                __state = '18';
+                                __state = '15';
                             }
                         } else {
                             __state = '2';
@@ -2053,27 +2050,35 @@ function createDrakonWidget() {
                             __state = '8';
                         } else {
                             selection.prims[node.id] = 'node';
-                            if (headNode) {
-                                if (node.y < headNode.y) {
-                                    __state = '3';
-                                } else {
-                                    if (node.y === headNode.y) {
-                                        if (node.x < headNode.x) {
-                                            __state = '3';
-                                        } else {
-                                            __state = '8';
-                                        }
-                                    } else {
-                                        __state = '8';
-                                    }
-                                }
+                            if (node.side) {
+                                selection.prims[node.side] = 'node';
+                                __state = '4';
                             } else {
-                                __state = '3';
+                                __state = '4';
                             }
                         }
                         break;
                     case '3':
                         return node;
+                    case '4':
+                        if (headNode) {
+                            if (node.y < headNode.y) {
+                                __state = '3';
+                            } else {
+                                if (node.y === headNode.y) {
+                                    if (node.x < headNode.x) {
+                                        __state = '3';
+                                    } else {
+                                        __state = '8';
+                                    }
+                                } else {
+                                    __state = '8';
+                                }
+                            }
+                        } else {
+                            __state = '3';
+                        }
+                        break;
                     case '8':
                         return headNode;
                     default:
@@ -2615,30 +2620,34 @@ function createDrakonWidget() {
                         if (_var2 === 'end') {
                             __state = '3';
                         } else {
-                            if (_var2 === 'header') {
+                            if (_var2 === 'duration') {
                                 __state = '3';
                             } else {
-                                if (_var2 === 'branch') {
+                                if (_var2 === 'header') {
                                     __state = '3';
                                 } else {
-                                    if (_var2 === 'address') {
+                                    if (_var2 === 'branch') {
                                         __state = '3';
                                     } else {
-                                        if (_var2 === 'junction') {
-                                            if (node.subtype === 'parbegin') {
-                                                return true;
-                                            } else {
-                                                __state = '3';
-                                            }
+                                        if (_var2 === 'address') {
+                                            __state = '3';
                                         } else {
-                                            if (_var2 === 'action') {
-                                                if (node.id === 'params') {
-                                                    return false;
+                                            if (_var2 === 'junction') {
+                                                if (node.subtype === 'parbegin') {
+                                                    return true;
+                                                } else {
+                                                    __state = '3';
+                                                }
+                                            } else {
+                                                if (_var2 === 'action') {
+                                                    if (node.id === 'params') {
+                                                        return false;
+                                                    } else {
+                                                        __state = '13';
+                                                    }
                                                 } else {
                                                     __state = '13';
                                                 }
-                                            } else {
-                                                __state = '13';
                                             }
                                         }
                                     }
@@ -2739,7 +2748,9 @@ function createDrakonWidget() {
                 id: node.id,
                 type: node.type,
                 style: node.style,
-                content: node.content,
+                content: node.content || '',
+                secondary: node.secondary || '',
+                link: node.link || '',
                 elType: 'node',
                 left: node.x - node.w,
                 top: node.y - node.h,
@@ -2962,7 +2973,7 @@ function createDrakonWidget() {
             return;
         }
         function buildContentFrame(container, node, config, paddingLeft, paddingRight) {
-            var core, context, element, rect;
+            var core, context, element, rect, secondaryHeight;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -2970,6 +2981,8 @@ function createDrakonWidget() {
                         context = {
                             type: node.type,
                             content: node.content,
+                            secondary: node.secondary,
+                            link: node.link,
                             style: node.style,
                             flag1: node.flag1,
                             config: config,
@@ -2992,11 +3005,13 @@ function createDrakonWidget() {
                         element.style.top = '0px';
                         html.add(container, element);
                         rect = element.getBoundingClientRect();
+                        secondaryHeight = getSecondaryHeight(core);
                         return {
                             div: element,
                             core: core,
                             width: rect.width,
-                            height: rect.height
+                            height: rect.height,
+                            secondaryHeight: secondaryHeight
                         };
                     default:
                         return;
@@ -3163,8 +3178,36 @@ function createDrakonWidget() {
                 }
             }
         }
+        function splitToParagraphs(textDiv, text) {
+            var lines, p, _var2, _var3, line, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        lines = text.split('\n');
+                        _var2 = lines;
+                        _var3 = 0;
+                        __state = '6';
+                        break;
+                    case '6':
+                        if (_var3 < _var2.length) {
+                            line = _var2[_var3];
+                            _var4 = line.trim();
+                            p = createPar(_var4);
+                            html.add(textDiv, p);
+                            _var3++;
+                            __state = '6';
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function buildDomDefault(core) {
-            var textDiv, config, paddingLeft, paddingTop, paddingRight, paddingBottom, maxWidth, minWidth, color, textAlign, font, lines, p, text, _var2, _var3, _var4, _var5, line, _var6;
+            var config, paddingLeft, paddingTop, paddingRight, paddingBottom, maxWidth, minWidth, color, textAlign, font, textDiv, textDiv2, text, secondary, result, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -3207,7 +3250,27 @@ function createDrakonWidget() {
                                             if (_var2 === 'address') {
                                                 __state = '34';
                                             } else {
-                                                __state = '6';
+                                                if (_var2 === 'duration') {
+                                                    __state = '34';
+                                                } else {
+                                                    if (_var2 === 'timer') {
+                                                        __state = '34';
+                                                    } else {
+                                                        if (_var2 === 'pause') {
+                                                            __state = '34';
+                                                        } else {
+                                                            if (_var2 === 'ctrlstart') {
+                                                                __state = '34';
+                                                            } else {
+                                                                if (_var2 === 'ctrlend') {
+                                                                    __state = '34';
+                                                                } else {
+                                                                    __state = '6';
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -3216,7 +3279,7 @@ function createDrakonWidget() {
                         }
                         break;
                     case '5':
-                        return textDiv;
+                        return result;
                     case '6':
                         color = getThemeValueCore(config, core.type, core.style, 'color');
                         textDiv = div({
@@ -3236,43 +3299,83 @@ function createDrakonWidget() {
                             'padding-bottom': paddingBottom,
                             'line-height': config.lineHeight
                         });
-                        __state = '38';
+                        text = core.content || '';
+                        secondary = core.secondary || '';
+                        _var3 = core.type;
+                        if (_var3 === 'input') {
+                            textDiv.style.paddingLeft = config.padding * 2 + core.paddingLeft + 'px';
+                            textDiv.style.paddingRight = config.padding + 'px';
+                            paddingRight = config.padding + core.paddingRight + 'px';
+                            __state = '78';
+                        } else {
+                            if (_var3 === 'shelf') {
+                                __state = '78';
+                            } else {
+                                if (_var3 === 'process') {
+                                    textDiv.style.paddingLeft = config.padding + 'px';
+                                    paddingRight = config.padding + 'px';
+                                    __state = '78';
+                                } else {
+                                    if (_var3 === 'output') {
+                                        textDiv.style.paddingLeft = config.padding + 'px';
+                                        textDiv.style.paddingRight = config.padding * 2 + core.paddingRight + 'px';
+                                        paddingRight = config.padding + 'px';
+                                        __state = '78';
+                                    } else {
+                                        if (_var3 === 'header') {
+                                            __state = '69';
+                                        } else {
+                                            if (_var3 === 'end') {
+                                                __state = '69';
+                                            } else {
+                                                splitToParagraphs(textDiv, text);
+                                                __state = '74';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         break;
                     case '34':
                         textAlign = 'center';
                         __state = '6';
                         break;
-                    case '38':
-                        text = core.content || '';
-                        _var3 = core.type;
-                        if (_var3 === 'header') {
-                            __state = '43';
-                        } else {
-                            if (_var3 === 'end') {
-                                __state = '43';
-                            } else {
-                                lines = text.split('\n');
-                                _var4 = lines;
-                                _var5 = 0;
-                                __state = '45';
-                            }
-                        }
-                        break;
-                    case '43':
+                    case '69':
                         html.addText(textDiv, text);
+                        __state = '74';
+                        break;
+                    case '74':
+                        result = textDiv;
                         __state = '5';
                         break;
-                    case '45':
-                        if (_var5 < _var4.length) {
-                            line = _var4[_var5];
-                            _var6 = line.trim();
-                            p = createPar(_var6);
-                            html.add(textDiv, p);
-                            _var5++;
-                            __state = '45';
-                        } else {
-                            __state = '5';
-                        }
+                    case '78':
+                        textDiv.style.position = 'relative';
+                        textDiv.style.display = 'block';
+                        textDiv.style.paddingBottom = config.padding / 2 + 'px';
+                        splitToParagraphs(textDiv, text);
+                        textDiv2 = div({
+                            display: 'block',
+                            position: 'relative',
+                            color: color,
+                            font: font,
+                            'user-select': 'none',
+                            'text-align': textAlign,
+                            'padding-left': paddingLeft,
+                            'padding-top': paddingTop,
+                            'padding-right': paddingRight,
+                            'padding-bottom': paddingBottom,
+                            'line-height': config.lineHeight
+                        });
+                        splitToParagraphs(textDiv2, secondary);
+                        result = div({
+                            'max-width': maxWidth,
+                            'min-width': minWidth
+                        });
+                        html.add(result, textDiv2);
+                        html.add(result, textDiv);
+                        core.textDiv2 = textDiv2;
+                        __state = '5';
                         break;
                     default:
                         return;
@@ -3280,14 +3383,37 @@ function createDrakonWidget() {
             }
         }
         function buildIconCore(context) {
-            var core, _var2;
+            var core, _var2, _var3;
             core = {};
             Object.assign(core, context);
             core.buildDom = function () {
                 _var2 = buildDomDefault(core);
                 return _var2;
             };
+            core.getSecondaryHeight = function () {
+                _var3 = getSecondaryHeight(core);
+                return _var3;
+            };
             return core;
+        }
+        function getSecondaryHeight(core) {
+            var _var2, _var3;
+            if (core.getSecondaryHeight) {
+                _var3 = core.getSecondaryHeight();
+                return _var3;
+            } else {
+                _var2 = getSecondaryHeightDefault(core);
+                return _var2;
+            }
+        }
+        function getSecondaryHeightDefault(core) {
+            var rect;
+            if (core.textDiv2) {
+                rect = core.textDiv2.getBoundingClientRect();
+                return rect.height;
+            } else {
+                return 0;
+            }
         }
         function initAlignedNodes(output, input) {
             var defaultValues;
@@ -3303,7 +3429,11 @@ function createDrakonWidget() {
                 insertion: true,
                 comment: true,
                 simpleinput: true,
-                simpleoutput: true
+                simpleoutput: true,
+                shelf: true,
+                input: true,
+                output: true,
+                process: true
             };
             mergeConfigs(output, input, 'alignedNodes', defaultValues);
             return;
@@ -3439,6 +3569,32 @@ function createDrakonWidget() {
             ctx.fillStyle = getThemeValue(visuals.config, node, 'internalLine');
             ctx.fillRect(left, middle, node.w * 2, thickness);
             return;
+        }
+        function renderCtrlStart(visuals, node, ctx) {
+            var line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        buildCtrlStartPath(ctx, node.x, node.y, node.w, node.h);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildCtrlStartPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
+                            ctx.stroke();
+                            __state = '16';
+                        } else {
+                            __state = '16';
+                        }
+                        break;
+                    case '16':
+                        clearShadow(ctx);
+                        return;
+                    default:
+                        return;
+                }
+            }
         }
         function renderAddress(visuals, node, ctx) {
             var middle, x, y, w, h, top, tx0, tx1, ty, line, tri;
@@ -3607,6 +3763,47 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
+        function buildOutputPath(ctx, x, y, w, h, padding, h2) {
+            var x0, x1, x4, x3, x2, y0, y4, y3, y1, y2;
+            x0 = x - w;
+            x1 = x0 + padding;
+            x4 = x + w;
+            x3 = x4 - padding;
+            x2 = x3 - padding;
+            y0 = y - h;
+            y4 = y + h;
+            y3 = y0 + h2 + padding / 2;
+            y1 = (y0 + y3) / 2;
+            y2 = y0 + h2;
+            ctx.beginPath();
+            ctx.moveTo(x0, y4);
+            ctx.lineTo(x0, y2);
+            ctx.lineTo(x1, y2);
+            ctx.lineTo(x1, y0);
+            ctx.lineTo(x3, y0);
+            ctx.lineTo(x4, y1);
+            ctx.lineTo(x3, y3);
+            ctx.lineTo(x2, y3);
+            ctx.lineTo(x2, y4);
+            ctx.closePath();
+            return;
+        }
+        function buildCtrlStartPath(ctx, x, y, w, h) {
+            var x0, x1, x3, x2, top, bottom, radius;
+            radius = h * 2;
+            x0 = x - w;
+            x1 = x0 + radius;
+            x3 = x + w;
+            x2 = x3 - radius;
+            top = y - h;
+            bottom = y + h;
+            ctx.beginPath();
+            ctx.arc(x1, bottom, radius, Math.PI * 1, Math.PI * 1.5);
+            ctx.lineTo(x2, top);
+            ctx.arc(x2, bottom, radius, Math.PI * 1.5, Math.PI * 0);
+            ctx.closePath();
+            return;
+        }
         function buildLoopEndPath(ctx, x, y, w, h, padding) {
             var x0, x1, x3, x2, top, bottom, add;
             add = 5;
@@ -3623,6 +3820,69 @@ function createDrakonWidget() {
             ctx.lineTo(x3, y);
             ctx.lineTo(x2, bottom);
             ctx.lineTo(x1, bottom);
+            ctx.closePath();
+            return;
+        }
+        function buildCtrlEndPath(ctx, x, y, w, h) {
+            var x0, x1, x3, x2, top, bottom, radius;
+            radius = h * 2;
+            x0 = x - w;
+            x1 = x0 + radius;
+            x3 = x + w;
+            x2 = x3 - radius;
+            top = y - h;
+            bottom = y + h;
+            ctx.beginPath();
+            ctx.arc(x1, top, radius, Math.PI * 0.5, Math.PI * 1);
+            ctx.lineTo(x3, top);
+            ctx.arc(x2, top, radius, Math.PI * 0, Math.PI * 0.5);
+            ctx.closePath();
+            return;
+        }
+        function buildProcessPath(ctx, x, y, w, h, padding, h2) {
+            var x0, x1, x3, x2, y0, y3, y1, y2;
+            x0 = x - w;
+            x1 = x0 + padding;
+            x3 = x + w;
+            x2 = x3 - padding;
+            y0 = y - h;
+            y3 = y + h;
+            y1 = y0 + h2;
+            y2 = y0 + h2 + padding / 2;
+            ctx.beginPath();
+            ctx.moveTo(x0, y3);
+            ctx.lineTo(x0, y1);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x1, y0);
+            ctx.lineTo(x3, y0);
+            ctx.lineTo(x3, y2);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(x2, y3);
+            ctx.closePath();
+            return;
+        }
+        function buildInputPath(ctx, x, y, w, h, padding, h2) {
+            var x0, x1, x2, x4, x3, y0, y4, y3, y1, y2;
+            x0 = x - w;
+            x1 = x0 + padding;
+            x2 = x1 + padding;
+            x4 = x + w;
+            x3 = x4 - padding;
+            y0 = y - h;
+            y4 = y + h;
+            y3 = y0 + h2 + padding / 2;
+            y1 = (y0 + y3) / 2;
+            y2 = y0 + h2;
+            ctx.beginPath();
+            ctx.moveTo(x2, y4);
+            ctx.lineTo(x2, y3);
+            ctx.lineTo(x0, y3);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x0, y0);
+            ctx.lineTo(x3, y0);
+            ctx.lineTo(x3, y2);
+            ctx.lineTo(x4, y2);
+            ctx.lineTo(x4, y4);
             ctx.closePath();
             return;
         }
@@ -3685,6 +3945,22 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
+        function buildDurationPath(ctx, x, y, w, h, padding) {
+            var x0, x1, x3, x2, top, bottom;
+            x0 = x - w;
+            x1 = x0 + padding;
+            x3 = x + w;
+            x2 = x3 - padding;
+            top = y - h;
+            bottom = y + h;
+            ctx.beginPath();
+            ctx.moveTo(x1, bottom);
+            ctx.lineTo(x0, top);
+            ctx.lineTo(x3, top);
+            ctx.lineTo(x2, bottom);
+            ctx.closePath();
+            return;
+        }
         function buildSimpleOutputPath(ctx, x, y, w, h, padding) {
             var add, left, right, top, bottom, x1;
             add = 5;
@@ -3729,6 +4005,47 @@ function createDrakonWidget() {
                 }
             }
         }
+        function renderShelf(visuals, node, ctx) {
+            var h2, left, top, middle, thickness, _var2;
+            renderAction(visuals, node, ctx);
+            centerContentTop(node);
+            h2 = node.frame.secondaryHeight;
+            left = node.x - node.w;
+            top = node.y - node.h;
+            middle = top + h2;
+            _var2 = getThemeValue(visuals.config, node, 'borderWidth');
+            thickness = _var2 || 1;
+            ctx.fillStyle = getThemeValue(visuals.config, node, 'internalLine');
+            ctx.fillRect(left, middle, node.w * 2, thickness);
+            return;
+        }
+        function renderDuration(visuals, node, ctx) {
+            var padding, line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        padding = visuals.config.metre;
+                        buildDurationPath(ctx, node.x, node.y, node.w, node.h, padding);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildDurationPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding);
+                            ctx.stroke();
+                            __state = '13';
+                        } else {
+                            __state = '13';
+                        }
+                        break;
+                    case '13':
+                        clearShadow(ctx);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
         function renderSimpleOutput(visuals, node, ctx) {
             var line;
             var __state = '2';
@@ -3754,6 +4071,31 @@ function createDrakonWidget() {
                         return;
                 }
             }
+        }
+        function renderTimer(visuals, node, ctx) {
+            var left, right, top, bottom, x1, x2, x1low, x2low, padding, _var2;
+            padding = visuals.config.metre;
+            renderDuration(visuals, node, ctx);
+            left = node.x - node.w;
+            right = node.x + node.w;
+            top = node.y - node.h;
+            bottom = node.y + node.h;
+            x1 = left + visuals.config.insertionPadding;
+            x2 = right - visuals.config.insertionPadding;
+            x1low = x1 + padding;
+            x2low = x2 - padding;
+            _var2 = getThemeValue(visuals.config, node, 'borderWidth');
+            ctx.lineWidth = _var2 || 1;
+            ctx.strokeStyle = getThemeValue(visuals.config, node, 'internalLine');
+            ctx.beginPath();
+            ctx.moveTo(x1, top);
+            ctx.lineTo(x1low, bottom);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x2, top);
+            ctx.lineTo(x2low, bottom);
+            ctx.stroke();
+            return;
         }
         function renderQuestion(visuals, node, ctx) {
             var yesDiv, noDiv, yesRect, noRect, leftText, rightText, leftWidth, leftX, leftY, rightX, rightY, line, _var2;
@@ -3833,6 +4175,62 @@ function createDrakonWidget() {
                 }
             }
         }
+        function renderProcess(visuals, node, ctx) {
+            var left, top, middle, thickness, padding, line, h2, x0, x1, x3, x2, y0, y1, y2, _var2;
+            var __state = '14';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        centerContentTop(node);
+                        left = node.x - node.w;
+                        top = node.y - node.h;
+                        middle = top + h2;
+                        _var2 = getThemeValue(visuals.config, node, 'borderWidth');
+                        thickness = _var2 || 1;
+                        ctx.strokeStyle = getThemeValue(visuals.config, node, 'internalLine');
+                        x0 = node.x - node.w + 0.5;
+                        x1 = x0 + padding;
+                        x3 = node.x + node.w + 0.5;
+                        x2 = x3 - padding;
+                        y0 = node.y - node.h + 0.5;
+                        y1 = y0 + h2;
+                        y2 = y0 + h2 + padding / 2;
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                        __state = '13';
+                        break;
+                    case '12':
+                        return;
+                    case '13':
+                        __state = '12';
+                        break;
+                    case '14':
+                        h2 = node.frame.secondaryHeight;
+                        line = setFillStroke(visuals.config, node, ctx);
+                        padding = visuals.config.metre / 2;
+                        buildProcessPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildProcessPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding, h2);
+                            ctx.stroke();
+                            __state = '22';
+                        } else {
+                            __state = '22';
+                        }
+                        break;
+                    case '22':
+                        clearShadow(ctx);
+                        __state = '2';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function renderComment(visuals, node, ctx) {
             var left, top, width, height, config, theme, lineWidth, left2, top2, width2, height2, padding;
             var __state = '2';
@@ -3889,6 +4287,88 @@ function createDrakonWidget() {
                 }
             }
         }
+        function renderHeader(visuals, node, ctx) {
+            var line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        line = setFillStroke(visuals.config, node, ctx);
+                        buildBeginEndPath(ctx, node.x, node.y, node.w, node.h);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildBeginEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
+                            ctx.stroke();
+                            __state = '16';
+                        } else {
+                            __state = '16';
+                        }
+                        break;
+                    case '16':
+                        clearShadow(ctx);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
+        function renderOutput(visuals, node, ctx) {
+            var left, top, middle, thickness, padding, line, h2, x0, x1, x3, x2, y0, y1, y2, _var2;
+            var __state = '14';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        centerContentTop(node);
+                        left = node.x - node.w;
+                        top = node.y - node.h;
+                        middle = top + h2;
+                        _var2 = getThemeValue(visuals.config, node, 'borderWidth');
+                        thickness = _var2 || 1;
+                        ctx.strokeStyle = getThemeValue(visuals.config, node, 'internalLine');
+                        x0 = node.x - node.w + 0.5;
+                        x1 = x0 + padding;
+                        x3 = node.x + node.w + 0.5;
+                        x2 = x3 - padding * 2;
+                        y0 = node.y - node.h + 0.5;
+                        y1 = y0 + h2;
+                        y2 = y0 + h2 + padding / 2;
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                        __state = '13';
+                        break;
+                    case '12':
+                        return;
+                    case '13':
+                        __state = '12';
+                        break;
+                    case '14':
+                        h2 = node.frame.secondaryHeight;
+                        line = setFillStroke(visuals.config, node, ctx);
+                        padding = visuals.config.metre / 2;
+                        buildOutputPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildOutputPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding, h2);
+                            ctx.stroke();
+                            __state = '22';
+                        } else {
+                            __state = '22';
+                        }
+                        break;
+                    case '22':
+                        clearShadow(ctx);
+                        __state = '2';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function renderEnd(visuals, node, ctx) {
             renderHeader(visuals, node, ctx);
             return;
@@ -3921,18 +4401,74 @@ function createDrakonWidget() {
                 }
             }
         }
-        function renderHeader(visuals, node, ctx) {
+        function renderInput(visuals, node, ctx) {
+            var left, top, middle, thickness, padding, line, h2, x0, x1, x3, x2, y0, y1, y2, _var2;
+            var __state = '14';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        centerContentTop(node);
+                        left = node.x - node.w;
+                        top = node.y - node.h;
+                        middle = top + h2;
+                        _var2 = getThemeValue(visuals.config, node, 'borderWidth');
+                        thickness = _var2 || 1;
+                        ctx.strokeStyle = getThemeValue(visuals.config, node, 'internalLine');
+                        x0 = node.x - node.w + 0.5;
+                        x1 = x0 + padding * 2;
+                        x3 = node.x + node.w + 0.5;
+                        x2 = x3 - padding;
+                        y0 = node.y - node.h + 0.5;
+                        y1 = y0 + h2;
+                        y2 = y0 + h2 + padding / 2;
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y2);
+                        ctx.lineTo(x1, y1);
+                        ctx.lineTo(x2, y1);
+                        ctx.stroke();
+                        __state = '13';
+                        break;
+                    case '12':
+                        return;
+                    case '13':
+                        __state = '12';
+                        break;
+                    case '14':
+                        h2 = node.frame.secondaryHeight;
+                        line = setFillStroke(visuals.config, node, ctx);
+                        padding = visuals.config.metre / 2;
+                        buildInputPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
+                        ctx.fill();
+                        centerContent(node);
+                        if (line) {
+                            buildInputPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding, h2);
+                            ctx.stroke();
+                            __state = '22';
+                        } else {
+                            __state = '22';
+                        }
+                        break;
+                    case '22':
+                        clearShadow(ctx);
+                        __state = '2';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function renderCtrlEnd(visuals, node, ctx) {
             var line;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
                         line = setFillStroke(visuals.config, node, ctx);
-                        buildBeginEndPath(ctx, node.x, node.y, node.w, node.h);
+                        buildCtrlEndPath(ctx, node.x, node.y, node.w, node.h);
                         ctx.fill();
                         centerContent(node);
                         if (line) {
-                            buildBeginEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
+                            buildCtrlEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
                             ctx.stroke();
                             __state = '16';
                         } else {
@@ -3995,7 +4531,16 @@ function createDrakonWidget() {
                 comment: renderComment,
                 insertion: renderInsertion,
                 simpleinput: renderSimpleInput,
-                simpleoutput: renderSimpleOutput
+                simpleoutput: renderSimpleOutput,
+                duration: renderDuration,
+                pause: renderDuration,
+                timer: renderTimer,
+                ctrlstart: renderCtrlStart,
+                ctrlend: renderCtrlEnd,
+                shelf: renderShelf,
+                process: renderProcess,
+                output: renderOutput,
+                input: renderInput
             };
             mergeConfigs(output, input, 'iconRender', defaultValues);
             return;
@@ -4019,7 +4564,16 @@ function createDrakonWidget() {
                 comment: contentComment,
                 insertion: contentInsertion,
                 simpleinput: contentSimpleInput,
-                simpleoutput: contentSimpleOutput
+                simpleoutput: contentSimpleOutput,
+                duration: contentDuration,
+                timer: contentDuration,
+                pause: contentDuration,
+                ctrlstart: contentDuration,
+                ctrlend: contentDuration,
+                shelf: contentShelf,
+                process: contentProcess,
+                output: contentProcess,
+                input: contentProcess
             };
             mergeConfigs(output, input, 'iconContent', defaultValues);
             return;
@@ -4043,6 +4597,7 @@ function createDrakonWidget() {
                         node.frame = flow(node, visuals.config, visuals.container);
                         config = visuals.config;
                         node.w = makeHalfSize(config, node.frame.width);
+                        node.h = makeHalfSize(config, node.frame.width);
                         return;
                     default:
                         return;
@@ -4170,6 +4725,17 @@ function createDrakonWidget() {
             _var2 = contentBranchCore(node, config, container);
             return _var2;
         }
+        function contentShelf(node, config, container) {
+            var _var2;
+            _var2 = buildContentFrame(container, node, config, 0, 0);
+            return _var2;
+        }
+        function contentSelect(node, config, container) {
+            var padding, _var2;
+            padding = config.padding * 1.5;
+            _var2 = buildContentFrame(container, node, config, padding, padding);
+            return _var2;
+        }
         function contentHeader(node, config, container) {
             var _var2;
             _var2 = contentAction(node, config, container);
@@ -4180,7 +4746,7 @@ function createDrakonWidget() {
             _var2 = buildContentFrame(container, node, config, 0, 0);
             return _var2;
         }
-        function contentSelect(node, config, container) {
+        function contentDuration(node, config, container) {
             var padding, _var2;
             padding = config.padding * 1.5;
             _var2 = buildContentFrame(container, node, config, padding, padding);
@@ -4206,6 +4772,12 @@ function createDrakonWidget() {
         function contentAddress(node, config, container) {
             var _var2;
             _var2 = contentBranchCore(node, config, container);
+            return _var2;
+        }
+        function contentProcess(node, config, container) {
+            var padding, _var2;
+            padding = config.metre / 2;
+            _var2 = buildContentFrame(container, node, config, padding, padding);
             return _var2;
         }
         function contentComment(node, config, container) {
@@ -4267,6 +4839,17 @@ function createDrakonWidget() {
             self.zoom = Math.max(2500, _var2);
             initScrollPos(self);
             paint(self);
+            return;
+        }
+        function DrakonCanvas_setSecondary(self, itemId, secondary) {
+            var change;
+            checkNotReadonly(self);
+            change = {
+                id: itemId,
+                fields: { secondary: secondary },
+                op: 'update'
+            };
+            updateAndKeepSelection(self, [change]);
             return;
         }
         function DrakonCanvas_deleteSelection(self) {
@@ -4338,7 +4921,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '0.9.0';
+            return '0.9.2';
         }
         function DrakonCanvas_copySelection(self) {
             copy(self);
@@ -4367,22 +4950,19 @@ function createDrakonWidget() {
                                     fields: { params: content },
                                     op: 'update'
                                 };
-                                __state = '34';
+                                __state = '35';
                             } else {
                                 change = {
                                     id: itemId,
                                     fields: { content: content },
                                     op: 'update'
                                 };
-                                __state = '34';
+                                __state = '35';
                             }
                         }
                         break;
-                    case '34':
-                        doEdit(self, [change], true);
-                        buildDiagramModel(self, self.edit.diagram);
-                        buildVisualsForEdit(self);
-                        paint(self);
+                    case '35':
+                        updateAndKeepSelection(self, [change]);
                         __state = '1';
                         break;
                     default:
@@ -4797,6 +5377,36 @@ function createDrakonWidget() {
                 }
             }
         }
+        function canTurnRight(node) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        __state = '10';
+                        break;
+                    case '6':
+                        return false;
+                    case '10':
+                        if (node.type === 'question') {
+                            __state = '6';
+                        } else {
+                            if (node.type === 'select') {
+                                __state = '6';
+                            } else {
+                                if (node.up) {
+                                    node = getUp(node);
+                                    __state = '10';
+                                } else {
+                                    return true;
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function getNodeByItem(visuals, itemId) {
             var nodeId, _var2;
             nodeId = visuals.itemsToNodes[itemId];
@@ -4999,7 +5609,7 @@ function createDrakonWidget() {
                 }
             }
         }
-        function createLianaSocket(visuals, record, source) {
+        function createLianaSocket(visuals, record, source, style) {
             var socket, _var2, _var3;
             var __state = '2';
             while (true) {
@@ -5027,6 +5637,7 @@ function createDrakonWidget() {
                         break;
                     case '9':
                         socket.arrow = source.arrow;
+                        socket.style = style;
                         addRange(source.links, socket.links);
                         __state = '1';
                         break;
@@ -5194,7 +5805,7 @@ function createDrakonWidget() {
                         if (_var16 < _var14.length) {
                             targetId = _var14[_var16];
                             record = _var15[targetId];
-                            createLianaSocket(visuals, record, source);
+                            createLianaSocket(visuals, record, source, 'inner-inner');
                             _var16++;
                             __state = '13';
                         } else {
@@ -5237,7 +5848,7 @@ function createDrakonWidget() {
                             record = _var9[targetId];
                             _var19 = canOuterToInner(record, source);
                             if (_var19) {
-                                createLianaSocket(visuals, record, source);
+                                createLianaSocket(visuals, record, source, 'outer-inner');
                                 __state = '23';
                             } else {
                                 __state = '23';
@@ -5275,7 +5886,7 @@ function createDrakonWidget() {
                             record = _var3[targetId];
                             _var20 = isLower(record, source);
                             if (_var20) {
-                                createLianaSocket(visuals, record, source);
+                                createLianaSocket(visuals, record, source, 'outer-outer');
                                 __state = '35';
                             } else {
                                 __state = '35';
@@ -5285,7 +5896,7 @@ function createDrakonWidget() {
                         }
                         break;
                     case '42':
-                        createLianaSocket(visuals, record, source);
+                        createLianaSocket(visuals, record, source, 'inner-outer');
                         __state = '15';
                         break;
                     default:
@@ -5294,7 +5905,7 @@ function createDrakonWidget() {
             }
         }
         function canOuterToInner(record, source) {
-            var targetNode, targetTop, targetStop, sourceBottom, sourceStop;
+            var targetNode, targetTop, targetStop, sourceBottom, sourceStop, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -5320,7 +5931,7 @@ function createDrakonWidget() {
                             if (sourceStop === targetStop) {
                                 __state = '14';
                             } else {
-                                return true;
+                                __state = '16';
                             }
                         } else {
                             __state = '14';
@@ -5328,6 +5939,24 @@ function createDrakonWidget() {
                         break;
                     case '14':
                         return false;
+                    case '16':
+                        if (targetStop.right) {
+                            if (targetStop.right.role === 'right-loop') {
+                                _var2 = canTurnRight(source.head);
+                                if (_var2) {
+                                    __state = '21';
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                __state = '21';
+                            }
+                        } else {
+                            __state = '21';
+                        }
+                        break;
+                    case '21':
+                        return true;
                     default:
                         return;
                 }
@@ -5548,7 +6177,7 @@ function createDrakonWidget() {
             return __obj.run();
         }
         function SelectBehavior_create(widget) {
-            var startX, startY, pos, deltaX, deltaY, currentSocket, prim, scroller, _var2, evt, _var3, _var4, _var5;
+            var startX, startY, pos, deltaX, deltaY, currentSocket, prim, scroller, cursor, _var2, evt, _var3, _var4, _var5;
             var me = {
                 state: '2',
                 type: 'SelectBehavior'
@@ -5571,7 +6200,7 @@ function createDrakonWidget() {
                                 return;
                             case '46':
                                 pos = toDiagram(widget, evt);
-                                mouseClick(widget, pos.x, pos.y, evt);
+                                mouseClick(widget, pos, evt);
                                 me.state = '2';
                                 break;
                             case '47':
@@ -5604,20 +6233,19 @@ function createDrakonWidget() {
                                 pos = toDiagram(widget, evt);
                                 currentSocket = findSocket(widget.visuals, pos.x, pos.y);
                                 if (currentSocket) {
-                                    me.state = '67';
+                                    setCursor(evt.target, 'pointer');
+                                    me.state = '2';
                                 } else {
                                     prim = findVisualItem(widget.visuals, pos.x, pos.y);
                                     if (prim) {
-                                        me.state = '67';
+                                        cursor = getCursorForItem(widget, prim, pos, evt);
+                                        setCursor(evt.target, cursor);
+                                        me.state = '2';
                                     } else {
                                         setCursor(evt.target, 'default');
                                         me.state = '2';
                                     }
                                 }
-                                break;
-                            case '67':
-                                setCursor(evt.target, 'pointer');
-                                me.state = '2';
                                 break;
                             case '72':
                                 me.state = '73';
@@ -5872,14 +6500,27 @@ function createDrakonWidget() {
                 }
             }
         }
-        function mouseClick(widget, x, y, evt) {
-            var now, lastClick, diff, doubleClickTime, visuals, lastPrimId, prim, primId, _var2;
+        function DrakonCanvas_setLink(self, itemId, link) {
+            var change;
+            checkNotReadonly(self);
+            change = {
+                id: itemId,
+                fields: { link: link },
+                op: 'update'
+            };
+            updateAndKeepSelection(self, [change]);
+            return;
+        }
+        function mouseClick(widget, pos, evt) {
+            var now, lastClick, diff, doubleClickTime, visuals, lastPrimId, prim, primId, x, y, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
                         doubleClickTime = 500;
                         visuals = widget.visuals;
+                        x = pos.x;
+                        y = pos.y;
                         now = getNowMs();
                         lastClick = widget.lastClick;
                         lastPrimId = widget.lastPrimId;
@@ -5923,14 +6564,14 @@ function createDrakonWidget() {
                                 printPrim(visuals, prim);
                                 _var2 = isSelected(widget, prim.id);
                                 if (_var2) {
-                                    __state = '32';
+                                    __state = '65';
                                 } else {
                                     selectPrim(widget, prim.id);
                                     showLianaSockets(widget, prim);
-                                    __state = '32';
+                                    __state = '65';
                                 }
                             } else {
-                                __state = '32';
+                                __state = '65';
                             }
                         } else {
                             deselectAll(widget);
@@ -5947,16 +6588,24 @@ function createDrakonWidget() {
                                 evt.stopPropagation();
                                 evt.preventDefault();
                                 primToClient(widget, prim);
-                                setTimeout(function () {
+                                _var3 = clickedOnTop(widget, prim, evt);
+                                if (_var3) {
+                                    startEditSecondary(widget, prim);
+                                    __state = '26';
+                                } else {
                                     startEditContent(widget, prim);
-                                }, 0);
-                                __state = '26';
+                                    __state = '26';
+                                }
                             } else {
                                 __state = '26';
                             }
                         } else {
                             __state = '26';
                         }
+                        break;
+                    case '65':
+                        onItemClick(widget, prim, pos, evt);
+                        __state = '32';
                         break;
                     default:
                         return;
@@ -5994,6 +6643,58 @@ function createDrakonWidget() {
                 }
             }
         }
+        function onItemClick(widget, prim, pos, evt) {
+            var callback;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        callback = widget.config.onItemClick;
+                        if (callback) {
+                            callback(prim, pos, evt);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function startEditLink(widget, prim) {
+            var callback, delayed, ro, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = canEditNodeText(prim);
+                        if (_var2) {
+                            callback = widget.config.startEditLink;
+                            if (callback) {
+                                ro = isReadonly(widget);
+                                delayed = function () {
+                                    callback(prim, ro);
+                                };
+                                setTimeout(delayed, 1);
+                                __state = '1';
+                            } else {
+                                console.error('startEditLink is missing in config');
+                                __state = '1';
+                            }
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function addParameters(widget, prim) {
             prim = {
                 id: 'params',
@@ -6003,6 +6704,47 @@ function createDrakonWidget() {
             };
             startEditContent(widget, prim);
             return;
+        }
+        function getCursorForItem(widget, prim, pos, evt) {
+            var callback, _var2;
+            callback = widget.config.getCursorForItem;
+            if (callback) {
+                _var2 = callback(prim, pos, evt);
+                return _var2;
+            } else {
+                return 'grab';
+            }
+        }
+        function startEditSecondary(widget, prim) {
+            var callback, delayed, ro, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        _var2 = canEditNodeText(prim);
+                        if (_var2) {
+                            callback = widget.config.startEditSecondary;
+                            if (callback) {
+                                ro = isReadonly(widget);
+                                delayed = function () {
+                                    callback(prim, ro);
+                                };
+                                setTimeout(delayed, 1);
+                                __state = '1';
+                            } else {
+                                console.error('startEditSecondary is missing in config');
+                                __state = '1';
+                            }
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
         function swapYesNo(widget, prim) {
             var change, node;
@@ -6028,6 +6770,36 @@ function createDrakonWidget() {
                         doEdit(widget, [change], true);
                         widget.redraw();
                         return;
+                    default:
+                        return;
+                }
+            }
+        }
+        function clickedOnTop(widget, prim, evt) {
+            var node, ht, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        node = getNode(widget.visuals, prim.id);
+                        _var2 = canEditSecondary(node);
+                        if (_var2) {
+                            ht = node.frame.secondaryHeight * widget.zoom / 10000;
+                            if (ht) {
+                                if (evt.clientY < prim.top + ht) {
+                                    return true;
+                                } else {
+                                    __state = '10';
+                                }
+                            } else {
+                                __state = '10';
+                            }
+                        } else {
+                            __state = '10';
+                        }
+                        break;
+                    case '10':
+                        return false;
                     default:
                         return;
                 }
@@ -6537,6 +7309,13 @@ function createDrakonWidget() {
                 }
             }
         }
+        function createDurationSocket(visuals, node, op) {
+            var socket, radius;
+            radius = visuals.config.socketTouchRadius;
+            socket = createSocket(visuals, node.x - node.w, node.y, op, 'duration', radius);
+            socket.node = node;
+            return;
+        }
         function clearSockets(visuals) {
             visuals.sockets = [];
             visuals.currentSocket = undefined;
@@ -6914,6 +7693,41 @@ function createDrakonWidget() {
             sockets.forEach(copyEdgeLinks);
             return;
         }
+        function showDurationSockets(visuals, op) {
+            var _var3, _var2, _var4, id, node, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        _var3 = visuals.nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var4++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            _var5 = canHaveDuration(node);
+                            if (_var5) {
+                                createDurationSocket(visuals, node, op);
+                                __state = '4';
+                            } else {
+                                __state = '4';
+                            }
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function getParTarget(parbegin) {
             var right, down, left;
             right = goRight(parbegin);
@@ -6959,6 +7773,69 @@ function createDrakonWidget() {
             socket = createSocket(visuals, node.x - node.w, node.y, op, 'first-case', radius);
             socket.node = node;
             return;
+        }
+        function canHaveDuration(node) {
+            var _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        _var2 = node.type;
+                        if (_var2 === 'action') {
+                            __state = '13';
+                        } else {
+                            if (_var2 === 'question') {
+                                __state = '13';
+                            } else {
+                                if (_var2 === 'select') {
+                                    __state = '13';
+                                } else {
+                                    if (_var2 === 'insertion') {
+                                        __state = '13';
+                                    } else {
+                                        if (_var2 === 'simpleinput') {
+                                            __state = '13';
+                                        } else {
+                                            if (_var2 === 'simpleoutput') {
+                                                __state = '13';
+                                            } else {
+                                                if (_var2 === 'input') {
+                                                    __state = '13';
+                                                } else {
+                                                    if (_var2 === 'output') {
+                                                        __state = '13';
+                                                    } else {
+                                                        if (_var2 === 'shelf') {
+                                                            __state = '13';
+                                                        } else {
+                                                            if (_var2 === 'process') {
+                                                                __state = '13';
+                                                            } else {
+                                                                __state = '8';
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case '8':
+                        return false;
+                    case '13':
+                        if (node.side) {
+                            __state = '8';
+                        } else {
+                            return true;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
         function copyEdgeLinks(socket) {
             var edge;
@@ -7235,14 +8112,14 @@ function createDrakonWidget() {
             }
         }
         function buildMenuByType(widget, prim, node) {
-            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16;
+            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19;
             var __state = '27';
             while (true) {
                 switch (__state) {
                     case '2':
                         if (prim.type === 'header') {
                             _var6 = tr(widget, 'Rename');
-                            pushMenuItem(menu, _var6, undefined, function () {
+                            pushMenuItem('rename', menu, _var6, undefined, function () {
                                 startEditContent(widget, prim);
                             });
                             if (widget.visuals.params) {
@@ -7253,7 +8130,7 @@ function createDrakonWidget() {
                                     __state = '_item19';
                                 } else {
                                     _var7 = tr(widget, 'Add parameters');
-                                    pushMenuItem(menu, _var7, undefined, function () {
+                                    pushMenuItem('add_params', menu, _var7, undefined, function () {
                                         addParameters(widget, prim);
                                     });
                                     __state = '_item19';
@@ -7262,11 +8139,16 @@ function createDrakonWidget() {
                         } else {
                             _var8 = canEditNodeText(prim);
                             if (_var8) {
-                                _var9 = tr(widget, 'Edit content');
-                                pushMenuItem(menu, _var9, undefined, function () {
-                                    startEditContent(widget, prim);
-                                });
-                                __state = '_item19';
+                                _var17 = canEditSecondary(prim);
+                                if (_var17) {
+                                    _var18 = tr(widget, 'Edit upper text');
+                                    pushMenuItem('edit_secondary', menu, _var18, undefined, function () {
+                                        startEditSecondary(widget, prim);
+                                    });
+                                    __state = '_item12';
+                                } else {
+                                    __state = '_item12';
+                                }
                             } else {
                                 __state = '_item19';
                             }
@@ -7278,7 +8160,7 @@ function createDrakonWidget() {
                         _var2 = prim.type;
                         if (_var2 === 'question') {
                             _var3 = tr(widget, 'Swap "Yes" and "No"');
-                            pushMenuItem(menu, _var3, undefined, function () {
+                            pushMenuItem('swap_yes_no', menu, _var3, undefined, function () {
                                 swapYesNo(widget, prim);
                             });
                             __state = '16';
@@ -7293,7 +8175,7 @@ function createDrakonWidget() {
                                     } else {
                                         if (node.itemId === widget.visuals.branches[widget.visuals.branches.length - 1]) {
                                             _var13 = tr(widget, 'Insert branch with End');
-                                            pushMenuItem(menu, _var13, undefined, function () {
+                                            pushMenuItem('insert_end_branch', menu, _var13, undefined, function () {
                                                 branchInsertEnd(widget);
                                             });
                                             __state = '16';
@@ -7312,7 +8194,7 @@ function createDrakonWidget() {
                         if (_var4) {
                             menu.push({ type: 'separator' });
                             _var5 = tr(widget, 'Delete');
-                            pushMenuItem(menu, _var5, undefined, function () {
+                            pushMenuItem('delete_one', menu, _var5, undefined, function () {
                                 deleteOne(widget, node);
                             });
                             __state = '8';
@@ -7325,7 +8207,7 @@ function createDrakonWidget() {
                         func = getCopyFunction(node);
                         if (func) {
                             _var10 = tr(widget, 'Copy');
-                            pushMenuItem(menu, _var10, undefined, function () {
+                            pushMenuItem('copy_one', menu, _var10, undefined, function () {
                                 copy(widget);
                             });
                             _var14 = isReadonly(widget);
@@ -7335,7 +8217,7 @@ function createDrakonWidget() {
                                 _var11 = canDelete(widget.visuals, node);
                                 if (_var11) {
                                     _var12 = tr(widget, 'Cut');
-                                    pushMenuItem(menu, _var12, undefined, function () {
+                                    pushMenuItem('cut_one', menu, _var12, undefined, function () {
                                         cutOneItem(widget, node);
                                     });
                                     __state = '31';
@@ -7358,6 +8240,18 @@ function createDrakonWidget() {
                         } else {
                             __state = '9';
                         }
+                        break;
+                    case '_item12':
+                        _var9 = tr(widget, 'Edit content');
+                        pushMenuItem('edit_content', menu, _var9, undefined, function () {
+                            startEditContent(widget, prim);
+                        });
+                        menu.push({ type: 'separator' });
+                        _var19 = tr(widget, 'Edit link');
+                        pushMenuItem('edit_link', menu, _var19, undefined, function () {
+                            startEditLink(widget, prim);
+                        });
+                        __state = '_item19';
                         break;
                     default:
                         return;
@@ -7549,7 +8443,7 @@ function createDrakonWidget() {
                 switch (__state) {
                     case '2':
                         metre = visuals.config.metre;
-                        boundary = skewer.boundary + metre;
+                        boundary = skewer.leftWidth + metre;
                         if (skewer.main) {
                             boundary += metre;
                             __state = '6';
@@ -7861,7 +8755,7 @@ function createDrakonWidget() {
                         } else {
                             left = getSilCorner(visuals);
                             hskewer = visuals.header.skewer;
-                            boundary = hskewer.boundary + metre;
+                            boundary = hskewer.leftWidth + metre;
                             linkSkewers(visuals, left.skewer, hskewer, boundary);
                             __state = '1';
                         }
@@ -8142,6 +9036,16 @@ function createDrakonWidget() {
                 }
             }
         }
+        function getDurExtend(visuals, node) {
+            var duration;
+            if (node.side) {
+                duration = getNode(visuals, node.side);
+                node.duration = duration;
+                return visuals.config.metre + duration.w * 2;
+            } else {
+                return 0;
+            }
+        }
         function linkSkewersGeneric(links, low, high, distance) {
             var link;
             var __state = '2';
@@ -8323,12 +9227,13 @@ function createDrakonWidget() {
             return _var2;
         }
         function setSameWidth(visuals, skewer) {
-            var width, _var2, _var3, node, _var4, _var5, _var6;
+            var width, leftWidth, dur, _var2, _var3, node, _var4, _var5, _var6;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
                         width = 0;
+                        leftWidth = 0;
                         _var2 = skewer.nodes;
                         _var3 = 0;
                         __state = '7';
@@ -8368,11 +9273,14 @@ function createDrakonWidget() {
                             _var6 = shouldAlignWidth(visuals, node);
                             if (_var6) {
                                 node.w = width;
+                                dur = getDurExtend(visuals, node);
+                                leftWidth = Math.max(leftWidth, dur + width);
                                 __state = '11';
                             } else {
                                 __state = '11';
                             }
                         } else {
+                            skewer.leftWidth = leftWidth;
                             __state = '4';
                         }
                         break;
@@ -8558,6 +9466,47 @@ function createDrakonWidget() {
             skewer = createSkewerObj(visuals, false);
             visuals.levels[skewer.id] = skewer;
             return skewer;
+        }
+        function positionDurations(visuals) {
+            var edge, x, dur, metre, _var3, _var2, _var4, id, node;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        metre = visuals.config.metre;
+                        _var3 = visuals.nodes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '4':
+                        _var4++;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            node = _var3[id];
+                            dur = node.duration;
+                            if (dur) {
+                                edge = createEdge(visuals, dur, node, false);
+                                edge.role = 'duration';
+                                x = node.skewer.coord - node.w - dur.w - metre;
+                                dur.skewer = createSkewer(visuals);
+                                dur.skewer.coord = x;
+                                dur.level = node.level;
+                                __state = '4';
+                            } else {
+                                __state = '4';
+                            }
+                        } else {
+                            return;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
         function buildConfig(userConfig) {
             var config;
@@ -10474,20 +11423,28 @@ function createDrakonWidget() {
                                 tail = edge.tail;
                                 if (tail.down) {
                                     addInnerEdgeToSub(sub, edge);
-                                    if (tail.type === 'select') {
-                                        _var2 = getDown(tail);
-                                        caseNode = getDown(_var2);
-                                        output.next = caseNode.down;
+                                    if (tail.subtype === 'parbegin') {
+                                        output.next = skipParBlock(tail);
                                         me.state = '2';
                                     } else {
-                                        if (tail.type === 'address') {
-                                            me.state = '28';
+                                        if (tail.type === 'select') {
+                                            _var2 = getDown(tail);
+                                            caseNode = getDown(_var2);
+                                            output.next = caseNode.down;
+                                            me.state = '2';
                                         } else {
-                                            if (tail.left) {
-                                                me.state = '28';
+                                            if (tail.type === 'address') {
+                                                me.state = '52';
                                             } else {
-                                                output.next = tail.down;
-                                                me.state = '2';
+                                                if (tail.left) {
+                                                    if (tail.left.role === 'duration') {
+                                                        me.state = '27';
+                                                    } else {
+                                                        me.state = '52';
+                                                    }
+                                                } else {
+                                                    me.state = '27';
+                                                }
                                             }
                                         }
                                     }
@@ -10530,9 +11487,9 @@ function createDrakonWidget() {
                             case '12':
                                 me.state = '43';
                                 return;
-                            case '28':
-                                output.next = undefined;
-                                me.state = '4';
+                            case '27':
+                                output.next = tail.down;
+                                me.state = '2';
                                 break;
                             case '33':
                                 output.next = tail.left;
@@ -10552,6 +11509,10 @@ function createDrakonWidget() {
                                     output.next = tail.down;
                                     me.state = '2';
                                 }
+                                break;
+                            case '52':
+                                output.next = undefined;
+                                me.state = '4';
                                 break;
                             default:
                                 return;
@@ -10680,6 +11641,39 @@ function createDrakonWidget() {
             addEdgeSubRecord(sub.inner, edge);
             return;
         }
+        function skipParBlock(node) {
+            var counter, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        counter = 1;
+                        __state = '13';
+                        break;
+                    case '13':
+                        node = getDown(node);
+                        _var2 = node.subtype;
+                        if (_var2 === 'parend') {
+                            counter--;
+                            if (counter === 0) {
+                                return node.down;
+                            } else {
+                                __state = '13';
+                            }
+                        } else {
+                            if (_var2 === 'parbegin') {
+                                counter++;
+                                __state = '13';
+                            } else {
+                                __state = '13';
+                            }
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function crawlParallel(visuals, firstPar) {
             var par, down, parend, sub, outer;
             var __state = '2';
@@ -10799,9 +11793,11 @@ function createDrakonWidget() {
                     case '7':
                         setNotNull(item, node, 'flag1');
                         setNotNull(item, node, 'branchId');
-                        setNotNull(item, node, 'text2');
                         setNotNull(item, node, 'one');
                         setNotNull(item, node, 'two');
+                        setNotNull(item, node, 'side');
+                        setNotNull(item, node, 'link');
+                        setNotNull(item, node, 'secondary');
                         if (item.style) {
                             try {
                                 node.style = JSON.parse(item.style);
@@ -10842,7 +11838,7 @@ function createDrakonWidget() {
                     case '2':
                         menu = [];
                         _var2 = tr(widget, 'Copy');
-                        pushMenuItem(menu, _var2, undefined, function () {
+                        pushMenuItem('copy_block', menu, _var2, undefined, function () {
                             copy(widget);
                         });
                         _var5 = isReadonly(widget);
@@ -10850,12 +11846,12 @@ function createDrakonWidget() {
                             __state = '3';
                         } else {
                             _var3 = tr(widget, 'Cut');
-                            pushMenuItem(menu, _var3, undefined, function () {
+                            pushMenuItem('cut_block', menu, _var3, undefined, function () {
                                 cut(widget);
                             });
                             menu.push({ type: 'separator' });
                             _var4 = tr(widget, 'Delete');
-                            pushMenuItem(menu, _var4, undefined, function () {
+                            pushMenuItem('delete_block', menu, _var4, undefined, function () {
                                 deleteSelection(widget);
                             });
                             __state = '3';
@@ -10904,7 +11900,7 @@ function createDrakonWidget() {
                         return menu;
                     case '_item6':
                         _var3 = tr(widget, 'Paste');
-                        pushMenuItem(menu, _var3, undefined, function () {
+                        pushMenuItem('paste', menu, _var3, undefined, function () {
                             widget.showPasteSockets(clipboard.type);
                         });
                         __state = '3';
@@ -10949,6 +11945,20 @@ function createDrakonWidget() {
                     default:
                         return;
                 }
+            }
+        }
+        function canEditNodeText(node) {
+            var noText;
+            noText = {
+                junction: true,
+                end: true,
+                'arrow-loop': true,
+                address: true
+            };
+            if (node.type in noText) {
+                return false;
+            } else {
+                return true;
             }
         }
         function getEffectiveItemId(visuals, node) {
@@ -11084,19 +12094,22 @@ function createDrakonWidget() {
                 }
             }
         }
-        function canEditNodeText(node) {
-            var noText;
-            noText = {
-                junction: true,
-                end: true,
-                'arrow-loop': true,
-                address: true
+        function updateAndKeepSelection(widget, changes) {
+            doEdit(widget, changes, true);
+            buildDiagramModel(widget, widget.edit.diagram);
+            buildVisualsForEdit(widget);
+            paint(widget);
+            return;
+        }
+        function canEditSecondary(node) {
+            var can;
+            can = {
+                shelf: true,
+                process: true,
+                input: true,
+                output: true
             };
-            if (node.type in noText) {
-                return false;
-            } else {
-                return true;
-            }
+            return node.type in can;
         }
         function markArrow(visuals, loop) {
             var arrow, top, upEdge, bottom, rightEdge, leftBottom, downEdge, start, _var2, _var3;
@@ -11269,6 +12282,7 @@ function createDrakonWidget() {
                         break;
                     case '4':
                         removeTempEdges(visuals);
+                        positionDurations(visuals);
                         buildBoxes(visuals);
                         forType(visuals, 'address', putCycleMark);
                         calculateBox(visuals);
@@ -11389,9 +12403,10 @@ function createDrakonWidget() {
                 }
             }
         }
-        function pushMenuItem(menu, text, icon, action) {
+        function pushMenuItem(hint, menu, text, icon, action) {
             var item;
             item = {
+                hint: hint,
                 type: 'item',
                 text: text,
                 icon: icon,
@@ -11635,7 +12650,7 @@ function createDrakonWidget() {
                                 __state = '4';
                             } else {
                                 _var3 = tr(widget, 'Delete path');
-                                pushMenuItem(menu, _var3, undefined, function () {
+                                pushMenuItem('delete_path', menu, _var3, undefined, function () {
                                     deleteParPath(widget, node);
                                 });
                                 __state = '4';
@@ -11654,6 +12669,7 @@ function createDrakonWidget() {
         }
         function makePointToItem(widget, address, target, menu) {
             menu.push({
+                hint: 'redirect',
                 text: target.content,
                 action: function () {
                     redirectAddress(widget, address, target.itemId);
@@ -11825,6 +12841,9 @@ function createDrakonWidget() {
                 }
             }
         }
+        function duration(widget) {
+            return;
+        }
         function replaceTarget(item, oldToNew) {
             var __state = '2';
             while (true) {
@@ -11842,6 +12861,14 @@ function createDrakonWidget() {
                     case '5':
                         if (item.two) {
                             item.two = oldToNew[item.two];
+                            __state = '8';
+                        } else {
+                            __state = '8';
+                        }
+                        break;
+                    case '8':
+                        if (item.side) {
+                            item.side = oldToNew[item.side];
                             __state = '1';
                         } else {
                             __state = '1';
@@ -11884,6 +12911,13 @@ function createDrakonWidget() {
             redirectUpperItems(edits, socket.links, firstId);
             return edits;
         }
+        function copyItem(widget, itemId) {
+            var item, copy;
+            item = widget.model.items[itemId];
+            copy = clone(item);
+            delete copy.side;
+            return copy;
+        }
         function copySelect(widget, node) {
             var items, caseItem, _var2, _var3, caseNode, _var4, _var5;
             var __state = '2';
@@ -11922,7 +12956,7 @@ function createDrakonWidget() {
         }
         function copySelectedItem(widget, node) {
             var item;
-            item = copyItem(widget, node.itemId);
+            item = copyWholeItem(widget, node.itemId);
             item.one = getCopyTarget(widget, node, 0);
             item.two = getCopyTarget(widget, node, 1);
             return item;
@@ -11971,6 +13005,16 @@ function createDrakonWidget() {
                 }
             }
         }
+        function copyDuration(widget, node) {
+            var copy, block;
+            copy = copyItem(widget, node.itemId);
+            block = {
+                start: node.itemId,
+                items: [copy]
+            };
+            widget.visuals.config.setClipboard('duration', block);
+            return 'duration';
+        }
         function pasteInSocket(widget, socket) {
             var edits, clipboard, payload, ctype, _var2;
             var __state = '2';
@@ -11999,23 +13043,32 @@ function createDrakonWidget() {
                                         __state = '4';
                                     }
                                 } else {
-                                    if (_var2 === 'first-case') {
-                                        if (ctype === 'case') {
-                                            edits = firstCaseInsertCore(widget, socket.node, payload.items[0]);
+                                    if (_var2 === 'duration') {
+                                        if (ctype === 'duration') {
+                                            edits = pasteDuration(widget, socket.node, payload.items[0]);
                                             __state = '4';
                                         } else {
                                             __state = '4';
                                         }
                                     } else {
-                                        if (_var2 === 'branch') {
-                                            if (socket.type === ctype) {
-                                                edits = pasteBranch(widget, socket, payload);
+                                        if (_var2 === 'first-case') {
+                                            if (ctype === 'case') {
+                                                edits = firstCaseInsertCore(widget, socket.node, payload.items[0]);
                                                 __state = '4';
                                             } else {
                                                 __state = '4';
                                             }
                                         } else {
-                                            __state = '4';
+                                            if (_var2 === 'branch') {
+                                                if (socket.type === ctype) {
+                                                    edits = pasteBranch(widget, socket, payload);
+                                                    __state = '4';
+                                                } else {
+                                                    __state = '4';
+                                                }
+                                            } else {
+                                                __state = '4';
+                                            }
                                         }
                                     }
                                 }
@@ -12039,11 +13092,11 @@ function createDrakonWidget() {
             items.forEach(relink);
             return;
         }
-        function copyItem(widget, itemId) {
-            var item, _var2;
+        function copyWholeItem(widget, itemId) {
+            var item, copy;
             item = widget.model.items[itemId];
-            _var2 = clone(item);
-            return _var2;
+            copy = clone(item);
+            return copy;
         }
         function getBranchByName(visuals, name) {
             var branch, _var2, _var3, itemId;
@@ -12093,28 +13146,32 @@ function createDrakonWidget() {
                     if (_var2 === 'case') {
                         return copyCase;
                     } else {
-                        if (_var2 === 'address') {
-                            return undefined;
+                        if (_var2 === 'duration') {
+                            return copyDuration;
                         } else {
-                            if (_var2 === 'params') {
+                            if (_var2 === 'address') {
                                 return undefined;
                             } else {
-                                if (_var2 === 'junction') {
+                                if (_var2 === 'params') {
                                     return undefined;
                                 } else {
-                                    if (_var2 === 'branch') {
-                                        return copyBranch;
+                                    if (_var2 === 'junction') {
+                                        return undefined;
                                     } else {
-                                        if (_var2 === 'select') {
-                                            return copySelect;
+                                        if (_var2 === 'branch') {
+                                            return copyBranch;
                                         } else {
-                                            if (_var2 === 'loopbegin') {
-                                                return copyLoop;
+                                            if (_var2 === 'select') {
+                                                return copySelect;
                                             } else {
-                                                if (_var2 === 'loopend') {
-                                                    return copyLoopEnd;
+                                                if (_var2 === 'loopbegin') {
+                                                    return copyLoop;
                                                 } else {
-                                                    return copySimple;
+                                                    if (_var2 === 'loopend') {
+                                                        return copyLoopEnd;
+                                                    } else {
+                                                        return copySimple;
+                                                    }
                                                 }
                                             }
                                         }
@@ -12291,6 +13348,12 @@ function createDrakonWidget() {
             id = visuals.branches[0];
             return visuals.nodes[id];
         }
+        function deleteSimple(node) {
+            var edits;
+            edits = [];
+            popFromSkewer(node, edits);
+            return edits;
+        }
         function canDelete(visuals, node) {
             var _var2, _var3, _var4;
             var __state = '2';
@@ -12379,7 +13442,7 @@ function createDrakonWidget() {
                         below = first.next[0];
                         edgeUp = node.up;
                         redirectUpperItems(edits, edgeUp.links, below.itemId);
-                        deleteItem(edits, node.itemId);
+                        deleteItem(edits, node);
                         __state = '5';
                         break;
                     case '4':
@@ -12411,7 +13474,7 @@ function createDrakonWidget() {
             };
             traverseItemToDelete(context, prev, startItemId);
             addDeletion = function (id) {
-                deleteItem(edits, id);
+                deleteWithDur(widget, id, edits);
             };
             context.deleteList.forEach(addDeletion);
             return;
@@ -12477,7 +13540,7 @@ function createDrakonWidget() {
                         __state = '4';
                         break;
                     case '15':
-                        deleteItem(edits, node.itemId);
+                        deleteItem(edits, node);
                         __state = '5';
                         break;
                     default:
@@ -12494,7 +13557,7 @@ function createDrakonWidget() {
             edits = [];
             redirectUpperItems(edits, head.up.links, bottomId);
             addDeletion = function (node) {
-                deleteItem(edits, node.itemId);
+                deleteItemCore(edits, node.id);
             };
             nodes.forEach(addDeletion);
             doEdit(widget, edits, false);
@@ -12534,7 +13597,7 @@ function createDrakonWidget() {
                         widget.redraw();
                         return;
                     case '5':
-                        deleteItem(edits, node.itemId);
+                        deleteItem(edits, node);
                         if (node.two) {
                             updateItem(edits, left.itemId, { two: node.two });
                             __state = '49';
@@ -12544,9 +13607,9 @@ function createDrakonWidget() {
                         }
                         break;
                     case '31':
-                        deleteItem(edits, node.itemId);
-                        deleteItem(edits, endId);
-                        deleteItem(edits, left.itemId);
+                        deleteItem(edits, node);
+                        deleteItem(edits, end);
+                        deleteItem(edits, left);
                         if (left.one === endId) {
                             redirectUpperItems(edits, left.up.links, end.one);
                             __state = '49';
@@ -12567,6 +13630,12 @@ function createDrakonWidget() {
                         return;
                 }
             }
+        }
+        function deleteWithDur(widget, id, edits) {
+            var node;
+            node = getNode(widget.visuals, id);
+            deleteItem(edits, node);
+            return;
         }
         function deleteParams(node) {
             var change;
@@ -12616,8 +13685,13 @@ function createDrakonWidget() {
                                                         edits = deleteBranch(widget, node);
                                                         __state = '27';
                                                     } else {
-                                                        edits = deleteSimple(node);
-                                                        __state = '27';
+                                                        if (_var2 === 'duration') {
+                                                            edits = deleteDuration(widget, node);
+                                                            __state = '27';
+                                                        } else {
+                                                            edits = deleteSimple(node);
+                                                            __state = '27';
+                                                        }
                                                     }
                                                 }
                                             }
@@ -12664,7 +13738,7 @@ function createDrakonWidget() {
                         remaining = subtract(widget.model.items, toDelete);
                         redirectBranch(visuals, remaining, toDelete, next.itemId, edits);
                         ditch = function (itemId) {
-                            deleteItem(edits, itemId);
+                            deleteWithDur(widget, itemId, edits);
                         };
                         _var2 = Object.keys(toDelete);
                         _var2.forEach(ditch);
@@ -12699,10 +13773,12 @@ function createDrakonWidget() {
                 }
             }
         }
-        function deleteSimple(node) {
-            var edits;
+        function deleteDuration(widget, node) {
+            var edits, host;
             edits = [];
-            popFromSkewer(node, edits);
+            host = getRight(node);
+            updateItem(edits, host.id, { side: '' });
+            deleteItem(edits, node);
             return edits;
         }
         function hasUntouchedArrows(visited, node) {
@@ -12903,8 +13979,8 @@ function createDrakonWidget() {
                         }
                         break;
                     case '4':
-                        deleteItem(edits, node.itemId);
-                        deleteItem(edits, end.itemId);
+                        deleteItem(edits, node);
+                        deleteItem(edits, end);
                         return edits;
                     case '6':
                         redirectUpperItems(edits, edgeUp.links, end.one);
@@ -13133,14 +14209,34 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
+                    case '2':
+                        if (retainSelection) {
+                            __state = '7';
+                        } else {
+                            resetSelection(widget);
+                            __state = '7';
+                        }
+                        break;
+                    case '7':
+                        widget.edit.updateDocument(edits);
+                        return;
+                    default:
+                        return;
+                }
+            }
+        }
+        function deleteItem(edits, node) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
                     case '1':
                         return;
                     case '2':
-                        widget.edit.updateDocument(edits);
-                        if (retainSelection) {
+                        deleteItemCore(edits, node.id);
+                        if (node.side) {
+                            deleteItemCore(edits, node.side);
                             __state = '1';
                         } else {
-                            resetSelection(widget);
                             __state = '1';
                         }
                         break;
@@ -13308,7 +14404,7 @@ function createDrakonWidget() {
                 }
             }
         }
-        function deleteItem(edits, itemId) {
+        function deleteItemCore(edits, itemId) {
             var edit;
             edit = {
                 id: itemId,
@@ -13339,6 +14435,14 @@ function createDrakonWidget() {
             addSimpleInsert(widget, 'comment');
             addSimpleInsert(widget, 'simpleinput');
             addSimpleInsert(widget, 'simpleoutput');
+            addSimpleInsert(widget, 'timer');
+            addSimpleInsert(widget, 'pause');
+            addSimpleInsert(widget, 'ctrlstart');
+            addSimpleInsert(widget, 'ctrlend');
+            addSimpleInsert(widget, 'input');
+            addSimpleInsert(widget, 'output');
+            addSimpleInsert(widget, 'shelf');
+            addSimpleInsert(widget, 'process');
             widget.insertActions.question = questionInsert;
             widget.insertActions.branch = branchInsert;
             widget.insertActions.select = selectInsert;
@@ -13348,6 +14452,7 @@ function createDrakonWidget() {
             widget.insertActions['parblock'] = parBlockInsert;
             widget.insertActions['par'] = parInsert;
             widget.insertActions['firstpar'] = firstParInsert;
+            widget.insertActions.duration = durationInsert;
             return;
         }
         function createItem(model, edits, item) {
@@ -13428,6 +14533,18 @@ function createDrakonWidget() {
                 one: case1Id
             });
             redirectUpperItems(edits, socket.links, selectId);
+            return edits;
+        }
+        function durationInsert(widget, socket) {
+            var edits, model, item, newId;
+            model = widget.model;
+            edits = [];
+            item = {
+                type: 'duration',
+                content: ''
+            };
+            newId = createItem(model, edits, item);
+            updateItem(edits, socket.node.id, { side: newId });
             return edits;
         }
         function caseInsert(widget, socket) {
@@ -13601,7 +14718,7 @@ function createDrakonWidget() {
             dstId = node.one;
             edgeUp = node.up;
             redirectUpperItems(edits, edgeUp.links, dstId);
-            deleteItem(edits, node.itemId);
+            deleteItem(edits, node);
             return;
         }
         function getBranchById(visuals, branchId) {
@@ -13703,6 +14820,15 @@ function createDrakonWidget() {
                         return;
                 }
             }
+        }
+        function pasteDuration(widget, existing, item) {
+            var edits, caseId, model, fields;
+            edits = [];
+            model = widget.model;
+            fields = clone(item);
+            caseId = createItem(model, edits, fields);
+            updateItem(edits, existing.itemId, { side: caseId });
+            return edits;
         }
         function firstDigit(text) {
             var last, c, i, _var2;
@@ -13846,6 +14972,9 @@ function createDrakonWidget() {
             self.setZoom = function (zoom) {
                 return DrakonCanvas_setZoom(self, zoom);
             };
+            self.setSecondary = function (itemId, secondary) {
+                return DrakonCanvas_setSecondary(self, itemId, secondary);
+            };
             self.deleteSelection = function () {
                 return DrakonCanvas_deleteSelection(self);
             };
@@ -13875,6 +15004,9 @@ function createDrakonWidget() {
             };
             self.showPaste = function () {
                 return DrakonCanvas_showPaste(self);
+            };
+            self.setLink = function (itemId, link) {
+                return DrakonCanvas_setLink(self, itemId, link);
             };
             self.onMouseLeave = function (ignored, evt) {
                 return DrakonCanvas_onMouseLeave(self, ignored, evt);

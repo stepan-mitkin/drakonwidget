@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 0.9.0
+Current version: 0.9.2
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -172,6 +172,8 @@ var config = {
 |socketRadius|The socket visual radius.|integer||10|
 |socketTouchRadius|The socket touch radius.|integer||10|
 |startEditContent|Starts editing of the icon's content. See reference below.|function|required||
+|startEditLink|Starts editing of the icon's link. See reference below.|function|required if links are used||
+|startEditSecondary|Starts editing of the icon's secondary content. See reference below.|function|required is secondary content is used||
 |theme|The theme object. See the Theme reference.|object|||
 |touchRadius|The touch radius for junctions|integer||5|
 |translate|The text translation function.|function|||
@@ -265,6 +267,33 @@ The returned object
 |type|text|The type of the object|
 |content|object|The clipboard content|
 
+### getCursorForItem
+
+Returns the CSS cursor for the item under the pointer, for example "pointer" or "grab".
+
+```
+function getCursorForItem(prim, pos, evt)
+```
+
+|Name|Data type|Description|
+|---|---|---|
+|prim|object|The item under the cursor.|
+|pos|object|The mouse position in diagram coordinates.|
+|evt|object|The original mouse event.|
+
+### onItemClick
+
+The callback to run when the user clicks an item with the mouse.
+
+```
+function onItemClick(prim, pos, evt)
+```
+
+|Name|Data type|Description|
+|---|---|---|
+|prim|object|The item under the cursor.|
+|pos|object|The mouse position in diagram coordinates.|
+|evt|object|The original mouse event.|
 
 ### onItemSelected
 
@@ -320,17 +349,18 @@ An example of __items__ argument
 
 ```javascript
 var items = [
-    {text: "Copy", action: someFunction1},
-    {text: "Cut", action: someFunction2},
+    {hint:"copy_one", text: "Copy", action: someFunction1},
+    {hint:"cut_one", text: "Cut", action: someFunction2},
     {type:"separator"},
-    {text: "Delete", action: someFunction3, icon: "delete.png"}
+    {hint:"delete_one", text: "Delete", action: someFunction3, icon: "delete.png"}
 ]
 ```
 
+Use the __hint__ property to filter out the items you want to hide.
 
 ### startEditContent
 
-Starts editing the content of an icon.
+Starts editing the content of an icon. The existing content is passed in the __item.content__ property.
 When the user wants to save the edited content, call the __setContent__ method on the widget.
 
 If the user cancels editing, do not do anything.
@@ -356,10 +386,54 @@ __item__ object reference:
 |id|text|The item id.|
 |type|text|The type of the item: action, question, select, etc.|
 |content|text|The content of the item.|
+|secondary|text|The second content of the item.|
+|link|text|The link of the item.|
 |left|integer|The x-coordinate of the left side of the icon.|
 |top|integer|The y-coordinate of the left side of the icon.|
 |width|integer|The width of the icon.|
 |height|integer|The width of the icon.|
+
+### startEditLink
+
+Starts editing the link property of an icon. The existing link is passed in the __item.link__ property.
+When the user wants to save the edited link, call the __setLink__ method on the widget.
+
+If the user cancels editing, do not do anything.
+
+Note that the link _must be a string_.
+
+```
+function startEditLink(item, isReadonly)
+```
+
+Arguments
+
+|Name|Data type|Description|
+|---|---|---|
+|item|object|The item to edit. |
+|isReadonly|boolean|Is the diagram in read-only mode?|
+
+
+### startEditSecondary
+
+Starts editing the secondary content of an icon. The existing secondary content is passed in the __item.secondary__ property.
+When the user wants to save the edited secondary content, call the __setSecondary__ method on the widget.
+
+If the user cancels editing, do not do anything.
+
+Note that the secondary content _must be a string_.
+
+```
+function startEditSecondary(item, isReadonly)
+```
+
+Arguments
+
+|Name|Data type|Description|
+|---|---|---|
+|item|object|The item to edit. |
+|isReadonly|boolean|Is the diagram in read-only mode?|
+
 
 
 ### translate
@@ -383,6 +457,11 @@ Text strings that will be translated:
 - Add parameters
 - Insert branch with End
 - Delete path
+- Edit upper text
+- Edit link
+- Go to branch
+- Add margin
+- Reset margin
 
 Note that the words that appear on the diagram (Yes, No, End, Exit, Branch) are set
 in the config. See the Configuration reference.
@@ -562,6 +641,30 @@ Item types that can be inserted:
 - branch
 - insertion
 - comment
+- parblock
+- par
+- timer
+- pause
+- duration
+- shelf
+- process
+- input
+- output
+- ctrlstart
+- ctrlend
+
+### showItem
+
+Selects the item and scrolls the diagram to make the item visible on the canvas.
+
+```
+function showItem(itemId)
+```
+
+|Name|Data type|Description|
+|---|---|---|
+|itemId|text|The id of the item to show.|
+
 
 ### showPaste
 
@@ -615,6 +718,18 @@ if (self.type === "action ") { // self.type comes from context.type
 ```
 function buildDom()
 ```
+
+### getSecondaryHeight
+
+Returns the height in px of the upper part of the icon (for icons like Shelf, Process, etc.)
+This method is optional.
+
+Returns integer.
+
+```
+function getSecondaryHeight()
+```
+
 
 
 ## EditSender
@@ -796,7 +911,12 @@ __items__ is a dictionary where the keys are item ids.
 |---|---|---|---|
 |type|The type of the item|text|required|
 |content|The content. Must be a string.|text||
+|secondary|The secondary content (for icons like Shelf). Must be a string.|text||
+|link|The link. Must be a string.|text||
 |one|The id of the next item below.|text||
 |two|The id of the next item to the right.|text||
+|side|The id of the duration item to the left.|text||
 |flag1|The orientation of the Yes and No labes in the Question icon.|integer||
 |branchId|The branch ordinal of the Branch icon.|integer||
+|margin|The additional left margin (in metre units) of the branch.|integer||
+

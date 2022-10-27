@@ -1,4 +1,5 @@
 (function () {
+    var iconSize = 20
     var widgets
     var drakon
     var currentMode = "write"
@@ -321,6 +322,15 @@
         addInsertButton(toolbar, "soutput.png", "simpleoutput", "Simple output")
         addInsertButton(toolbar, "parblock.png", "parblock", "Concurrent processes")
         addInsertButton(toolbar, "par.png", "par", "Add path")
+        addInsertButton(toolbar, "timer.png", "timer", "Timer")
+        addInsertButton(toolbar, "pause.png", "pause", "Pause")
+        addInsertButton(toolbar, "duration.png", "duration", "Duration")
+        addInsertButton(toolbar, "shelf.png", "shelf", "Shelf")
+        addInsertButton(toolbar, "process.png", "process", "Process")
+        addInsertButton(toolbar, "input.png", "input", "Input")
+        addInsertButton(toolbar, "output.png", "output", "Output")
+        addInsertButton(toolbar, "ctrl-start.png", "ctrlstart", "Start of control period")
+        addInsertButton(toolbar, "ctrl-end.png", "ctrlend", "End of control period")
     }
 
     function showMenu() {
@@ -608,6 +618,72 @@
         return output
     }
 
+    function onItemClick(prim, pos, evt) {
+        if (prim.type === "insertion") {
+            if (onInsertionHotspot(prim, pos)) {
+                tryGoToDiagram(prim.content)
+            }
+        } else if (prim.type === "action" && prim.link) {
+            if (onActionHotspot(prim, pos)) {
+                window.open(prim.link, '_blank');
+            }
+        }
+    }
+
+    function getCursorForItem(prim, pos, evt) {
+        if (prim.type === "insertion") {
+            if (onInsertionHotspot(prim, pos)) {
+                return "pointer"
+            }
+        } else if (prim.type === "action" && prim.link) {
+            if (onActionHotspot(prim, pos)) {
+                return "pointer"
+            }
+        }
+
+        return "grab"
+    }
+
+    function tryGoToDiagram(name) {
+        if (!name) {
+            return
+        }
+
+        name = name.toLowerCase().trim()
+        var diagrams = getDiagramObjects()
+        for (var diagram of diagrams.diagrams) {
+            var dname = diagram.name.toLowerCase()
+            if (dname === name) {
+                openDiagram(diagram.id)
+                return
+            }
+        }
+    }
+
+    function onInsertionHotspot(prim, pos) {
+        var padding = 10
+        var left = prim.left + padding * 2
+        var top = prim.top + padding
+        var right = prim.left + prim.width - padding * 2
+        var bottom = prim.top + prim.height - padding
+        if (pos.x > left && pos.x < right && pos.y > top && pos.y < bottom) {
+            return true
+        }
+        return false
+    }
+
+    function onActionHotspot(prim, pos) {
+        var padding = 10
+        var left = prim.left
+        var top = prim.top
+        var right = prim.left + iconSize + padding * 2
+        var bottom = prim.top + prim.height - padding
+        if (pos.x > left && pos.x < right && pos.y > top && pos.y < bottom) {
+            return true
+        }
+        return false
+    }
+
     function startEditContent(prim, ro) {
         if (prim.type === "header") {
             if (ro) {
@@ -660,6 +736,58 @@
         }
     }
 
+    async function startEditSecondary(prim, ro) {
+
+        if (ro) {
+            widgets.largeBoxRo(
+                prim.left,
+                prim.top,
+                "",
+                prim.secondary
+            )
+        } else {
+            var newContent = await widgets.largeBox(
+                prim.left,
+                prim.top,
+                "",
+                prim.secondary
+            )
+
+            if (newContent !== undefined && newContent != prim.secondary) {
+                drakon.setSecondary(
+                    prim.id,
+                    newContent
+                )
+            }
+        }
+    }
+
+    async function startEditLink(prim, ro) {
+
+        if (ro) {
+            widgets.largeBoxRo(
+                prim.left,
+                prim.top,
+                "",
+                prim.link
+            )
+        } else {
+            var newContent = await widgets.largeBox(
+                prim.left,
+                prim.top,
+                "",
+                prim.link
+            )
+
+            if (newContent !== undefined && newContent != prim.link) {
+                drakon.setLink(
+                    prim.id,
+                    newContent
+                )
+            }
+        }
+    }
+
     function tr(text) {
         console.log("tr", text)
         return text
@@ -679,8 +807,12 @@
         var currentTheme = localStorage.getItem("current-theme")
         var config = JSON.parse(localStorage.getItem(currentTheme))
         config.startEditContent = startEditContent
+        config.startEditSecondary = startEditSecondary
+        config.startEditLink = startEditLink
         config.showContextMenu = widgets.showContextMenu
+        config.onItemClick = onItemClick
         config.buildIconCore = buildIconCore
+        config.getCursorForItem = getCursorForItem
         config.translate = tr
         config.drawZones = false
         config.canSelect = canSelect
@@ -820,6 +952,21 @@
         container.style.lineHeight = core.config.lineHeight * 100 + "%"
 
         parseHomeMadeMarkdown(core.content, container)
+
+        if (core.link) {
+            container.style.paddingLeft = core.config.padding * 2 + iconSize + "px"
+            var icon = document.createElement("img")
+            icon.src = "images/link.png"
+            icon.style.width = iconSize + "px"
+            icon.style.height = iconSize + "px"
+            icon.style.display = "inline-block"
+            icon.style.position = "absolute"
+            icon.style.verticalAlign = "middle"
+            icon.style.left = core.config.padding + "px"
+            icon.style.top = "50%"
+            icon.style.transform = "translateY(-50%)"
+            add(container, icon)
+        }
 
         return container
     }
