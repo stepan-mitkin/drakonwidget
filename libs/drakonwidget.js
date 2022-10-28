@@ -2986,6 +2986,7 @@ function createDrakonWidget() {
                             style: node.style,
                             flag1: node.flag1,
                             config: config,
+                            margin: node.margin || 0,
                             paddingLeft: paddingLeft,
                             paddingRight: paddingRight
                         };
@@ -3383,16 +3384,12 @@ function createDrakonWidget() {
             }
         }
         function buildIconCore(context) {
-            var core, _var2, _var3;
+            var core, _var2;
             core = {};
             Object.assign(core, context);
             core.buildDom = function () {
                 _var2 = buildDomDefault(core);
                 return _var2;
-            };
-            core.getSecondaryHeight = function () {
-                _var3 = getSecondaryHeight(core);
-                return _var3;
             };
             return core;
         }
@@ -4921,7 +4918,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '0.9.2';
+            return '0.9.3';
         }
         function DrakonCanvas_copySelection(self) {
             copy(self);
@@ -8066,6 +8063,34 @@ function createDrakonWidget() {
                 index: index
             };
         }
+        function getBranchMargin(node) {
+            var margin;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        margin = node.margin;
+                        if (margin) {
+                            __state = '3';
+                        } else {
+                            if (margin === 0) {
+                                __state = '3';
+                            } else {
+                                if (node.branchId === 1) {
+                                    return 0;
+                                } else {
+                                    return 1;
+                                }
+                            }
+                        }
+                        break;
+                    case '3':
+                        return margin;
+                    default:
+                        return;
+                }
+            }
+        }
         function addItemToModel(model, item) {
             var __state = '2';
             while (true) {
@@ -8112,7 +8137,7 @@ function createDrakonWidget() {
             }
         }
         function buildMenuByType(widget, prim, node) {
-            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19;
+            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19, _var20, _var21, _var22, _var23;
             var __state = '27';
             while (true) {
                 switch (__state) {
@@ -8166,22 +8191,24 @@ function createDrakonWidget() {
                             __state = '16';
                         } else {
                             if (_var2 === 'address') {
+                                _var20 = tr(widget, 'Go to branch');
+                                pushMenuItem('go_to_target_branch', menu, _var20, undefined, function () {
+                                    widget.showItem(node.branch.id);
+                                });
+                                menu.push({ type: 'separator' });
                                 addressDestinations(widget, node, menu);
                                 __state = '16';
                             } else {
                                 if (_var2 === 'branch') {
-                                    if (widget.visuals.end) {
-                                        __state = '16';
+                                    _var21 = getBranchMargin(node);
+                                    if (_var21 === 0) {
+                                        __state = '_item26';
                                     } else {
-                                        if (node.itemId === widget.visuals.branches[widget.visuals.branches.length - 1]) {
-                                            _var13 = tr(widget, 'Insert branch with End');
-                                            pushMenuItem('insert_end_branch', menu, _var13, undefined, function () {
-                                                branchInsertEnd(widget);
-                                            });
-                                            __state = '16';
-                                        } else {
-                                            __state = '16';
-                                        }
+                                        _var22 = tr(widget, 'Reset margin');
+                                        pushMenuItem('reset_margin', menu, _var22, undefined, function () {
+                                            resetMargin(widget, node.id);
+                                        });
+                                        __state = '_item26';
                                     }
                                 } else {
                                     __state = '16';
@@ -8239,6 +8266,25 @@ function createDrakonWidget() {
                             __state = '8';
                         } else {
                             __state = '9';
+                        }
+                        break;
+                    case '_item26':
+                        _var23 = tr(widget, 'Increase margin');
+                        pushMenuItem('increase_margin', menu, _var23, undefined, function () {
+                            increaseMargin(widget, node.id);
+                        });
+                        if (widget.visuals.end) {
+                            __state = '16';
+                        } else {
+                            if (node.itemId === widget.visuals.branches[widget.visuals.branches.length - 1]) {
+                                _var13 = tr(widget, 'Insert branch with End');
+                                pushMenuItem('insert_end_branch', menu, _var13, undefined, function () {
+                                    branchInsertEnd(widget);
+                                });
+                                __state = '16';
+                            } else {
+                                __state = '16';
+                            }
                         }
                         break;
                     case '_item12':
@@ -8452,7 +8498,7 @@ function createDrakonWidget() {
                         }
                         break;
                     case '6':
-                        return boundary;
+                        return skewer.leftWidth + metre;
                     default:
                         return;
                 }
@@ -8755,7 +8801,7 @@ function createDrakonWidget() {
                         } else {
                             left = getSilCorner(visuals);
                             hskewer = visuals.header.skewer;
-                            boundary = hskewer.leftWidth + metre;
+                            boundary = getBoundary(visuals, hskewer);
                             linkSkewers(visuals, left.skewer, hskewer, boundary);
                             __state = '1';
                         }
@@ -9227,13 +9273,14 @@ function createDrakonWidget() {
             return _var2;
         }
         function setSameWidth(visuals, skewer) {
-            var width, leftWidth, dur, _var2, _var3, node, _var4, _var5, _var6;
+            var width, leftWidth, margin, dur, _var2, _var3, node, _var4, _var5, _var6;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
                         width = 0;
                         leftWidth = 0;
+                        margin = 0;
                         _var2 = skewer.nodes;
                         _var3 = 0;
                         __state = '7';
@@ -9254,10 +9301,10 @@ function createDrakonWidget() {
                         if (_var3 < _var2.length) {
                             node = _var2[_var3];
                             if (node.type === 'header') {
-                                __state = '6';
+                                __state = '19';
                             } else {
                                 width = Math.max(width, node.w);
-                                __state = '6';
+                                __state = '19';
                             }
                         } else {
                             __state = '5';
@@ -9280,8 +9327,16 @@ function createDrakonWidget() {
                                 __state = '11';
                             }
                         } else {
-                            skewer.leftWidth = leftWidth;
+                            skewer.leftWidth = leftWidth + margin * visuals.config.metre;
                             __state = '4';
+                        }
+                        break;
+                    case '19':
+                        if (node.type === 'branch') {
+                            margin = getBranchMargin(node);
+                            __state = '6';
+                        } else {
+                            __state = '6';
                         }
                         break;
                     default:
@@ -11797,6 +11852,7 @@ function createDrakonWidget() {
                         setNotNull(item, node, 'two');
                         setNotNull(item, node, 'side');
                         setNotNull(item, node, 'link');
+                        setNotNull(item, node, 'margin');
                         setNotNull(item, node, 'secondary');
                         if (item.style) {
                             try {
@@ -14357,6 +14413,17 @@ function createDrakonWidget() {
             edits.push(update);
             return;
         }
+        function resetMargin(widget, id) {
+            var change;
+            checkNotReadonly(widget);
+            change = {
+                id: id,
+                fields: { margin: 0 },
+                op: 'update'
+            };
+            updateAndKeepSelection(widget, [change]);
+            return;
+        }
         function getNumberPart(text) {
             var first, tail, _var2;
             text = text || '';
@@ -14671,6 +14738,19 @@ function createDrakonWidget() {
                 _var2 = simpleInsert(widget, socket, type);
                 return _var2;
             };
+            return;
+        }
+        function increaseMargin(widget, id) {
+            var change, node, margin;
+            checkNotReadonly(widget);
+            node = getNode(widget.visuals, id);
+            margin = getBranchMargin(node);
+            change = {
+                id: id,
+                fields: { margin: margin + 1 },
+                op: 'update'
+            };
+            updateAndKeepSelection(widget, [change]);
             return;
         }
         function clickArrowSocket(widget, socket) {
