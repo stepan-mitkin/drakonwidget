@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 0.9.3
+Current version: 0.9.5
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -462,6 +462,7 @@ Text strings that will be translated:
 - Go to branch
 - Increase margin
 - Reset margin
+- Flip
 
 Note that the words that appear on the diagram (Yes, No, End, Exit, Branch) are set
 in the config. See the Configuration reference.

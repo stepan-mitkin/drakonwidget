@@ -1,6 +1,6 @@
 {
   "name": "drakonwidget",
-  "version": "0.9.3",
+  "version": "0.9.5",
   "description": "A JavaScript widget for viewing and editing drakon flowcharts",
   "main": "index.js",
   "scripts": {

@@ -331,6 +331,11 @@
         addInsertButton(toolbar, "output.png", "output", "Output")
         addInsertButton(toolbar, "ctrl-start.png", "ctrlstart", "Start of control period")
         addInsertButton(toolbar, "ctrl-end.png", "ctrlend", "End of control period")
+        addIconButton(toolbar, "group-duration.png", insertGroupDurationLeft, "Group duration (left)")
+        addIconButton(toolbar, "group-duration-r.png", insertGroupDurationRight, "Group duration (right)")
+        below = div()
+        below.style.height = "50px"
+        add(toolbar, below)
     }
 
     function showMenu() {
@@ -511,6 +516,14 @@
         drakon.showInsertionSockets(type)
     }
 
+    function insertGroupDurationRight() {
+        drakon.insertFree("group-duration-right")
+    }
+
+    function insertGroupDurationLeft() {
+        drakon.insertFree("group-duration-left")
+    }    
+
     function loadDiagrams() {
         var list = getDiagramList()
         if (list) {
@@ -620,11 +633,11 @@
 
     function onItemClick(prim, pos, evt) {
         if (prim.type === "insertion") {
-            if (onInsertionHotspot(prim, pos)) {
+            if (onInsertionHotspot(prim, evt)) {
                 tryGoToDiagram(prim.content)
             }
         } else if (prim.type === "action" && prim.link) {
-            if (onActionHotspot(prim, pos)) {
+            if (onActionHotspot(prim, evt)) {
                 window.open(prim.link, '_blank');
             }
         }
@@ -632,11 +645,11 @@
 
     function getCursorForItem(prim, pos, evt) {
         if (prim.type === "insertion") {
-            if (onInsertionHotspot(prim, pos)) {
+            if (onInsertionHotspot(prim, evt)) {
                 return "pointer"
             }
         } else if (prim.type === "action" && prim.link) {
-            if (onActionHotspot(prim, pos)) {
+            if (onActionHotspot(prim, evt)) {
                 return "pointer"
             }
         }
@@ -660,25 +673,25 @@
         }
     }
 
-    function onInsertionHotspot(prim, pos) {
-        var padding = 10
+    function onInsertionHotspot(prim, evt) {
+        var padding = 10        
         var left = prim.left + padding * 2
         var top = prim.top + padding
         var right = prim.left + prim.width - padding * 2
         var bottom = prim.top + prim.height - padding
-        if (pos.x > left && pos.x < right && pos.y > top && pos.y < bottom) {
+        if (evt.clientX > left && evt.clientX < right && evt.clientY > top && evt.clientY < bottom) {
             return true
         }
         return false
     }
 
-    function onActionHotspot(prim, pos) {
+    function onActionHotspot(prim, evt) {
         var padding = 10
         var left = prim.left
         var top = prim.top
         var right = prim.left + iconSize + padding * 2
-        var bottom = prim.top + prim.height - padding
-        if (pos.x > left && pos.x < right && pos.y > top && pos.y < bottom) {
+        var bottom = prim.top + prim.height
+        if (evt.clientX > left && evt.clientX < right && evt.clientY > top && evt.clientY < bottom) {
             return true
         }
         return false

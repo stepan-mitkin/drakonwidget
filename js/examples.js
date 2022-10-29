@@ -131,21 +131,55 @@ function createExamples() {
                     "flag1": 0,
                     "type": "question",
                     "content": "Is it raining?",
-                    "one": "6",
+                    "one": "7",
                     "two": "5"
                 },
                 "5": {
                     "type": "action",
-                    "one": "6",
+                    "one": "7",
                     "content": "- Take umbrella\n- Take rubber boots"
                 },
-                "6": {
-                    "type": "action",
+                "7": {
+                    "type": "insertion",
                     "content": "Leave the house",
                     "one": "1"
                 }
             }
         },
+        {
+            "name": "Leave the house",
+            "items": {
+                "1": {
+                    "type": "end"
+                },
+                "2": {
+                    "type": "branch",
+                    "branchId": 0,
+                    "one": "3"
+                },
+                "3": {
+                    "type": "action",
+                    "content": "Open the door",
+                    "one": "4",
+                    "link": "https://en.wikipedia.org/wiki/Door"
+                },
+                "4": {
+                    "type": "action",
+                    "content": "Go out through the door portal",
+                    "one": "5"
+                },
+                "5": {
+                    "type": "action",
+                    "content": "Close the door",
+                    "one": "6"
+                },
+                "6": {
+                    "type": "action",
+                    "content": "Lock the door",
+                    "one": "1"
+                }
+            }
+        },        
         {
             "name": "How to learn to understand foregn speech",
             "params": "Author: Irina Kolosova\nhttps://youtu.be/JOtwQbNdIGs",
@@ -490,6 +524,205 @@ function createExamples() {
                     "type": "action",
                     "content": "__2__ Иммобилизуй пациента на носилках или на длинной доске",
                     "one": "23"
+                }
+            }
+        },
+        {
+            "name": "Реанимация беременной женщины",
+            "items": {
+                "1": {
+                    "type": "end"
+                },
+                "2": {
+                    "type": "branch",
+                    "branchId": 1,
+                    "one": "5",
+                    "content": "Оценка состояния беременной"
+                },
+                "3": {
+                    "type": "branch",
+                    "content": "Дальнейшая помощь",
+                    "one": "32",
+                    "branchId": 5,
+                    "margin": 0
+                },
+                "4": {
+                    "type": "branch",
+                    "content": "Лечение остановки дыхания",
+                    "one": "11",
+                    "branchId": 2,
+                    "margin": 0
+                },
+                "5": {
+                    "type": "question",
+                    "content": "Есть реакция на обращение и прикосновение?",
+                    "one": "3",
+                    "two": "6",
+                    "flag1": 1
+                },
+                "6": {
+                    "type": "question",
+                    "content": "Есть ли нормальное дыхание?",
+                    "one": "3",
+                    "two": "7",
+                    "flag1": 1
+                },
+                "7": {
+                    "type": "action",
+                    "content": "Вызывай реанимационную и акушерскую команду и проси дефибрилятор",
+                    "one": "8"
+                },
+                "8": {
+                    "type": "action",
+                    "content": "Зафиксируй время внезапной смерти",
+                    "one": "9"
+                },
+                "9": {
+                    "type": "action",
+                    "content": "Положи на спину.\nСдвинь матку влево",
+                    "one": "10"
+                },
+                "10": {
+                    "type": "question",
+                    "content": "Прощупывается ли пульс на сонной артерии?",
+                    "one": "4",
+                    "two": "17",
+                    "flag1": 1,
+                    "side": "18"
+                },
+                "11": {
+                    "type": "action",
+                    "content": "Вдувай 1 раз каждые 5-6 секунд",
+                    "one": "12",
+                    "side": "14"
+                },
+                "12": {
+                    "type": "question",
+                    "content": "Есть ли пульс?",
+                    "one": "13",
+                    "two": "17",
+                    "flag1": 1,
+                    "side": "15"
+                },
+                "13": {
+                    "type": "question",
+                    "content": "Есть ли дыхание?",
+                    "one": "3",
+                    "two": "4",
+                    "flag1": 1,
+                    "side": "16"
+                },
+                "14": {
+                    "type": "duration",
+                    "content": "2 мин"
+                },
+                "15": {
+                    "type": "duration",
+                    "content": "10 сек"
+                },
+                "16": {
+                    "type": "duration",
+                    "content": "5-10 сек"
+                },
+                "17": {
+                    "type": "branch",
+                    "branchId": 3,
+                    "content": "Начальная реанимация\n30:2",
+                    "one": "24"
+                },
+                "18": {
+                    "type": "duration",
+                    "content": "10 сек"
+                },
+                "20": {
+                    "type": "action",
+                    "content": "Реанимируй до момента, когда принесут дефибрилятор",
+                    "one": "21"
+                },
+                "21": {
+                    "type": "action",
+                    "content": "Выполни 30 компрессий грудной клетки",
+                    "one": "22"
+                },
+                "22": {
+                    "type": "action",
+                    "content": "Выполни 2 вдоха",
+                    "one": "23"
+                },
+                "23": {
+                    "type": "question",
+                    "content": "Есть ли дефибрилятор?",
+                    "one": "25",
+                    "two": "24",
+                    "flag1": 1
+                },
+                "24": {
+                    "type": "arrow-loop",
+                    "one": "20"
+                },
+                "25": {
+                    "type": "branch",
+                    "branchId": 4,
+                    "content": "Применение дефибрилятора",
+                    "one": "26",
+                    "margin": ""
+                },
+                "26": {
+                    "type": "action",
+                    "content": "Включи дефибрилятор",
+                    "one": "28"
+                },
+                "27": {
+                    "type": "action",
+                    "content": "Выполняй указания дефибрилятора",
+                    "one": "30"
+                },
+                "28": {
+                    "type": "question",
+                    "content": "Есть функция автоматической внешней дефибриляции?",
+                    "one": "31",
+                    "two": "3",
+                    "flag1": 1
+                },
+                "30": {
+                    "type": "question",
+                    "content": "Прибыла реанимационная команда?",
+                    "one": "3",
+                    "two": "31",
+                    "flag1": 1
+                },
+                "31": {
+                    "type": "arrow-loop",
+                    "one": "27"
+                },
+                "32": {
+                    "type": "question",
+                    "content": "Нужна ли реанимация?",
+                    "one": "33",
+                    "two": "34",
+                    "flag1": 0
+                },
+                "33": {
+                    "type": "insertion",
+                    "content": "Первичный осмотр ABCDE",
+                    "one": "1"
+                },
+                "34": {
+                    "type": "insertion",
+                    "content": "Специализированная реанимационная помощь",
+                    "one": "1"
+                },
+                "35": {
+                    "type": "group-duration",
+                    "flag1": 1,
+                    "x": 580,
+                    "y": 270,
+                    "loX": -100,
+                    "loY": 75,
+                    "hiX": -460,
+                    "hiY": -100,
+                    "zIndex": 0,
+                    "content": "10 сек"
                 }
             }
         }
