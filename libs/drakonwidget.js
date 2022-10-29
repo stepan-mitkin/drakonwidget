@@ -1969,7 +1969,7 @@ function createDrakonWidget() {
                 case '2':
                     container = div({
                         display: 'inline-block',
-                        position: 'absolute',
+                        position: 'relative',
                         left: '0px',
                         top: '0px',
                         width: '100%',
@@ -4754,6 +4754,8 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
+                case '1':
+                    return;
                 case '2':
                     flow = visuals.config.iconContent[node.type];
                     if (flow) {
@@ -4767,10 +4769,36 @@ function createDrakonWidget() {
                 case '17':
                     node.frame = flow(node, visuals.config, visuals.container);
                     config = visuals.config;
-                    node.w = makeHalfSize(config, node.frame.width);
-                    node.h = makeHalfSize(config, node.frame.height);
-                    node.h = Math.max(config.metre, node.h);
-                    return;
+                    if (node.type === 'junction') {
+                        if (node.subtype === 'parbegin') {
+                            if (node.two) {
+                                node.w = config.metre;
+                                node.h = 0;
+                                __state = '1';
+                            } else {
+                                node.w = 0;
+                                node.h = 0;
+                                __state = '1';
+                            }
+                        } else {
+                            __state = '24';
+                        }
+                    } else {
+                        if (node.type === 'arrow-loop') {
+                            __state = '24';
+                        } else {
+                            node.w = makeHalfSize(config, node.frame.width);
+                            node.h = makeHalfSize(config, node.frame.height);
+                            node.h = Math.max(config.metre, node.h);
+                            __state = '1';
+                        }
+                    }
+                    break;
+                case '24':
+                    node.w = 0;
+                    node.h = 0;
+                    __state = '1';
+                    break;
                 default:
                     return;
                 }
@@ -5100,7 +5128,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '0.9.5';
+            return '0.9.6';
         }
         function DrakonCanvas_copySelection(self) {
             copy(self);
@@ -10177,7 +10205,7 @@ function createDrakonWidget() {
                         'minHeight': 40,
                         'minWidth': 100,
                         'touchRadius': 5,
-                        'socketTouchRadius': 10,
+                        'socketTouchRadius': 15,
                         'yes': 'Yes',
                         'no': 'No',
                         'end': 'End',
