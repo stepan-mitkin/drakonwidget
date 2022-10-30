@@ -717,7 +717,6 @@ function createDrakonWidget() {
         return unit;
     }
 
-
     function drakon_canvas() {
         var unit = {};
         unit.onError = function (error) {
@@ -2046,7 +2045,7 @@ function createDrakonWidget() {
                         if (_var2 === 0) {
                             __state = '3';
                         } else {
-                            widget.config.onItemSelected(undefined);
+                            widget.config.onSelectionChanged([]);
                             __state = '3';
                         }
                     } else {
@@ -2474,13 +2473,11 @@ function createDrakonWidget() {
             prim = {
                 id: node.id,
                 type: node.type,
-                style: node.style,
+                elType: elType,
                 content: node.content || '',
                 secondary: node.secondary || '',
                 link: node.link || '',
-                flag1: node.flag1,
-                margin: node.margin,
-                elType: elType,
+                style: node.style || '',
                 left: node.x - node.w,
                 top: node.y - node.h,
                 width: node.w * 2,
@@ -2490,6 +2487,12 @@ function createDrakonWidget() {
                 w: node.w,
                 h: node.h
             };
+            setNotNull(node, prim, 'flag1');
+            setNotNull(node, prim, 'branchId');
+            setNotNull(node, prim, 'one');
+            setNotNull(node, prim, 'two');
+            setNotNull(node, prim, 'side');
+            setNotNull(node, prim, 'margin');
             primToClient(widget, prim);
             return prim;
         }
@@ -2542,7 +2545,7 @@ function createDrakonWidget() {
             };
         }
         function addToSelection(widget, node) {
-            var selection, visuals, head, wayUp, wayDown;
+            var selection, visuals, head, wayUp, wayDown, prims;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -2561,18 +2564,20 @@ function createDrakonWidget() {
                     wayUp = findWayUp(node, head);
                     if (wayUp.length) {
                         selectPath(widget, wayUp, head);
-                        __state = '14';
+                        __state = '17';
                     } else {
                         wayDown = findWayUp(head, node);
                         if (wayDown.length) {
                             selectPath(widget, wayDown, head);
-                            __state = '14';
+                            __state = '17';
                         } else {
                             return false;
                         }
                     }
                     break;
-                case '14':
+                case '17':
+                    prims = getSelectedPrims(widget);
+                    widget.config.onSelectionChanged(prims);
                     return true;
                 default:
                     return;
@@ -2642,7 +2647,7 @@ function createDrakonWidget() {
                     }
                     break;
                 case '33':
-                    widget.config.onItemSelected(item);
+                    widget.config.onSelectionChanged([item]);
                     __state = '1';
                     break;
                 default:
@@ -3114,19 +3119,42 @@ function createDrakonWidget() {
                 }
             }
         }
-        function DrakonCanvas_setStyle(self, style, itemIds) {
-            var changes;
-            checkNotReadonly(self);
-            changes = itemIds.map(function (id) {
-                return {
-                    id: id,
-                    op: 'update',
-                    fields: { style: style }
-                };
-            });
-            doEdit(self, changes, true);
-            self.redraw();
-            return;
+        function DrakonCanvas_setStyle(self, ids, style) {
+            var styleStr, edits, _var2, _var3, id;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (style) {
+                        styleStr = JSON.stringify(style);
+                        __state = '6';
+                    } else {
+                        styleStr = '';
+                        __state = '6';
+                    }
+                    break;
+                case '6':
+                    edits = [];
+                    _var2 = ids;
+                    _var3 = 0;
+                    __state = '8';
+                    break;
+                case '8':
+                    if (_var3 < _var2.length) {
+                        id = _var2[_var3];
+                        updateItem(edits, id, { style: styleStr });
+                        _var3++;
+                        __state = '8';
+                    } else {
+                        doEdit(self, edits, true);
+                        self.redraw();
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function DrakonCanvas_onContextMenu(self, ignored, evt) {
             evt.preventDefault();
@@ -3313,7 +3341,11 @@ function createDrakonWidget() {
                         if (value === undefined) {
                             __state = '16';
                         } else {
-                            __state = '24';
+                            if (value === '') {
+                                __state = '16';
+                            } else {
+                                __state = '24';
+                            }
                         }
                     } else {
                         __state = '16';
@@ -3329,7 +3361,11 @@ function createDrakonWidget() {
                             if (value === undefined) {
                                 __state = '21';
                             } else {
-                                __state = '24';
+                                if (value === '') {
+                                    __state = '21';
+                                } else {
+                                    __state = '24';
+                                }
                             }
                         } else {
                             __state = '21';
@@ -3376,16 +3412,84 @@ function createDrakonWidget() {
             }
         }
         function buildDomDefault(core) {
-            var config, paddingLeft, paddingTop, paddingRight, paddingBottom, maxWidth, minWidth, color, textAlign, font, textDiv, textDiv2, text, secondary, result, _var2, _var3;
+            var paddingLeft, paddingTop, paddingRight, paddingBottom, maxWidth, minWidth, color, textAlign, font, textDiv, textDiv2, text, secondary, result, padding, config, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     config = core.config;
-                    paddingLeft = config.padding + core.paddingLeft + 'px';
-                    paddingTop = config.padding + 'px';
-                    paddingRight = config.padding + core.paddingRight + 'px';
-                    paddingBottom = config.padding + 'px';
+                    padding = getThemeValueCore(config, core.type, core.style, 'padding');
+                    if (padding) {
+                        __state = '16';
+                    } else {
+                        padding = config.padding;
+                        __state = '16';
+                    }
+                    break;
+                case '5':
+                    return result;
+                case '6':
+                    color = getThemeValueCore(config, core.type, core.style, 'color');
+                    textDiv = div({
+                        display: 'inline-block',
+                        position: 'absolute',
+                        color: color,
+                        left: '0px',
+                        top: '0px',
+                        font: font,
+                        'user-select': 'none',
+                        'text-align': textAlign,
+                        'max-width': maxWidth,
+                        'min-width': minWidth,
+                        'padding-left': paddingLeft,
+                        'padding-top': paddingTop,
+                        'padding-right': paddingRight,
+                        'padding-bottom': paddingBottom,
+                        'line-height': config.lineHeight
+                    });
+                    text = core.content || '';
+                    secondary = core.secondary || '';
+                    _var3 = core.type;
+                    if (_var3 === 'input') {
+                        textDiv.style.paddingLeft = padding * 2 + core.paddingLeft + 'px';
+                        textDiv.style.paddingRight = padding + 'px';
+                        paddingRight = padding + core.paddingRight + 'px';
+                        __state = '78';
+                    } else {
+                        if (_var3 === 'shelf') {
+                            __state = '78';
+                        } else {
+                            if (_var3 === 'process') {
+                                textDiv.style.paddingLeft = padding + 'px';
+                                paddingRight = padding + 'px';
+                                __state = '78';
+                            } else {
+                                if (_var3 === 'output') {
+                                    textDiv.style.paddingLeft = padding + 'px';
+                                    textDiv.style.paddingRight = padding * 2 + core.paddingRight + 'px';
+                                    paddingRight = padding + 'px';
+                                    __state = '78';
+                                } else {
+                                    if (_var3 === 'header') {
+                                        __state = '69';
+                                    } else {
+                                        if (_var3 === 'end') {
+                                            __state = '69';
+                                        } else {
+                                            splitToParagraphs(textDiv, text);
+                                            __state = '74';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case '16':
+                    paddingLeft = padding + core.paddingLeft + 'px';
+                    paddingTop = padding + 'px';
+                    paddingRight = padding + core.paddingRight + 'px';
+                    paddingBottom = padding + 'px';
                     maxWidth = config.maxWidth + 'px';
                     minWidth = config.minWidth + 'px';
                     textAlign = 'left';
@@ -3400,7 +3504,7 @@ function createDrakonWidget() {
                         if (_var2 === 'end') {
                             textAlign = 'center';
                             minWidth = '';
-                            paddingTop = config.padding / 2;
+                            paddingTop = padding / 2;
                             paddingBottom = paddingTop;
                             __state = '6';
                         } else {
@@ -3451,65 +3555,6 @@ function createDrakonWidget() {
                         }
                     }
                     break;
-                case '5':
-                    return result;
-                case '6':
-                    color = getThemeValueCore(config, core.type, core.style, 'color');
-                    textDiv = div({
-                        display: 'inline-block',
-                        position: 'absolute',
-                        color: color,
-                        left: '0px',
-                        top: '0px',
-                        font: font,
-                        'user-select': 'none',
-                        'text-align': textAlign,
-                        'max-width': maxWidth,
-                        'min-width': minWidth,
-                        'padding-left': paddingLeft,
-                        'padding-top': paddingTop,
-                        'padding-right': paddingRight,
-                        'padding-bottom': paddingBottom,
-                        'line-height': config.lineHeight
-                    });
-                    text = core.content || '';
-                    secondary = core.secondary || '';
-                    _var3 = core.type;
-                    if (_var3 === 'input') {
-                        textDiv.style.paddingLeft = config.padding * 2 + core.paddingLeft + 'px';
-                        textDiv.style.paddingRight = config.padding + 'px';
-                        paddingRight = config.padding + core.paddingRight + 'px';
-                        __state = '78';
-                    } else {
-                        if (_var3 === 'shelf') {
-                            __state = '78';
-                        } else {
-                            if (_var3 === 'process') {
-                                textDiv.style.paddingLeft = config.padding + 'px';
-                                paddingRight = config.padding + 'px';
-                                __state = '78';
-                            } else {
-                                if (_var3 === 'output') {
-                                    textDiv.style.paddingLeft = config.padding + 'px';
-                                    textDiv.style.paddingRight = config.padding * 2 + core.paddingRight + 'px';
-                                    paddingRight = config.padding + 'px';
-                                    __state = '78';
-                                } else {
-                                    if (_var3 === 'header') {
-                                        __state = '69';
-                                    } else {
-                                        if (_var3 === 'end') {
-                                            __state = '69';
-                                        } else {
-                                            splitToParagraphs(textDiv, text);
-                                            __state = '74';
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
                 case '34':
                     textAlign = 'center';
                     __state = '6';
@@ -3525,7 +3570,7 @@ function createDrakonWidget() {
                 case '78':
                     textDiv.style.position = 'relative';
                     textDiv.style.display = 'block';
-                    textDiv.style.paddingBottom = config.padding / 2 + 'px';
+                    textDiv.style.paddingBottom = padding / 2 + 'px';
                     splitToParagraphs(textDiv, text);
                     textDiv2 = div({
                         display: 'block',
@@ -5128,7 +5173,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '0.9.6';
+            return '0.9.7';
         }
         function DrakonCanvas_copySelection(self) {
             copy(self);
@@ -6863,6 +6908,96 @@ function createDrakonWidget() {
             updateAndKeepSelection(self, [change]);
             return;
         }
+        function buildStyleFromPrims(prims) {
+            var style, _var2, _var3, prim;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    style = {};
+                    _var2 = prims;
+                    _var3 = 0;
+                    __state = '6';
+                    break;
+                case '4':
+                    return style;
+                case '6':
+                    if (_var3 < _var2.length) {
+                        prim = _var2[_var3];
+                        copyStyleFromPrim(prim, style);
+                        _var3++;
+                        __state = '6';
+                    } else {
+                        style.iconBack = style.iconBack || '';
+                        style.color = style.color || '';
+                        style.iconBorder = style.iconBorder || '';
+                        style.font = style.font || '';
+                        style.padding = style.padding || '';
+                        style.internalLine = style.internalLine || '';
+                        if ('borderWidth' in style) {
+                            __state = '4';
+                        } else {
+                            style.borderWidth = '';
+                            __state = '4';
+                        }
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function copyStyleFromPrim(prim, style) {
+            var pstyle, existing, _var3, _var2, _var4, key, value;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    pstyle = prim.style;
+                    if (pstyle) {
+                        _var3 = pstyle;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '7';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                case '6':
+                    _var4++;
+                    __state = '7';
+                    break;
+                case '7':
+                    if (_var4 < _var2.length) {
+                        key = _var2[_var4];
+                        value = _var3[key];
+                        existing = style[key];
+                        if (existing === undefined) {
+                            style[key] = value;
+                            __state = '6';
+                        } else {
+                            if (existing === '') {
+                                __state = '6';
+                            } else {
+                                if (value === existing) {
+                                    __state = '6';
+                                } else {
+                                    style[key] = '';
+                                    __state = '6';
+                                }
+                            }
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function mouseClick(widget, pos, evt) {
             var now, lastClick, diff, doubleClickTime, visuals, lastPrimId, prim, primId, _var2, _var3;
             var __state = '2';
@@ -6989,6 +7124,42 @@ function createDrakonWidget() {
                             __state = '1';
                         } else {
                             console.error('startEditContent is missing in config');
+                            __state = '1';
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function startEditStyle(widget) {
+            var callback, delayed, prims, ids, oldStyle, x, y;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    prims = getSelectedPrims(widget);
+                    if (prims.length) {
+                        x = prims[0].left;
+                        y = prims[0].top;
+                        ids = prims.map(function (prim) {
+                            return prim.id;
+                        });
+                        oldStyle = buildStyleFromPrims(prims);
+                        callback = widget.config.startEditStyle;
+                        if (callback) {
+                            delayed = function () {
+                                callback(ids, oldStyle, x, y);
+                            };
+                            setTimeout(delayed, 1);
+                            __state = '1';
+                        } else {
+                            console.error('startEditStyle is missing in config');
                             __state = '1';
                         }
                     } else {
@@ -7246,7 +7417,7 @@ function createDrakonWidget() {
             }
         }
         function handleRightClick(widget, pos, evt) {
-            var prim, visuals, menu, node, callback, edge, _var2, _var3, _var4, _var5, _var6;
+            var prim, visuals, menu, node, callback, edge, _var2, _var3, _var4, _var5, _var6, _var7;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -7258,7 +7429,13 @@ function createDrakonWidget() {
                         if (_var2 === 'node') {
                             node = getNode(visuals, prim.id);
                             if (node.type == 'end') {
-                                __state = '14';
+                                menu = [];
+                                selectPrim(widget, prim.id);
+                                _var7 = tr(widget, 'Format');
+                                pushMenuItem('format', menu, _var7, undefined, function () {
+                                    startEditStyle(widget);
+                                });
+                                __state = '28';
                             } else {
                                 if (node.type == 'junction') {
                                     if (node.subtype === 'parbegin') {
@@ -7271,7 +7448,8 @@ function createDrakonWidget() {
                                             __state = '28';
                                         }
                                     } else {
-                                        __state = '14';
+                                        menu = [];
+                                        __state = '28';
                                     }
                                 } else {
                                     _var3 = ensureSelectedOne(widget, prim.id);
@@ -7319,10 +7497,6 @@ function createDrakonWidget() {
                         menu = buildBackgroundMenu(widget);
                         __state = '30';
                     }
-                    break;
-                case '14':
-                    menu = [];
-                    __state = '30';
                     break;
                 case '28':
                     paint(widget);
@@ -8699,7 +8873,7 @@ function createDrakonWidget() {
             }
         }
         function buildBlockMenu(widget) {
-            var menu, _var2, _var3, _var4, _var5;
+            var menu, _var2, _var3, _var4, _var5, _var6;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -8722,6 +8896,11 @@ function createDrakonWidget() {
                         pushMenuItem('delete_block', menu, _var4, undefined, function () {
                             deleteSelection(widget);
                         });
+                        menu.push({ type: 'separator' });
+                        _var6 = tr(widget, 'Format');
+                        pushMenuItem('format', menu, _var6, undefined, function () {
+                            startEditStyle(widget);
+                        });
                         __state = '3';
                     }
                     break;
@@ -8733,7 +8912,7 @@ function createDrakonWidget() {
             }
         }
         function buildMenuByType(widget, prim, node) {
-            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19, _var20, _var21, _var22, _var23;
+            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19, _var20, _var21, _var22, _var23, _var24, _var25;
             var __state = '27';
             while (true) {
                 switch (__state) {
@@ -8820,9 +8999,9 @@ function createDrakonWidget() {
                         pushMenuItem('delete_one', menu, _var5, undefined, function () {
                             deleteOne(widget, node);
                         });
-                        __state = '8';
+                        __state = '_item27';
                     } else {
-                        __state = '8';
+                        __state = '_item27';
                     }
                     break;
                 case '27':
@@ -8862,6 +9041,19 @@ function createDrakonWidget() {
                         __state = '8';
                     } else {
                         __state = '9';
+                    }
+                    break;
+                case '_item27':
+                    _var24 = canEditStyle(node);
+                    if (_var24) {
+                        menu.push({ type: 'separator' });
+                        _var25 = tr(widget, 'Format');
+                        pushMenuItem('format', menu, _var25, undefined, function () {
+                            startEditStyle(widget);
+                        });
+                        __state = '8';
+                    } else {
+                        __state = '8';
                     }
                     break;
                 case '_item26':
@@ -8947,8 +9139,8 @@ function createDrakonWidget() {
                 }
             }
         }
-        function onItemSelected(item) {
-            console.log('onItemSelected', item);
+        function onSelectionChanged(prims) {
+            console.log('onSelectionChanged', prims);
             return;
         }
         function copyTheme(userTheme) {
@@ -10223,7 +10415,7 @@ function createDrakonWidget() {
                         'buildIconCore': buildIconCore,
                         'getClipboard': getClipboard,
                         'setClipboard': setClipboard,
-                        'onItemSelected': onItemSelected
+                        'onSelectionChanged': onSelectionChanged
                     };
                     Object.assign(config, userConfig);
                     __state = '12';
@@ -11462,6 +11654,53 @@ function createDrakonWidget() {
         function getLeft(node) {
             return node.left.head;
         }
+        function getSelectedPrims(widget) {
+            var prims, node, element, visuals, prim, _var3, _var2, _var4, id, elType;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    prims = [];
+                    _var3 = widget.selection.prims;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '7';
+                    break;
+                case '6':
+                    _var4++;
+                    __state = '7';
+                    break;
+                case '7':
+                    if (_var4 < _var2.length) {
+                        id = _var2[_var4];
+                        elType = _var3[id];
+                        if (elType === 'node') {
+                            node = getNode(visuals, id);
+                            prim = nodeToVisualItem(widget, node);
+                            __state = '12';
+                        } else {
+                            if (elType === 'free') {
+                                element = getFree(visuals, id);
+                                prim = freeToVisualItem(widget, element);
+                                __state = '12';
+                            } else {
+                                __state = '6';
+                            }
+                        }
+                    } else {
+                        return prims;
+                    }
+                    break;
+                case '12':
+                    prims.push(prim);
+                    __state = '6';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function buildVisualsForEdit(widget) {
             var visuals;
             resetContainer(widget);
@@ -12548,7 +12787,7 @@ function createDrakonWidget() {
             }
         }
         function buildFreeMenu(widget, prim) {
-            var menu, _var2, _var3, _var4, _var5, _var6, _var7, _var8;
+            var menu, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -12584,6 +12823,11 @@ function createDrakonWidget() {
                         _var4 = tr(widget, 'Delete');
                         pushMenuItem('delete_free', menu, _var4, undefined, function () {
                             deleteSelection(widget);
+                        });
+                        menu.push({ type: 'separator' });
+                        _var9 = tr(widget, 'Format');
+                        pushMenuItem('format', menu, _var9, undefined, function () {
+                            startEditStyle(widget);
                         });
                         __state = '3';
                     }
@@ -13429,6 +13673,18 @@ function createDrakonWidget() {
                 default:
                     return;
                 }
+            }
+        }
+        function canEditStyle(node) {
+            var noStyle;
+            noStyle = {
+                junction: true,
+                'arrow-loop': true
+            };
+            if (node.type in noStyle) {
+                return false;
+            } else {
+                return true;
             }
         }
         function buildBeginParMenu(widget, node) {
@@ -14468,8 +14724,16 @@ function createDrakonWidget() {
                 }
             }
         }
+        function deleteIconsOnPath(widget, node, endId, edits) {
+            var toKeep;
+            toKeep = {};
+            toKeep[endId] = true;
+            toKeep[node.itemId] = true;
+            markToDelete(widget, toKeep, node, node.one, edits);
+            return toKeep;
+        }
         function deleteParPath(widget, node) {
-            var edits, model, left, endId, end, toKeep, _var2;
+            var edits, model, left, endId, end, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -14479,6 +14743,7 @@ function createDrakonWidget() {
                     left = getLeft(node);
                     endId = getParTarget(node);
                     end = getNode(widget.visuals, endId);
+                    deleteIconsOnPath(widget, node, endId, edits);
                     _var2 = isFirstPar(left);
                     if (_var2) {
                         if (node.right) {
@@ -14498,10 +14763,10 @@ function createDrakonWidget() {
                     deleteItem(edits, node);
                     if (node.two) {
                         updateItem(edits, left.itemId, { two: node.two });
-                        __state = '49';
+                        __state = '4';
                     } else {
                         updateItem(edits, left.itemId, { two: '' });
-                        __state = '49';
+                        __state = '4';
                     }
                     break;
                 case '31':
@@ -14510,19 +14775,12 @@ function createDrakonWidget() {
                     deleteItem(edits, left);
                     if (left.one === endId) {
                         redirectUpperItems(edits, left.up.links, end.one);
-                        __state = '49';
+                        __state = '4';
                     } else {
                         redirectUpperItems(edits, left.up.links, left.one);
-                        redirectUpperItems(edits, end.up.links, end.one);
-                        __state = '49';
+                        redirectPrevItems(edits, end, end.one);
+                        __state = '4';
                     }
-                    break;
-                case '49':
-                    toKeep = {};
-                    toKeep[endId] = true;
-                    toKeep[node.itemId] = true;
-                    markToDelete(widget, toKeep, node, node.one, edits);
-                    __state = '4';
                     break;
                 default:
                     return;
@@ -15562,6 +15820,64 @@ function createDrakonWidget() {
             redirectUpperItems(edits, socket.links, newId);
             return edits;
         }
+        function redirectPrevItems(edits, node, targetId) {
+            var visited, _var2, _var3, edit, _var4, _var5, prev;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visited = {};
+                    _var2 = edits;
+                    _var3 = 0;
+                    __state = '7';
+                    break;
+                case '4':
+                    return;
+                case '5':
+                    _var4 = node.prev;
+                    _var5 = 0;
+                    __state = '11';
+                    break;
+                case '6':
+                    _var3++;
+                    __state = '7';
+                    break;
+                case '7':
+                    if (_var3 < _var2.length) {
+                        edit = _var2[_var3];
+                        if (edit.op === 'delete') {
+                            visited[edit.id] = true;
+                            __state = '6';
+                        } else {
+                            __state = '6';
+                        }
+                    } else {
+                        __state = '5';
+                    }
+                    break;
+                case '10':
+                    _var5++;
+                    __state = '11';
+                    break;
+                case '11':
+                    if (_var5 < _var4.length) {
+                        prev = _var4[_var5];
+                        if (prev.id in visited) {
+                            __state = '10';
+                        } else {
+                            visited[prev.id] = true;
+                            replaceInUpdate(edits, node.id, prev, targetId);
+                            __state = '10';
+                        }
+                    } else {
+                        __state = '4';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function initInsertFunctions(widget) {
             widget.insertActions = {};
             addSimpleInsert(widget, 'action');
@@ -15595,6 +15911,46 @@ function createDrakonWidget() {
             edit = createInsert(item);
             edits.push(edit);
             return item.id;
+        }
+        function replaceInUpdate(edits, id, prev, targetId) {
+            var updated, fields;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    updated = false;
+                    fields = {};
+                    if (prev.one === id) {
+                        fields.one = targetId;
+                        updated = true;
+                        __state = '8';
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                case '8':
+                    if (prev.two === id) {
+                        fields.two = targetId;
+                        updated = true;
+                        __state = '10';
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                case '10':
+                    if (updated) {
+                        updateItem(edits, prev.id, fields);
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function createUpdate(id, fields) {
             return {
@@ -16104,8 +16460,8 @@ function createDrakonWidget() {
             self.render = function (width, height, config) {
                 return DrakonCanvas_render(self, width, height, config);
             };
-            self.setStyle = function (style, itemIds) {
-                return DrakonCanvas_setStyle(self, style, itemIds);
+            self.setStyle = function (ids, style) {
+                return DrakonCanvas_setStyle(self, ids, style);
             };
             self.showPasteSockets = function (type) {
                 return DrakonCanvas_showPasteSockets(self, type);
@@ -16244,7 +16600,7 @@ function createDrakonWidget() {
             configurable: true
         });
         return unit;
-    }
+    }   
 
     var html = html_0_1()
     var edit = edit_tools()

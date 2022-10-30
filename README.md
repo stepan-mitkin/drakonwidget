@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 0.9.6
+Current version: 0.9.7
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -161,7 +161,7 @@ var config = {
 |maxWidth|The maximum with of an icon.|integer||500|
 |minWidth|The miminum width of an icon.|integer||100|
 |no|The "No" label.|text||No|
-|onItemSelected|Runs when the currently selected item changes.|function|||
+|onSelectionChanged|Runs when the currently selected items change.|function|||
 |padding|Padding inside icons.|integer||10|
 |padding|Padding inside icons.|integer||10|
 |parallelWidth|The distance between the two horizontal lines (concurrent processes)|integer|5|
@@ -295,15 +295,15 @@ function onItemClick(prim, pos, evt)
 |pos|object|The mouse position in diagram coordinates.|
 |evt|object|The original mouse event.|
 
-### onItemSelected
+### onSelectionChanged
 
-A callback that is called every time the currently selected object is changed.
+A callback that is called every time the currently selected objects are changed.
 
 ```
-function onItemSelected(item)
+function onSelectionChanged(items)
 ```
 
-The __item__ object. Can be null.
+An array of __item__ objects. Can be empty.
 
 |Name|Data type|Description|
 |---|---|---|
@@ -463,6 +463,7 @@ Text strings that will be translated:
 - Increase margin
 - Reset margin
 - Flip
+- Format
 
 Note that the words that appear on the diagram (Yes, No, End, Exit, Branch) are set
 in the config. See the Configuration reference.

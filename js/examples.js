@@ -179,7 +179,7 @@ function createExamples() {
                     "one": "1"
                 }
             }
-        },        
+        },
         {
             "name": "How to learn to understand foregn speech",
             "params": "Author: Irina Kolosova\nhttps://youtu.be/JOtwQbNdIGs",
@@ -380,7 +380,8 @@ function createExamples() {
                 "13": {
                     "type": "action",
                     "content": "The _hypothesis_ could be a valid explanation of the question. Or maybe not.",
-                    "one": "1"
+                    "one": "1",
+                    "style": "{\"iconBack\":\"darkgreen\",\"color\":\"white\",\"iconBorder\":\"\",\"font\":\"\",\"padding\":\"\",\"internalLine\":\"\",\"borderWidth\":0}"
                 }
             }
         },

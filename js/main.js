@@ -775,6 +775,28 @@
         }
     }
 
+    async function startEditStyle(ids, oldStyle, x, y) {
+        var old = JSON.stringify(oldStyle, null, 4)
+        var newContent = await widgets.largeBox(
+            x,
+            y,
+            "",
+            old
+        )
+
+
+        if (newContent !== undefined) {
+            var style = ""
+            if (newContent) {
+                style = JSON.parse(newContent)
+            }
+            drakon.setStyle(
+                ids,
+                style
+            )
+        }
+    }
+
     async function startEditLink(prim, ro) {
 
         if (ro) {
@@ -822,6 +844,7 @@
         config.startEditContent = startEditContent
         config.startEditSecondary = startEditSecondary
         config.startEditLink = startEditLink
+        config.startEditStyle = startEditStyle
         config.showContextMenu = widgets.showContextMenu
         config.onItemClick = onItemClick
         config.buildIconCore = buildIconCore
