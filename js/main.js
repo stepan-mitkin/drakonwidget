@@ -852,6 +852,7 @@
         config.translate = tr
         config.drawZones = false
         config.canSelect = canSelect
+        config.canvasIcons = false
         return config
     }
 
@@ -966,8 +967,8 @@
 
         var paddingTop = core.config.padding + "px"
         var paddingBottom = core.config.padding + "px"
-        var paddingLeft = core.config.padding + core.paddingLeft + "px"
-        var paddingRight = core.config.padding + core.paddingRight + "px"
+        var paddingLeft = core.config.padding + "px"
+        var paddingRight = core.config.padding + "px"
         var color = getThemeValue(core, "color")
         var font = getThemeValue(core, "font")
         font = font || core.config.font

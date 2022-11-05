@@ -723,6 +723,32 @@ function createDrakonWidget() {
             console.error(error);
         };
         var html, edit_tools;
+        function hasValue(value) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (value === undefined) {
+                        __state = '8';
+                    } else {
+                        if (value === '') {
+                            __state = '8';
+                        } else {
+                            if (value === null) {
+                                __state = '8';
+                            } else {
+                                return true;
+                            }
+                        }
+                    }
+                    break;
+                case '8':
+                    return false;
+                default:
+                    return;
+                }
+            }
+        }
         function isLastPar(node) {
             if (node.two) {
                 return false;
@@ -1015,9 +1041,13 @@ function createDrakonWidget() {
             ctx.closePath();
             return middle;
         }
-        function contentBranch(node, config, container) {
-            var _var2;
-            _var2 = contentBranchCore(node, config, container);
+        function contentBranch(visuals, node) {
+            var options, _var2;
+            options = {
+                textAlign: 'center',
+                font: visuals.config.branchFont
+            };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
         function cut(widget) {
@@ -1562,6 +1592,486 @@ function createDrakonWidget() {
             remove(sameType, value);
             return;
         }
+        function flowTextBlock(block, width) {
+            var flowBlock, top, left, right, options, last, diff, size, _var2, _var3, _var4, line, _var7, _var8, _var9, _var10, _var5, _var6;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    options = block.options;
+                    flowBlock = {
+                        lines: [],
+                        text: block.text,
+                        options: options,
+                        lineHeight: block.lineHeight,
+                        fontSize: block.fontSize,
+                        width: width
+                    };
+                    top = options.paddingTop;
+                    left = options.paddingLeft;
+                    right = width - options.paddingRight;
+                    size = 24;
+                    if (block.options.link) {
+                        left += size * 1.5;
+                        __state = '9';
+                    } else {
+                        __state = '9';
+                    }
+                    break;
+                case '7':
+                    return flowBlock;
+                case '8':
+                    _var3 = block.lines;
+                    _var4 = 0;
+                    __state = '12';
+                    break;
+                case '9':
+                    if (left >= right) {
+                        flowBlock.height = flowBlock.lineHeight + top + options.paddingBottom;
+                        __state = '16';
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                case '12':
+                    if (_var4 < _var3.length) {
+                        line = _var3[_var4];
+                        top = flowLine(line, left, top, right, flowBlock);
+                        _var4++;
+                        __state = '12';
+                    } else {
+                        flowBlock.height = top + options.paddingBottom;
+                        __state = '16';
+                    }
+                    break;
+                case '16':
+                    _var5 = flowBlock.lines;
+                    _var6 = 0;
+                    __state = '34';
+                    break;
+                case '21':
+                    _var7 = flowBlock.lines;
+                    _var8 = 0;
+                    __state = '24';
+                    break;
+                case '22':
+                    _var9 = flowBlock.lines;
+                    _var10 = 0;
+                    __state = '27';
+                    break;
+                case '24':
+                    if (_var8 < _var7.length) {
+                        line = _var7[_var8];
+                        line.left = right - line.width;
+                        _var8++;
+                        __state = '24';
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '27':
+                    if (_var10 < _var9.length) {
+                        line = _var9[_var10];
+                        diff = (right - left - line.width) / 2;
+                        line.left = left + diff;
+                        _var10++;
+                        __state = '27';
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '34':
+                    if (_var6 < _var5.length) {
+                        line = _var5[_var6];
+                        last = line.tokens[line.tokens.length - 1];
+                        if (last.type === 'space') {
+                            line.tokens.pop();
+                            line.right -= last.width;
+                            __state = '36';
+                        } else {
+                            __state = '36';
+                        }
+                    } else {
+                        _var2 = options.textAlign;
+                        if (_var2 === 'right') {
+                            __state = '21';
+                        } else {
+                            if (_var2 === 'center') {
+                                __state = '22';
+                            } else {
+                                __state = '7';
+                            }
+                        }
+                    }
+                    break;
+                case '36':
+                    line.width = line.right - line.left;
+                    _var6++;
+                    __state = '34';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function addTokenToLine(line, token) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (line.tokens.length === 0) {
+                        if (token.type === 'space') {
+                            __state = '1';
+                        } else {
+                            __state = '3';
+                        }
+                    } else {
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    line.right += token.width;
+                    line.tokens.push(token);
+                    __state = '1';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderFlowBlock(ctx, flowBlock, left, top) {
+            var y, x, iconSize, _var2, _var3, line;
+            var __state = '11';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    ctx.fillStyle = flowBlock.options.color;
+                    ctx.textBaseline = 'bottom';
+                    _var2 = flowBlock.lines;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        line = _var2[_var3];
+                        renderFlowBlockLine(ctx, line, left, top);
+                        _var3++;
+                        __state = '5';
+                    } else {
+                        __state = '9';
+                    }
+                    break;
+                case '9':
+                    return;
+                case '11':
+                    if (flowBlock.options.link) {
+                        iconSize = 24;
+                        y = top + flowBlock.height / 2;
+                        x = left + flowBlock.options.paddingLeft + iconSize / 2;
+                        drawLinkIcon(ctx, x, y);
+                        __state = '2';
+                    } else {
+                        __state = '2';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function line2(ctx, x0, y0, x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            return;
+        }
+        function line1(ctx, x0, y0, x1, y1) {
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.stroke();
+            return;
+        }
+        function createDummyCanvas(width, height, background) {
+            var canvas, ctx;
+            canvas = document.createElement('canvas');
+            canvas.id = 'dummy-canvas';
+            canvas.style.display = 'inline-block';
+            canvas.style.position = 'fixed';
+            canvas.style.left = '0px';
+            canvas.style.top = '0px';
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            document.documentElement.appendChild(canvas);
+            ctx = canvas.getContext('2d');
+            ctx.fillStyle = background;
+            ctx.fillRect(0, 0, width, height);
+            return ctx;
+        }
+        function createLine(flowBlock, left, top, baseLineShift) {
+            var line, baseLine;
+            baseLine = top + baseLineShift;
+            line = {
+                top: top,
+                bottom: top + flowBlock.lineHeight,
+                tokens: [],
+                left: left,
+                baseLine: baseLine,
+                right: left
+            };
+            flowBlock.lines.push(line);
+            return line;
+        }
+        function flowLine(tokens, left, top, right, flowBlock) {
+            var margin, baseLineShift, line, _var2, _var3, token;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    margin = (flowBlock.lineHeight - flowBlock.fontSize) / 2;
+                    baseLineShift = flowBlock.lineHeight - margin;
+                    line = createLine(flowBlock, left, top, baseLineShift);
+                    __state = '45';
+                    break;
+                case '10':
+                    return line.bottom;
+                case '45':
+                    _var2 = tokens;
+                    _var3 = 0;
+                    __state = '47';
+                    break;
+                case '47':
+                    if (_var3 < _var2.length) {
+                        __state = '_item3';
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                case '50':
+                    addTokenToLine(line, token);
+                    _var3++;
+                    __state = '47';
+                    break;
+                case '_item3':
+                    token = _var2[_var3];
+                    if (line.right + token.width <= right) {
+                        __state = '50';
+                    } else {
+                        if (line.tokens.length === 0) {
+                            __state = '50';
+                        } else {
+                            line = createLine(flowBlock, left, line.bottom, baseLineShift);
+                            __state = '_item3';
+                        }
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function drawLinkIcon(ctx, x, y) {
+            var size, radius, angle, x0, x1, x3, x2, y0, y1, y3, y2, aradius, m;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    size = 24;
+                    radius = size / 2;
+                    angle = 3;
+                    x0 = x - radius;
+                    x1 = x0 + angle;
+                    x3 = x + radius;
+                    x2 = x3 - angle;
+                    y0 = y - radius;
+                    y1 = y0 + angle;
+                    y3 = y + radius;
+                    y2 = y3 - angle;
+                    ctx.beginPath();
+                    ctx.moveTo(x0, y1);
+                    ctx.lineTo(x1, y0);
+                    ctx.lineTo(x2, y0);
+                    ctx.lineTo(x3, y1);
+                    ctx.lineTo(x3, y2);
+                    ctx.lineTo(x2, y3);
+                    ctx.lineTo(x1, y3);
+                    ctx.lineTo(x0, y2);
+                    ctx.closePath();
+                    ctx.fillStyle = '#000090';
+                    ctx.fill();
+                    __state = '7';
+                    break;
+                case '6':
+                    return;
+                case '7':
+                    aradius = radius - 7;
+                    m = aradius * 1;
+                    x0 = x - aradius;
+                    x1 = x + aradius - m;
+                    x2 = x + aradius;
+                    y0 = y - aradius;
+                    y1 = y0 + m;
+                    y2 = y + aradius;
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([]);
+                    line1(ctx, x0, y2, x2, y0);
+                    line2(ctx, x, y0, x2, y0, x2, y);
+                    __state = '6';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function createTextBlock(ctx, text, options) {
+            var line, lines, fontCache, fontObj, block, size, _var4, _var5, _var2, _var3, token, _var6;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (options.singleLine) {
+                        line = splitLineToTokens(text);
+                        lines = [line];
+                        __state = '13';
+                    } else {
+                        if (options.useMarkdown) {
+                            lines = splitToTokensMarkdown(text);
+                            __state = '13';
+                        } else {
+                            lines = splitToTokens(text);
+                            __state = '13';
+                        }
+                    }
+                    break;
+                case '12':
+                    block.width += options.paddingLeft + options.paddingRight;
+                    return block;
+                case '13':
+                    fontCache = initFontCache();
+                    setFontToTokens(lines, options.font, fontCache);
+                    fontObj = parseCssFont(options.font, fontCache);
+                    block = {
+                        width: 0,
+                        options: options,
+                        text: text,
+                        lineHeight: options.lineHeight * fontObj.size,
+                        fontSize: fontObj.size,
+                        lines: lines
+                    };
+                    __state = '14';
+                    break;
+                case '14':
+                    _var4 = lines;
+                    _var5 = 0;
+                    __state = '20';
+                    break;
+                case '20':
+                    if (_var5 < _var4.length) {
+                        line = _var4[_var5];
+                        _var2 = line;
+                        _var3 = 0;
+                        __state = '23';
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '23':
+                    if (_var3 < _var2.length) {
+                        token = _var2[_var3];
+                        ctx.font = token.font;
+                        if (token.type === 'space') {
+                            size = ctx.measureText(' ');
+                            __state = '24';
+                        } else {
+                            size = ctx.measureText(token.text);
+                            __state = '24';
+                        }
+                    } else {
+                        _var6 = calcLineWidth(line);
+                        block.width = Math.max(_var6, block.width);
+                        _var5++;
+                        __state = '20';
+                    }
+                    break;
+                case '24':
+                    token.width = size.width;
+                    _var3++;
+                    __state = '23';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function initFontCache() {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (unit.fontCache) {
+                        __state = '3';
+                    } else {
+                        unit.fontCache = {};
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    return unit.fontCache;
+                default:
+                    return;
+                }
+            }
+        }
+        function calcLineWidth(tokens) {
+            var _var2;
+            _var2 = tokens.reduce(function (prev, token) {
+                return token.width + prev;
+            }, 0);
+            return _var2;
+        }
+        function renderFlowBlockLine(ctx, line, left, top) {
+            var baseLine, x, _var2, _var3, token;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    baseLine = top + line.baseLine + 1;
+                    x = left + line.left;
+                    _var2 = line.tokens;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        token = _var2[_var3];
+                        if (token.type === 'space') {
+                            __state = '10';
+                        } else {
+                            ctx.font = token.font;
+                            ctx.fillText(token.text, x, baseLine);
+                            __state = '10';
+                        }
+                    } else {
+                        return;
+                    }
+                    break;
+                case '10':
+                    x += token.width;
+                    _var3++;
+                    __state = '5';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function main() {
         }
         function DrakonCanvas_arrowRight(self) {
@@ -2009,17 +2519,21 @@ function createDrakonWidget() {
                     __state = '51';
                     break;
                 case '39':
-                    self.contentContainer = div({
-                        display: 'inline-block',
-                        position: 'absolute',
-                        left: '0px',
-                        top: '0px',
-                        width: '100vw',
-                        height: '100vh',
-                        'pointer-events': 'none'
-                    });
-                    html.add(container, self.contentContainer);
-                    __state = '29';
+                    if (config.canvasIcons) {
+                        __state = '29';
+                    } else {
+                        self.contentContainer = div({
+                            display: 'inline-block',
+                            position: 'absolute',
+                            left: '0px',
+                            top: '0px',
+                            width: '100vw',
+                            height: '100vh',
+                            'pointer-events': 'none'
+                        });
+                        html.add(container, self.contentContainer);
+                        __state = '29';
+                    }
                     break;
                 case '51':
                     registerAction(self.scrollableContainer, 'mousedown', self.onMouseDown);
@@ -3160,160 +3674,25 @@ function createDrakonWidget() {
             evt.preventDefault();
             return false;
         }
-        function centerContent(node) {
+        function centerContent(visuals, node) {
             var left, top;
             left = Math.floor(node.x - node.w);
-            top = Math.floor(node.y - node.frame.height / 2);
-            node.frame.div.style.left = left + 'px';
-            node.frame.div.style.top = top + 'px';
+            top = Math.floor(node.y - node.contentHeight / 2);
+            renderContentCore(visuals, node, left, top);
             return;
         }
-        function buildContentFrame(container, node, config, paddingLeft, paddingRight) {
-            var core, context, element, rect, secondaryHeight;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    context = {
-                        type: node.type,
-                        content: node.content,
-                        secondary: node.secondary,
-                        link: node.link,
-                        style: node.style,
-                        flag1: node.flag1,
-                        config: config,
-                        margin: node.margin || 0,
-                        paddingLeft: paddingLeft,
-                        paddingRight: paddingRight
-                    };
-                    core = config.buildIconCore(context);
-                    element = core.buildDom();
-                    if (element) {
-                        __state = '50';
-                    } else {
-                        element = buildDomDefault(core);
-                        __state = '50';
-                    }
-                    break;
-                case '50':
-                    element.style.display = 'inline-block';
-                    element.style.position = 'absolute';
-                    element.style.left = '0px';
-                    element.style.top = '0px';
-                    html.add(container, element);
-                    rect = element.getBoundingClientRect();
-                    secondaryHeight = getSecondaryHeight(core);
-                    return {
-                        div: element,
-                        core: core,
-                        width: rect.width,
-                        height: rect.height,
-                        secondaryHeight: secondaryHeight
-                    };
-                default:
-                    return;
-                }
-            }
-        }
-        function centerContentBottom(node) {
-            var left, top;
+        function centerContentBottom(visuals, node) {
+            var top, left;
             left = Math.floor(node.x - node.w);
-            top = Math.floor(node.y + node.h - node.frame.height);
-            node.frame.div.style.left = left + 'px';
-            node.frame.div.style.top = top + 'px';
+            top = Math.floor(node.y + node.h - node.contentHeight);
+            renderContentCore(visuals, node, left, top);
             return;
         }
-        function buildContentOld(container, node, config) {
-            var textDiv, smallerPadding, color, type, content, padding, _var2;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    type = node.type;
-                    content = node.content;
-                    color = getThemeValue(config, node, 'color');
-                    _var2 = type;
-                    if (_var2 === 'question') {
-                        textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
-                        textDiv.style.paddingLeft = config.metre + 'px';
-                        textDiv.style.paddingRight = config.metre + 'px';
-                        __state = '5';
-                    } else {
-                        if (_var2 === 'insertion') {
-                            textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
-                            padding = config.padding + config.insertionPadding;
-                            textDiv.style.paddingLeft = padding + 'px';
-                            textDiv.style.paddingRight = padding + 'px';
-                            __state = '5';
-                        } else {
-                            if (_var2 === 'comment') {
-                                textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
-                                padding = config.padding + config.commentPadding;
-                                textDiv.style.padding = padding + 'px';
-                                __state = '5';
-                            } else {
-                                if (_var2 === 'header') {
-                                    textDiv = buildTextDiv(type, content, config, config.headerFont, 'center', color);
-                                    smallerPadding = config.padding / 2 + 'px';
-                                    textDiv.style.paddingTop = smallerPadding;
-                                    textDiv.style.paddingBottom = smallerPadding;
-                                    __state = '5';
-                                } else {
-                                    if (_var2 === 'branch') {
-                                        textDiv = buildMulitlineDiv(type, content, config, config.font, 'center', color);
-                                        textDiv.style.fontWeight = 'bold';
-                                        __state = '5';
-                                    } else {
-                                        if (_var2 === 'select') {
-                                            textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
-                                            textDiv.style.paddingLeft = config.padding * 1.5 + 'px';
-                                            textDiv.style.paddingRight = config.padding * 1.5 + 'px';
-                                            __state = '5';
-                                        } else {
-                                            if (_var2 === 'case') {
-                                                __state = '22';
-                                            } else {
-                                                if (_var2 === 'address') {
-                                                    __state = '22';
-                                                } else {
-                                                    if (_var2 === 'end') {
-                                                        textDiv = buildTextDiv(type, content, config, config.font, 'center', color);
-                                                        textDiv.style.minWidth = '';
-                                                        smallerPadding = config.padding / 2 + 'px';
-                                                        textDiv.style.paddingTop = smallerPadding;
-                                                        textDiv.style.paddingBottom = smallerPadding;
-                                                        __state = '5';
-                                                    } else {
-                                                        textDiv = config.buildContentDiv(type, content, config, config.font, 'left', color);
-                                                        __state = '5';
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case '5':
-                    html.add(container, textDiv);
-                    return textDiv;
-                case '22':
-                    textDiv = config.buildContentDiv(type, content, config, config.font, 'center', color);
-                    __state = '5';
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function centerContentTop(node) {
+        function centerContentTop(visuals, node) {
             var left, top;
             left = Math.floor(node.x - node.w);
             top = Math.floor(node.y - node.h);
-            node.frame.div.style.left = left + 'px';
-            node.frame.div.style.top = top + 'px';
+            renderContentCore(visuals, node, left, top);
             return;
         }
         function mergeConfigs(dst, src, propName, defaultValues) {
@@ -3330,22 +3709,19 @@ function createDrakonWidget() {
             _var2 = getThemeValueCore(config, node.type, node.style, name);
             return _var2;
         }
-        function getThemeValueCore(config, type, style, name) {
-            var theme, icons, forIcon, value;
+        function getThemeValueCore(config, type, style, name, defaultValue) {
+            var theme, icons, forIcon, value, _var2, _var3, _var4, _var5;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     if (style) {
                         value = style[name];
-                        if (value === undefined) {
-                            __state = '16';
+                        _var2 = hasValue(value);
+                        if (_var2) {
+                            __state = '24';
                         } else {
-                            if (value === '') {
-                                __state = '16';
-                            } else {
-                                __state = '24';
-                            }
+                            __state = '16';
                         }
                     } else {
                         __state = '16';
@@ -3358,14 +3734,11 @@ function createDrakonWidget() {
                         forIcon = icons[type];
                         if (forIcon) {
                             value = forIcon[name];
-                            if (value === undefined) {
-                                __state = '21';
+                            _var3 = hasValue(value);
+                            if (_var3) {
+                                __state = '24';
                             } else {
-                                if (value === '') {
-                                    __state = '21';
-                                } else {
-                                    __state = '24';
-                                }
+                                __state = '21';
                             }
                         } else {
                             __state = '21';
@@ -3375,9 +3748,314 @@ function createDrakonWidget() {
                     }
                     break;
                 case '21':
-                    return theme[name];
+                    value = theme[name];
+                    _var4 = hasValue(value);
+                    if (_var4) {
+                        __state = '24';
+                    } else {
+                        value = config[name];
+                        _var5 = hasValue(value);
+                        if (_var5) {
+                            __state = '24';
+                        } else {
+                            return defaultValue;
+                        }
+                    }
+                    break;
                 case '24':
                     return value;
+                default:
+                    return;
+                }
+            }
+        }
+        function flowIconOld(visuals, node) {
+            var flow, config;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    flow = visuals.config.iconContent[node.type];
+                    if (flow) {
+                        __state = '17';
+                    } else {
+                        flow = visuals.config.iconContent.action;
+                        console.error('iconContent callback not found for node of type: ' + node.type);
+                        __state = '17';
+                    }
+                    break;
+                case '17':
+                    node.frame = flow(node, visuals.config, visuals.container);
+                    config = visuals.config;
+                    if (node.type === 'junction') {
+                        if (node.subtype === 'parbegin') {
+                            if (node.two) {
+                                node.w = config.metre;
+                                node.h = 0;
+                                __state = '1';
+                            } else {
+                                node.w = 0;
+                                node.h = 0;
+                                __state = '1';
+                            }
+                        } else {
+                            __state = '24';
+                        }
+                    } else {
+                        if (node.type === 'arrow-loop') {
+                            __state = '24';
+                        } else {
+                            node.w = makeHalfSize(config, node.frame.width);
+                            node.h = makeHalfSize(config, node.frame.height);
+                            node.h = Math.max(config.metre, node.h);
+                            __state = '1';
+                        }
+                    }
+                    break;
+                case '24':
+                    node.w = 0;
+                    node.h = 0;
+                    __state = '1';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function DefaultIconCore_measure(self, refObject) {
+            return undefined;
+        }
+        function DefaultIconCore_commit(self, width) {
+            return undefined;
+        }
+        function DefaultIconCore_buildDom(self) {
+            return undefined;
+        }
+        function DefaultIconCore_renderContent(self, left, top, ctx) {
+            return undefined;
+        }
+        function buildIconCore(context) {
+            var self;
+            self = DefaultIconCore();
+            Object.assign(self, context);
+            return self;
+        }
+        function defaultCommit(node, width) {
+            if (node.textBlock) {
+                node.flowBlock = flowTextBlock(node.textBlock, width);
+                return {
+                    width: width,
+                    height: node.flowBlock.height
+                };
+            } else {
+                if (node.topTextBlock) {
+                    node.topFlowBlock = flowTextBlock(node.topTextBlock, width);
+                    node.bottomFlowBlock = flowTextBlock(node.bottomTextBlock, width);
+                    return {
+                        width: width,
+                        height: node.topFlowBlock.height + node.bottomFlowBlock.height
+                    };
+                } else {
+                    return {
+                        width: 0,
+                        height: 0
+                    };
+                }
+            }
+        }
+        function commitCore(visuals, node, width) {
+            var size, rect, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (visuals.config.canvasIcons) {
+                        if (node.core) {
+                            if (node.core.commit) {
+                                size = node.core.commit(width);
+                                if (size) {
+                                    return size;
+                                } else {
+                                    __state = '_item2';
+                                }
+                            } else {
+                                __state = '_item2';
+                            }
+                        } else {
+                            __state = '_item2';
+                        }
+                    } else {
+                        if (node.contentDiv) {
+                            node.contentDiv.style.width = width + 'px';
+                            rect = node.contentDiv.getBoundingClientRect();
+                            return {
+                                width: rect.width,
+                                height: rect.height
+                            };
+                        } else {
+                            return {
+                                width: 0,
+                                height: 0
+                            };
+                        }
+                    }
+                    break;
+                case '_item2':
+                    _var2 = defaultCommit(node, width);
+                    return _var2;
+                default:
+                    return;
+                }
+            }
+        }
+        function getSecondaryHeightCore(node) {
+            var core, _var2, _var3;
+            core = node.core;
+            if (core.getSecondaryHeight) {
+                _var3 = core.getSecondaryHeight();
+                return _var3;
+            } else {
+                _var2 = getSecondaryHeightDefault(node);
+                return _var2;
+            }
+        }
+        function renderContentCore(visuals, node, left, top) {
+            var implemented, core;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    core = node.core;
+                    if (core.renderContent) {
+                        implemented = core.renderContent(left, top, visuals.ctx);
+                        if (implemented) {
+                            __state = '1';
+                        } else {
+                            __state = '5';
+                        }
+                    } else {
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    renderDefault(visuals, node, left, top);
+                    __state = '1';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function measureCore(visuals, node) {
+            var size, mainDiv, _var2, _var3, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (visuals.config.canvasIcons) {
+                        if (node.core.measure) {
+                            size = node.core.measure(visuals.ctx);
+                            if (size) {
+                                return size;
+                            } else {
+                                __state = '_item2';
+                            }
+                        } else {
+                            __state = '_item2';
+                        }
+                    } else {
+                        mainDiv = node.core.buildDom();
+                        if (mainDiv) {
+                            node.contentDiv = mainDiv;
+                            _var4 = addDivToDiagram(visuals, mainDiv);
+                            return _var4;
+                        } else {
+                            _var3 = measureDefault(visuals, node);
+                            return _var3;
+                        }
+                    }
+                    break;
+                case '_item2':
+                    _var2 = measureDefault(visuals, node);
+                    return _var2;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderDefault(visuals, node, left, top) {
+            var lowerTop;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (visuals.config.canvasIcons) {
+                        if (node.flowBlock) {
+                            renderFlowBlock(visuals.ctx, node.flowBlock, left, top);
+                            __state = '1';
+                        } else {
+                            if (node.topFlowBlock) {
+                                renderFlowBlock(visuals.ctx, node.topFlowBlock, left, top);
+                                lowerTop = top + node.topFlowBlock.height;
+                                renderFlowBlock(visuals.ctx, node.bottomFlowBlock, left, lowerTop);
+                                __state = '1';
+                            } else {
+                                __state = '1';
+                            }
+                        }
+                    } else {
+                        if (node.contentDiv) {
+                            node.contentDiv.style.left = left + 'px';
+                            node.contentDiv.style.top = top + 'px';
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function getSecondaryHeightDefault(node) {
+            var rect;
+            if (node.topDiv) {
+                rect = node.topDiv.getBoundingClientRect();
+                return rect.height;
+            } else {
+                if (node.topFlowBlock) {
+                    return node.topFlowBlock.height;
+                } else {
+                    return 0;
+                }
+            }
+        }
+        function measureDefault(visuals, node) {
+            var measure, config, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    measure = config.iconContent[node.type];
+                    if (measure) {
+                        __state = '_item2';
+                    } else {
+                        measure = config.iconContent.action;
+                        console.error('iconContent callback not found for node of type: ' + node.type);
+                        __state = '_item2';
+                    }
+                    break;
+                case '_item2':
+                    _var2 = measure(visuals, node);
+                    return _var2;
                 default:
                     return;
                 }
@@ -3411,222 +4089,245 @@ function createDrakonWidget() {
                 }
             }
         }
-        function buildDomDefault(core) {
-            var paddingLeft, paddingTop, paddingRight, paddingBottom, maxWidth, minWidth, color, textAlign, font, textDiv, textDiv2, text, secondary, result, padding, config, _var2, _var3;
-            var __state = '2';
+        function buildTextContent(visuals, node, options) {
+            var paddingLeft, paddingRight, paddingTop, paddingBottom, font, textAlign, maxWidth, minWidth, text, color, lineHeight, config, padding, textDiv, _var2, _var3, _var4, _var5, _var6;
+            var __state = '22';
             while (true) {
                 switch (__state) {
-                case '2':
-                    config = core.config;
-                    padding = getThemeValueCore(config, core.type, core.style, 'padding');
-                    if (padding) {
-                        __state = '16';
-                    } else {
-                        padding = config.padding;
-                        __state = '16';
-                    }
-                    break;
                 case '5':
-                    return result;
-                case '6':
-                    color = getThemeValueCore(config, core.type, core.style, 'color');
-                    textDiv = div({
-                        display: 'inline-block',
-                        position: 'absolute',
-                        color: color,
-                        left: '0px',
-                        top: '0px',
-                        font: font,
-                        'user-select': 'none',
-                        'text-align': textAlign,
-                        'max-width': maxWidth,
-                        'min-width': minWidth,
-                        'padding-left': paddingLeft,
-                        'padding-top': paddingTop,
-                        'padding-right': paddingRight,
-                        'padding-bottom': paddingBottom,
-                        'line-height': config.lineHeight
-                    });
-                    text = core.content || '';
-                    secondary = core.secondary || '';
-                    _var3 = core.type;
-                    if (_var3 === 'input') {
-                        textDiv.style.paddingLeft = padding * 2 + core.paddingLeft + 'px';
-                        textDiv.style.paddingRight = padding + 'px';
-                        paddingRight = padding + core.paddingRight + 'px';
-                        __state = '78';
+                    text = node.content || '';
+                    if (visuals.config.canvasIcons) {
+                        options = {
+                            paddingLeft: paddingLeft,
+                            paddingTop: paddingTop,
+                            paddingRight: paddingRight,
+                            paddingBottom: paddingBottom,
+                            font: font,
+                            color: color,
+                            lineHeight: lineHeight,
+                            textAlign: textAlign,
+                            useMarkdown: config.userMarkdown,
+                            link: !!node.link
+                        };
+                        node.textBlock = createTextBlock(visuals.ctx, text, options);
+                        node.flowBlock = measureFlow(node.textBlock, minWidth, maxWidth);
+                        return {
+                            width: node.flowBlock.width,
+                            height: node.flowBlock.height
+                        };
                     } else {
-                        if (_var3 === 'shelf') {
-                            __state = '78';
+                        textDiv = div({
+                            'padding-left': paddingLeft + 'px',
+                            'padding-top': paddingTop + 'px',
+                            'padding-right': paddingRight + 'px',
+                            'padding-bottom': paddingBottom + 'px',
+                            'text-align': textAlign,
+                            font: font,
+                            color: color,
+                            'min-width': minWidth + 'px',
+                            'max-width': maxWidth + 'px',
+                            'line-height': lineHeight,
+                            'user-select': 'none'
+                        });
+                        node.contentDiv = textDiv;
+                        if (options.singleLine) {
+                            html.addText(textDiv, text);
+                            __state = '_item6';
                         } else {
-                            if (_var3 === 'process') {
-                                textDiv.style.paddingLeft = padding + 'px';
-                                paddingRight = padding + 'px';
-                                __state = '78';
-                            } else {
-                                if (_var3 === 'output') {
-                                    textDiv.style.paddingLeft = padding + 'px';
-                                    textDiv.style.paddingRight = padding * 2 + core.paddingRight + 'px';
-                                    paddingRight = padding + 'px';
-                                    __state = '78';
-                                } else {
-                                    if (_var3 === 'header') {
-                                        __state = '69';
-                                    } else {
-                                        if (_var3 === 'end') {
-                                            __state = '69';
-                                        } else {
-                                            splitToParagraphs(textDiv, text);
-                                            __state = '74';
-                                        }
-                                    }
-                                }
-                            }
+                            splitToParagraphs(textDiv, text);
+                            __state = '_item6';
                         }
                     }
                     break;
-                case '16':
-                    paddingLeft = padding + core.paddingLeft + 'px';
-                    paddingTop = padding + 'px';
-                    paddingRight = padding + core.paddingRight + 'px';
-                    paddingBottom = padding + 'px';
-                    maxWidth = config.maxWidth + 'px';
-                    minWidth = config.minWidth + 'px';
-                    textAlign = 'left';
-                    font = getThemeValueCore(config, core.type, core.style, 'font');
-                    _var2 = core.type;
-                    if (_var2 === 'header') {
-                        font = config.headerFont;
-                        textAlign = 'center';
-                        maxWidth = config.maxWidth * 1.3 + 'px';
-                        __state = '6';
-                    } else {
-                        if (_var2 === 'end') {
-                            textAlign = 'center';
-                            minWidth = '';
-                            paddingTop = padding / 2;
-                            paddingBottom = paddingTop;
-                            __state = '6';
-                        } else {
-                            if (_var2 === 'question') {
-                                paddingLeft = config.metre + 'px';
-                                paddingRight = config.metre + 'px';
-                                __state = '6';
-                            } else {
-                                if (_var2 === 'case') {
-                                    __state = '34';
-                                } else {
-                                    if (_var2 === 'branch') {
-                                        font = config.branchFont;
-                                        __state = '34';
-                                    } else {
-                                        if (_var2 === 'address') {
-                                            __state = '34';
-                                        } else {
-                                            if (_var2 === 'duration') {
-                                                __state = '34';
-                                            } else {
-                                                if (_var2 === 'timer') {
-                                                    __state = '34';
-                                                } else {
-                                                    if (_var2 === 'pause') {
-                                                        __state = '34';
-                                                    } else {
-                                                        if (_var2 === 'ctrlstart') {
-                                                            __state = '34';
-                                                        } else {
-                                                            if (_var2 === 'ctrlend') {
-                                                                __state = '34';
-                                                            } else {
-                                                                if (_var2 === 'group-duration') {
-                                                                    __state = '34';
-                                                                } else {
-                                                                    __state = '6';
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                case '22':
+                    config = visuals.config;
+                    padding = getFromOptionsOrConfig(config, options, node, 'padding', 0);
+                    _var2 = getConfigValue(options, 'paddingLeft', 0);
+                    paddingLeft = padding + _var2;
+                    _var3 = getConfigValue(options, 'paddingRight', 0);
+                    paddingRight = padding + _var3;
+                    _var4 = getConfigValue(options, 'paddingTop', 0);
+                    paddingTop = padding + _var4;
+                    _var5 = getConfigValue(options, 'paddingBottom', 0);
+                    paddingBottom = padding + _var5;
+                    __state = '24';
                     break;
-                case '34':
-                    textAlign = 'center';
-                    __state = '6';
-                    break;
-                case '69':
-                    html.addText(textDiv, text);
-                    __state = '74';
-                    break;
-                case '74':
-                    result = textDiv;
+                case '24':
+                    font = getFromOptionsOrConfig(config, options, node, 'font');
+                    color = getFromOptionsOrConfig(config, options, node, 'color');
+                    textAlign = getFromOptionsOrConfig(config, options, node, 'textAlign');
+                    maxWidth = getFromOptionsOrConfig(config, options, node, 'maxWidth');
+                    minWidth = getFromOptionsOrConfig(config, options, node, 'minWidth');
+                    lineHeight = getFromOptionsOrConfig(config, options, node, 'lineHeight');
                     __state = '5';
                     break;
-                case '78':
-                    textDiv.style.position = 'relative';
-                    textDiv.style.display = 'block';
-                    textDiv.style.paddingBottom = padding / 2 + 'px';
-                    splitToParagraphs(textDiv, text);
-                    textDiv2 = div({
-                        display: 'block',
-                        position: 'relative',
-                        color: color,
-                        font: font,
-                        'user-select': 'none',
-                        'text-align': textAlign,
-                        'padding-left': paddingLeft,
-                        'padding-top': paddingTop,
-                        'padding-right': paddingRight,
-                        'padding-bottom': paddingBottom,
-                        'line-height': config.lineHeight
-                    });
-                    splitToParagraphs(textDiv2, secondary);
-                    result = div({
-                        'max-width': maxWidth,
-                        'min-width': minWidth
-                    });
-                    html.add(result, textDiv2);
-                    html.add(result, textDiv);
-                    core.textDiv2 = textDiv2;
-                    __state = '5';
-                    break;
+                case '_item6':
+                    _var6 = addDivToDiagram(visuals, textDiv);
+                    return _var6;
                 default:
                     return;
                 }
             }
         }
-        function buildIconCore(context) {
-            var core, _var2;
-            core = {};
-            Object.assign(core, context);
-            core.buildDom = function () {
-                _var2 = buildDomDefault(core);
-                return _var2;
-            };
-            return core;
-        }
-        function getSecondaryHeight(core) {
-            var _var2, _var3;
-            if (core.getSecondaryHeight) {
-                _var3 = core.getSecondaryHeight();
-                return _var3;
-            } else {
-                _var2 = getSecondaryHeightDefault(core);
-                return _var2;
+        function buildDoubleTextContent(visuals, node, options) {
+            var topLeft, topRight, bottomLeft, bottomRight, font, textAlign, maxWidth, minWidth, color, lineHeight, config, padding, topDiv, bottomDiv, mainDiv, text, secondary, options2, width, height, _var2, _var3, _var4, _var5, _var6;
+            var __state = '22';
+            while (true) {
+                switch (__state) {
+                case '5':
+                    topDiv = div({
+                        'padding-left': topLeft + 'px',
+                        'padding-top': padding + 'px',
+                        'padding-right': topRight + 'px',
+                        'padding-bottom': padding + 'px',
+                        'text-align': textAlign,
+                        font: font,
+                        color: color,
+                        'min-width': minWidth + 'px',
+                        'max-width': maxWidth + 'px',
+                        'line-height': lineHeight,
+                        'user-select': 'none'
+                    });
+                    splitToParagraphs(topDiv, secondary);
+                    node.topDiv = topDiv;
+                    __state = '50';
+                    break;
+                case '22':
+                    config = visuals.config;
+                    text = node.content || '';
+                    secondary = node.secondary || '';
+                    padding = getFromOptionsOrConfig(config, options, node, 'padding', 0);
+                    _var2 = getConfigValue(options, 'topLeft', 0);
+                    topLeft = padding + _var2;
+                    _var3 = getConfigValue(options, 'topRight', 0);
+                    topRight = padding + _var3;
+                    _var4 = getConfigValue(options, 'bottomLeft', 0);
+                    bottomLeft = padding + _var4;
+                    _var5 = getConfigValue(options, 'bottomRight', 0);
+                    bottomRight = padding + _var5;
+                    __state = '24';
+                    break;
+                case '24':
+                    font = getFromOptionsOrConfig(config, options, node, 'font');
+                    color = getFromOptionsOrConfig(config, options, node, 'color');
+                    textAlign = getFromOptionsOrConfig(config, options, node, 'textAlign');
+                    maxWidth = getFromOptionsOrConfig(config, options, node, 'maxWidth');
+                    minWidth = getFromOptionsOrConfig(config, options, node, 'minWidth');
+                    lineHeight = getFromOptionsOrConfig(config, options, node, 'lineHeight');
+                    if (visuals.config.canvasIcons) {
+                        __state = '57';
+                    } else {
+                        __state = '5';
+                    }
+                    break;
+                case '50':
+                    bottomDiv = div({
+                        'padding-left': bottomLeft + 'px',
+                        'padding-top': padding + 'px',
+                        'padding-right': bottomRight + 'px',
+                        'padding-bottom': padding + 'px',
+                        'text-align': textAlign,
+                        font: font,
+                        color: color,
+                        'min-width': minWidth + 'px',
+                        'max-width': maxWidth + 'px',
+                        'line-height': lineHeight,
+                        'user-select': 'none'
+                    });
+                    splitToParagraphs(bottomDiv, text);
+                    __state = '59';
+                    break;
+                case '57':
+                    options2 = {
+                        paddingLeft: topLeft,
+                        paddingTop: padding,
+                        paddingRight: topRight,
+                        paddingBottom: padding,
+                        font: font,
+                        color: color,
+                        lineHeight: lineHeight,
+                        textAlign: textAlign,
+                        useMarkdown: config.userMarkdown
+                    };
+                    node.topTextBlock = createTextBlock(visuals.ctx, secondary, options2);
+                    node.topFlowBlock = measureFlow(node.topTextBlock, minWidth, maxWidth);
+                    __state = '58';
+                    break;
+                case '58':
+                    options = {
+                        paddingLeft: bottomLeft,
+                        paddingTop: padding,
+                        paddingRight: bottomRight,
+                        paddingBottom: padding,
+                        font: font,
+                        color: color,
+                        lineHeight: lineHeight,
+                        textAlign: textAlign,
+                        useMarkdown: config.userMarkdown
+                    };
+                    node.bottomTextBlock = createTextBlock(visuals.ctx, text, options);
+                    node.bottomFlowBlock = measureFlow(node.bottomTextBlock, minWidth, maxWidth);
+                    __state = '74';
+                    break;
+                case '59':
+                    mainDiv = div();
+                    html.add(mainDiv, topDiv);
+                    html.add(mainDiv, bottomDiv);
+                    node.contentDiv = mainDiv;
+                    _var6 = addDivToDiagram(visuals, mainDiv);
+                    return _var6;
+                case '74':
+                    width = Math.max(node.topFlowBlock.width, node.topFlowBlock.width);
+                    height = node.topFlowBlock.height + node.bottomFlowBlock.height;
+                    return {
+                        width: width,
+                        height: height
+                    };
+                default:
+                    return;
+                }
             }
         }
-        function getSecondaryHeightDefault(core) {
-            var rect;
-            if (core.textDiv2) {
-                rect = core.textDiv2.getBoundingClientRect();
-                return rect.height;
+        function getConfigValue(config, name, defaultValue) {
+            var value, _var2;
+            value = config[name];
+            _var2 = hasValue(value);
+            if (_var2) {
+                return value;
             } else {
-                return 0;
+                return defaultValue;
+            }
+        }
+        function measureFlow(textBlock, minWidth, maxWidth) {
+            var width, _var2;
+            width = Math.min(maxWidth, textBlock.width);
+            width = Math.max(minWidth, width);
+            _var2 = flowTextBlock(textBlock, width);
+            return _var2;
+        }
+        function addDivToDiagram(visuals, mainDiv) {
+            var rect, config;
+            config = visuals.config;
+            html.add(visuals.container, mainDiv);
+            mainDiv.style.display = 'inline-block';
+            mainDiv.style.position = 'absolute';
+            mainDiv.style.left = '0px';
+            mainDiv.style.top = '0px';
+            mainDiv.style.maxWidth = config.maxWidth + 'px';
+            mainDiv.style.maxHeight = config.maxHeight + 'px';
+            rect = mainDiv.getBoundingClientRect();
+            return {
+                width: rect.width,
+                height: rect.height
+            };
+        }
+        function getFromOptionsOrConfig(config, options, node, name, defaultValue) {
+            var _var2;
+            if (name in options) {
+                return options[name];
+            } else {
+                _var2 = getThemeValueCore(config, node.type, node.style, name, defaultValue);
+                return _var2;
             }
         }
         function initAlignedNodes(output, input) {
@@ -3678,7 +4379,7 @@ function createDrakonWidget() {
                     tri = visuals.config.triangleHeight;
                     middle = buildBranchPath(ctx, node.x, node.y, node.w, node.h, tri);
                     ctx.fill();
-                    centerContentTop(node);
+                    centerContentTop(visuals, node);
                     if (line) {
                         buildBranchPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, tri);
                         ctx.stroke();
@@ -3729,7 +4430,7 @@ function createDrakonWidget() {
                     line = setFillStroke(visuals.config, node, ctx);
                     buildSimpleInputPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildSimpleInputPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
                         ctx.stroke();
@@ -3755,7 +4456,7 @@ function createDrakonWidget() {
                     line = setFillStroke(visuals.config, node, ctx);
                     buildLoopBeginPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildLoopBeginPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
                         ctx.stroke();
@@ -3793,7 +4494,7 @@ function createDrakonWidget() {
                     line = setFillStroke(visuals.config, node, ctx);
                     buildCtrlStartPath(ctx, node.x, node.y, node.w, node.h);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildCtrlStartPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
                         ctx.stroke();
@@ -3820,7 +4521,7 @@ function createDrakonWidget() {
                     line = setFillStroke(visuals.config, node, ctx);
                     middle = buildAddressPath(ctx, node.x, node.y, node.w, node.h, tri);
                     ctx.fill();
-                    centerContentBottom(node);
+                    centerContentBottom(visuals, node, ctx);
                     if (line) {
                         buildAddressPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, tri);
                         ctx.stroke();
@@ -4202,7 +4903,7 @@ function createDrakonWidget() {
                     padding = visuals.config.metre / 2;
                     buildSelectPath(ctx, node.x, node.y, node.w, node.h, padding);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildSelectPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding);
                         ctx.stroke();
@@ -4220,18 +4921,43 @@ function createDrakonWidget() {
             }
         }
         function renderShelf(visuals, node, ctx) {
-            var h2, left, top, middle, thickness, _var2;
-            renderAction(visuals, node, ctx);
-            centerContentTop(node);
-            h2 = node.frame.secondaryHeight;
-            left = node.x - node.w;
-            top = node.y - node.h;
-            middle = top + h2;
-            _var2 = getThemeValue(visuals.config, node, 'borderWidth');
-            thickness = _var2 || 1;
-            ctx.fillStyle = getThemeValue(visuals.config, node, 'internalLine');
-            ctx.fillRect(left, middle, node.w * 2, thickness);
-            return;
+            var h2, middle, thickness, left, top, width, height, line, _var2;
+            var __state = '14';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    centerContentTop(visuals, node);
+                    h2 = getSecondaryHeightCore(node);
+                    middle = top + h2;
+                    _var2 = getThemeValue(visuals.config, node, 'borderWidth');
+                    thickness = _var2 || 1;
+                    ctx.fillStyle = getThemeValue(visuals.config, node, 'internalLine');
+                    ctx.fillRect(left, middle, node.w * 2, thickness);
+                    __state = '13';
+                    break;
+                case '12':
+                    return;
+                case '13':
+                    __state = '12';
+                    break;
+                case '14':
+                    left = node.x - node.w;
+                    top = node.y - node.h;
+                    width = node.w * 2;
+                    height = node.h * 2;
+                    line = setFillStroke(visuals.config, node, ctx);
+                    ctx.fillRect(left, top, width, height);
+                    if (line) {
+                        ctx.strokeRect(left + 0.5, top + 0.5, width, height);
+                        __state = '2';
+                    } else {
+                        __state = '2';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function renderDuration(visuals, node, ctx) {
             var padding, line;
@@ -4243,7 +4969,7 @@ function createDrakonWidget() {
                     padding = visuals.config.metre;
                     buildDurationPath(ctx, node.x, node.y, node.w, node.h, padding);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildDurationPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding);
                         ctx.stroke();
@@ -4269,7 +4995,7 @@ function createDrakonWidget() {
                     line = setFillStroke(visuals.config, node, ctx);
                     buildSimpleOutputPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildSimpleOutputPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
                         ctx.stroke();
@@ -4381,7 +5107,7 @@ function createDrakonWidget() {
                     break;
                 case '37':
                     clearShadow(ctx);
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     __state = '12';
                     break;
                 default:
@@ -4390,12 +5116,12 @@ function createDrakonWidget() {
             }
         }
         function renderProcess(visuals, node, ctx) {
-            var left, top, middle, thickness, padding, line, h2, x0, x1, x3, x2, y0, y1, y2, _var2;
+            var left, top, middle, thickness, padding, line, x0, x1, x3, x2, y0, y1, y2, h2, _var2;
             var __state = '14';
             while (true) {
                 switch (__state) {
                 case '2':
-                    centerContentTop(node);
+                    centerContentTop(visuals, node);
                     left = node.x - node.w;
                     top = node.y - node.h;
                     middle = top + h2;
@@ -4422,12 +5148,11 @@ function createDrakonWidget() {
                     __state = '12';
                     break;
                 case '14':
-                    h2 = node.frame.secondaryHeight;
+                    h2 = getSecondaryHeightCore(node);
                     line = setFillStroke(visuals.config, node, ctx);
                     padding = visuals.config.metre / 2;
                     buildProcessPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
                     ctx.fill();
-                    centerContent(node);
                     if (line) {
                         buildProcessPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding, h2);
                         ctx.stroke();
@@ -4469,7 +5194,7 @@ function createDrakonWidget() {
                     }
                     break;
                 case '26':
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     return;
                 case '27':
                     padding = config.commentPadding;
@@ -4510,7 +5235,7 @@ function createDrakonWidget() {
                     line = setFillStroke(visuals.config, node, ctx);
                     buildBeginEndPath(ctx, node.x, node.y, node.w, node.h);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildBeginEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
                         ctx.stroke();
@@ -4528,12 +5253,12 @@ function createDrakonWidget() {
             }
         }
         function renderOutput(visuals, node, ctx) {
-            var left, top, middle, thickness, padding, line, h2, x0, x1, x3, x2, y0, y1, y2, _var2;
+            var left, top, middle, thickness, padding, line, x0, x1, x3, x2, y0, y1, y2, h2, _var2;
             var __state = '14';
             while (true) {
                 switch (__state) {
                 case '2':
-                    centerContentTop(node);
+                    centerContentTop(visuals, node);
                     left = node.x - node.w;
                     top = node.y - node.h;
                     middle = top + h2;
@@ -4560,12 +5285,11 @@ function createDrakonWidget() {
                     __state = '12';
                     break;
                 case '14':
-                    h2 = node.frame.secondaryHeight;
+                    h2 = getSecondaryHeightCore(node);
                     line = setFillStroke(visuals.config, node, ctx);
                     padding = visuals.config.metre / 2;
                     buildOutputPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
                     ctx.fill();
-                    centerContent(node);
                     if (line) {
                         buildOutputPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding, h2);
                         ctx.stroke();
@@ -4608,7 +5332,7 @@ function createDrakonWidget() {
                     break;
                 case '12':
                     clearShadow(ctx);
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     return;
                 default:
                     return;
@@ -4616,12 +5340,12 @@ function createDrakonWidget() {
             }
         }
         function renderInput(visuals, node, ctx) {
-            var left, top, middle, thickness, padding, line, h2, x0, x1, x3, x2, y0, y1, y2, _var2;
+            var left, top, middle, thickness, padding, line, x0, x1, x3, x2, y0, y1, y2, h2, _var2;
             var __state = '14';
             while (true) {
                 switch (__state) {
                 case '2':
-                    centerContentTop(node);
+                    centerContentTop(visuals, node);
                     left = node.x - node.w;
                     top = node.y - node.h;
                     middle = top + h2;
@@ -4648,12 +5372,11 @@ function createDrakonWidget() {
                     __state = '12';
                     break;
                 case '14':
-                    h2 = node.frame.secondaryHeight;
+                    h2 = getSecondaryHeightCore(node);
                     line = setFillStroke(visuals.config, node, ctx);
                     padding = visuals.config.metre / 2;
                     buildInputPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
                     ctx.fill();
-                    centerContent(node);
                     if (line) {
                         buildInputPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding, h2);
                         ctx.stroke();
@@ -4680,7 +5403,7 @@ function createDrakonWidget() {
                     line = setFillStroke(visuals.config, node, ctx);
                     buildCtrlEndPath(ctx, node.x, node.y, node.w, node.h);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildCtrlEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
                         ctx.stroke();
@@ -4706,7 +5429,7 @@ function createDrakonWidget() {
                     line = setFillStroke(visuals.config, node, ctx);
                     buildLoopEndPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
                     ctx.fill();
-                    centerContent(node);
+                    centerContent(visuals, node, ctx);
                     if (line) {
                         buildLoopEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
                         ctx.stroke();
@@ -4787,62 +5510,91 @@ function createDrakonWidget() {
                 ctrlend: contentDuration,
                 shelf: contentShelf,
                 process: contentProcess,
-                output: contentProcess,
-                input: contentProcess
+                output: contentOutput,
+                input: contentInput
             };
             defaultValues['group-duration'] = contentDuration;
             mergeConfigs(output, input, 'iconContent', defaultValues);
             return;
         }
         function flowIcon(visuals, node) {
-            var flow, config;
+            var context, size, config, flow;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    flow = config.iconContent[node.type];
+                    if (flow) {
+                        __state = '30';
+                    } else {
+                        flow = visuals.config.iconContent.action;
+                        console.error('iconContent callback not found for node of type: ' + node.type);
+                        __state = '30';
+                    }
+                    break;
+                case '30':
+                    context = {
+                        type: node.type,
+                        content: node.content,
+                        secondary: node.secondary,
+                        link: node.link,
+                        style: node.style,
+                        flag1: node.flag1,
+                        margin: node.margin || 0,
+                        config: config
+                    };
+                    node.core = config.buildIconCore(context);
+                    size = measureCore(visuals, node);
+                    setNodeSize(config, node, size);
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function setNodeSize(config, node, size) {
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '1':
                     return;
                 case '2':
-                    flow = visuals.config.iconContent[node.type];
-                    if (flow) {
-                        __state = '17';
-                    } else {
-                        flow = visuals.config.iconContent.action;
-                        console.error('iconContent callback not found for node of type: ' + node.type);
-                        __state = '17';
-                    }
-                    break;
-                case '17':
-                    node.frame = flow(node, visuals.config, visuals.container);
-                    config = visuals.config;
-                    if (node.type === 'junction') {
-                        if (node.subtype === 'parbegin') {
-                            if (node.two) {
-                                node.w = config.metre;
-                                node.h = 0;
-                                __state = '1';
-                            } else {
-                                node.w = 0;
-                                node.h = 0;
-                                __state = '1';
-                            }
+                    if (node.subtype === 'parbegin') {
+                        if (node.two) {
+                            node.w = config.metre / 2;
+                            node.h = 0;
+                            __state = '1';
                         } else {
-                            __state = '24';
+                            __state = '5';
                         }
                     } else {
-                        if (node.type === 'arrow-loop') {
-                            __state = '24';
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    if (size.width) {
+                        node.w = makeHalfSize(config, size.width);
+                        __state = '8';
+                    } else {
+                        node.w = 0;
+                        __state = '8';
+                    }
+                    break;
+                case '8':
+                    if (size.height) {
+                        if (node.type === 'end') {
+                            node.h = Math.floor(size.height / 2);
+                            __state = '1';
                         } else {
-                            node.w = makeHalfSize(config, node.frame.width);
-                            node.h = makeHalfSize(config, node.frame.height);
+                            node.h = makeHalfSize(config, size.height);
                             node.h = Math.max(config.metre, node.h);
                             __state = '1';
                         }
+                    } else {
+                        node.h = 0;
+                        __state = '1';
                     }
-                    break;
-                case '24':
-                    node.w = 0;
-                    node.h = 0;
-                    __state = '1';
                     break;
                 default:
                     return;
@@ -4927,146 +5679,190 @@ function createDrakonWidget() {
                 }
             }
         }
-        function contentEnd(node, config, container) {
-            var _var2;
-            _var2 = contentAction(node, config, container);
+        function contentEnd(visuals, node) {
+            var options, padding, _var2;
+            padding = visuals.config.padding / 2;
+            options = {
+                paddingTop: padding,
+                paddingBottom: padding,
+                padding: visuals.config.padding / 2,
+                paddingLeft: visuals.config.padding,
+                paddingRight: visuals.config.padding,
+                minHeight: 0,
+                minWidth: 0,
+                textAlign: 'center',
+                lineHeight: 1,
+                singleLine: true
+            };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function contentAction(node, config, container) {
-            var _var2;
-            _var2 = buildContentFrame(container, node, config, 0, 0);
+        function contentProcess(visuals, node) {
+            var options, padding, _var2;
+            padding = visuals.config.metre / 2;
+            options = {
+                topLeft: padding,
+                bottomRight: padding
+            };
+            _var2 = buildDoubleTextContent(visuals, node, options);
             return _var2;
         }
-        function contentInsertion(node, config, container) {
-            var padding, _var2;
-            padding = config.insertionPadding;
-            _var2 = buildContentFrame(container, node, config, padding, padding);
+        function contentAction(visuals, node) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function contentQuestion(node, config, container) {
-            var frame;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    frame = buildContentFrame(container, node, config, 0, 0);
-                    if (config.canvasLabels) {
-                        __state = '15';
-                    } else {
-                        frame.yesDiv = createLabel(container, config.yes, config);
-                        frame.noDiv = createLabel(container, config.no, config);
-                        __state = '15';
-                    }
-                    break;
-                case '15':
-                    return frame;
-                default:
-                    return;
-                }
-            }
-        }
-        function contentCase(node, config, container) {
-            var _var2;
-            _var2 = contentBranchCore(node, config, container);
+        function contentInsertion(visuals, node) {
+            var options, padding, _var2;
+            padding = visuals.config.insertionPadding;
+            options = {
+                paddingLeft: padding,
+                paddingRight: padding
+            };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function contentShelf(node, config, container) {
-            var _var2;
-            _var2 = buildContentFrame(container, node, config, 0, 0);
+        function contentQuestion(visuals, node) {
+            var options, padding, _var2;
+            padding = visuals.config.metre / 2;
+            options = {
+                paddingLeft: padding,
+                paddingRight: padding
+            };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function contentSelect(node, config, container) {
-            var padding, _var2;
-            padding = config.padding * 1.5;
-            _var2 = buildContentFrame(container, node, config, padding, padding);
+        function contentCase(visuals, node) {
+            var options, _var2;
+            options = { textAlign: 'center' };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function contentHeader(node, config, container) {
-            var _var2;
-            _var2 = contentAction(node, config, container);
+        function contentShelf(visuals, node) {
+            var options, _var2;
+            options = {};
+            _var2 = buildDoubleTextContent(visuals, node, options);
             return _var2;
         }
-        function contentBranchCore(node, config, container) {
-            var _var2;
-            _var2 = buildContentFrame(container, node, config, 0, 0);
+        function contentInput(visuals, node) {
+            var options, extra, config, _var2;
+            config = visuals.config;
+            extra = config.metre / 2;
+            options = {
+                topLeft: extra,
+                topRight: extra,
+                bottomLeft: config.padding + extra,
+                bottomRight: 0
+            };
+            _var2 = buildDoubleTextContent(visuals, node, options);
             return _var2;
         }
-        function contentDuration(node, config, container) {
-            var padding, _var2;
-            padding = config.padding * 1.5;
-            _var2 = buildContentFrame(container, node, config, padding, padding);
+        function contentSelect(visuals, node) {
+            var options, padding, _var2;
+            padding = visuals.config.padding * 1.5;
+            options = {
+                paddingLeft: padding,
+                paddingRight: padding
+            };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function contentJunction(node, config, container) {
+        function contentHeader(visuals, node) {
+            var options, config, _var2;
+            config = visuals.config;
+            options = {
+                textAlign: 'center',
+                font: config.headerFont,
+                maxWidth: config.maxWidth * 1.3,
+                lineHeight: 1,
+                singleLine: true
+            };
+            _var2 = buildTextContent(visuals, node, options);
+            return _var2;
+        }
+        function contentDuration(visuals, node) {
+            var options, padding, _var2;
+            padding = visuals.config.padding * 1.5;
+            options = {
+                paddingLeft: padding,
+                paddingRight: padding,
+                textAlign: 'center'
+            };
+            _var2 = buildTextContent(visuals, node, options);
+            return _var2;
+        }
+        function contentJunction(visuals, node) {
             return {
-                core: undefined,
                 width: 0,
                 height: 0
             };
         }
-        function contentSimpleInput(node, config, container) {
-            var frame;
-            frame = buildContentFrame(container, node, config, config.metre, 0);
-            return frame;
-        }
-        function contentSimpleOutput(node, config, container) {
-            var frame;
-            frame = buildContentFrame(container, node, config, 0, config.metre);
-            return frame;
-        }
-        function contentAddress(node, config, container) {
-            var _var2;
-            _var2 = contentBranchCore(node, config, container);
+        function contentSimpleInput(visuals, node) {
+            var options, _var2;
+            options = { paddingLeft: visuals.config.metre };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function contentProcess(node, config, container) {
-            var padding, _var2;
-            padding = config.metre / 2;
-            _var2 = buildContentFrame(container, node, config, padding, padding);
+        function contentSimpleOutput(visuals, node) {
+            var options, _var2;
+            options = { paddingRight: visuals.config.metre };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function contentComment(node, config, container) {
-            var padding, _var2;
-            padding = config.commentPadding;
-            _var2 = buildContentFrame(container, node, config, padding, padding);
+        function contentAddress(visuals, node) {
+            var options, _var2;
+            options = {
+                textAlign: 'center',
+                font: visuals.config.branchFont
+            };
+            _var2 = buildTextContent(visuals, node, options);
             return _var2;
         }
-        function reflowIcon(node, config) {
-            var rect, div, _var2;
+        function contentOutput(visuals, node) {
+            var options, extra, config, _var2;
+            config = visuals.config;
+            extra = config.metre / 2;
+            options = {
+                topLeft: extra,
+                topRight: extra,
+                bottomRight: config.padding + extra,
+                bottomLeft: 0
+            };
+            _var2 = buildDoubleTextContent(visuals, node, options);
+            return _var2;
+        }
+        function contentComment(visuals, node) {
+            var options, _var2;
+            options = { padding: visuals.config.commentPadding + visuals.config.padding };
+            _var2 = buildTextContent(visuals, node, options);
+            return _var2;
+        }
+        function reflowIcon(visuals, node) {
+            var size, config, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '1':
                     return;
                 case '2':
-                    if (node.frame) {
-                        if (node.frame.div) {
-                            div = node.frame.div;
-                            div.style.width = node.w * 2 + 'px';
-                            rect = div.getBoundingClientRect();
-                            node.frame.height = rect.height;
-                            node.frame.width = rect.width;
-                            node.h = makeHalfSize(config, rect.height);
-                            node.h = Math.max(node.h, config.metre);
-                            _var2 = node.type;
-                            if (_var2 === 'branch') {
+                    config = visuals.config;
+                    size = commitCore(visuals, node, node.w * 2);
+                    setNodeSize(config, node, size);
+                    node.contentHeight = size.height;
+                    _var2 = node.type;
+                    if (_var2 === 'branch') {
+                        __state = '17';
+                    } else {
+                        if (_var2 === 'case') {
+                            __state = '17';
+                        } else {
+                            if (_var2 === 'address') {
                                 __state = '17';
                             } else {
-                                if (_var2 === 'case') {
-                                    __state = '17';
-                                } else {
-                                    if (_var2 === 'address') {
-                                        __state = '17';
-                                    } else {
-                                        __state = '1';
-                                    }
-                                }
+                                __state = '1';
                             }
-                        } else {
-                            __state = '1';
                         }
-                    } else {
-                        __state = '1';
                     }
                     break;
                 case '17':
@@ -5173,7 +5969,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '0.9.7';
+            return '0.9.8';
         }
         function DrakonCanvas_copySelection(self) {
             copy(self);
@@ -6934,6 +7730,8 @@ function createDrakonWidget() {
                         style.font = style.font || '';
                         style.padding = style.padding || '';
                         style.internalLine = style.internalLine || '';
+                        style.lineHeight = style.lineHeight || '';
+                        style.textAlign = style.textAlign || '';
                         if ('borderWidth' in style) {
                             __state = '4';
                         } else {
@@ -7335,7 +8133,7 @@ function createDrakonWidget() {
             }
         }
         function clickedOnTop(widget, prim, evt) {
-            var node, ht, _var2;
+            var node, ht, h2, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -7343,7 +8141,8 @@ function createDrakonWidget() {
                     node = getNode(widget.visuals, prim.id);
                     _var2 = canEditSecondary(node);
                     if (_var2) {
-                        ht = node.frame.secondaryHeight * widget.zoom / 10000;
+                        h2 = getSecondaryHeightCore(node);
+                        ht = h2 * widget.zoom / 10000;
                         if (ht) {
                             if (evt.clientY < prim.top + ht) {
                                 return true;
@@ -8713,7 +9512,7 @@ function createDrakonWidget() {
             return;
         }
         function reflowContent(visuals) {
-            var _var3, _var2, _var4, id, node;
+            var _var3, _var2, _var4, id, node, _var5, _var6, element;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -8727,9 +9526,21 @@ function createDrakonWidget() {
                     if (_var4 < _var2.length) {
                         id = _var2[_var4];
                         node = _var3[id];
-                        reflowIcon(node, visuals.config);
+                        reflowIcon(visuals, node);
                         _var4++;
                         __state = '5';
+                    } else {
+                        _var5 = visuals.free;
+                        _var6 = 0;
+                        __state = '20';
+                    }
+                    break;
+                case '20':
+                    if (_var6 < _var5.length) {
+                        element = _var5[_var6];
+                        reflowIcon(visuals, element);
+                        _var6++;
+                        __state = '20';
                     } else {
                         return;
                     }
@@ -8740,9 +9551,24 @@ function createDrakonWidget() {
             }
         }
         function resetContainer(widget) {
-            html.clear(widget.contentContainer);
-            widget.contentContainer.style.transform = '';
-            return;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (widget.config.canvasIcons) {
+                        __state = '1';
+                    } else {
+                        html.clear(widget.contentContainer);
+                        widget.contentContainer.style.transform = '';
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function makeRandomColor() {
             var r, g, b, rs, rg, rb;
@@ -9166,7 +9992,7 @@ function createDrakonWidget() {
                 'shadowBlur': 6,
                 'lineWidth': 1,
                 'borderWidth': 1,
-                'commentBack': '#97D3E1'
+                'commentBack': '#2293bb'
             };
             Object.assign(theme, userTheme);
             setIconDefaultProps(theme.icons, [
@@ -10412,6 +11238,8 @@ function createDrakonWidget() {
                         'insertionPadding': 10,
                         'commentPadding': 10,
                         'parallelWidth': 5,
+                        'canvasIcons': false,
+                        'userMarkdown': true,
                         'buildIconCore': buildIconCore,
                         'getClipboard': getClipboard,
                         'setClipboard': setClipboard,
@@ -10452,8 +11280,15 @@ function createDrakonWidget() {
                     ty = visuals.scrollY;
                     translate = 'translate(' + -tx + 'px, ' + -ty + 'px)';
                     scale = 'scale(' + zoom + ', ' + zoom + ')';
-                    widget.contentContainer.style.transformOrigin = 'top left';
-                    widget.contentContainer.style.transform = scale + ' ' + translate;
+                    if (config.canvasIcons) {
+                        __state = '9';
+                    } else {
+                        widget.contentContainer.style.transformOrigin = 'top left';
+                        widget.contentContainer.style.transform = scale + ' ' + translate;
+                        __state = '9';
+                    }
+                    break;
+                case '9':
                     width = widget.width;
                     height = widget.height;
                     ctx = widget.canvas.getContext('2d');
@@ -13261,14 +14096,16 @@ function createDrakonWidget() {
             return 'No';
         }
         function buildVisuals(widget) {
-            var visuals, model, context, node, branch, element, _var5, _var6, bItemId, _var3, _var2, _var4, id, item, _var8, _var7, _var9, skewer, _var10, _var11;
+            var visuals, model, context, node, branch, element, ctx, _var5, _var6, bItemId, _var3, _var2, _var4, id, item, _var8, _var7, _var9, skewer, _var10, _var11;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     model = widget.model;
+                    ctx = widget.canvas.getContext('2d');
                     _var10 = model.branches.slice();
                     visuals = {
+                        ctx: ctx,
                         nextId: 1,
                         nodes: {},
                         edges: {},
@@ -16437,6 +17274,1048 @@ function createDrakonWidget() {
         function isReadonly(widget) {
             return widget.model.doc.access === 'read' || !widget.visuals.config.canSelect;
         }
+        function parseCssFont(font, fontCache) {
+            var tokens, style, weight, size, family, current, part, fontObj, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
+            var __state = '72';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    tokens = stringToTokensQuoted(font);
+                    style = '';
+                    weight = '';
+                    size = '';
+                    family = '';
+                    current = 0;
+                    __state = '8';
+                    break;
+                case '8':
+                    if (current < tokens.length) {
+                        part = tokens[current++];
+                        _var2 = part;
+                        if (_var2 === 'italic') {
+                            __state = '33';
+                        } else {
+                            if (_var2 === 'oblique') {
+                                __state = '33';
+                            } else {
+                                if (_var2 === 'bold') {
+                                    weight = part;
+                                    __state = '35';
+                                } else {
+                                    if (_var2 === 'normal') {
+                                        __state = '34';
+                                    } else {
+                                        size = parsePxSize(part);
+                                        if (size === undefined) {
+                                            __state = '35';
+                                        } else {
+                                            __state = '36';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        _var4 = Error('Empty "font" property');
+                        throw _var4;
+                    }
+                    break;
+                case '10':
+                    fontObj = {
+                        style: style,
+                        weight: weight,
+                        size: size,
+                        family: family
+                    };
+                    fontCache[font] = fontObj;
+                    return fontObj;
+                case '33':
+                    style = part;
+                    __state = '34';
+                    break;
+                case '34':
+                    if (current < tokens.length) {
+                        part = tokens[current++];
+                        _var3 = part;
+                        if (_var3 === 'bold') {
+                            weight = part;
+                            __state = '35';
+                        } else {
+                            if (_var3 === 'normal') {
+                                __state = '35';
+                            } else {
+                                size = parsePxSize(part);
+                                if (size === undefined) {
+                                    _var6 = Error('Expected px size in "font" property');
+                                    throw _var6;
+                                } else {
+                                    __state = '36';
+                                }
+                            }
+                        }
+                    } else {
+                        _var5 = Error('Unexpected end of "font" property');
+                        throw _var5;
+                    }
+                    break;
+                case '35':
+                    if (current < tokens.length) {
+                        part = tokens[current++];
+                        size = parsePxSize(part);
+                        if (size === undefined) {
+                            _var8 = Error('Expected px size in "font" property');
+                            throw _var8;
+                        } else {
+                            __state = '36';
+                        }
+                    } else {
+                        _var7 = Error('Unexpected end of "font" property');
+                        throw _var7;
+                    }
+                    break;
+                case '36':
+                    if (current < tokens.length) {
+                        family = tokens[current];
+                        __state = '10';
+                    } else {
+                        _var9 = Error('Unexpected end of "font" property');
+                        throw _var9;
+                    }
+                    break;
+                case '72':
+                    if (font in fontCache) {
+                        return fontCache[font];
+                    } else {
+                        __state = '2';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function setFontToToken(token, font, fontObj) {
+            var font2, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    _var2 = token.type;
+                    if (_var2 === 'strong') {
+                        font2 = {};
+                        Object.assign(font2, fontObj);
+                        font2.weight = 'bold';
+                        __state = '12';
+                    } else {
+                        if (_var2 === 'em') {
+                            font2 = {};
+                            Object.assign(font2, fontObj);
+                            font2.style = 'italic';
+                            __state = '12';
+                        } else {
+                            token.font = font;
+                            __state = '1';
+                        }
+                    }
+                    break;
+                case '12':
+                    token.font = cssFontToString(font2);
+                    __state = '1';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function endToken(current, line, type) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (current.text) {
+                        line.push(current);
+                        __state = '5';
+                    } else {
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    return {
+                        text: '',
+                        type: type
+                    };
+                default:
+                    return;
+                }
+            }
+        }
+        function endLine(line, lines) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (line.length === 0) {
+                        __state = '6';
+                    } else {
+                        lines.push(line);
+                        __state = '6';
+                    }
+                    break;
+                case '6':
+                    return [];
+                default:
+                    return;
+                }
+            }
+        }
+        function SpanBuilder_create() {
+            var current, type, line, ch;
+            var me = {
+                state: '18',
+                type: 'SpanBuilder'
+            };
+            function _main_SpanBuilder(__resolve, __reject) {
+                try {
+                    while (true) {
+                        switch (me.state) {
+                        case '2':
+                            me.state = '12';
+                            return;
+                        case '5':
+                            me.state = '30';
+                            return;
+                        case '6':
+                            me.state = '39';
+                            return;
+                        case '7':
+                            me.state = '49';
+                            return;
+                        case '18':
+                            current = {
+                                text: '',
+                                type: ''
+                            };
+                            type = '';
+                            line = [];
+                            me.lines = [];
+                            me.state = '2';
+                            break;
+                        case '21':
+                            if (ch === '-') {
+                                current.text += '\u2022';
+                                me.state = '7';
+                            } else {
+                                current.text += ch;
+                                me.state = '7';
+                            }
+                            break;
+                        case '26':
+                            type = 'em';
+                            current = endToken(current, line, type);
+                            me.state = '7';
+                            break;
+                        case '27':
+                            type = 'strong';
+                            current = endToken(current, line, type);
+                            me.state = '7';
+                            break;
+                        case '36':
+                            current.text += ch;
+                            me.state = '7';
+                            break;
+                        case '38':
+                            type = 'strong';
+                            current = endToken(current, line, type);
+                            me.state = '7';
+                            break;
+                        case '45':
+                            line.push({ type: 'space' });
+                            current.text += ch;
+                            me.state = '7';
+                            break;
+                        case '55':
+                            current.text += ch;
+                            me.state = '7';
+                            break;
+                        case '56':
+                            current = endToken(current, line, type);
+                            me.state = '6';
+                            break;
+                        case '57':
+                            current = endToken(current, line, type);
+                            type = '';
+                            line = endLine(line, me.lines);
+                            me.state = '2';
+                            break;
+                        case '59':
+                            type = 'strong';
+                            current = endToken(current, line, type);
+                            me.state = '7';
+                            break;
+                        case '60':
+                            type = 'em';
+                            current = endToken(current, line, type);
+                            me.state = '7';
+                            break;
+                        case '62':
+                            type = 'em';
+                            current = endToken(current, line, type);
+                            me.state = '7';
+                            break;
+                        case '66':
+                            type = '';
+                            current = endToken(current, line, type);
+                            me.state = '5';
+                            break;
+                        case '69':
+                            line.push({ type: 'space' });
+                            type = 'em';
+                            current = endToken(current, line, type);
+                            me.state = '7';
+                            break;
+                        case '70':
+                            line.push({ type: 'space' });
+                            type = 'strong';
+                            current = endToken(current, line, type);
+                            me.state = '7';
+                            break;
+                        case '72':
+                            type = '';
+                            current = endToken(current, line, type);
+                            me.state = '5';
+                            break;
+                        case '73':
+                            type = '';
+                            line = endLine(line, me.lines);
+                            me.state = '2';
+                            break;
+                        case '75':
+                            type = '';
+                            current = endToken(current, line, type);
+                            me.state = '5';
+                            break;
+                        case '78':
+                            type = '';
+                            line = endLine(line, me.lines);
+                            me.state = '2';
+                            break;
+                        default:
+                            return;
+                        }
+                    }
+                } catch (ex) {
+                    unit.onError(ex);
+                    me.state = undefined;
+                    __reject(ex);
+                }
+            }
+            me.run = function () {
+                me.run = undefined;
+                return new Promise(function (__resolve, __reject) {
+                    me.next = function (_ch_) {
+                        ch = _ch_;
+                        switch (me.state) {
+                        case '12':
+                            me.state = '21';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '30':
+                            me.state = '36';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '45';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '49':
+                            me.state = '55';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.white = function () {
+                        switch (me.state) {
+                        case '12':
+                            me.state = '2';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '30':
+                            me.state = '6';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '6';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '49':
+                            me.state = '56';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.line = function () {
+                        switch (me.state) {
+                        case '12':
+                            me.state = '2';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '30':
+                            me.state = '73';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '78';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '49':
+                            me.state = '57';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.em = function () {
+                        switch (me.state) {
+                        case '12':
+                            me.state = '26';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '30':
+                            me.state = '60';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '69';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '49':
+                            me.state = '62';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.strong = function () {
+                        switch (me.state) {
+                        case '12':
+                            me.state = '27';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '30':
+                            me.state = '38';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '70';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '49':
+                            me.state = '59';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.end = function () {
+                        switch (me.state) {
+                        case '30':
+                            me.state = '66';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '72';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        case '49':
+                            me.state = '75';
+                            _main_SpanBuilder(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    _main_SpanBuilder(__resolve, __reject);
+                });
+            };
+            return me;
+        }
+        function SpanBuilder() {
+            var __obj = SpanBuilder_create();
+            return __obj.run();
+        }
+        function parsePxSize(size) {
+            var value, _var2, _var3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    value = parseInt(size);
+                    _var2 = isNaN(value);
+                    if (_var2) {
+                        __state = '6';
+                    } else {
+                        _var3 = size.indexOf('px');
+                        if (_var3 === -1) {
+                            __state = '6';
+                        } else {
+                            return value;
+                        }
+                    }
+                    break;
+                case '6':
+                    return undefined;
+                default:
+                    return;
+                }
+            }
+        }
+        function MarkDown_create(target) {
+            var ch;
+            var me = {
+                state: '15',
+                type: 'MarkDown'
+            };
+            function _main_MarkDown(__resolve, __reject) {
+                try {
+                    while (true) {
+                        switch (me.state) {
+                        case '6':
+                            me.state = '66';
+                            return;
+                        case '8':
+                            me.state = '29';
+                            return;
+                        case '9':
+                            me.state = '39';
+                            return;
+                        case '10':
+                            me.state = '48';
+                            return;
+                        case '11':
+                            me.state = '57';
+                            return;
+                        case '15':
+                            me.state = '19';
+                            return;
+                        case '20':
+                            target.next(ch);
+                            me.state = '15';
+                            break;
+                        case '21':
+                            target.line();
+                            me.state = '15';
+                            break;
+                        case '28':
+                            target.white();
+                            me.state = '15';
+                            break;
+                        case '35':
+                            target.em();
+                            target.next(ch);
+                            me.state = '11';
+                            break;
+                        case '37':
+                            target.next('_');
+                            target.line();
+                            me.state = '15';
+                            break;
+                        case '38':
+                            target.next('_');
+                            target.white();
+                            me.state = '15';
+                            break;
+                        case '44':
+                            target.next('_');
+                            me.state = '15';
+                            break;
+                        case '45':
+                            target.strong();
+                            target.next(ch);
+                            me.state = '10';
+                            break;
+                        case '46':
+                            target.next('__');
+                            target.white();
+                            me.state = '15';
+                            break;
+                        case '47':
+                            target.next('__');
+                            target.line();
+                            me.state = '15';
+                            break;
+                        case '54':
+                            target.next(ch);
+                            me.state = '10';
+                            break;
+                        case '55':
+                            target.white();
+                            me.state = '10';
+                            break;
+                        case '56':
+                            target.line();
+                            me.state = '15';
+                            break;
+                        case '62':
+                            target.end();
+                            me.state = '15';
+                            break;
+                        case '63':
+                            target.next(ch);
+                            me.state = '11';
+                            break;
+                        case '64':
+                            target.white();
+                            me.state = '11';
+                            break;
+                        case '65':
+                            target.line();
+                            me.state = '15';
+                            break;
+                        case '71':
+                            target.end();
+                            me.state = '15';
+                            break;
+                        case '73':
+                            target.next('_');
+                            target.white();
+                            me.state = '10';
+                            break;
+                        case '74':
+                            target.next('_');
+                            target.line();
+                            me.state = '15';
+                            break;
+                        case '75':
+                            target.next('_');
+                            target.next(ch);
+                            me.state = '10';
+                            break;
+                        default:
+                            return;
+                        }
+                    }
+                } catch (ex) {
+                    unit.onError(ex);
+                    me.state = undefined;
+                    __reject(ex);
+                }
+            }
+            me.run = function () {
+                me.run = undefined;
+                return new Promise(function (__resolve, __reject) {
+                    me.under = function () {
+                        switch (me.state) {
+                        case '19':
+                            me.state = '8';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '29':
+                            me.state = '9';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '44';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '48':
+                            me.state = '6';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '57':
+                            me.state = '62';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '66':
+                            me.state = '71';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.next = function (_ch_) {
+                        ch = _ch_;
+                        switch (me.state) {
+                        case '19':
+                            me.state = '20';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '29':
+                            me.state = '35';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '45';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '48':
+                            me.state = '54';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '57':
+                            me.state = '63';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '66':
+                            me.state = '75';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.white = function () {
+                        switch (me.state) {
+                        case '19':
+                            me.state = '28';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '29':
+                            me.state = '38';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '46';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '48':
+                            me.state = '55';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '57':
+                            me.state = '64';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '66':
+                            me.state = '73';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.line = function () {
+                        switch (me.state) {
+                        case '19':
+                            me.state = '21';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '29':
+                            me.state = '37';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '39':
+                            me.state = '47';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '48':
+                            me.state = '56';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '57':
+                            me.state = '65';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        case '66':
+                            me.state = '74';
+                            _main_MarkDown(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    _main_MarkDown(__resolve, __reject);
+                });
+            };
+            return me;
+        }
+        function MarkDown(target) {
+            var __obj = MarkDown_create(target);
+            return __obj.run();
+        }
+        function finishMdMachine(md) {
+            return;
+        }
+        function stringToTokensQuoted(text) {
+            var tokens, ch, whitespace, quote, state, buffer, _var2, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    text = text || '';
+                    tokens = [];
+                    whitespace = {};
+                    whitespace[' '] = true;
+                    whitespace['\t'] = true;
+                    whitespace['\r'] = true;
+                    whitespace['\n'] = true;
+                    quote = {};
+                    quote['"'] = true;
+                    quote['\''] = true;
+                    state = 'idle';
+                    buffer = '';
+                    i = 0;
+                    __state = '5';
+                    break;
+                case '3':
+                    return tokens;
+                case '4':
+                    i++;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (i < text.length) {
+                        ch = text[i];
+                        _var2 = state;
+                        if (_var2 === 'idle') {
+                            if (whitespace[ch]) {
+                                __state = '4';
+                            } else {
+                                if (quote[ch]) {
+                                    state = 'quoted';
+                                    __state = '4';
+                                } else {
+                                    buffer += ch;
+                                    state = 'token';
+                                    __state = '4';
+                                }
+                            }
+                        } else {
+                            if (_var2 === 'token') {
+                                if (whitespace[ch]) {
+                                    tokens.push(buffer);
+                                    buffer = '';
+                                    state = 'idle';
+                                    __state = '4';
+                                } else {
+                                    buffer += ch;
+                                    __state = '4';
+                                }
+                            } else {
+                                if (_var2 === 'quoted') {
+                                    if (quote[ch]) {
+                                        tokens.push(buffer);
+                                        buffer = '';
+                                        state = 'idle';
+                                        __state = '4';
+                                    } else {
+                                        buffer += ch;
+                                        __state = '4';
+                                    }
+                                } else {
+                                    throw new Error('Unexpected case value: ' + _var2);
+                                }
+                            }
+                        }
+                    } else {
+                        if (buffer) {
+                            tokens.push(buffer);
+                            __state = '3';
+                        } else {
+                            __state = '3';
+                        }
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function splitByWhitespace(text) {
+            var _var2, _var3;
+            text = text || '';
+            _var3 = text.trim();
+            _var2 = _var3.split(/[ \t\r\n]+/);
+            return _var2;
+        }
+        function splitToTokensMarkdown(text) {
+            var state, buffer, lines, length, ch, whitespace, md, sb, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    text = text || '';
+                    whitespace = {};
+                    whitespace[' '] = true;
+                    whitespace['\t'] = true;
+                    whitespace['\r'] = true;
+                    state = 'idle';
+                    buffer = '';
+                    lines = [];
+                    length = text.length;
+                    sb = SpanBuilder_create();
+                    md = MarkDown_create(sb);
+                    sb.run();
+                    md.run();
+                    i = 0;
+                    __state = '6';
+                    break;
+                case '5':
+                    i++;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (i < length) {
+                        ch = text[i];
+                        if (ch === '_') {
+                            md.under();
+                            __state = '5';
+                        } else {
+                            if (ch === '\n') {
+                                md.line();
+                                __state = '5';
+                            } else {
+                                if (whitespace[ch]) {
+                                    md.white();
+                                    __state = '5';
+                                } else {
+                                    md.next(ch);
+                                    __state = '5';
+                                }
+                            }
+                        }
+                    } else {
+                        md.line();
+                        return sb.lines;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function setFontToTokens(lines, font, fontCache) {
+            var fontObj, _var2, _var3, line;
+            var __state = '6';
+            while (true) {
+                switch (__state) {
+                case '6':
+                    fontObj = parseCssFont(font, fontCache);
+                    _var2 = lines;
+                    _var3 = 0;
+                    __state = '10';
+                    break;
+                case '10':
+                    if (_var3 < _var2.length) {
+                        line = _var2[_var3];
+                        line.forEach(function (token) {
+                            setFontToToken(token, font, fontObj);
+                        });
+                        _var3++;
+                        __state = '10';
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function splitLineToTokens(line) {
+            var tokens, start, result, _var2, _var3, token;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    tokens = splitByWhitespace(line);
+                    start = true;
+                    result = [];
+                    _var2 = tokens;
+                    _var3 = 0;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (_var3 < _var2.length) {
+                        token = _var2[_var3];
+                        if (start) {
+                            start = false;
+                            __state = '11';
+                        } else {
+                            result.push({ type: 'space' });
+                            __state = '11';
+                        }
+                    } else {
+                        return result;
+                    }
+                    break;
+                case '11':
+                    result.push({ text: token });
+                    _var3++;
+                    __state = '6';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function cssFontToString(font) {
+            var parts, _var2, _var3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    parts = [];
+                    if (font.style) {
+                        parts.push(font.style);
+                        __state = '7';
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '7':
+                    if (font.weight) {
+                        parts.push(font.weight);
+                        __state = '9';
+                    } else {
+                        __state = '9';
+                    }
+                    break;
+                case '9':
+                    parts.push(font.size + 'px');
+                    _var3 = font.family.indexOf(' ');
+                    if (_var3 === -1) {
+                        parts.push(font.family);
+                        __state = '_item2';
+                    } else {
+                        parts.push('"' + font.family + '"');
+                        __state = '_item2';
+                    }
+                    break;
+                case '_item2':
+                    _var2 = parts.join(' ');
+                    return _var2;
+                default:
+                    return;
+                }
+            }
+        }
+        function splitToTokens(text) {
+            var lines, notEmtpyLines, _var2, _var3, _var4, _var5;
+            text = text || '';
+            lines = text.split('\n');
+            _var4 = lines.map(function (line) {
+                _var5 = line.trim();
+                return _var5;
+            });
+            notEmtpyLines = _var4.filter(function (line) {
+                return line.length;
+            });
+            _var2 = notEmtpyLines.map(function (line) {
+                _var3 = splitLineToTokens(line);
+                return _var3;
+            });
+            return _var2;
+        }
         function DrakonCanvas() {
             var self = {};
             self.arrowRight = function () {
@@ -16543,6 +18422,22 @@ function createDrakonWidget() {
             };
             return self;
         }
+        function DefaultIconCore() {
+            var self = {};
+            self.measure = function (refObject) {
+                return DefaultIconCore_measure(self, refObject);
+            };
+            self.commit = function (width) {
+                return DefaultIconCore_commit(self, width);
+            };
+            self.buildDom = function () {
+                return DefaultIconCore_buildDom(self);
+            };
+            self.renderContent = function (left, top, ctx) {
+                return DefaultIconCore_renderContent(self, left, top, ctx);
+            };
+            return self;
+        }
         function FrameDrag() {
             var self = {};
             self.onDrag = function (evt) {
@@ -16574,8 +18469,13 @@ function createDrakonWidget() {
             return self;
         }
         unit.sortBy = sortBy;
+        unit.flowTextBlock = flowTextBlock;
+        unit.renderFlowBlock = renderFlowBlock;
+        unit.createDummyCanvas = createDummyCanvas;
+        unit.createTextBlock = createTextBlock;
         unit.main = main;
         unit.DrakonCanvas = DrakonCanvas;
+        unit.DefaultIconCore = DefaultIconCore;
         unit.FrameDrag = FrameDrag;
         unit.HandleDrag = HandleDrag;
         unit.FreeMover = FreeMover;
@@ -16600,7 +18500,7 @@ function createDrakonWidget() {
             configurable: true
         });
         return unit;
-    }   
+    }
 
     var html = html_0_1()
     var edit = edit_tools()
