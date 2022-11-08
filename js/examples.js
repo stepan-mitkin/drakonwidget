@@ -716,16 +716,17 @@ function createExamples() {
                 "35": {
                     "type": "group-duration",
                     "flag1": 1,
-                    "x": 580,
+                    "x": 590,
                     "y": 270,
-                    "loX": -100,
+                    "loX": -110,
                     "loY": 75,
-                    "hiX": -460,
+                    "hiX": -470,
                     "hiY": -100,
                     "zIndex": 0,
                     "content": "10 сек"
                 }
-            }
+            },
+            "style": "{\"font\":\"\",\"headerFont\":\"\",\"branchFont\":\"\",\"canvasLabels\":\"\",\"metre\":\"\",\"padding\":\"\",\"maxWidth\":200,\"lineHeight\":\"\",\"background\":\"\",\"color\":\"\",\"iconBack\":\"\",\"lines\":\"\",\"backText\":\"\",\"iconBorder\":\"\",\"internalLine\":\"\",\"shadowColor\":\"\",\"shadowBlur\":\"\",\"lineWidth\":\"\",\"borderWidth\":\"\"}"
         }
     ]
     return diagrams

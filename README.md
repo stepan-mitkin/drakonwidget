@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 0.9.8
+Current version: 0.9.9
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -146,6 +146,7 @@ var config = {
 |branchFont|The font for the Branch icon.|CSS font||bold 14px Arial|
 |buildIconCore|Builds the content of an icon. See Core object reference below.|function|||
 |canSelect|When set to 'false' disables editing and selection.|boolean||true|
+|canvasIcons|__true__ means icon content will be represented as DOM elements. __false__ means icon content will be rendered to canvas.|boolean||false|
 |canvasLabels|The font for the "Yes", "No" labels.|CSS font||14px Arial|
 |commentPadding|The width of the grey border on Comment icon|integer||10|
 |drawZones|Technical visualization for lianas.|boolean||false|
@@ -174,6 +175,9 @@ var config = {
 |startEditContent|Starts editing of the icon's content. See reference below.|function|required||
 |startEditLink|Starts editing of the icon's link. See reference below.|function|required if links are used||
 |startEditSecondary|Starts editing of the icon's secondary content. See reference below.|function|required is secondary content is used||
+|startEditDiagramStyle|Starts editing of the diagrams's style. See reference below.|function|||
+|startEditStyle|Starts editing of the icon's style. See reference below.|function|||
+|textFormat|The format of the __contant__ and __secondary__ fields. Can be: __plain__, __markdown__, __html__|text||plain|
 |theme|The theme object. See the Theme reference.|object|||
 |touchRadius|The touch radius for junctions|integer||5|
 |translate|The text translation function.|function|||
@@ -435,6 +439,46 @@ Arguments
 |isReadonly|boolean|Is the diagram in read-only mode?|
 
 
+### startEditDiagramStyle
+
+Starts editing the style of the diagram. The existing diagram style is passed in the __oldStyle__ argument.
+
+When the user wants to save the edited diagram style, call the __setDiagramStyle__ method on the widget.
+
+If the user cancels editing, do not do anything.
+
+```
+function startEditDiagramStyle(oldStyle, x, y)
+```
+
+Arguments
+
+|Name|Data type|Description|
+|---|---|---|
+|oldStyle|object|The existing diagram style.|
+|x|number|The x-coordinate of the mouse cursor.|
+|y|number|The y-coordinate of the mouse cursor.|
+
+### startEditStyle
+
+Starts editing the style of the selected items. The existing style is passed in the __oldStyle__ argument.
+
+When the user wants to save the edited style, call the __setStyle__ method on the widget.
+
+If the user cancels editing, do not do anything.
+
+```
+function startEditStyle(ids, oldStyle, x, y)
+```
+
+Arguments
+
+|Name|Data type|Description|
+|---|---|---|
+|ids|array of strings|The ids of the currently selected items.|
+|oldStyle|object|The existing style of the items.|
+|x|number|The x-coordinate of the mouse cursor.|
+|y|number|The y-coordinate of the mouse cursor.|
 
 ### translate
 
@@ -592,6 +636,32 @@ function setContent(itemId, content)
 |---|---|---|
 |itemId|text|The id of the item|
 |content|text|The new content. Content must be a string.|
+
+### setDiagramStyle
+
+Sets the diagram style
+
+```
+function setDiagramStyle(style)
+```
+
+|Name|Data type|Description|
+|---|---|---|
+|style|object|The new diagram style|
+
+
+### setStyle
+
+Sets the style for a set of items.
+
+```
+function setStyle(ids, style)
+```
+
+|Name|Data type|Description|
+|---|---|---|
+|ids|array of strings|The ids of the items to change the style for|
+|style|object|The new style|
 
 
 ### setDiagram

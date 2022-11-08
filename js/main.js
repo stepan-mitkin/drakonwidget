@@ -522,7 +522,7 @@
 
     function insertGroupDurationLeft() {
         drakon.insertFree("group-duration-left")
-    }    
+    }
 
     function loadDiagrams() {
         var list = getDiagramList()
@@ -674,7 +674,7 @@
     }
 
     function onInsertionHotspot(prim, evt) {
-        var padding = 10        
+        var padding = 10
         var left = prim.left + padding * 2
         var top = prim.top + padding
         var right = prim.left + prim.width - padding * 2
@@ -797,6 +797,27 @@
         }
     }
 
+    async function startEditDiagramStyle(oldStyle, x, y) {
+        var old = JSON.stringify(oldStyle, null, 4)
+        var newContent = await widgets.largeBox(
+            x,
+            y,
+            "",
+            old
+        )
+
+
+        if (newContent !== undefined) {
+            var style = ""
+            if (newContent) {
+                style = JSON.parse(newContent)
+            }
+            drakon.setDiagramStyle(
+                style
+            )
+        }
+    }
+
     async function startEditLink(prim, ro) {
 
         if (ro) {
@@ -845,6 +866,7 @@
         config.startEditSecondary = startEditSecondary
         config.startEditLink = startEditLink
         config.startEditStyle = startEditStyle
+        config.startEditDiagramStyle = startEditDiagramStyle
         config.showContextMenu = widgets.showContextMenu
         config.onItemClick = onItemClick
         config.buildIconCore = buildIconCore
@@ -853,6 +875,7 @@
         config.drawZones = false
         config.canSelect = canSelect
         config.canvasIcons = false
+        config.textFormat = "plain"
         return config
     }
 
