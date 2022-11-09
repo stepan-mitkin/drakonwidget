@@ -142,6 +142,7 @@ var config = {
 
 |Name|Description|Data type|Required|Default value|
 |---|---|---|---|---|
+|allowResize|__true__ means the user can change the width of some items on the diagram.|boolean||true|
 |branch|The text label of new silhouette branches.|text||Branch|
 |branchFont|The font for the Branch icon.|CSS font||bold 14px Arial|
 |buildIconCore|Builds the content of an icon. See Core object reference below.|function|||
@@ -212,6 +213,7 @@ __icons__ object contains icon-specific theme elements:
 - iconBorder
 - color
 - borderWidth
+- etc.
 
 Icon types:
 
@@ -221,13 +223,7 @@ Icon types:
 - case
 - end
 - header
-- loopbegin
-- loopend
-- params
-- question
-- select
-- insertion
-- comment
+- etc.
 
 ### buildIconCore
 
@@ -508,6 +504,7 @@ Text strings that will be translated:
 - Reset margin
 - Flip
 - Format
+- Diagram format
 
 Note that the words that appear on the diagram (Yes, No, End, Exit, Branch) are set
 in the config. See the Configuration reference.
@@ -766,8 +763,31 @@ function redo()
 
 ## Core object
 
+Every icon has an instance of the core object.
+The core object builds the content of the icon.
 
-Builds the content of an icon in the form of an HTML element.
+If __config.canvasIcons__ == __false__ the core object must implement __buildDom__ method.
+__buildDom__ creates and returns a DOM element which the widget will show in the icon.
+
+If __config.canvasIcons__ == __true__ the core object must implement three other methods:
+
+- __measure__
+- __commit__
+- __renderContent__
+
+First, the widget will call __measure__ to find out how much space the icon needs.
+
+Then, the widget calls __commit__ which makes the icon arrange its content so that the icon fits within the given width.
+
+Every time the diagram is painted, __renderContent__ method is called.
+
+__measure__ and __commit__ are called one time each.
+
+__renderContent__ is called many times.
+
+In addition, the core object can optionally implement __getSecondaryHeight__ method. __getSecondaryHeight__ is needed
+for double icons like Shelf, Input, Output, Process.
+
 
 ### buildDom
 
@@ -790,6 +810,75 @@ if (self.type === "action ") { // self.type comes from context.type
 ```
 function buildDom()
 ```
+
+### __measure__
+
+Takes the first attempt to arrange the content of the icon and measures the space that the icon needs.
+__measure__ must respect __maxWidth__, __minWidth__, __maxHeight__, and __minHeight__ configuration values.
+
+Returns the desired size.
+
+If the returned value is __undefined__, it means the core object does not handle this specific icon.
+In such a case, the widget will call the default algorithm.
+
+```
+function measure(ctx)
+```
+
+Arguments
+
+|Name|Data type|Description|
+|---|---|---|
+|ctx|Canvas 2d context|The 2d context of the canvas that the icon will later render to|
+
+Return value
+
+|Name|Data type|Description|
+|---|---|---|
+|width|number|The desired width|
+|height|number|The desired height|
+
+
+### __commit__
+
+Arranges the content of the icon so that the icon fits within the specified width.
+
+Returns the actual height that the icon needs for the specified width.
+
+```
+function __commit__(width)
+```
+
+Arguments
+
+|Name|Data type|Description|
+|---|---|---|
+|width|integer|The final width of the icon|
+
+Return value
+
+|Name|Data type|Description|
+|---|---|---|
+|width|number|Must be equal to the __width__ argument|
+|height|number|The actual height|
+
+### __renderContent__
+
+Renders the content of the icon to the 2d context of the canvas.
+
+```
+function renderContent(left, top, ctx)
+```
+
+Arguments
+
+
+|Name|Data type|Description|
+|---|---|---|
+|left|number|The x-coordinate of the left edge of the icon|
+|top|number|The y-coordinate of the top edge of the icon|
+|ctx|Canvas 2d context|The 2d context to render the icon to|
+
 
 ### getSecondaryHeight
 
@@ -943,20 +1032,22 @@ A minimal diagram with some content:
 var diagram = {
     name: "Minimal",
     access: "write",
-    params: "param1\nparam2"
+    params: "param1\nparam2",
+    style: "{\"background\":\"grey\"}",
     items: {
         "1": {
-            "type": "end"
+            type: "end"
         },
         "2": {
-            "type": "branch",
-            "branchId": 0,
-            "one": "3"
+            type: "branch",
+            branchId: 0,
+            one: "3"
         },
         "3": {
-            "type": "action",
-            "content": "Hello!",
-            "one": "1"
+            type: "action",
+            content: "Hello!",
+            one: "1",
+            style: "{\"color\":\"yellow\"}"
         }
     }
 }
@@ -973,6 +1064,7 @@ The first icon on the diagram is the __branch__ icon with the lowest __branchId_
 |name|The name of the diagram|text|required|
 |access|Access, can be _read_ or _write_.|text|required|
 |params|The content of the parameters icon|text||
+|style|The diagram style. Must be a string with JSON|text||
 |items|The items of the diagram|object|required|
 
 __items__ is a dictionary where the keys are item ids.
@@ -991,4 +1083,5 @@ __items__ is a dictionary where the keys are item ids.
 |flag1|The orientation of the Yes and No labes in the Question icon.|integer||
 |branchId|The branch ordinal of the Branch icon.|integer||
 |margin|The additional left margin (in metre units) of the branch.|integer||
+|style|The item style. Must be a string with JSON|text||
 
