@@ -846,7 +846,7 @@ Arranges the content of the icon so that the icon fits within the specified widt
 Returns the actual height that the icon needs for the specified width.
 
 ```
-function __commit__(width)
+function commit(width)
 ```
 
 Arguments
