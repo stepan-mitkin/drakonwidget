@@ -1965,8 +1965,8 @@ function createDrakonWidget() {
             flowBlock.lines.push(line);
             return line;
         }
-        function flowLine(tokens, left, top, right, flowBlock) {
-            var margin, baseLineShift, line, _var2, _var3, token;
+        function flowLine(inputLine, left, top, right, flowBlock) {
+            var margin, baseLineShift, line, _var2, _var3, _var4, token;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -1974,29 +1974,46 @@ function createDrakonWidget() {
                         margin = (flowBlock.lineHeight - flowBlock.fontSize) / 2;
                         baseLineShift = flowBlock.lineHeight - margin;
                         line = createLine(flowBlock, left, top, baseLineShift);
-                        __state = '45';
+                        _var2 = inputLine.type;
+                        if (_var2 === 'ul') {
+                            __state = '62';
+                        } else {
+                            if (_var2 === 'ol') {
+                                __state = '62';
+                            } else {
+                                __state = '45';
+                            }
+                        }
                         break;
                     case '10':
                         return line.bottom;
                     case '45':
-                        _var2 = tokens;
-                        _var3 = 0;
+                        _var3 = inputLine.tokens;
+                        _var4 = 0;
                         __state = '47';
                         break;
                     case '47':
-                        if (_var3 < _var2.length) {
-                            __state = '_item3';
+                        if (_var4 < _var3.length) {
+                            __state = '_item6';
                         } else {
                             __state = '10';
                         }
                         break;
                     case '50':
                         addTokenToLine(line, token);
-                        _var3++;
+                        _var4++;
                         __state = '47';
                         break;
-                    case '_item3':
-                        token = _var2[_var3];
+                    case '62':
+                        if (inputLine.tokens.length === 0) {
+                            __state = '45';
+                        } else {
+                            left += inputLine.tokens[0].width;
+                            __state = '45';
+                        }
+                        break;
+                    case '_item6':
+                        token = _var3[_var4];
                         if (line.right + token.width <= right) {
                             __state = '50';
                         } else {
@@ -2004,7 +2021,7 @@ function createDrakonWidget() {
                                 __state = '50';
                             } else {
                                 line = createLine(flowBlock, left, line.bottom, baseLineShift);
-                                __state = '_item3';
+                                __state = '_item6';
                             }
                         }
                         break;
@@ -2157,14 +2174,14 @@ function createDrakonWidget() {
             }
         }
         function createTextBlock(ctx, text, options) {
-            var line, lines, fontCache, fontObj, block, size, _var2, _var5, _var6, _var3, _var4, token, _var7;
+            var line, lines, fontCache, fontObj, block, size, _var2, _var5, _var6, _var3, _var4, token, _var7, _var8;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
                         if (options.singleLine) {
                             line = splitLineToTokens(text, '');
-                            lines = [line];
+                            lines = wrapInLineObjects([line]);
                             __state = '13';
                         } else {
                             _var2 = options.textFormat;
@@ -2176,7 +2193,8 @@ function createDrakonWidget() {
                                     lines = splitToTokensMarkdown(text);
                                     __state = '13';
                                 } else {
-                                    lines = splitToTokens(text);
+                                    _var7 = splitToTokens(text);
+                                    lines = wrapInLineObjects(_var7);
                                     __state = '13';
                                 }
                             }
@@ -2207,7 +2225,7 @@ function createDrakonWidget() {
                     case '20':
                         if (_var6 < _var5.length) {
                             line = _var5[_var6];
-                            _var3 = line;
+                            _var3 = line.tokens;
                             _var4 = 0;
                             __state = '23';
                         } else {
@@ -2226,8 +2244,8 @@ function createDrakonWidget() {
                                 __state = '24';
                             }
                         } else {
-                            _var7 = calcLineWidth(line);
-                            block.width = Math.max(_var7, block.width);
+                            _var8 = calcLineWidth(line.tokens);
+                            block.width = Math.max(_var8, block.width);
                             _var6++;
                             __state = '20';
                         }
@@ -6176,7 +6194,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '0.9.9';
+            return '0.9.10';
         }
         function DrakonCanvas_copySelection(self) {
             copy(self);
@@ -6226,7 +6244,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_showItem(self, itemId) {
-            var visuals, box, width, height, nodeBox, nodeLeft, nodeTop, nodeRight, nodeBottom, scrollX, halfWidth, scrollY, halfHeight, zoom, node;
+            var visuals, box, width, height, nodeBox, nodeLeft, nodeTop, nodeRight, nodeBottom, scroll, scrollX, halfWidth, scrollY, halfHeight, zoom, node;
             var __state = '13';
             while (true) {
                 switch (__state) {
@@ -6271,8 +6289,8 @@ function createDrakonWidget() {
                         }
                         break;
                     case '21':
-                        setScroll(self, scrollX, scrollY);
-                        copyScrollToScrollable(self);
+                        scroll = setScroll(self, scrollX, scrollY);
+                        copyScrollToScrollable(self, scroll.x, scroll.y);
                         selectPrim(self, itemId);
                         paint(self);
                         __state = '11';
@@ -7832,7 +7850,6 @@ function createDrakonWidget() {
             x = scroller.startScrollX - deltaX / zoom;
             y = scroller.startScrollY - deltaY / zoom;
             setScrollFromMouseEvent(widget, x, y);
-            paint(widget);
             return;
         }
         function createHandleDrag(widget, handle, evt) {
@@ -8534,21 +8551,16 @@ function createDrakonWidget() {
             }
         }
         function setScroll(widget, x, y) {
-            var visuals, box, zoom;
+            var scroll, visuals;
+            scroll = sanitizeScroll(widget, x, y);
             visuals = widget.visuals;
-            box = visuals.box;
-            zoom = widget.zoom / 10000;
-            x = Math.min(box.right - widget.width / zoom, x);
-            x = Math.max(box.left, x);
-            y = Math.min(box.bottom - widget.height / zoom, y);
-            y = Math.max(box.top, y);
-            visuals.scrollX = x;
-            visuals.scrollY = y;
+            visuals.scrollX = scroll.x;
+            visuals.scrollY = scroll.y;
             widget.origins[widget.diagramId] = {
-                x: x,
-                y: y
+                x: scroll.x,
+                y: scroll.y
             };
-            return;
+            return scroll;
         }
         function drawIcon(visuals, node, ctx) {
             var render;
@@ -10307,12 +10319,12 @@ function createDrakonWidget() {
             ], { iconBack: '#fffdbd' });
             return theme;
         }
-        function copyScrollToScrollable(widget) {
+        function copyScrollToScrollable(widget, scrollX, scrollY) {
             var visuals, zoom;
             visuals = widget.visuals;
             zoom = widget.zoom / 10000;
-            widget.scrollableContainer.scrollLeft = (visuals.scrollX - visuals.box.left) * zoom;
-            widget.scrollableContainer.scrollTop = (visuals.scrollY - visuals.box.top) * zoom;
+            widget.scrollableContainer.scrollLeft = (scrollX - visuals.box.left) * zoom;
+            widget.scrollableContainer.scrollTop = (scrollY - visuals.box.top) * zoom;
             return;
         }
         function forType(visuals, type, action) {
@@ -11788,7 +11800,7 @@ function createDrakonWidget() {
             }
         }
         function initScrollPos(widget) {
-            var visuals, savedOrigin, left, top, zoom;
+            var visuals, savedOrigin, left, top, scroll, zoom;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -11806,11 +11818,11 @@ function createDrakonWidget() {
                         }
                         break;
                     case '10':
-                        setScroll(widget, left, top);
+                        scroll = setScroll(widget, left, top);
                         zoom = widget.zoom / 10000;
                         widget.scrollable.style.width = visuals.box.width * zoom + 'px';
                         widget.scrollable.style.height = visuals.box.height * zoom + 'px';
-                        copyScrollToScrollable(widget);
+                        copyScrollToScrollable(widget, scroll.x, scroll.y);
                         return;
                     default:
                         return;
@@ -14555,6 +14567,20 @@ function createDrakonWidget() {
         function no() {
             return 'No';
         }
+        function sanitizeScroll(widget, x, y) {
+            var visuals, box, zoom;
+            visuals = widget.visuals;
+            box = visuals.box;
+            zoom = widget.zoom / 10000;
+            x = Math.min(box.right - widget.width / zoom, x);
+            x = Math.max(box.left, x);
+            y = Math.min(box.bottom - widget.height / zoom, y);
+            y = Math.max(box.top, y);
+            return {
+                x: x,
+                y: y
+            };
+        }
         function buildVisuals(widget) {
             var visuals, model, context, node, branch, element, ctx, config, _var5, _var6, bItemId, _var3, _var2, _var4, id, item, _var8, _var7, _var9, skewer, _var10, _var11;
             var __state = '2';
@@ -16452,8 +16478,9 @@ function createDrakonWidget() {
             }
         }
         function setScrollFromMouseEvent(widget, x, y) {
-            setScroll(widget, x, y);
-            copyScrollToScrollable(widget);
+            var norm;
+            norm = sanitizeScroll(widget, x, y);
+            copyScrollToScrollable(widget, norm.x, norm.y);
             return;
         }
         function crawlSubdiagram(visuals, startEdge) {
@@ -17934,7 +17961,7 @@ function createDrakonWidget() {
                 switch (__state) {
                     case '2':
                         if (current.text) {
-                            line.push(current);
+                            line.tokens.push(current);
                             __state = '5';
                         } else {
                             __state = '5';
@@ -17950,6 +17977,10 @@ function createDrakonWidget() {
                 }
             }
         }
+        function pushSpace(line) {
+            line.tokens.push({ type: 'space' });
+            return;
+        }
         function endLine(line, lines) {
             var __state = '2';
             while (true) {
@@ -17963,7 +17994,7 @@ function createDrakonWidget() {
                         }
                         break;
                     case '6':
-                        return [];
+                        return { tokens: [] };
                     default:
                         return;
                 }
@@ -17997,7 +18028,7 @@ function createDrakonWidget() {
                                     type: ''
                                 };
                                 type = '';
-                                line = [];
+                                line = { tokens: [] };
                                 me.lines = [];
                                 me.state = '2';
                                 break;
@@ -18027,11 +18058,6 @@ function createDrakonWidget() {
                             case '38':
                                 type = 'strong';
                                 current = endToken(current, line, type);
-                                me.state = '7';
-                                break;
-                            case '45':
-                                line.push({ type: 'space' });
-                                current.text += ch;
                                 me.state = '7';
                                 break;
                             case '55':
@@ -18068,18 +18094,6 @@ function createDrakonWidget() {
                                 current = endToken(current, line, type);
                                 me.state = '5';
                                 break;
-                            case '69':
-                                line.push({ type: 'space' });
-                                type = 'em';
-                                current = endToken(current, line, type);
-                                me.state = '7';
-                                break;
-                            case '70':
-                                line.push({ type: 'space' });
-                                type = 'strong';
-                                current = endToken(current, line, type);
-                                me.state = '7';
-                                break;
                             case '72':
                                 type = '';
                                 current = endToken(current, line, type);
@@ -18099,6 +18113,23 @@ function createDrakonWidget() {
                                 type = '';
                                 line = endLine(line, me.lines);
                                 me.state = '2';
+                                break;
+                            case '80':
+                                pushSpace(line);
+                                current.text += ch;
+                                me.state = '7';
+                                break;
+                            case '81':
+                                pushSpace(line);
+                                type = 'em';
+                                current = endToken(current, line, type);
+                                me.state = '7';
+                                break;
+                            case '82':
+                                pushSpace(line);
+                                type = 'strong';
+                                current = endToken(current, line, type);
+                                me.state = '7';
                                 break;
                             default:
                                 return;
@@ -18125,7 +18156,7 @@ function createDrakonWidget() {
                                 _main_SpanBuilder(__resolve, __reject);
                                 break;
                             case '39':
-                                me.state = '45';
+                                me.state = '80';
                                 _main_SpanBuilder(__resolve, __reject);
                                 break;
                             case '49':
@@ -18191,7 +18222,7 @@ function createDrakonWidget() {
                                 _main_SpanBuilder(__resolve, __reject);
                                 break;
                             case '39':
-                                me.state = '69';
+                                me.state = '81';
                                 _main_SpanBuilder(__resolve, __reject);
                                 break;
                             case '49':
@@ -18213,7 +18244,7 @@ function createDrakonWidget() {
                                 _main_SpanBuilder(__resolve, __reject);
                                 break;
                             case '39':
-                                me.state = '70';
+                                me.state = '82';
                                 _main_SpanBuilder(__resolve, __reject);
                                 break;
                             case '49':
@@ -18692,6 +18723,32 @@ function createDrakonWidget() {
                 }
             }
         }
+        function wrapInLineObjects(lines) {
+            var output, _var2, _var3, line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        output = [];
+                        _var2 = lines;
+                        _var3 = 0;
+                        __state = '6';
+                        break;
+                    case '6':
+                        if (_var3 < _var2.length) {
+                            line = _var2[_var3];
+                            output.push({ tokens: line });
+                            _var3++;
+                            __state = '6';
+                        } else {
+                            return output;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function setFontToTokens(lines, font, fontCache) {
             var fontObj, _var2, _var3, line;
             var __state = '6';
@@ -18706,7 +18763,7 @@ function createDrakonWidget() {
                     case '10':
                         if (_var3 < _var2.length) {
                             line = _var2[_var3];
-                            line.forEach(function (token) {
+                            line.tokens.forEach(function (token) {
                                 setFontToToken(token, font, fontObj);
                             });
                             _var3++;
@@ -18746,9 +18803,12 @@ function createDrakonWidget() {
                             node = _var2[_var3];
                             name = getNodeName(node);
                             if (name === 'li') {
-                                line = [{ text: '\u2022 ' }];
+                                line = {
+                                    type: 'ul',
+                                    tokens: [{ text: '\u2022 ' }]
+                                };
                                 lines.push(line);
-                                addNodeToLine(node, line, false, false);
+                                addNodeToLine(node, line.tokens, false, false);
                                 __state = '4';
                             } else {
                                 __state = '4';
@@ -18913,7 +18973,7 @@ function createDrakonWidget() {
             }
         }
         function splitToTokensHtml(html) {
-            var lines, parser, doc, body, name, firstNode, _var2, _var3, _var4, node;
+            var lines, parser, doc, body, name, firstNode, _var2, _var3, _var4, node, _var5;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -18970,7 +19030,8 @@ function createDrakonWidget() {
                             firstNode = body.childNodes[0];
                             name = getNodeName(firstNode);
                             if (name === '#text') {
-                                lines = splitToTokens(firstNode.nodeValue);
+                                _var5 = splitToTokens(firstNode.nodeValue);
+                                lines = wrapInLineObjects(_var5);
                                 __state = '9';
                             } else {
                                 __state = '10';
@@ -19078,9 +19139,9 @@ function createDrakonWidget() {
         }
         function processParagraph(node, lines) {
             var line;
-            line = [];
+            line = { tokens: [] };
             lines.push(line);
-            addNodeToLine(node, line, false, false);
+            addNodeToLine(node, line.tokens, false, false);
             return;
         }
         function getNodeName(node) {
@@ -19089,7 +19150,7 @@ function createDrakonWidget() {
             return _var2;
         }
         function processOrdered(nodes, lines) {
-            var line, i, name, _var2, _var3, node;
+            var i, name, line, _var2, _var3, node;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -19108,9 +19169,12 @@ function createDrakonWidget() {
                             node = _var2[_var3];
                             name = getNodeName(node);
                             if (name === 'li') {
-                                line = [{ text: i + '. ' }];
+                                line = {
+                                    type: 'ul',
+                                    tokens: [{ text: i + '. ' }]
+                                };
                                 lines.push(line);
-                                addNodeToLine(node, line, false, false);
+                                addNodeToLine(node, line.tokens, false, false);
                                 i++;
                                 __state = '4';
                             } else {
