@@ -147,7 +147,7 @@ var config = {
 |branchFont|The font for the Branch icon.|CSS font||bold 14px Arial|
 |buildIconCore|Builds the content of an icon. See Core object reference below.|function|||
 |canSelect|When set to 'false' disables editing and selection.|boolean||true|
-|canvasIcons|__true__ means icon content will be represented as DOM elements. __false__ means icon content will be rendered to canvas.|boolean||false|
+|canvasIcons|__false__ means icon content will be represented as DOM elements. __true__ means icon content will be rendered to canvas.|boolean||false|
 |canvasLabels|The font for the "Yes", "No" labels.|CSS font||14px Arial|
 |centerContent|__true__ means the content is horizontally centered in icons (different from textAlign). Supported only when __canvasIcons__==__true__|boolean||false|
 |commentPadding|The width of the grey border on Comment icon|integer||10|
