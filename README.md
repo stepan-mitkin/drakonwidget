@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 0.9.10
+Current version: 0.9.11
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -149,6 +149,7 @@ var config = {
 |canSelect|When set to 'false' disables editing and selection.|boolean||true|
 |canvasIcons|__true__ means icon content will be represented as DOM elements. __false__ means icon content will be rendered to canvas.|boolean||false|
 |canvasLabels|The font for the "Yes", "No" labels.|CSS font||14px Arial|
+|centerContent|__true__ means the content is horizontally centered in icons (different from textAlign). Supported only when __canvasIcons__==__true__|boolean||false|
 |commentPadding|The width of the grey border on Comment icon|integer||10|
 |drawZones|Technical visualization for lianas.|boolean||false|
 |end|The text label for the End icon.|text||End|
@@ -629,10 +630,17 @@ Sets the content of an item.
 function setContent(itemId, content)
 ```
 
+Arguments
+
 |Name|Data type|Description|
 |---|---|---|
 |itemId|text|The id of the item|
 |content|text|The new content. Content must be a string.|
+
+Return value
+
+An array of strings. Each element in the array is a CSS font declaration (for example ["bold 18px Arimo", "14px Arimo"]).
+The array contains all fonts that are used in the diagram.
 
 ### setDiagramStyle
 
@@ -642,9 +650,38 @@ Sets the diagram style
 function setDiagramStyle(style)
 ```
 
+Arguments
+
+
 |Name|Data type|Description|
 |---|---|---|
 |style|object|The new diagram style|
+
+Return value
+
+An array of strings. Each element in the array is a CSS font declaration (for example ["bold 18px Arimo", "14px Arimo"]).
+The array contains all fonts that are used in the diagram.
+
+
+### setSecondary
+
+Sets the secondary content of an item.
+
+```
+function setSecondary(itemId, content)
+```
+
+Arguments
+
+|Name|Data type|Description|
+|---|---|---|
+|itemId|text|The id of the item|
+|content|text|The new secondary content. Content must be a string.|
+
+Return value
+
+An array of strings. Each element in the array is a CSS font declaration (for example ["bold 18px Arimo", "14px Arimo"]).
+The array contains all fonts that are used in the diagram.
 
 
 ### setStyle
@@ -655,11 +692,17 @@ Sets the style for a set of items.
 function setStyle(ids, style)
 ```
 
+Arguments
+
 |Name|Data type|Description|
 |---|---|---|
 |ids|array of strings|The ids of the items to change the style for|
 |style|object|The new style|
 
+Return value
+
+An array of strings. Each element in the array is a CSS font declaration (for example ["bold 18px Arimo", "14px Arimo"]).
+The array contains all fonts that are used in the diagram.
 
 ### setDiagram
 
@@ -674,6 +717,11 @@ function setDiagram(diagramId, diagram, editSender)
 |diagramId|text|The id of the diagram|
 |diagram|object|The diagram. See the Diagram data model. Takes ownership of the diagram object.|
 |editSender|object|The widget will send edits performed on the diagram to the __editSender__ object. See the EditSender reference.|
+
+Return value
+
+An array of strings. Each element in the array is a CSS font declaration (for example ["bold 18px Arimo", "14px Arimo"]).
+The array contains all fonts that are used in the diagram.
 
 ### setZoom
 
@@ -808,7 +856,20 @@ if (self.type === "action ") { // self.type comes from context.type
 
 
 ```
-function buildDom()
+function buildDom(fonts)
+```
+
+Arguments
+
+|Name|Data type|Description|
+|---|---|---|
+|fonts|object|Output parameter. Add all fonts used by this icon as the keys to the __fonts__ object|
+
+Example
+
+```javascript
+fonts["14px Arial"] = true
+fonts["italic bold 14px Arial"] = true
 ```
 
 ### __measure__
@@ -822,7 +883,7 @@ If the returned value is __undefined__, it means the core object does not handle
 In such a case, the widget will call the default algorithm.
 
 ```
-function measure(ctx)
+function measure(ctx, fonts)
 ```
 
 Arguments
@@ -830,6 +891,7 @@ Arguments
 |Name|Data type|Description|
 |---|---|---|
 |ctx|Canvas 2d context|The 2d context of the canvas that the icon will later render to|
+|fonts|object|Output parameter. Add all fonts used by this icon as the keys to the __fonts__ object|
 
 Return value
 

@@ -875,6 +875,10 @@
         config.drawZones = false
         config.canSelect = canSelect
         config.canvasIcons = false
+        config.centerContent = false
+        config.yes = "Да"
+        config.no = "Нет"
+        config.end = "Конец"
         config.textFormat = "plain"
         return config
     }
@@ -993,6 +997,8 @@
         var paddingLeft = core.config.padding + "px"
         var paddingRight = core.config.padding + "px"
         var color = getThemeValue(core, "color")
+        var textAlign = getThemeValue(core, "textAlign")
+        textAlign = textAlign || "left"
         var font = getThemeValue(core, "font")
         font = font || core.config.font
 
@@ -1007,6 +1013,7 @@
         container.style.paddingBottom = paddingBottom
         container.style.color = color
         container.style.font = font
+        container.style.textAlign = textAlign
         container.style.minWidth = core.config.minWidth + "px"
         container.style.maxWidth = core.config.maxWidth + "px"
         container.style.lineHeight = core.config.lineHeight * 100 + "%"
