@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 0.9.11
+Current version: 1.0.0
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -577,6 +577,26 @@ Invokes the content editor for the currently selected item (if any).
 ```
 function editContent()
 ```
+
+### exportCanvas
+
+Creates and returns a temporary CANVAS element that contains the whole diagram.
+
+This functions works only when __config.canvasIcons__ == __true__.
+
+
+```
+function exportCanvas()
+```
+
+### exportJson
+
+Builds and returns a string that contains a JSON representation of the diagram.
+
+```
+function exportJson()
+```
+
 
 ### getVersion
 

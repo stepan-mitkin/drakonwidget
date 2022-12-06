@@ -32,17 +32,17 @@
     }
 
     function initShortcuts() {
-        Mousetrap.bind(['ctrl+c', 'command+c'], copy);
-        Mousetrap.bind(['ctrl+v', 'command+v'], paste);
-        Mousetrap.bind(['ctrl+x', 'command+x'], cut);
-        Mousetrap.bind(['ctrl+z', 'command+z'], undo);
-        Mousetrap.bind(['ctrl+y', 'command+y'], redo);
-        Mousetrap.bind(['del', 'backspace'], deleteSelection);
-        Mousetrap.bind('enter', editContent);
-        Mousetrap.bind('up', arrowUp);
-        Mousetrap.bind('down', arrowDown);
-        Mousetrap.bind('left', arrowLeft);
-        Mousetrap.bind('right', arrowRight);
+        Mousetrap.bind(['ctrl+c', 'command+c'], copy, "keydown");
+        Mousetrap.bind(['ctrl+v', 'command+v'], paste, "keydown");
+        Mousetrap.bind(['ctrl+x', 'command+x'], cut, "keydown");
+        Mousetrap.bind(['ctrl+z', 'command+z'], undo, "keydown");
+        Mousetrap.bind(['ctrl+y', 'command+y'], redo, "keydown");
+        Mousetrap.bind(['del', 'backspace'], deleteSelection, "keydown");
+        Mousetrap.bind('enter', editContent, "keydown");
+        Mousetrap.bind('up', arrowUp, "keydown");
+        Mousetrap.bind('down', arrowDown, "keydown");
+        Mousetrap.bind('left', arrowLeft, "keydown");
+        Mousetrap.bind('right', arrowRight, "keydown");
     }
 
     function arrowUp(evt) {
@@ -472,7 +472,7 @@
 
         addIconButton(container, image, action, tooltip)
         if (shortcut) {
-            Mousetrap.bind(shortcut.toLowerCase(), action)
+            Mousetrap.bind(shortcut.toLowerCase(), action, "keydown")
         }
     }
 
