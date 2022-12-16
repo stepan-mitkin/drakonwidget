@@ -717,6 +717,7 @@ function createDrakonWidget() {
         return unit;
     }
 
+
     function drakon_canvas() {
         var unit = {};
         var html, edit_tools, tracing;
@@ -761,11 +762,13 @@ function createDrakonWidget() {
         }
         function DrakonCanvas_init(self) {
             var _var2;
+            tracing.trace('DrakonCanvas.init');
             self.origins = {};
             _var2 = Math.random();
             self.styleTag = html.createStyle();
             self.myStyleId = Math.floor(_var2 * 100000);
             self.zoom = 10000;
+            self.zoomFactor = 1;
             initInsertFunctions(self);
             initFreeFunctions(self);
             return;
@@ -781,6 +784,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.showPasteSockets', type);
                         _var3 = isReadonly(self);
                         if (_var3) {
                             __state = '1';
@@ -857,22 +861,26 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_undo(self) {
-            var _var2;
+            var edits, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.undo');
                         _var2 = isReadonly(self);
                         if (_var2) {
                             __state = '1';
                         } else {
                             if (self.edit) {
-                                resetSelection(self);
-                                self.edit.undoEdit();
-                                self.redraw();
-                                __state = '1';
+                                edits = self.edit.undoEdit();
+                                if (edits) {
+                                    rebuildSelection(self, edits.changes);
+                                    __state = '1';
+                                } else {
+                                    __state = '1';
+                                }
                             } else {
                                 __state = '1';
                             }
@@ -895,8 +903,7 @@ function createDrakonWidget() {
                             doc: {},
                             branches: [],
                             edits: [],
-                            scrollX: 0,
-                            scrollY: 0
+                            type: diagram.type
                         };
                         model.doc.access = diagram.access || 'write';
                         model.doc.name = diagram.name || '';
@@ -986,12 +993,13 @@ function createDrakonWidget() {
                 }
             }
         }
-        function findFree(visuals, pos) {
-            var free, element, i, _var2;
+        function findFree(widget, pos) {
+            var free, visuals, element, i, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
+                        visuals = widget.visuals;
                         free = visuals.free;
                         i = free.length - 1;
                         __state = '5';
@@ -999,7 +1007,7 @@ function createDrakonWidget() {
                     case '5':
                         if (i >= 0) {
                             element = free[i];
-                            _var2 = hitBox(element.box, pos.x, pos.y);
+                            _var2 = hitFreeElement(widget, element, pos);
                             if (_var2) {
                                 return element;
                             } else {
@@ -1026,8 +1034,8 @@ function createDrakonWidget() {
             var socket, visuals;
             visuals = widget.visuals;
             socket = visuals.sockets[visuals.currentSocket - 1];
+            tracing.trace('runCurrentSocket', socket.op + ' ' + socket.target);
             runInsertAction(widget, socket);
-            widget.redraw();
             return;
         }
         function buildBranchPath(ctx, x, y, w, h, padding) {
@@ -1045,6 +1053,9 @@ function createDrakonWidget() {
             ctx.lineTo(left, middle);
             ctx.closePath();
             return middle;
+        }
+        function GroupTopHandle_getMaxY(self) {
+            return self.maxY;
         }
         function contentBranch(visuals, node) {
             var options, _var2;
@@ -1125,24 +1136,12 @@ function createDrakonWidget() {
         }
         function clone(src) {
             var dst;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        if (src) {
-                            dst = {};
-                            Object.assign(dst, src);
-                            return dst;
-                        } else {
-                            src;
-                            __state = '1';
-                        }
-                        break;
-                    default:
-                        return;
-                }
+            if (src) {
+                dst = {};
+                Object.assign(dst, src);
+                return dst;
+            } else {
+                return src;
             }
         }
         function addToMultiDict(dict, key, value) {
@@ -1251,6 +1250,14 @@ function createDrakonWidget() {
             var _var2;
             _var2 = createBox(x - width, y - height, width * 2, height * 2);
             return _var2;
+        }
+        function createBoxWithMargin(left, top, width, height, margin) {
+            return {
+                left: left - margin,
+                top: top - margin,
+                width: width + margin * 2,
+                height: height + margin * 2
+            };
         }
         function remove(array, item) {
             var index;
@@ -1362,6 +1369,11 @@ function createDrakonWidget() {
             var date, _var2;
             date = new Date();
             _var2 = date.getTime();
+            return _var2;
+        }
+        function boxForHorizontalLine(left, top, right, margin) {
+            var _var2;
+            _var2 = createBoxWithMargin(left, top, right - left, 0, margin);
             return _var2;
         }
         function copyFields(dst, src, fields) {
@@ -1477,9 +1489,9 @@ function createDrakonWidget() {
                 return true;
             }
         }
-        function setTimeout(action, delay) {
+        function setTimeout(action, delay, notrace) {
             var _var2;
-            _var2 = tracing.setTimeout(action, delay);
+            _var2 = tracing.setTimeout(action, delay, notrace);
             return _var2;
         }
         function setCursor(element, cursor) {
@@ -1626,6 +1638,11 @@ function createDrakonWidget() {
             } else {
                 return undefined;
             }
+        }
+        function boxForVerticalLine(left, top, bottom, margin) {
+            var _var2;
+            _var2 = createBoxWithMargin(left, top, 0, bottom - top, margin);
+            return _var2;
         }
         function stopMachine(obj, property) {
             var machine;
@@ -2443,6 +2460,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.arrowRight');
                         if (self.visuals.config.canSelect) {
                             nodes = getNodesFromSelection(self);
                             if (nodes.length === 0) {
@@ -2509,6 +2527,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                     case '2':
+                        tracing.trace('DrakonCanvas.exportJson');
                         diagram = {
                             items: {},
                             type: 'drakon'
@@ -2551,6 +2570,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.showInsertionSockets', type);
                         _var3 = isReadonly(self);
                         if (_var3) {
                             __state = '1';
@@ -2706,12 +2726,11 @@ function createDrakonWidget() {
             }
         }
         function redirectAddress(widget, address, targetId) {
-            var edits;
+            var edits, _var2;
             edits = [];
             redirectUpperItems(edits, address.up.links, targetId);
-            doEdit(widget, edits, true);
-            widget.redraw();
-            return;
+            _var2 = updateAndKeepSelection(widget, edits);
+            return _var2;
         }
         function isSilhouette(visuals) {
             return visuals.branches.length > 1;
@@ -2806,6 +2825,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.arrowLeft');
                         if (self.visuals.config.canSelect) {
                             nodes = getNodesFromSelection(self);
                             if (nodes.length === 0) {
@@ -2840,32 +2860,31 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_toggleSilhouette(self) {
-            var edits, _var2, _var3;
+            var edits, _var2, _var3, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '1':
                         return;
                     case '2':
-                        _var3 = isReadonly(self);
-                        if (_var3) {
+                        tracing.trace('DrakonCanvas.toggleSilhouette');
+                        _var4 = isReadonly(self);
+                        if (_var4) {
                             __state = '1';
                         } else {
                             _var2 = isSilhouette(self.visuals);
                             if (_var2) {
                                 edits = toPrimitive(self);
-                                __state = '5';
+                                __state = '_item3';
                             } else {
                                 edits = toSilhouette(self);
-                                __state = '5';
+                                __state = '_item3';
                             }
                         }
                         break;
-                    case '5':
-                        doEdit(self, edits, false);
-                        self.redraw();
-                        __state = '1';
-                        break;
+                    case '_item3':
+                        _var3 = doEdit(self, edits);
+                        return _var3;
                     default:
                         return;
                 }
@@ -2877,6 +2896,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                     case '2':
+                        tracing.trace('DrakonCanvas.render');
                         container = div({
                             display: 'inline-block',
                             position: 'relative',
@@ -2975,6 +2995,40 @@ function createDrakonWidget() {
                 }
             }
         }
+        function findHead(selection, referenced) {
+            var _var3, _var2, _var4, id, type;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        _var3 = selection.prims;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var4 < _var2.length) {
+                            id = _var2[_var4];
+                            type = _var3[id];
+                            if (type === 'node') {
+                                if (id in referenced) {
+                                    _var4++;
+                                    __state = '5';
+                                } else {
+                                    return id;
+                                }
+                            } else {
+                                return undefined;
+                            }
+                        } else {
+                            return undefined;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function blockSelect(widget) {
             var selection, visuals, selectionIds, id, prim, snode, _var3, _var2, _var4, node, _var5, _var6, _var7, _var8;
             var __state = '17';
@@ -3042,6 +3096,16 @@ function createDrakonWidget() {
                     default:
                         return;
                 }
+            }
+        }
+        function addToSelection(widget, node) {
+            var _var2;
+            _var2 = addToSelectionCore(widget, node);
+            if (_var2) {
+                reportSelection(widget);
+                return true;
+            } else {
+                return false;
             }
         }
         function selectClusterStepBack(widget, context, nodeInfo) {
@@ -3153,6 +3217,33 @@ function createDrakonWidget() {
                 }
             }
         }
+        function selectMany(widget, selectable) {
+            var referenced, _var2, _var3, edit;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        referenced = {};
+                        _var2 = selectable;
+                        _var3 = 0;
+                        __state = '5';
+                        break;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            edit = _var2[_var3];
+                            addEditToSelection(widget, edit, referenced);
+                            _var3++;
+                            __state = '5';
+                        } else {
+                            widget.selection.head = findHead(widget.selection, referenced);
+                            return;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function updateSelectionFrame(widget, startX, startY, evt) {
             var start, current, left, width, top, height, visuals, evt0;
             var __state = '2';
@@ -3209,7 +3300,7 @@ function createDrakonWidget() {
         }
         function toDiagram(widget, evt) {
             var rect, widgetX, widgetY, _var2;
-            rect = evt.target.getBoundingClientRect();
+            rect = widget.canvas.getBoundingClientRect();
             widgetX = evt.clientX - rect.left;
             widgetY = evt.clientY - rect.top;
             _var2 = widgetToDiagram(widget, widgetX, widgetY);
@@ -3359,7 +3450,7 @@ function createDrakonWidget() {
             if (handle) {
                 return handle;
             } else {
-                element = findFree(visuals, pos);
+                element = findFree(widget, pos);
                 if (element) {
                     _var2 = freeToVisualItem(widget, element);
                     return _var2;
@@ -3446,7 +3537,7 @@ function createDrakonWidget() {
         }
         function diagramToWidgetX(widget, diaX) {
             var zoom;
-            zoom = widget.zoom / 10000;
+            zoom = widget.zoomFactor;
             return (diaX - widget.visuals.scrollX) * zoom;
         }
         function toWidget(element, x, y) {
@@ -3459,8 +3550,8 @@ function createDrakonWidget() {
                 y: widgetY
             };
         }
-        function addToSelection(widget, node) {
-            var selection, visuals, head, wayUp, wayDown, prims;
+        function addToSelectionCore(widget, node) {
+            var selection, visuals, head, wayUp, wayDown;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -3479,12 +3570,12 @@ function createDrakonWidget() {
                         wayUp = findWayUp(node, head);
                         if (wayUp.length) {
                             selectPath(widget, wayUp, head);
-                            __state = '17';
+                            __state = '14';
                         } else {
                             wayDown = findWayUp(head, node);
                             if (wayDown.length) {
                                 selectPath(widget, wayDown, head);
-                                __state = '17';
+                                __state = '14';
                             } else {
                                 return false;
                             }
@@ -3492,15 +3583,6 @@ function createDrakonWidget() {
                         break;
                     case '14':
                         return true;
-                    case '17':
-                        prims = getSelectedPrims(widget);
-                        if (widget.config.onSelectionChanged) {
-                            widget.config.onSelectionChanged(prims);
-                            __state = '14';
-                        } else {
-                            __state = '14';
-                        }
-                        break;
                     default:
                         return;
                 }
@@ -3667,7 +3749,7 @@ function createDrakonWidget() {
         }
         function widgetToDiagram(widget, widgetX, widgetY) {
             var x, y, zoom, _var2, _var3;
-            zoom = widget.zoom / 10000;
+            zoom = widget.zoomFactor;
             x = widgetX / zoom + widget.visuals.scrollX;
             y = widgetY / zoom + widget.visuals.scrollY;
             _var2 = Math.floor(x);
@@ -3676,6 +3758,68 @@ function createDrakonWidget() {
                 x: _var2,
                 y: _var3
             };
+        }
+        function addEditToSelection(widget, edit, referenced) {
+            var selection, id, fields, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        selection = widget.selection;
+                        id = edit.id;
+                        fields = edit.fields;
+                        _var2 = isFree(widget, fields);
+                        if (_var2) {
+                            selection.prims[id] = 'free';
+                            __state = '1';
+                        } else {
+                            if (fields.one) {
+                                referenced[fields.one] = true;
+                                __state = '14';
+                            } else {
+                                __state = '14';
+                            }
+                        }
+                        break;
+                    case '11':
+                        selection.prims[id] = 'node';
+                        __state = '1';
+                        break;
+                    case '14':
+                        if (fields.two) {
+                            referenced[fields.two] = true;
+                            __state = '11';
+                        } else {
+                            __state = '11';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function reportSelection(widget) {
+            var prims;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        if (widget.config.onSelectionChanged) {
+                            prims = getSelectedPrims(widget);
+                            widget.config.onSelectionChanged(prims);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
         function addParBlockToSelection(widget, headNode, start) {
             var endId, visited, result, node, _var3, _var2, _var4, id, _;
@@ -3853,6 +3997,43 @@ function createDrakonWidget() {
             _var2 = nodeToVisualItemCore(widget, node, 'free');
             return _var2;
         }
+        function findEditsToSelect(edits) {
+            var result, _var2, _var3, edit;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        result = [];
+                        _var2 = edits;
+                        _var3 = 0;
+                        __state = '7';
+                        break;
+                    case '6':
+                        _var3++;
+                        __state = '7';
+                        break;
+                    case '7':
+                        if (_var3 < _var2.length) {
+                            edit = _var2[_var3];
+                            if (edit.op === 'insert') {
+                                if (edit.fields.type === 'branch') {
+                                    return [];
+                                } else {
+                                    result.push(edit);
+                                    __state = '6';
+                                }
+                            } else {
+                                __state = '6';
+                            }
+                        } else {
+                            return result;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function toClient(widget, diaX, diaY) {
             var rect, clientX, clientY, widgetX, widgetY, visuals;
             visuals = widget.visuals;
@@ -3926,7 +4107,7 @@ function createDrakonWidget() {
         }
         function diagramToWidgetY(widget, diaY) {
             var zoom;
-            zoom = widget.zoom / 10000;
+            zoom = widget.zoomFactor;
             return (diaY - widget.visuals.scrollY) * zoom;
         }
         function findElementAt(elements, x, y) {
@@ -4063,6 +4244,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                     case '2':
+                        tracing.trace('DrakonCanvas.setStyle', ids);
                         if (style) {
                             styleStr = JSON.stringify(style);
                             __state = '6';
@@ -4084,8 +4266,7 @@ function createDrakonWidget() {
                             _var3++;
                             __state = '8';
                         } else {
-                            doEdit(self, edits, true);
-                            _var4 = self.redraw();
+                            _var4 = updateAndKeepSelection(self, edits);
                             return _var4;
                         }
                         break;
@@ -4095,6 +4276,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_onContextMenu(self, evt) {
+            tracing.trace('DrakonCanvas.onContextMenu');
             evt.preventDefault();
             return false;
         }
@@ -4279,14 +4461,14 @@ function createDrakonWidget() {
                 }
             }
         }
-        function getSecondaryHeightCore(node) {
+        function getSecondaryHeightCore(visuals, node) {
             var core, _var2, _var3;
             core = node.core;
             if (core.getSecondaryHeight) {
-                _var3 = core.getSecondaryHeight();
+                _var3 = core.getSecondaryHeight(visuals.config);
                 return _var3;
             } else {
-                _var2 = getSecondaryHeightDefault(node);
+                _var2 = getSecondaryHeightDefault(visuals, node);
                 return _var2;
             }
         }
@@ -4299,10 +4481,14 @@ function createDrakonWidget() {
                         return;
                     case '2':
                         core = node.core;
-                        if (core.renderContent) {
-                            implemented = core.renderContent(left, top, visuals.ctx);
-                            if (implemented) {
-                                __state = '1';
+                        if (core) {
+                            if (core.renderContent) {
+                                implemented = core.renderContent(left, top, visuals.ctx);
+                                if (implemented) {
+                                    __state = '1';
+                                } else {
+                                    __state = '5';
+                                }
                             } else {
                                 __state = '5';
                             }
@@ -4392,11 +4578,12 @@ function createDrakonWidget() {
                 }
             }
         }
-        function getSecondaryHeightDefault(node) {
-            var rect;
+        function getSecondaryHeightDefault(visuals, node) {
+            var rect, zoom;
             if (node.topDiv) {
                 rect = node.topDiv.getBoundingClientRect();
-                return rect.height;
+                zoom = visuals.config.zoom;
+                return rect.height / zoom;
             } else {
                 if (node.topFlowBlock) {
                     return node.topFlowBlock.height;
@@ -5386,7 +5573,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                     case '2':
-                        h2 = getSecondaryHeightCore(node);
+                        h2 = getSecondaryHeightCore(visuals, node);
                         middle = top + h2;
                         _var2 = getThemeValue(visuals.config, node, 'borderWidth');
                         thickness = _var2 || 1;
@@ -5607,7 +5794,7 @@ function createDrakonWidget() {
                     case '12':
                         return;
                     case '14':
-                        h2 = getSecondaryHeightCore(node);
+                        h2 = getSecondaryHeightCore(visuals, node);
                         line = setFillStroke(visuals.config, node, ctx);
                         padding = visuals.config.metre / 2;
                         buildProcessPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
@@ -5742,7 +5929,7 @@ function createDrakonWidget() {
                         __state = '12';
                         break;
                     case '14':
-                        h2 = getSecondaryHeightCore(node);
+                        h2 = getSecondaryHeightCore(visuals, node);
                         line = setFillStroke(visuals.config, node, ctx);
                         padding = visuals.config.metre / 2;
                         buildOutputPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
@@ -5826,7 +6013,7 @@ function createDrakonWidget() {
                         __state = '12';
                         break;
                     case '14':
-                        h2 = getSecondaryHeightCore(node);
+                        h2 = getSecondaryHeightCore(visuals, node);
                         line = setFillStroke(visuals.config, node, ctx);
                         padding = visuals.config.metre / 2;
                         buildInputPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
@@ -5930,7 +6117,6 @@ function createDrakonWidget() {
                 output: renderOutput,
                 input: renderInput
             };
-            defaultValues['group-duration'] = renderGroupDuration;
             mergeConfigs(output, input, 'iconRender', defaultValues);
             return;
         }
@@ -5964,45 +6150,26 @@ function createDrakonWidget() {
                 output: contentOutput,
                 input: contentInput
             };
-            defaultValues['group-duration'] = contentDuration;
             mergeConfigs(output, input, 'iconContent', defaultValues);
             return;
         }
         function flowIcon(visuals, node) {
-            var context, size, config, flow;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                    case '2':
-                        config = visuals.config;
-                        flow = config.iconContent[node.type];
-                        if (flow) {
-                            __state = '30';
-                        } else {
-                            flow = visuals.config.iconContent.action;
-                            console.error('iconContent callback not found for node of type: ' + node.type);
-                            __state = '30';
-                        }
-                        break;
-                    case '30':
-                        context = {
-                            type: node.type,
-                            content: node.content,
-                            secondary: node.secondary,
-                            link: node.link,
-                            style: node.style,
-                            flag1: node.flag1,
-                            margin: node.margin || 0,
-                            config: config
-                        };
-                        node.core = config.buildIconCore(context);
-                        size = measureCore(visuals, node);
-                        setNodeSize(config, node, size);
-                        return;
-                    default:
-                        return;
-                }
-            }
+            var context, size, config;
+            config = visuals.config;
+            context = {
+                type: node.type,
+                content: node.content,
+                secondary: node.secondary,
+                link: node.link,
+                style: node.style,
+                flag1: node.flag1,
+                margin: node.margin || 0,
+                config: config
+            };
+            node.core = config.buildIconCore(context);
+            size = measureCore(visuals, node);
+            setNodeSize(config, node, size);
+            return;
         }
         function setNodeSize(config, node, size) {
             var __state = '2';
@@ -6335,10 +6502,12 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.setZoom', zoom);
                         _var2 = Math.min(40000, zoom);
                         self.zoom = Math.max(2500, _var2);
+                        self.zoomFactor = self.zoom / 10000;
                         if (self.edit) {
-                            self.visuals.config.zoom = self.zoom / 10000;
+                            self.visuals.config.zoom = self.zoomFactor;
                             initScrollPos(self);
                             paint(self);
                             __state = '1';
@@ -6353,6 +6522,7 @@ function createDrakonWidget() {
         }
         function DrakonCanvas_setSecondary(self, itemId, secondary) {
             var change, _var2;
+            tracing.trace('DrakonCanvas.setSecondary', itemId);
             checkNotReadonly(self);
             change = {
                 id: itemId,
@@ -6370,6 +6540,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.deleteSelection');
                         _var2 = isReadonly(self);
                         if (_var2) {
                             __state = '1';
@@ -6410,6 +6581,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.editContent');
                         element = getFreeFromSelection(self);
                         if (element) {
                             prim = freeToVisualItem(self, element);
@@ -6438,10 +6610,11 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.0.0';
+            return '1.0.2';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, box, canvas, zoom;
+            tracing.trace('DrakonCanvas.exportCanvas', zoom100);
             zoom = zoom100 / 10000;
             factor = 1;
             visuals = self.visuals;
@@ -6460,15 +6633,17 @@ function createDrakonWidget() {
             return canvas;
         }
         function DrakonCanvas_copySelection(self) {
+            tracing.trace('DrakonCanvas.copySelection');
             copy(self);
             return;
         }
         function DrakonCanvas_setContent(self, itemId, content) {
-            var change, _var2, _var3;
+            var change, _var2, _var3, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
+                        tracing.trace('DrakonCanvas.setContent', itemId);
                         checkNotReadonly(self);
                         _var2 = itemId;
                         if (_var2 === 'header') {
@@ -6476,7 +6651,7 @@ function createDrakonWidget() {
                                 fields: { name: content },
                                 op: 'update'
                             };
-                            doEdit(self, [change], true);
+                            self.edit.updateDocument([change]);
                             return [];
                         } else {
                             if (_var2 === 'params') {
@@ -6484,20 +6659,25 @@ function createDrakonWidget() {
                                     fields: { params: content },
                                     op: 'update'
                                 };
-                                __state = '_item5';
+                                if (content) {
+                                    __state = '_item6';
+                                } else {
+                                    _var3 = doEdit(self, [change]);
+                                    return _var3;
+                                }
                             } else {
                                 change = {
                                     id: itemId,
                                     fields: { content: content },
                                     op: 'update'
                                 };
-                                __state = '_item5';
+                                __state = '_item6';
                             }
                         }
                         break;
-                    case '_item5':
-                        _var3 = updateAndKeepSelection(self, [change]);
-                        return _var3;
+                    case '_item6':
+                        _var4 = updateAndKeepSelection(self, [change]);
+                        return _var4;
                     default:
                         return;
                 }
@@ -6535,9 +6715,10 @@ function createDrakonWidget() {
                         }
                         break;
                     case '13':
+                        tracing.trace('DrakonCanvas.showItem', itemId);
                         visuals = self.visuals;
                         box = visuals.box;
-                        zoom = self.zoom / 10000;
+                        zoom = self.zoomFactor;
                         width = self.width / zoom;
                         height = self.height / zoom;
                         node = getFree(visuals, itemId);
@@ -6580,6 +6761,7 @@ function createDrakonWidget() {
         }
         function DrakonCanvas_setDiagram(self, diagramId, diagram, sender) {
             var _var2;
+            tracing.trace('setDiagram', diagramId);
             self.edit = edit_tools.createUndoEdit(diagram, sender);
             self.diagramId = diagramId;
             resetSelection(self);
@@ -7636,6 +7818,162 @@ function createDrakonWidget() {
             obj.startY = evt.clientY;
             return obj;
         }
+        function completeSimpleDrag2Prop(handle, prop1, prop2) {
+            var change;
+            change = {
+                id: handle.element.id,
+                fields: {},
+                op: 'update'
+            };
+            change.fields[prop1] = handle.element[prop1];
+            change.fields[prop2] = handle.element[prop2];
+            updateAndKeepSelection(handle.widget, [change]);
+            return;
+        }
+        function GroupTopHandle_dragTo(self, x, y) {
+            console.log(x, y);
+            self.element.hiX = x - self.element.x;
+            self.element.hiY = y - self.element.y;
+            return;
+        }
+        function GroupTopHandle_getMaxX(self) {
+            return self.maxX;
+        }
+        function GroupTopHandle_getMinX(self) {
+            return self.minX;
+        }
+        function GroupTopHandle_xEnabled(self) {
+            return true;
+        }
+        function GroupTopHandle_yEnabled(self) {
+            return true;
+        }
+        function GroupTopHandle_getMinY(self) {
+            return self.minY;
+        }
+        function GroupTopHandle_getCursor(self) {
+            return 'move';
+        }
+        function GroupTopHandle_complete(self) {
+            completeSimpleDrag2Prop(self, 'hiX', 'hiY');
+            return;
+        }
+        function GroupBottomHandle_getMinX(self) {
+            return self.minX;
+        }
+        function GroupBottomHandle_complete(self) {
+            completeSimpleDrag2Prop(self, 'loX', 'loY');
+            return;
+        }
+        function GroupBottomHandle_getCursor(self) {
+            return 'move';
+        }
+        function GroupBottomHandle_xEnabled(self) {
+            return true;
+        }
+        function GroupBottomHandle_getMaxY(self) {
+            return self.maxY;
+        }
+        function GroupBottomHandle_yEnabled(self) {
+            return true;
+        }
+        function GroupBottomHandle_getMinY(self) {
+            return self.minY;
+        }
+        function GroupBottomHandle_getMaxX(self) {
+            return self.maxX;
+        }
+        function GroupBottomHandle_dragTo(self, x, y) {
+            self.element.loX = x - self.element.x;
+            self.element.loY = y - self.element.y;
+            return;
+        }
+        function completeDrakonResize(handle) {
+            var maxWidth, style;
+            maxWidth = handle.element.w;
+            style = buildStyleFromDiagram(handle.widget);
+            style.maxWidth = maxWidth * 2;
+            handle.widget.setDiagramStyle(style);
+            return;
+        }
+        function createLeftDrakonResizeHandle(widget, node, y, ctx) {
+            var config, big, handle;
+            big = 500;
+            config = widget.visuals.config;
+            handle = LeftDrakonResizeHandle();
+            handle.widget = widget;
+            handle.element = node;
+            handle.side = 'left';
+            handle.x = node.x - node.w;
+            handle.y = y;
+            handle.id = node.id;
+            handle.minX = node.x - big;
+            handle.maxX = node.x - config.minWidth / 2;
+            createHandle(widget.visuals, handle, ctx);
+            return;
+        }
+        function RightDrakonResizeHandle_xEnabled(self) {
+            return true;
+        }
+        function RightDrakonResizeHandle_yEnabled(self) {
+            return false;
+        }
+        function RightDrakonResizeHandle_getMinX(self) {
+            return self.minX;
+        }
+        function RightDrakonResizeHandle_dragTo(self, x, y) {
+            self.element.w = x - self.element.x;
+            return;
+        }
+        function RightDrakonResizeHandle_getMaxX(self) {
+            return self.maxX;
+        }
+        function RightDrakonResizeHandle_getCursor(self) {
+            return 'ew-resize';
+        }
+        function RightDrakonResizeHandle_complete(self) {
+            completeDrakonResize(self);
+            return;
+        }
+        function LeftDrakonResizeHandle_xEnabled(self) {
+            return true;
+        }
+        function LeftDrakonResizeHandle_complete(self) {
+            completeDrakonResize(self);
+            return;
+        }
+        function LeftDrakonResizeHandle_getCursor(self) {
+            return 'ew-resize';
+        }
+        function LeftDrakonResizeHandle_dragTo(self, x, y) {
+            self.element.w = self.element.x - x;
+            return;
+        }
+        function LeftDrakonResizeHandle_getMinX(self) {
+            return self.minX;
+        }
+        function LeftDrakonResizeHandle_getMaxX(self) {
+            return self.maxX;
+        }
+        function LeftDrakonResizeHandle_yEnabled(self) {
+            return false;
+        }
+        function createRightDrakonResizeHandle(widget, node, y, ctx) {
+            var config, big, handle;
+            big = 500;
+            config = widget.visuals.config;
+            handle = RightDrakonResizeHandle();
+            handle.widget = widget;
+            handle.element = node;
+            handle.side = 'right';
+            handle.x = node.x + node.w;
+            handle.y = y;
+            handle.id = node.id;
+            handle.minX = node.x + config.minWidth / 2;
+            handle.maxX = node.x + big;
+            createHandle(widget.visuals, handle, ctx);
+            return;
+        }
         function FrameDrag_onDrag(self, evt) {
             updateSelectionFrame(self.widget, self.startX, self.startY, evt);
             blockSelect(self.widget);
@@ -7737,86 +8075,68 @@ function createDrakonWidget() {
             return __obj.run();
         }
         function HandleDrag_complete(self) {
-            var change, maxWidth, propX, propY, newX, style;
-            var __state = '2';
+            self.handle.complete();
+            return;
+        }
+        function HandleDrag_onDrag(self, evt) {
+            var config, zoom, dx, x, dxDia, max, min, dy, y, dyDia, _var2, _var3, _var4, _var5;
+            var __state = '23';
             while (true) {
                 switch (__state) {
                     case '1':
                         return;
-                    case '2':
-                        propX = self.handle.propX;
-                        propY = self.handle.propY;
-                        if (self.handle.type === 'skewer-resizer') {
-                            newX = self.element[propX];
-                            if (self.handle.side === 'left') {
-                                maxWidth = self.handle.element.x - newX;
-                                __state = '19';
+                    case '21':
+                        if (x === self.handle.x) {
+                            if (y === self.handle.y) {
+                                __state = '1';
                             } else {
-                                maxWidth = newX - self.handle.element.x;
-                                __state = '19';
+                                __state = '51';
                             }
                         } else {
-                            change = {
-                                id: self.element.id,
-                                fields: {},
-                                op: 'update'
-                            };
-                            change.fields[propX] = self.element[propX];
-                            change.fields[propY] = self.element[propY];
-                            updateAndKeepSelection(self.widget, [change]);
-                            __state = '1';
+                            __state = '51';
                         }
                         break;
-                    case '19':
-                        style = buildStyleFromDiagram(self.widget);
-                        style.maxWidth = maxWidth * 2;
-                        self.widget.setDiagramStyle(style);
+                    case '22':
+                        _var5 = self.handle.yEnabled();
+                        if (_var5) {
+                            dyDia = (evt.clientY - self.startY) / zoom;
+                            dy = snapUp(config, dyDia);
+                            y = self.handleStartY + dy;
+                            max = self.handle.getMaxY();
+                            min = self.handle.getMinY();
+                            _var4 = Math.max(min, y);
+                            y = Math.min(max, _var4);
+                            __state = '21';
+                        } else {
+                            y = self.handle.y;
+                            __state = '21';
+                        }
+                        break;
+                    case '23':
+                        config = self.widget.config;
+                        zoom = self.widget.zoomFactor;
+                        _var2 = self.handle.xEnabled();
+                        if (_var2) {
+                            dxDia = (evt.clientX - self.startX) / zoom;
+                            dx = snapUp(config, dxDia);
+                            x = self.handleStartX + dx;
+                            max = self.handle.getMaxX();
+                            min = self.handle.getMinX();
+                            _var3 = Math.max(min, x);
+                            x = Math.min(max, _var3);
+                            __state = '22';
+                        } else {
+                            x = self.handle.x;
+                            __state = '22';
+                        }
+                        break;
+                    case '51':
+                        self.handle.x = x;
+                        self.handle.y = y;
+                        self.handle.dragTo(x, y);
+                        paint(self.widget);
                         __state = '1';
                         break;
-                    default:
-                        return;
-                }
-            }
-        }
-        function HandleDrag_onDrag(self, evt) {
-            var dx, dy, x, y, config, dxDia, dyDia, zoom, w, right, left, _var2, _var3;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                    case '2':
-                        config = self.widget.config;
-                        zoom = self.widget.zoom / 10000;
-                        dxDia = (evt.clientX - self.startX) / zoom;
-                        dyDia = (evt.clientY - self.startY) / zoom;
-                        dx = snapUp(config, dxDia);
-                        dy = snapUp(config, dyDia);
-                        x = self.handle.startX + dx;
-                        y = self.handle.startY + dy;
-                        _var2 = Math.max(self.handle.minX, x);
-                        x = Math.min(self.handle.maxX, _var2);
-                        _var3 = Math.max(self.handle.minY, y);
-                        y = Math.min(self.handle.maxY, _var3);
-                        self.element[self.handle.propX] = x;
-                        self.element[self.handle.propY] = y;
-                        if (self.handle.type === 'skewer-resizer') {
-                            if (self.handle.side === 'left') {
-                                w = self.element.x - x;
-                                right = self.element.x + w;
-                                self.element.rightX = right;
-                                __state = '6';
-                            } else {
-                                w = x - self.element.x;
-                                left = self.element.x - w;
-                                self.element.leftX = left;
-                                __state = '6';
-                            }
-                        } else {
-                            __state = '6';
-                        }
-                        break;
-                    case '6':
-                        paint(self.widget);
-                        return;
                     default:
                         return;
                 }
@@ -7854,11 +8174,11 @@ function createDrakonWidget() {
                                 deltaY = evt.clientY - startY;
                                 _var3 = Math.abs(deltaX);
                                 if (_var3 > 2) {
-                                    me.state = '104';
+                                    me.state = '116';
                                 } else {
                                     _var4 = Math.abs(deltaY);
                                     if (_var4 > 2) {
-                                        me.state = '104';
+                                        me.state = '116';
                                     } else {
                                         me.state = '29';
                                     }
@@ -7914,11 +8234,6 @@ function createDrakonWidget() {
                                     me.state = '81';
                                 }
                                 break;
-                            case '104':
-                                clearSockets(widget.visuals);
-                                dragTarget = chooseDragTarget(widget, evt);
-                                me.state = '39';
-                                break;
                             case '107':
                                 onMouseScroll(scroller, widget, evt);
                                 me.state = '6';
@@ -7927,9 +8242,16 @@ function createDrakonWidget() {
                                 dragTarget.onDrag(evt);
                                 me.state = '39';
                                 break;
-                            case '112':
+                            case '115':
+                                tracing.trace('drag complete');
                                 dragTarget.complete();
                                 me.state = '2';
+                                break;
+                            case '116':
+                                tracing.trace('drag start');
+                                clearSockets(widget.visuals);
+                                dragTarget = chooseDragTarget(widget, evt);
+                                me.state = '39';
                                 break;
                             case '_item2':
                                 _var2 = evt.button;
@@ -7939,6 +8261,7 @@ function createDrakonWidget() {
                                     pos = toDiagram(widget, evt);
                                     widget.visuals.currentSocket = findSocket(widget.visuals, pos.x, pos.y);
                                     if (widget.visuals.currentSocket) {
+                                        tracing.trace('found socket', widget.visuals.currentSocket);
                                         widget.visuals.onSocket = true;
                                         setCursor(evt.target, 'pointer');
                                         paint(widget);
@@ -8019,7 +8342,7 @@ function createDrakonWidget() {
                                 _main_SelectBehavior(__resolve, __reject);
                                 break;
                             case '40':
-                                me.state = '112';
+                                me.state = '115';
                                 _main_SelectBehavior(__resolve, __reject);
                                 break;
                             case '73':
@@ -8046,7 +8369,7 @@ function createDrakonWidget() {
                                 _main_SelectBehavior(__resolve, __reject);
                                 break;
                             case '40':
-                                me.state = '112';
+                                me.state = '115';
                                 _main_SelectBehavior(__resolve, __reject);
                                 break;
                             case '73':
@@ -8104,7 +8427,7 @@ function createDrakonWidget() {
             var x, y, deltaX, deltaY, zoom;
             deltaX = evt.clientX - scroller.startX;
             deltaY = evt.clientY - scroller.startY;
-            zoom = widget.zoom / 10000;
+            zoom = widget.zoomFactor;
             x = scroller.startScrollX - deltaX / zoom;
             y = scroller.startScrollY - deltaY / zoom;
             setScrollFromMouseEvent(widget, x, y);
@@ -8117,7 +8440,8 @@ function createDrakonWidget() {
             obj.startX = evt.clientX;
             obj.startY = evt.clientY;
             obj.handle = handle;
-            obj.element = handle.element;
+            obj.handleStartX = handle.x;
+            obj.handleStartY = handle.y;
             return obj;
         }
         function FreeMover_complete(self) {
@@ -8136,7 +8460,7 @@ function createDrakonWidget() {
         function FreeMover_onDrag(self, evt) {
             var dx, dy, config, dxDia, dyDia, zoom;
             config = self.widget.config;
-            zoom = self.widget.zoom / 10000;
+            zoom = self.widget.zoomFactor;
             dxDia = (evt.clientX - self.startX) / zoom;
             dyDia = (evt.clientY - self.startY) / zoom;
             dx = snapUp(config, dxDia);
@@ -8163,7 +8487,7 @@ function createDrakonWidget() {
                                 _var2 = createHandleDrag(widget, handle, evt);
                                 return _var2;
                             } else {
-                                element = findFree(visuals, pos);
+                                element = findFree(widget, pos);
                                 if (element) {
                                     _var3 = createFreeMover(widget, element, evt);
                                     return _var3;
@@ -8189,6 +8513,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.showPaste');
                         _var3 = isReadonly(self);
                         if (_var3) {
                             __state = '1';
@@ -8229,12 +8554,16 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_goHome(self) {
-            self.scrollableContainer.scrollLeft = 0;
-            self.scrollableContainer.scrollTop = 0;
+            tracing.trace('DrakonCanvas.goHome');
+            delete self.origins[self.diagramId];
+            calculateDiagramBox(self.visuals);
+            initScrollPos(self);
+            paint(self);
             return;
         }
         function DrakonCanvas_setLink(self, itemId, link) {
             var change;
+            tracing.trace('DrakonCanvas.setLink', itemId);
             checkNotReadonly(self);
             change = {
                 id: itemId,
@@ -8286,6 +8615,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                     case '2':
+                        tracing.trace('mouseClick', pos);
                         doubleClickTime = 500;
                         visuals = widget.visuals;
                         now = getNowMs();
@@ -8330,6 +8660,7 @@ function createDrakonWidget() {
                     case '26':
                         return;
                     case '27':
+                        tracing.trace('single click', prim);
                         if (prim) {
                             if (prim.id) {
                                 _var2 = isSelected(widget, prim.id);
@@ -8353,11 +8684,12 @@ function createDrakonWidget() {
                         __state = '26';
                         break;
                     case '42':
+                        tracing.trace('double click', prim);
                         if (prim) {
                             if (prim.elType === 'node') {
                                 evt.stopPropagation();
                                 evt.preventDefault();
-                                _var3 = clickedOnTop(widget, prim, evt);
+                                _var3 = clickedOnTop(widget, prim, pos);
                                 if (_var3) {
                                     startEditSecondary(widget, prim);
                                     __state = '26';
@@ -8465,7 +8797,7 @@ function createDrakonWidget() {
             }
         }
         function swapYesNo(widget, prim) {
-            var change, node;
+            var change, node, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -8478,16 +8810,15 @@ function createDrakonWidget() {
                         };
                         if (node.flag1) {
                             change.fields.flag1 = 0;
-                            __state = '11';
+                            __state = '_item2';
                         } else {
                             change.fields.flag1 = 1;
-                            __state = '11';
+                            __state = '_item2';
                         }
                         break;
-                    case '11':
-                        doEdit(widget, [change], true);
-                        widget.redraw();
-                        return;
+                    case '_item2':
+                        _var2 = updateAndKeepSelection(widget, [change]);
+                        return _var2;
                     default:
                         return;
                 }
@@ -8535,13 +8866,10 @@ function createDrakonWidget() {
             return;
         }
         function getCursorForItem(widget, prim, pos, evt) {
-            var callback, _var2;
+            var callback, _var2, _var3;
             if (prim.elType === 'handle') {
-                if (prim.type === 'skewer-resizer') {
-                    return 'ew-resize';
-                } else {
-                    return 'move';
-                }
+                _var3 = prim.getCursor();
+                return _var3;
             } else {
                 callback = widget.config.getCursorForItem;
                 if (callback) {
@@ -8584,7 +8912,7 @@ function createDrakonWidget() {
             }
         }
         function flipGroup(widget, prim) {
-            var change, node;
+            var change, node, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -8606,16 +8934,15 @@ function createDrakonWidget() {
                     case '12':
                         change.fields.loX = -node.loX;
                         change.fields.hiX = -node.hiX;
-                        doEdit(widget, [change], true);
-                        widget.redraw();
-                        return;
+                        _var2 = updateAndKeepSelection(widget, [change]);
+                        return _var2;
                     default:
                         return;
                 }
             }
         }
-        function clickedOnTop(widget, prim, evt) {
-            var node, ht, h2, _var2;
+        function clickedOnTop(widget, prim, pos) {
+            var node, h2, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -8623,10 +8950,9 @@ function createDrakonWidget() {
                         node = getNode(widget.visuals, prim.id);
                         _var2 = canEditSecondary(node);
                         if (_var2) {
-                            h2 = getSecondaryHeightCore(node);
-                            ht = h2 * widget.zoom / 10000;
-                            if (ht) {
-                                if (evt.clientY < prim.top + ht) {
+                            h2 = getSecondaryHeightCore(widget.visuals, node);
+                            if (h2) {
+                                if (pos.y < prim.top + h2) {
                                     return true;
                                 } else {
                                     __state = '10';
@@ -8672,6 +8998,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.cutSelection');
                         _var2 = isReadonly(self);
                         if (_var2) {
                             __state = '1';
@@ -8686,6 +9013,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_onChange(self, change) {
+            tracing.trace('DrakonCanvas.onChange', change);
             self.edit.forcedChange(change);
             self.redraw();
             return;
@@ -8703,6 +9031,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                     case '2':
+                        tracing.trace('handleRightClick', pos);
                         visuals = widget.visuals;
                         prim = findVisualItem(widget, pos);
                         if (prim) {
@@ -8791,7 +9120,7 @@ function createDrakonWidget() {
                         } else {
                             callback = widget.config.showContextMenu;
                             if (callback) {
-                                callback(evt.clientX, evt.clientY, menu);
+                                callback(evt.clientX, evt.clientY, menu, prim);
                                 __state = '29';
                             } else {
                                 console.error('showContextMenu is missing in config');
@@ -8833,6 +9162,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        ctx.setLineDash([]);
                         render = visuals.config.iconRender[node.type];
                         if (render) {
                             render(visuals, node, ctx);
@@ -8944,10 +9274,17 @@ function createDrakonWidget() {
             }
         }
         function primToClient(widget, prim) {
-            var pos;
+            var pos, zoom;
+            prim.diagramLeft = prim.left;
+            prim.diagramTop = prim.top;
+            prim.diagramWidth = prim.width;
+            prim.diagramHeight = prim.height;
             pos = toClient(widget, prim.left, prim.top);
             prim.left = pos.x;
             prim.top = pos.y;
+            zoom = widget.zoomFactor;
+            prim.width *= zoom;
+            prim.height *= zoom;
             return;
         }
         function traceLoops(visuals) {
@@ -9766,56 +10103,15 @@ function createDrakonWidget() {
         function end() {
             return 'End';
         }
-        function skewerResizer(visuals, node, ctx, propX, propY, side) {
-            var config, handle, big, x, y;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                    case '2':
-                        big = 500;
-                        config = visuals.config;
-                        x = node[propX];
-                        y = node[propY];
-                        handle = {
-                            element: node,
-                            type: 'skewer-resizer',
-                            side: side,
-                            x: x,
-                            y: y,
-                            id: node.id,
-                            startX: x,
-                            startY: y,
-                            minY: y,
-                            maxY: y,
-                            propX: propX,
-                            propY: propY
-                        };
-                        if (side === 'left') {
-                            handle.minX = node.x - big;
-                            handle.maxX = node.x - config.minWidth / 2;
-                            __state = '9';
-                        } else {
-                            handle.minX = node.x + config.minWidth / 2;
-                            handle.maxX = node.x + big;
-                            __state = '9';
-                        }
-                        break;
-                    case '9':
-                        createHandle(visuals, handle, ctx);
-                        return;
-                    default:
-                        return;
-                }
-            }
-        }
-        function drawNodeCandy(visuals, id, ctx, config) {
-            var node, _var2;
+        function drawNodeCandy(widget, id, ctx, config) {
+            var node, visuals, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '1':
                         return;
                     case '2':
+                        visuals = widget.visuals;
                         node = visuals.nodes[id];
                         if (node.type === 'junction') {
                             __state = '8';
@@ -9826,7 +10122,7 @@ function createDrakonWidget() {
                                 _var2 = shouldAlignWidth(visuals, node);
                                 if (_var2) {
                                     if (visuals.config.allowResize) {
-                                        skewerResizeCandy(visuals, node, ctx);
+                                        skewerResizeCandy(widget, node, ctx);
                                         __state = '1';
                                     } else {
                                         __state = '10';
@@ -9926,60 +10222,6 @@ function createDrakonWidget() {
                 }
             }
         }
-        function drawGroupHandles(visuals, element, ctx, config) {
-            var topHandle, bottomHandle, big;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                    case '2':
-                        big = 1000;
-                        topHandle = {
-                            element: element,
-                            propX: 'hiX',
-                            propY: 'hiY',
-                            startX: element.hiX,
-                            startY: element.hiY,
-                            x: element.x + element.hiX,
-                            y: element.y + element.hiY,
-                            id: element.id
-                        };
-                        bottomHandle = {
-                            element: element,
-                            propX: 'loX',
-                            propY: 'loY',
-                            startX: element.loX,
-                            startY: element.loY,
-                            x: element.x + element.loX,
-                            y: element.y + element.loY,
-                            id: element.id
-                        };
-                        if (element.flag1) {
-                            topHandle.minX = -big;
-                            topHandle.maxX = -element.w;
-                            bottomHandle.minX = -big;
-                            bottomHandle.maxX = -element.w;
-                            __state = '3';
-                        } else {
-                            topHandle.minX = element.w;
-                            topHandle.maxX = big;
-                            bottomHandle.minX = element.w;
-                            bottomHandle.maxX = big;
-                            __state = '3';
-                        }
-                        break;
-                    case '3':
-                        topHandle.minY = -big;
-                        topHandle.maxY = -element.h - config.metre / 2;
-                        bottomHandle.minY = element.h + config.metre / 2;
-                        bottomHandle.maxY = big;
-                        createHandle(visuals, topHandle, ctx);
-                        createHandle(visuals, bottomHandle, ctx);
-                        return;
-                    default:
-                        return;
-                }
-            }
-        }
         function juncCandy(node, ctx, config) {
             var fill, border, size, lineWidth;
             fill = config.theme.candyFill;
@@ -9989,12 +10231,13 @@ function createDrakonWidget() {
             centerSquare(ctx, node.x, node.y, size, fill, border, lineWidth);
             return;
         }
-        function skewerResizeCandy(visuals, node, ctx) {
-            var left, top, right, bottom, fill, border, size, lineWidth, config;
+        function skewerResizeCandy(widget, node, ctx) {
+            var left, top, right, bottom, fill, border, size, lineWidth, config, visuals;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
+                        visuals = widget.visuals;
                         config = visuals.config;
                         left = node.x - node.w;
                         top = node.y - node.h;
@@ -10009,20 +10252,20 @@ function createDrakonWidget() {
                     case '9':
                         return;
                     case '10':
-                        skewerResizer(visuals, node, ctx, 'leftX', 'topY', 'left');
+                        createLeftDrakonResizeHandle(widget, node, top, ctx);
                         centerSquare(ctx, node.x, top, size, fill, border, lineWidth);
-                        skewerResizer(visuals, node, ctx, 'rightX', 'topY', 'right');
+                        createRightDrakonResizeHandle(widget, node, top, ctx);
                         __state = '14';
                         break;
                     case '14':
-                        skewerResizer(visuals, node, ctx, 'leftX', 'middleY', 'left');
-                        skewerResizer(visuals, node, ctx, 'rightX', 'middleY', 'right');
+                        createLeftDrakonResizeHandle(widget, node, node.y, ctx);
+                        createRightDrakonResizeHandle(widget, node, node.y, ctx);
                         __state = '15';
                         break;
                     case '15':
-                        skewerResizer(visuals, node, ctx, 'leftX', 'bottomY', 'left');
+                        createLeftDrakonResizeHandle(widget, node, bottom, ctx);
                         centerSquare(ctx, node.x, bottom, size, fill, border, lineWidth);
-                        skewerResizer(visuals, node, ctx, 'rightX', 'bottomY', 'right');
+                        createRightDrakonResizeHandle(widget, node, bottom, ctx);
                         __state = '9';
                         break;
                     default:
@@ -10092,7 +10335,7 @@ function createDrakonWidget() {
             return;
         }
         function reflowContent(visuals) {
-            var _var3, _var2, _var4, id, node, _var5, _var6, element;
+            var _var3, _var2, _var4, id, node;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -10109,18 +10352,6 @@ function createDrakonWidget() {
                             reflowIcon(visuals, node);
                             _var4++;
                             __state = '5';
-                        } else {
-                            _var5 = visuals.free;
-                            _var6 = 0;
-                            __state = '20';
-                        }
-                        break;
-                    case '20':
-                        if (_var6 < _var5.length) {
-                            element = _var5[_var6];
-                            reflowIcon(visuals, element);
-                            _var6++;
-                            __state = '20';
                         } else {
                             return;
                         }
@@ -10253,6 +10484,17 @@ function createDrakonWidget() {
                 }
             }
         }
+        function findFreePos(widget, evt) {
+            var mousePos, leftPos, visuals, config;
+            visuals = widget.visuals;
+            config = visuals.config;
+            mousePos = toDiagram(widget, evt);
+            leftPos = widgetToDiagram(widget, config.metre, 0);
+            return {
+                x: leftPos.x,
+                y: mousePos.y
+            };
+        }
         function putLoopsOnCases(visuals, select) {
             var _var2, _var3, caseIcon;
             var __state = '2';
@@ -10318,7 +10560,7 @@ function createDrakonWidget() {
             }
         }
         function buildMenuByType(widget, prim, node) {
-            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19, _var20, _var21, _var22, _var23, _var24, _var25;
+            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19, _var20, _var21, _var22, _var23, _var24, _var25, _var26, _var27, _var28;
             var __state = '27';
             while (true) {
                 switch (__state) {
@@ -10412,34 +10654,55 @@ function createDrakonWidget() {
                         break;
                     case '27':
                         menu = [];
-                        func = getCopyFunction(node);
-                        if (func) {
-                            _var10 = tr(widget, 'Copy');
-                            pushMenuItem('copy_one', menu, _var10, undefined, function () {
-                                copy(widget);
-                            });
-                            _var14 = isReadonly(widget);
-                            if (_var14) {
-                                __state = '31';
-                            } else {
-                                _var11 = canDelete(widget.visuals, node);
-                                if (_var11) {
-                                    _var12 = tr(widget, 'Cut');
-                                    pushMenuItem('cut_one', menu, _var12, undefined, function () {
-                                        cutOneItem(widget, node);
-                                    });
+                        if (prim.type === 'params') {
+                            __state = '60';
+                        } else {
+                            func = getCopyFunction(node);
+                            if (func) {
+                                _var10 = tr(widget, 'Copy');
+                                pushMenuItem('copy_one', menu, _var10, undefined, function () {
+                                    copy(widget);
+                                });
+                                _var14 = isReadonly(widget);
+                                if (_var14) {
                                     __state = '31';
                                 } else {
-                                    __state = '31';
+                                    _var11 = canDelete(widget.visuals, node);
+                                    if (_var11) {
+                                        _var12 = tr(widget, 'Cut');
+                                        pushMenuItem('cut_one', menu, _var12, undefined, function () {
+                                            cutOneItem(widget, node);
+                                        });
+                                        __state = '31';
+                                    } else {
+                                        __state = '31';
+                                    }
                                 }
+                            } else {
+                                __state = '2';
                             }
-                        } else {
-                            __state = '2';
                         }
                         break;
                     case '31':
                         menu.push({ type: 'separator' });
                         __state = '2';
+                        break;
+                    case '60':
+                        _var28 = tr(widget, 'Edit content');
+                        pushMenuItem('edit_content', menu, _var28, undefined, function () {
+                            startEditContent(widget, prim);
+                        });
+                        _var27 = isReadonly(widget);
+                        if (_var27) {
+                            __state = '8';
+                        } else {
+                            menu.push({ type: 'separator' });
+                            _var26 = tr(widget, 'Delete');
+                            pushMenuItem('delete_one', menu, _var26, widget.visuals.config.imagePath + 'delete.png', function () {
+                                deleteOne(widget, node);
+                            });
+                            __state = '8';
+                        }
                         break;
                     case '_item19':
                         _var16 = isReadonly(widget);
@@ -10659,7 +10922,7 @@ function createDrakonWidget() {
         function copyScrollToScrollable(widget, scrollX, scrollY) {
             var visuals, zoom;
             visuals = widget.visuals;
-            zoom = widget.zoom / 10000;
+            zoom = widget.zoomFactor;
             widget.scrollableContainer.scrollLeft = (scrollX - visuals.box.left) * zoom;
             widget.scrollableContainer.scrollTop = (scrollY - visuals.box.top) * zoom;
             return;
@@ -10843,7 +11106,7 @@ function createDrakonWidget() {
                 }
             }
         }
-        function buildBoxes(visuals) {
+        function buildBoxes(widget, visuals) {
             var tr, nodes, edges, left, top, right, width, height, bottom, _var3, _var2, _var4, id, node, _var6, _var5, _var7, edge, _var8, _var9, element, _var10;
             var __state = '2';
             while (true) {
@@ -10939,7 +11202,7 @@ function createDrakonWidget() {
                     case '25':
                         if (_var9 < _var8.length) {
                             element = _var8[_var9];
-                            element.box = boxFromPoint(element.x, element.y, element.w, element.h);
+                            calculateFreeBox(widget, element, visuals.config);
                             _var9++;
                             __state = '25';
                         } else {
@@ -11932,7 +12195,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                     case '2':
-                        zoom = widget.zoom / 10000;
+                        zoom = widget.zoomFactor;
                         factor = html.getRetinaFactor();
                         visuals = widget.visuals;
                         config = visuals.config;
@@ -11969,6 +12232,7 @@ function createDrakonWidget() {
                         visuals = widget.visuals;
                         savedOrigin = widget.origins[widget.diagramId];
                         if (savedOrigin) {
+                            extendVisualsBox(visuals, savedOrigin);
                             left = savedOrigin.x;
                             top = savedOrigin.y;
                             __state = '10';
@@ -11980,7 +12244,7 @@ function createDrakonWidget() {
                         break;
                     case '10':
                         scroll = setScroll(widget, left, top);
-                        zoom = widget.zoom / 10000;
+                        zoom = widget.zoomFactor;
                         widget.scrollable.style.width = visuals.box.width * zoom + 'px';
                         widget.scrollable.style.height = visuals.box.height * zoom + 'px';
                         copyScrollToScrollable(widget, scroll.x, scroll.y);
@@ -14401,13 +14665,63 @@ function createDrakonWidget() {
                 }
             }
         }
-        function updateAndKeepSelection(widget, changes) {
-            var fonts;
-            doEdit(widget, changes, true);
-            buildDiagramModel(widget, widget.edit.diagram);
-            fonts = buildVisualsForEdit(widget);
-            paint(widget);
-            return fonts;
+        function updateAndKeepSelection(widget, edits) {
+            var _var2;
+            widget.edit.updateDocument(edits);
+            _var2 = widget.redraw();
+            return _var2;
+        }
+        function calculateBoxIter(node, box) {
+            var left, top, right, bottom, _var2, _var3, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        left = node.x - node.w;
+                        top = node.y - node.h;
+                        right = node.x + node.w;
+                        bottom = node.y + node.h;
+                        _var2 = isNaN(left);
+                        if (_var2) {
+                            __state = '_item3';
+                        } else {
+                            box.left = Math.min(box.left, left);
+                            __state = '_item3';
+                        }
+                        break;
+                    case '_item3':
+                        _var3 = isNaN(top);
+                        if (_var3) {
+                            __state = '_item4';
+                        } else {
+                            box.top = Math.min(box.top, top);
+                            __state = '_item4';
+                        }
+                        break;
+                    case '_item4':
+                        _var4 = isNaN(right);
+                        if (_var4) {
+                            __state = '_item5';
+                        } else {
+                            box.right = Math.max(box.right, right);
+                            __state = '_item5';
+                        }
+                        break;
+                    case '_item5':
+                        _var5 = isNaN(bottom);
+                        if (_var5) {
+                            __state = '1';
+                        } else {
+                            box.bottom = Math.max(box.bottom, bottom);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
         function canEditSecondary(node) {
             var can;
@@ -14475,7 +14789,7 @@ function createDrakonWidget() {
                 }
             }
         }
-        function calculateBox(visuals) {
+        function calculateDiagramBox(visuals) {
             var box, metre, _var3, _var2, _var4, id, node, _var5, _var6, element;
             var __state = '2';
             while (true) {
@@ -14518,9 +14832,20 @@ function createDrakonWidget() {
                     case '21':
                         if (_var6 < _var5.length) {
                             element = _var5[_var6];
-                            calculateBoxIter(element, box);
+                            calculateBoxFromFree(element, box);
                             _var6++;
                             __state = '21';
+                        } else {
+                            __state = '34';
+                        }
+                        break;
+                    case '34':
+                        if (box.left === Number.MAX_SAFE_INTEGER) {
+                            box.left = 0;
+                            box.right = 100;
+                            box.top = 0;
+                            box.bottom = 100;
+                            __state = '17';
                         } else {
                             __state = '17';
                         }
@@ -14530,7 +14855,7 @@ function createDrakonWidget() {
                 }
             }
         }
-        function calculateBoxIter(node, box) {
+        function calculateBoxFromFree(element, box) {
             var left, top, right, bottom, _var2, _var3, _var4, _var5;
             var __state = '2';
             while (true) {
@@ -14538,10 +14863,10 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
-                        left = node.x - node.w;
-                        top = node.y - node.h;
-                        right = node.x + node.w;
-                        bottom = node.y + node.h;
+                        left = element.box.left;
+                        top = element.box.top;
+                        right = left + element.box.width;
+                        bottom = top + element.box.height;
                         _var2 = isNaN(left);
                         if (_var2) {
                             __state = '_item3';
@@ -14764,17 +15089,17 @@ function createDrakonWidget() {
             return 'No';
         }
         function sanitizeScroll(widget, x, y) {
-            var visuals, box, zoom;
+            var visuals, box, x2, y2, zoom, x3, y3;
             visuals = widget.visuals;
             box = visuals.box;
-            zoom = widget.zoom / 10000;
-            x = Math.min(box.right - widget.width / zoom, x);
-            x = Math.max(box.left, x);
-            y = Math.min(box.bottom - widget.height / zoom, y);
-            y = Math.max(box.top, y);
+            zoom = widget.zoomFactor;
+            x2 = Math.min(box.right - widget.width / zoom, x);
+            x3 = Math.max(box.left, x2);
+            y2 = Math.min(box.bottom - widget.height / zoom, y);
+            y3 = Math.max(box.top, y2);
             return {
-                x: x,
-                y: y
+                x: x3,
+                y: y3
             };
         }
         function buildVisuals(widget) {
@@ -14786,7 +15111,7 @@ function createDrakonWidget() {
                         model = widget.model;
                         config = mergeStyleIntoConfig(model.doc.style, widget.config);
                         ctx = widget.canvas.getContext('2d');
-                        config.zoom = widget.zoom / 10000;
+                        config.zoom = widget.zoomFactor;
                         _var10 = model.branches.slice();
                         visuals = {
                             ctx: ctx,
@@ -14810,17 +15135,21 @@ function createDrakonWidget() {
                             config: config,
                             container: widget.contentContainer
                         };
-                        visuals.header = createNode(visuals, undefined, 'header', model.doc.name, 'header');
-                        flowIcon(visuals, visuals.header);
-                        visuals.params = createParamsNode(visuals, model.doc.params);
-                        __state = '14';
+                        if (model.type === 'free') {
+                            __state = '14';
+                        } else {
+                            visuals.header = createNode(visuals, undefined, 'header', model.doc.name, 'header');
+                            flowIcon(visuals, visuals.header);
+                            visuals.params = createParamsNode(visuals, model.doc.params);
+                            __state = '14';
+                        }
                         break;
                     case '4':
                         removeTempEdges(visuals);
                         positionDurations(visuals);
-                        buildBoxes(visuals);
+                        buildBoxes(widget, visuals);
                         forType(visuals, 'address', putCycleMark);
-                        calculateBox(visuals);
+                        calculateDiagramBox(visuals);
                         connectLoops(visuals);
                         traceLoops(visuals);
                         forType(visuals, 'arrow-loop', markArrow);
@@ -14863,7 +15192,7 @@ function createDrakonWidget() {
                             _var11 = isFree(widget, item);
                             if (_var11) {
                                 element = freeFromItem(visuals, id, item);
-                                flowIcon(visuals, element);
+                                flowFreeIcon(widget, visuals, element);
                                 __state = '15';
                             } else {
                                 node = nodeFromItem(visuals, item);
@@ -14876,12 +15205,16 @@ function createDrakonWidget() {
                         }
                         break;
                     case '22':
-                        if (model.branches.length > 1) {
-                            layoutSilhouette(visuals);
+                        if (model.branches.length === 0) {
                             __state = '26';
                         } else {
-                            layoutPrimitive(visuals);
-                            __state = '26';
+                            if (model.branches.length > 1) {
+                                layoutSilhouette(visuals);
+                                __state = '26';
+                            } else {
+                                layoutPrimitive(visuals);
+                                __state = '26';
+                            }
                         }
                         break;
                     case '26':
@@ -14948,14 +15281,6 @@ function createDrakonWidget() {
                         return;
                 }
             }
-        }
-        function rectangle(ctx, x, y, width, height, color, width, background) {
-            ctx.strokeStyle = color;
-            ctx.lineWidth = width;
-            ctx.fillStyle = background;
-            ctx.fillRect(x, y, width, height);
-            ctx.strokeRect(x, y, width, height);
-            return;
         }
         function pushMenuItem(hint, menu, text, icon, action) {
             var item;
@@ -15120,7 +15445,7 @@ function createDrakonWidget() {
                             id = _var11[_var13];
                             type = _var12[id];
                             if (type === 'node') {
-                                drawNodeCandy(visuals, id, ctx, config);
+                                drawNodeCandy(widget, id, ctx, config);
                                 __state = '42';
                             } else {
                                 __state = '42';
@@ -15162,7 +15487,7 @@ function createDrakonWidget() {
                     case '70':
                         if (_var15 < _var14.length) {
                             element = _var14[_var15];
-                            drawIcon(visuals, element, ctx);
+                            drawFreeIcon(widget, element, ctx);
                             _var15++;
                             __state = '70';
                         } else {
@@ -15183,8 +15508,7 @@ function createDrakonWidget() {
                             type = _var17[id];
                             if (type === 'free') {
                                 element = getFree(visuals, id);
-                                standardCandy(element, ctx, config);
-                                drawGroupHandles(visuals, element, ctx, config);
+                                drawFreeCandies(widget, element, ctx);
                                 __state = '75';
                             } else {
                                 __state = '75';
@@ -16147,6 +16471,37 @@ function createDrakonWidget() {
             id = visuals.branches[0];
             return visuals.nodes[id];
         }
+        function extendVisualsBox(visuals, origin) {
+            var box;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        box = visuals.box;
+                        if (origin.x < box.left) {
+                            box.left = origin.x;
+                            box.width = box.right - box.left;
+                            __state = '7';
+                        } else {
+                            __state = '7';
+                        }
+                        break;
+                    case '7':
+                        if (origin.y < box.top) {
+                            box.top = origin.y;
+                            box.height = box.bottom - box.top;
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function deleteSimple(node) {
             var edits;
             edits = [];
@@ -16348,7 +16703,7 @@ function createDrakonWidget() {
             }
         }
         function deleteOne(widget, node) {
-            var edits, _var2, _var3;
+            var edits, _var2, _var3, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -16361,38 +16716,38 @@ function createDrakonWidget() {
                             _var2 = node.type;
                             if (_var2 === 'question') {
                                 edits = deleteQuestion(widget, node);
-                                __state = '27';
+                                __state = '_item12';
                             } else {
                                 if (_var2 === 'loopbegin') {
                                     edits = deleteLoop(node);
-                                    __state = '27';
+                                    __state = '_item12';
                                 } else {
                                     if (_var2 === 'loopend') {
                                         edits = deleteLoop(node.loopStart);
-                                        __state = '27';
+                                        __state = '_item12';
                                     } else {
                                         if (_var2 === 'params') {
                                             edits = deleteParams(node);
-                                            __state = '27';
+                                            __state = '_item12';
                                         } else {
                                             if (_var2 === 'case') {
                                                 edits = deleteCase(widget, node);
-                                                __state = '27';
+                                                __state = '_item12';
                                             } else {
                                                 if (_var2 === 'select') {
                                                     edits = deleteSelect(widget, node);
-                                                    __state = '27';
+                                                    __state = '_item12';
                                                 } else {
                                                     if (_var2 === 'branch') {
                                                         edits = deleteBranch(widget, node);
-                                                        __state = '27';
+                                                        __state = '_item12';
                                                     } else {
                                                         if (_var2 === 'duration') {
                                                             edits = deleteDuration(widget, node);
-                                                            __state = '27';
+                                                            __state = '_item12';
                                                         } else {
                                                             edits = deleteSimple(node);
-                                                            __state = '27';
+                                                            __state = '_item12';
                                                         }
                                                     }
                                                 }
@@ -16405,18 +16760,16 @@ function createDrakonWidget() {
                             __state = '1';
                         }
                         break;
-                    case '27':
-                        doEdit(widget, edits, false);
-                        widget.redraw();
-                        __state = '1';
-                        break;
+                    case '_item12':
+                        _var4 = doEdit(widget, edits);
+                        return _var4;
                     default:
                         return;
                 }
             }
         }
         function deleteBlock(widget, nodes) {
-            var bottomId, head, selection, edits, addDeletion, visuals;
+            var bottomId, head, selection, edits, addDeletion, visuals, _var2;
             visuals = widget.visuals;
             selection = widget.selection;
             bottomId = findSelectionBottom(widget);
@@ -16427,9 +16780,8 @@ function createDrakonWidget() {
                 deleteItemCore(edits, node.id);
             };
             nodes.forEach(addDeletion);
-            doEdit(widget, edits, false);
-            widget.redraw();
-            return;
+            _var2 = doEdit(widget, edits);
+            return _var2;
         }
         function deleteSelection(widget) {
             var element, nodes;
@@ -16463,7 +16815,7 @@ function createDrakonWidget() {
             return toKeep;
         }
         function deleteParPath(widget, node) {
-            var edits, model, left, endId, end, _var2;
+            var edits, model, left, endId, end, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -16486,9 +16838,8 @@ function createDrakonWidget() {
                         }
                         break;
                     case '4':
-                        doEdit(widget, edits, false);
-                        widget.redraw();
-                        return;
+                        _var3 = doEdit(widget, edits);
+                        return _var3;
                     case '5':
                         deleteItem(edits, node);
                         if (node.two) {
@@ -16532,12 +16883,11 @@ function createDrakonWidget() {
             return [change];
         }
         function deleteFree(widget, element) {
-            var edits;
+            var edits, _var2;
             edits = [];
             deleteItemCore(edits, element.id);
-            doEdit(widget, edits, false);
-            widget.redraw();
-            return;
+            _var2 = doEdit(widget, edits);
+            return _var2;
         }
         function canDeleteBranch(visuals) {
             return visuals.branches.length > 2;
@@ -16915,6 +17265,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.arrowUp');
                         if (self.visuals.config.canSelect) {
                             nodes = getNodesFromSelection(self);
                             if (nodes.length === 0) {
@@ -16954,6 +17305,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                     case '2':
+                        tracing.trace('DrakonCanvas.setDiagramStyle', style);
                         if (style) {
                             styleStr = JSON.stringify(style);
                             __state = '16';
@@ -17043,6 +17395,45 @@ function createDrakonWidget() {
             _var2 = createItem(widget.model, edits, item);
             return _var2;
         }
+        function calculateFreeBox(widget, element, config) {
+            var elementActions;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        elementActions = widget.freeIcons[element.type];
+                        if (elementActions) {
+                            elementActions.calculateBox(element, config);
+                            __state = '1';
+                        } else {
+                            console.error('calculateFreeBox: callback not found for element of type: ' + element.type);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function hitFreeElement(widget, element, pos) {
+            var elementActions, _var2, _var3;
+            _var2 = hitBox(element.box, pos.x, pos.y);
+            if (_var2) {
+                elementActions = widget.freeIcons[element.type];
+                _var3 = elementActions.hit(element, pos);
+                return _var3;
+            } else {
+                return false;
+            }
+        }
+        function drawFreeCandies(widget, element, ctx) {
+            var elementActions;
+            elementActions = widget.freeIcons[element.type];
+            elementActions.drawCandies(widget, element, ctx);
+            return;
+        }
         function snapUp(config, size) {
             var _var2;
             _var2 = snapUpTo(config.freeSnap, size);
@@ -17064,19 +17455,39 @@ function createDrakonWidget() {
             }
         }
         function initFreeFunctions(widget) {
-            var _var2, _var3;
-            widget.insertFreeActions = {};
+            var groupLeft, groupRight;
             widget.freeIcons = {};
-            widget.freeIcons['group-duration'] = true;
-            widget.insertFreeActions['group-duration-right'] = function (pos, edits) {
-                _var2 = insertGroupDuration(widget, pos, 1, edits);
-                return _var2;
-            };
-            widget.insertFreeActions['group-duration-left'] = function (pos, edits) {
-                _var3 = insertGroupDuration(widget, pos, 0, edits);
-                return _var3;
-            };
+            widget.freeIcons['group-duration'] = GroupDuration();
+            groupLeft = GroupDuration();
+            groupLeft.flag1 = 1;
+            groupRight = GroupDuration();
+            groupRight.flag1 = 0;
+            widget.freeIcons['group-duration-right'] = groupLeft;
+            widget.freeIcons['group-duration-left'] = groupRight;
             return;
+        }
+        function drawFreeIcon(widget, element, ctx) {
+            var elementActions;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '1':
+                        return;
+                    case '2':
+                        ctx.setLineDash([]);
+                        elementActions = widget.freeIcons[element.type];
+                        if (elementActions) {
+                            elementActions.render(widget.visuals, element, ctx);
+                            __state = '1';
+                        } else {
+                            console.error('drawFreeIcon: callback not found for element of type: ' + element.type);
+                            __state = '1';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
         }
         function snapUpTo(snap, size) {
             var snappedUp, _var2;
@@ -17084,43 +17495,105 @@ function createDrakonWidget() {
             snappedUp = _var2 * snap;
             return snappedUp;
         }
+        function flowFreeIcon(widget, visuals, element) {
+            var elementActions;
+            elementActions = widget.freeIcons[element.type];
+            elementActions.flow(visuals, element);
+            return;
+        }
         function sortFreeIcons(visuals) {
             sortBy(visuals.free, 'zIndex');
             return;
         }
-        function insertGroupDuration(widget, pos, flag1, edits) {
-            var item, id;
+        function GroupDuration_hit(self, element, pos) {
+            var _var2, _var3, box, _var4, _var5;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '2':
-                        item = {
-                            type: 'group-duration',
-                            flag1: flag1,
-                            x: pos.x,
-                            y: pos.y,
-                            loX: 200,
-                            loY: 200,
-                            hiX: 200,
-                            hiY: -200
-                        };
-                        if (flag1 === 1) {
-                            item.loX = -item.loX;
-                            item.hiX = -item.hiX;
-                            __state = '7';
+                        _var5 = hitBox(element.innerBox, pos.x, pos.y);
+                        if (_var5) {
+                            __state = '8';
                         } else {
-                            __state = '7';
+                            _var2 = element.subboxes;
+                            _var3 = 0;
+                            __state = '5';
                         }
                         break;
-                    case '7':
-                        id = insertFreeItem(widget, edits, item);
-                        return id;
+                    case '5':
+                        if (_var3 < _var2.length) {
+                            box = _var2[_var3];
+                            _var4 = hitBox(box, pos.x, pos.y);
+                            if (_var4) {
+                                __state = '8';
+                            } else {
+                                _var3++;
+                                __state = '5';
+                            }
+                        } else {
+                            return false;
+                        }
+                        break;
+                    case '8':
+                        return true;
                     default:
                         return;
                 }
             }
         }
-        function renderGroupDuration(visuals, node, ctx) {
+        function GroupDuration_calculateBox(self, element, config) {
+            var topY, bottomY, topX, bottomX, innerRight, left, right, margin, width, height, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        element.innerBox = boxFromPoint(element.x, element.y, element.w, element.h);
+                        __state = '16';
+                        break;
+                    case '15':
+                        return;
+                    case '16':
+                        topY = element.y + element.hiY;
+                        bottomY = element.y + element.loY;
+                        topX = element.x + element.hiX;
+                        bottomX = element.x + element.loX;
+                        innerRight = element.innerBox.left + element.innerBox.width;
+                        _var2 = Math.min(bottomX, element.innerBox.left);
+                        left = Math.min(topX, _var2);
+                        _var3 = Math.max(bottomX, innerRight);
+                        right = Math.max(topX, _var3);
+                        margin = config.socketTouchRadius;
+                        width = right - left;
+                        height = bottomY - topY;
+                        element.box = createBoxWithMargin(left, topY, width, height, margin);
+                        __state = '25';
+                        break;
+                    case '25':
+                        element.subboxes = [];
+                        _var4 = boxForVerticalLine(element.x, topY, element.y, margin);
+                        element.subboxes.push(_var4);
+                        _var5 = boxForVerticalLine(element.x, element.y, bottomY, margin);
+                        element.subboxes.push(_var5);
+                        if (element.flag1) {
+                            _var8 = boxForHorizontalLine(element.x + element.hiX, topY, element.x, margin);
+                            element.subboxes.push(_var8);
+                            _var9 = boxForHorizontalLine(element.x + element.loX, bottomY, element.x, margin);
+                            element.subboxes.push(_var9);
+                            __state = '15';
+                        } else {
+                            _var6 = boxForHorizontalLine(element.x, topY, element.x + element.hiX, margin);
+                            element.subboxes.push(_var6);
+                            _var7 = boxForHorizontalLine(element.x, bottomY, element.x + element.loX, margin);
+                            element.subboxes.push(_var7);
+                            __state = '15';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+        function GroupDuration_render(self, visuals, element, ctx) {
             var thickness, color, top, bottom, radius, ctop, cbottom, cx, cx2, tx, bx, dash;
             var __state = '2';
             while (true) {
@@ -17129,12 +17602,12 @@ function createDrakonWidget() {
                         thickness = visuals.config.theme.lineWidth || 1;
                         color = visuals.config.theme.lines;
                         radius = 10;
-                        top = node.y + node.hiY;
-                        bottom = node.y + node.loY;
+                        top = element.y + element.hiY;
+                        bottom = element.y + element.loY;
                         ctop = top + radius;
                         cbottom = bottom - radius;
-                        tx = node.x + node.hiX;
-                        bx = node.x + node.loX;
+                        tx = element.x + element.hiX;
+                        bx = element.x + element.loX;
                         ctx.strokeStyle = color;
                         ctx.lineWidth = thickness;
                         dash = [
@@ -17146,20 +17619,22 @@ function createDrakonWidget() {
                     case '18':
                         return;
                     case '19':
-                        ctx.moveTo(node.x, node.y);
-                        ctx.lineTo(node.x, ctop);
+                        ctx.beginPath();
+                        ctx.moveTo(element.x, element.y);
+                        ctx.lineTo(element.x, ctop);
                         ctx.stroke();
-                        ctx.moveTo(node.x, node.y);
-                        ctx.lineTo(node.x, cbottom);
+                        ctx.beginPath();
+                        ctx.moveTo(element.x, element.y);
+                        ctx.lineTo(element.x, cbottom);
                         ctx.stroke();
-                        if (node.flag1) {
+                        if (element.flag1) {
                             __state = '23';
                         } else {
                             __state = '22';
                         }
                         break;
                     case '22':
-                        cx = node.x + radius;
+                        cx = element.x + radius;
                         cx2 = cx + radius * 2;
                         ctx.beginPath();
                         ctx.arc(cx, ctop, radius, Math.PI * 1, Math.PI * 1.5);
@@ -17183,7 +17658,7 @@ function createDrakonWidget() {
                         __state = '30';
                         break;
                     case '23':
-                        cx = node.x - radius;
+                        cx = element.x - radius;
                         cx2 = cx - radius * 2;
                         ctx.beginPath();
                         ctx.setLineDash(dash);
@@ -17209,7 +17684,7 @@ function createDrakonWidget() {
                         break;
                     case '30':
                         ctx.setLineDash([]);
-                        renderDuration(visuals, node, ctx);
+                        renderDuration(visuals, element, ctx);
                         __state = '18';
                         break;
                     default:
@@ -17217,23 +17692,127 @@ function createDrakonWidget() {
                 }
             }
         }
+        function GroupDuration_create(self, pos) {
+            var item;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        item = {
+                            type: 'group-duration',
+                            flag1: self.flag1,
+                            x: pos.x + 50,
+                            y: pos.y,
+                            loX: 200,
+                            loY: 200,
+                            hiX: 200,
+                            hiY: -200
+                        };
+                        if (self.flag1 === 1) {
+                            item.loX = -item.loX;
+                            item.hiX = -item.hiX;
+                            item.x += 200;
+                            __state = '3';
+                        } else {
+                            __state = '3';
+                        }
+                        break;
+                    case '3':
+                        return item;
+                    default:
+                        return;
+                }
+            }
+        }
+        function GroupDuration_drawCandies(self, widget, element, ctx) {
+            var config;
+            config = widget.visuals.config;
+            standardCandy(element, ctx, config);
+            drawGroupHandles(widget, element, ctx, config);
+            return;
+        }
+        function GroupDuration_flow(self, visuals, element) {
+            var size;
+            size = contentDuration(visuals, element);
+            setNodeSize(visuals.config, element, size);
+            element.contentHeight = size.height;
+            return;
+        }
+        function drawGroupHandles(widget, element, ctx, config) {
+            var big, topHandle, bottomHandle, visuals;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                    case '2':
+                        visuals = widget.visuals;
+                        big = 1000;
+                        topHandle = GroupTopHandle();
+                        topHandle.widget = widget;
+                        topHandle.element = element;
+                        topHandle.id = element.id;
+                        topHandle.x = element.hiX + element.x;
+                        topHandle.y = element.hiY + element.y;
+                        topHandle.minY = element.y - big;
+                        topHandle.maxY = element.y - element.h - config.metre / 2;
+                        __state = '29';
+                        break;
+                    case '21':
+                        createHandle(visuals, topHandle, ctx);
+                        createHandle(visuals, bottomHandle, ctx);
+                        return;
+                    case '22':
+                        if (element.flag1) {
+                            topHandle.minX = element.x - big;
+                            topHandle.maxX = element.x - element.w;
+                            __state = '26';
+                        } else {
+                            topHandle.minX = element.x + element.w;
+                            topHandle.maxX = element.x + big;
+                            __state = '26';
+                        }
+                        break;
+                    case '26':
+                        bottomHandle.minX = topHandle.minX;
+                        bottomHandle.maxX = topHandle.maxX;
+                        __state = '21';
+                        break;
+                    case '29':
+                        bottomHandle = GroupBottomHandle();
+                        bottomHandle.widget = widget;
+                        bottomHandle.element = element;
+                        bottomHandle.id = element.id;
+                        bottomHandle.x = element.loX + element.x;
+                        bottomHandle.y = element.loY + element.y;
+                        bottomHandle.minY = element.y + element.h + config.metre / 2;
+                        bottomHandle.maxY = element.y + big;
+                        __state = '22';
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
         function DrakonCanvas_redo(self) {
-            var _var2;
+            var edits, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.redo');
                         _var2 = isReadonly(self);
                         if (_var2) {
                             __state = '1';
                         } else {
                             if (self.edit) {
-                                resetSelection(self);
-                                self.edit.redoEdit();
-                                self.redraw();
-                                __state = '1';
+                                edits = self.edit.redoEdit();
+                                if (edits) {
+                                    rebuildSelection(self, edits.changes);
+                                    __state = '1';
+                                } else {
+                                    __state = '1';
+                                }
                             } else {
                                 __state = '1';
                             }
@@ -17244,27 +17823,35 @@ function createDrakonWidget() {
                 }
             }
         }
-        function DrakonCanvas_insertFree(self, type) {
-            var action, edits, pos;
+        function DrakonCanvas_insertFree(self, type, evt) {
+            var elementActions, item, edits, pos, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                     case '1':
                         return;
                     case '2':
-                        action = self.insertFreeActions[type];
-                        if (action) {
-                            edits = [];
-                            pos = getDiagramCenter(self);
-                            action(pos, edits);
-                            doEdit(self, edits, false);
-                            self.redraw();
-                            __state = '1';
+                        tracing.trace('DrakonCanvas.insertFree', type);
+                        elementActions = self.freeIcons[type];
+                        if (elementActions) {
+                            if (evt) {
+                                pos = findFreePos(self, evt);
+                                __state = '6';
+                            } else {
+                                pos = getDiagramCenter(self);
+                                __state = '6';
+                            }
                         } else {
                             console.error('Unknown free icon type', type);
                             __state = '1';
                         }
                         break;
+                    case '6':
+                        item = elementActions.create(pos, edits);
+                        edits = [];
+                        insertFreeItem(self, edits, item);
+                        _var2 = doEdit(self, edits);
+                        return _var2;
                     default:
                         return;
                 }
@@ -17272,7 +17859,7 @@ function createDrakonWidget() {
         }
         function DrakonCanvas_onScroll(self, evt) {
             var originX, originY, zoom;
-            zoom = self.zoom / 10000;
+            zoom = self.zoomFactor;
             originX = self.scrollableContainer.scrollLeft / zoom + self.visuals.box.left;
             originY = self.scrollableContainer.scrollTop / zoom + self.visuals.box.top;
             setScroll(self, originX, originY);
@@ -17287,6 +17874,7 @@ function createDrakonWidget() {
                     case '1':
                         return;
                     case '2':
+                        tracing.trace('DrakonCanvas.arrowDown');
                         if (self.visuals.config.canSelect) {
                             nodes = getNodesFromSelection(self);
                             if (nodes.length === 0) {
@@ -17322,31 +17910,17 @@ function createDrakonWidget() {
         }
         function DrakonCanvas_redraw(self) {
             var fonts;
-            console.log('drakon.redraw()');
+            tracing.trace('DrakonCanvas.redraw');
             buildDiagramModel(self, self.edit.diagram);
             fonts = buildVisualsForEdit(self);
             paint(self);
             return fonts;
         }
-        function doEdit(widget, edits, retainSelection) {
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                    case '2':
-                        if (retainSelection) {
-                            __state = '7';
-                        } else {
-                            resetSelection(widget);
-                            __state = '7';
-                        }
-                        break;
-                    case '7':
-                        widget.edit.updateDocument(edits);
-                        return;
-                    default:
-                        return;
-                }
-            }
+        function doEdit(widget, edits) {
+            var _var2;
+            widget.edit.updateDocument(edits);
+            _var2 = rebuildSelection(widget, edits);
+            return _var2;
         }
         function deleteItem(edits, node) {
             var __state = '2';
@@ -17462,7 +18036,7 @@ function createDrakonWidget() {
             }
         }
         function pasteFree(widget, clipboard) {
-            var edits, firstId, create, payload, pos;
+            var edits, firstId, create, payload, pos, _var2;
             payload = clipboard.content;
             edits = [];
             firstId = replaceIds(widget, payload.start, payload.items, '');
@@ -17473,9 +18047,8 @@ function createDrakonWidget() {
                 createPastedItem(edits, item);
             };
             payload.items.forEach(create);
-            doEdit(widget, edits, false);
-            widget.redraw();
-            return;
+            _var2 = doEdit(widget, edits);
+            return _var2;
         }
         function simpleInsert(widget, socket, type) {
             var edits, item, newId, model;
@@ -17821,7 +18394,7 @@ function createDrakonWidget() {
             return edits;
         }
         function branchInsertEnd(widget) {
-            var edits, branchId, visuals, endId, name, fields;
+            var edits, branchId, visuals, endId, name, fields, _var2;
             edits = [];
             visuals = widget.visuals;
             endId = createItem(widget.model, edits, { type: 'end' });
@@ -17834,9 +18407,8 @@ function createDrakonWidget() {
                 one: endId
             };
             createItem(widget.model, edits, fields);
-            doEdit(widget, edits, false);
-            widget.redraw();
-            return;
+            _var2 = doEdit(widget, edits);
+            return _var2;
         }
         function caseInsertCore(widget, existing, item) {
             var edits, caseId, model, targetId, fields, right;
@@ -18130,6 +18702,15 @@ function createDrakonWidget() {
             _var2 = branchInsertAt(widget, branchId);
             return _var2;
         }
+        function rebuildSelection(widget, edits) {
+            var selectable, fonts;
+            resetSelectionCore(widget);
+            selectable = findEditsToSelect(edits);
+            selectMany(widget, selectable);
+            fonts = widget.redraw();
+            reportSelection(widget);
+            return fonts;
+        }
         function createInsert(item) {
             var fields, id;
             id = item.id;
@@ -18142,7 +18723,7 @@ function createDrakonWidget() {
             };
         }
         function runInsertAction(widget, socket) {
-            var action, edits, _var2;
+            var action, edits, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -18153,19 +18734,19 @@ function createDrakonWidget() {
                         if (_var2 === 'insert') {
                             action = widget.insertActions[socket.type];
                             edits = action(widget, socket);
-                            __state = '16';
+                            __state = '_item9';
                         } else {
                             if (_var2 === 'paste') {
                                 edits = pasteInSocket(widget, socket);
-                                __state = '16';
+                                __state = '_item9';
                             } else {
                                 if (_var2 === 'arrow') {
                                     edits = clickArrowSocket(widget, socket);
-                                    __state = '16';
+                                    __state = '_item9';
                                 } else {
                                     if (_var2 === 'liana') {
                                         edits = clickLianaSocket(widget, socket);
-                                        __state = '16';
+                                        __state = '_item9';
                                     } else {
                                         if (_var2 === 'params') {
                                             __state = '1';
@@ -18177,10 +18758,9 @@ function createDrakonWidget() {
                             }
                         }
                         break;
-                    case '16':
-                        doEdit(widget, edits, false);
-                        __state = '1';
-                        break;
+                    case '_item9':
+                        _var3 = doEdit(widget, edits);
+                        return _var3;
                     default:
                         return;
                 }
@@ -19717,8 +20297,8 @@ function createDrakonWidget() {
             self.redo = function () {
                 return DrakonCanvas_redo(self);
             };
-            self.insertFree = function (type) {
-                return DrakonCanvas_insertFree(self, type);
+            self.insertFree = function (type, evt) {
+                return DrakonCanvas_insertFree(self, type, evt);
             };
             self.onScroll = function (evt) {
                 return DrakonCanvas_onScroll(self, evt);
@@ -19744,6 +20324,118 @@ function createDrakonWidget() {
             };
             self.renderContent = function (left, top, ctx) {
                 return DefaultIconCore_renderContent(self, left, top, ctx);
+            };
+            return self;
+        }
+        function GroupTopHandle() {
+            var self = {};
+            self.dragTo = function (x, y) {
+                return GroupTopHandle_dragTo(self, x, y);
+            };
+            self.getMaxX = function () {
+                return GroupTopHandle_getMaxX(self);
+            };
+            self.getMaxY = function () {
+                return GroupTopHandle_getMaxY(self);
+            };
+            self.getMinX = function () {
+                return GroupTopHandle_getMinX(self);
+            };
+            self.xEnabled = function () {
+                return GroupTopHandle_xEnabled(self);
+            };
+            self.yEnabled = function () {
+                return GroupTopHandle_yEnabled(self);
+            };
+            self.getMinY = function () {
+                return GroupTopHandle_getMinY(self);
+            };
+            self.getCursor = function () {
+                return GroupTopHandle_getCursor(self);
+            };
+            self.complete = function () {
+                return GroupTopHandle_complete(self);
+            };
+            return self;
+        }
+        function GroupBottomHandle() {
+            var self = {};
+            self.getMinX = function () {
+                return GroupBottomHandle_getMinX(self);
+            };
+            self.complete = function () {
+                return GroupBottomHandle_complete(self);
+            };
+            self.getCursor = function () {
+                return GroupBottomHandle_getCursor(self);
+            };
+            self.xEnabled = function () {
+                return GroupBottomHandle_xEnabled(self);
+            };
+            self.getMaxY = function () {
+                return GroupBottomHandle_getMaxY(self);
+            };
+            self.yEnabled = function () {
+                return GroupBottomHandle_yEnabled(self);
+            };
+            self.getMinY = function () {
+                return GroupBottomHandle_getMinY(self);
+            };
+            self.getMaxX = function () {
+                return GroupBottomHandle_getMaxX(self);
+            };
+            self.dragTo = function (x, y) {
+                return GroupBottomHandle_dragTo(self, x, y);
+            };
+            return self;
+        }
+        function RightDrakonResizeHandle() {
+            var self = {};
+            self.xEnabled = function () {
+                return RightDrakonResizeHandle_xEnabled(self);
+            };
+            self.yEnabled = function () {
+                return RightDrakonResizeHandle_yEnabled(self);
+            };
+            self.getMinX = function () {
+                return RightDrakonResizeHandle_getMinX(self);
+            };
+            self.dragTo = function (x, y) {
+                return RightDrakonResizeHandle_dragTo(self, x, y);
+            };
+            self.getMaxX = function () {
+                return RightDrakonResizeHandle_getMaxX(self);
+            };
+            self.getCursor = function () {
+                return RightDrakonResizeHandle_getCursor(self);
+            };
+            self.complete = function () {
+                return RightDrakonResizeHandle_complete(self);
+            };
+            return self;
+        }
+        function LeftDrakonResizeHandle() {
+            var self = {};
+            self.xEnabled = function () {
+                return LeftDrakonResizeHandle_xEnabled(self);
+            };
+            self.complete = function () {
+                return LeftDrakonResizeHandle_complete(self);
+            };
+            self.getCursor = function () {
+                return LeftDrakonResizeHandle_getCursor(self);
+            };
+            self.dragTo = function (x, y) {
+                return LeftDrakonResizeHandle_dragTo(self, x, y);
+            };
+            self.getMinX = function () {
+                return LeftDrakonResizeHandle_getMinX(self);
+            };
+            self.getMaxX = function () {
+                return LeftDrakonResizeHandle_getMaxX(self);
+            };
+            self.yEnabled = function () {
+                return LeftDrakonResizeHandle_yEnabled(self);
             };
             return self;
         }
@@ -19777,7 +20469,28 @@ function createDrakonWidget() {
             };
             return self;
         }
-        unit.sortBy = sortBy;
+        function GroupDuration() {
+            var self = {};
+            self.hit = function (element, pos) {
+                return GroupDuration_hit(self, element, pos);
+            };
+            self.calculateBox = function (element, config) {
+                return GroupDuration_calculateBox(self, element, config);
+            };
+            self.render = function (visuals, element, ctx) {
+                return GroupDuration_render(self, visuals, element, ctx);
+            };
+            self.create = function (pos) {
+                return GroupDuration_create(self, pos);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return GroupDuration_drawCandies(self, widget, element, ctx);
+            };
+            self.flow = function (visuals, element) {
+                return GroupDuration_flow(self, visuals, element);
+            };
+            return self;
+        }
         unit.flowTextBlock = flowTextBlock;
         unit.renderFlowBlock = renderFlowBlock;
         unit.createDummyCanvas = createDummyCanvas;
@@ -19788,9 +20501,14 @@ function createDrakonWidget() {
         unit.cssFontToString = cssFontToString;
         unit.DrakonCanvas = DrakonCanvas;
         unit.DefaultIconCore = DefaultIconCore;
+        unit.GroupTopHandle = GroupTopHandle;
+        unit.GroupBottomHandle = GroupBottomHandle;
+        unit.RightDrakonResizeHandle = RightDrakonResizeHandle;
+        unit.LeftDrakonResizeHandle = LeftDrakonResizeHandle;
         unit.FrameDrag = FrameDrag;
         unit.HandleDrag = HandleDrag;
         unit.FreeMover = FreeMover;
+        unit.GroupDuration = GroupDuration;
         Object.defineProperty(unit, 'html', {
             get: function () {
                 return html;
@@ -19824,7 +20542,7 @@ function createDrakonWidget() {
         return unit;
     }
     var tracing = {
-        trace: function () { },
+        trace: function (name, value) { console.log(name, value) },
         setTimeout: function (action, delay) { return window.setTimeout(action, delay) },
         registerEvent: function (element, name, action, options) { element.addEventListener(name, action, options) }
     }

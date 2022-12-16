@@ -1,0 +1,1 @@
+{"version":20180619,"tag":"","when_created":1671036734.9086,"parent_id":"194c7d27","items":{"2":{"type":"branch","branchId":0,"one":"5","id":"2"},"1":{"type":"end","id":"1"},"5":{"type":"action","text":"return \"move\"","one":"1","id":"5"}},"props":[],"when_updated":1671036734.9086,"updated_by":"stipan","type":"drakon","name":"getCursor","created_by":"stipan"}

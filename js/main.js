@@ -633,11 +633,11 @@
 
     function onItemClick(prim, pos, evt) {
         if (prim.type === "insertion") {
-            if (onInsertionHotspot(prim, evt)) {
+            if (onInsertionHotspot(prim, pos)) {
                 tryGoToDiagram(prim.content)
             }
         } else if (prim.type === "action" && prim.link) {
-            if (onActionHotspot(prim, evt)) {
+            if (onActionHotspot(prim, pos)) {
                 window.open(prim.link, '_blank');
             }
         }
@@ -645,11 +645,11 @@
 
     function getCursorForItem(prim, pos, evt) {
         if (prim.type === "insertion") {
-            if (onInsertionHotspot(prim, evt)) {
+            if (onInsertionHotspot(prim, pos)) {
                 return "pointer"
             }
         } else if (prim.type === "action" && prim.link) {
-            if (onActionHotspot(prim, evt)) {
+            if (onActionHotspot(prim, pos)) {
                 return "pointer"
             }
         }
@@ -673,25 +673,25 @@
         }
     }
 
-    function onInsertionHotspot(prim, evt) {
+    function onInsertionHotspot(prim, pos) {
         var padding = 10
-        var left = prim.left + padding * 2
-        var top = prim.top + padding
-        var right = prim.left + prim.width - padding * 2
-        var bottom = prim.top + prim.height - padding
-        if (evt.clientX > left && evt.clientX < right && evt.clientY > top && evt.clientY < bottom) {
+        var left = prim.diagramLeft + padding * 2
+        var top = prim.diagramTop + padding
+        var right = prim.diagramLeft + prim.diagramWidth - padding * 2
+        var bottom = prim.diagramTop + prim.diagramHeight - padding
+        if (pos.x > left && pos.x < right && pos.y > top && pos.y < bottom) {
             return true
         }
         return false
     }
 
-    function onActionHotspot(prim, evt) {
+    function onActionHotspot(prim, pos) {
         var padding = 10
-        var left = prim.left
-        var top = prim.top
-        var right = prim.left + iconSize + padding * 2
-        var bottom = prim.top + prim.height
-        if (evt.clientX > left && evt.clientX < right && evt.clientY > top && evt.clientY < bottom) {
+        var left = prim.diagramLeft
+        var top = prim.diagramTop
+        var right = prim.diagramLeft + iconSize + padding * 2
+        var bottom = prim.diagramTop + prim.diagramHeight
+        if (pos.x > left && pos.x < right && pos.y > top && pos.y < bottom) {
             return true
         }
         return false
@@ -867,7 +867,7 @@
         config.startEditLink = startEditLink
         config.startEditStyle = startEditStyle
         config.startEditDiagramStyle = startEditDiagramStyle
-        config.showContextMenu = widgets.showContextMenu
+        config.showContextMenu = showContextMenu
         config.onItemClick = onItemClick
         config.buildIconCore = buildIconCore
         config.getCursorForItem = getCursorForItem
@@ -881,6 +881,17 @@
         config.end = "Конец"
         config.textFormat = "plain"
         return config
+    }
+
+    function showContextMenu(x, y, items, options) {
+        items.forEach(addIconPath)
+        widgets.showContextMenu(x, y, items, options)
+    }
+
+    function addIconPath(item) {
+        if (item.icon) {
+            item.icon = "images/" + item.icon
+        }
     }
 
     function createEditSender() {
