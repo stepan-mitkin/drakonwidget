@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 1.0.2
+Current version: 1.0.3
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
