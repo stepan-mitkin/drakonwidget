@@ -465,7 +465,7 @@ When the user wants to save the edited style, call the __setStyle__ method on th
 If the user cancels editing, do not do anything.
 
 ```
-function startEditStyle(ids, oldStyle, x, y)
+function startEditStyle(ids, oldStyle, x, y, accepted)
 ```
 
 Arguments
@@ -476,6 +476,7 @@ Arguments
 |oldStyle|object|The existing style of the items.|
 |x|number|The x-coordinate of the mouse cursor.|
 |y|number|The y-coordinate of the mouse cursor.|
+|accepted|object|The keys of the __accepted__ argument are the supported style properties.|
 
 ### translate
 
@@ -506,6 +507,8 @@ Text strings that will be translated:
 - Flip
 - Format
 - Diagram format
+- Bring to front
+- Send to back
 
 Note that the words that appear on the diagram (Yes, No, End, Exit, Branch) are set
 in the config. See the Configuration reference.
