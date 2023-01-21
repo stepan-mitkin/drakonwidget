@@ -753,6 +753,9 @@ function createDrakonWidget() {
                 return true;
             }
         }
+        function RoundedRadius_xEnabled(self) {
+            return true;
+        }
         function getBranch(visuals, ordinal) {
             var nodeId, _var2;
             nodeId = visuals.branches[ordinal];
@@ -762,7 +765,20 @@ function createDrakonWidget() {
         function DrakonCanvas_init(self) {
             var _var2;
             tracing.trace('DrakonCanvas.init');
+            unit.noSmooth = {
+                floor: true,
+                parceiling: true,
+                ceil: true,
+                'case': true,
+                parent: true
+            };
             self.origins = {};
+            self.mindIcons = {
+                idea: true,
+                ridea: true,
+                conclusion: true,
+                header: true
+            };
             _var2 = Math.random();
             self.styleTag = html.createStyle();
             self.myStyleId = Math.floor(_var2 * 100000);
@@ -774,6 +790,9 @@ function createDrakonWidget() {
         }
         function findDraggable(visuals, x, y) {
             return;
+        }
+        function SimpleFree_canEditContent(self) {
+            return false;
         }
         function drawNugget(ctx, x, y) {
             var size, padding, asize, left, midY, right, top, bottom, midX, _var2;
@@ -829,6 +848,12 @@ function createDrakonWidget() {
                 }
             }
         }
+        function Database_flow(self, visuals, element) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, element, options, element.width);
+            return _var2;
+        }
         function DrakonCanvas_showPasteSockets(self, type) {
             var showInsert, _var2, _var3;
             var __state = '2';
@@ -865,7 +890,12 @@ function createDrakonWidget() {
                                             showDurationSockets(self.visuals, 'paste');
                                             __state = '11';
                                         } else {
-                                            __state = '11';
+                                            if (_var2 === 'mind') {
+                                                showMindInsertSockets(self, 'paste', undefined);
+                                                __state = '11';
+                                            } else {
+                                                __state = '11';
+                                            }
                                         }
                                     }
                                 }
@@ -884,12 +914,22 @@ function createDrakonWidget() {
                 }
             }
         }
+        function getComboButtonWidth(element) {
+            var _var2;
+            _var2 = Math.round(element.height * 0.8);
+            return _var2;
+        }
         function shouldAlignWidth(visuals, node) {
             if (node.type in visuals.config.alignedNodes) {
                 return true;
             } else {
                 return false;
             }
+        }
+        function PtrLeft_drawCandies(self, widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            createRadiusHandleLeft(widget, element, ctx);
+            return;
         }
         function clusterComplete(context) {
             var __state = '2';
@@ -956,7 +996,7 @@ function createDrakonWidget() {
                         doc: {},
                         branches: [],
                         edits: [],
-                        type: diagram.type
+                        type: diagram.type || 'drakon'
                     };
                     model.doc.access = diagram.access || 'write';
                     model.doc.name = diagram.name || '';
@@ -1050,18 +1090,86 @@ function createDrakonWidget() {
                 }
             }
         }
+        function SimpleFree_hit(self, element, pos) {
+            return true;
+        }
+        function drawEars(visuals, ctx) {
+            var ears, config, fill, border, radius, selectedBox, _var3, _var2, _var4, key, box;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    fill = '#00ff00';
+                    border = 'black';
+                    ears = visuals.ears;
+                    config = visuals.config;
+                    if (ears) {
+                        drawEarsLine(visuals, ears, ctx);
+                        radius = visuals.config.socketTouchRadius;
+                        if (ears.selected) {
+                            if (ears.hideEar) {
+                                __state = '1';
+                            } else {
+                                selectedBox = ears.boxes[ears.selected];
+                                drawCircle(ctx, selectedBox.left + radius, selectedBox.top + radius, radius, 2, fill, border);
+                                __state = '1';
+                            }
+                        } else {
+                            _var3 = ears.boxes;
+                            _var2 = Object.keys(_var3);
+                            _var4 = 0;
+                            __state = '6';
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                case '6':
+                    if (_var4 < _var2.length) {
+                        key = _var2[_var4];
+                        box = _var3[key];
+                        if (visuals.highlight === key) {
+                            fill = '#00ff00';
+                            border = config.theme.highlight;
+                            __state = '9';
+                        } else {
+                            fill = '#00ff00';
+                            border = 'black';
+                            __state = '9';
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                case '9':
+                    drawCircle(ctx, box.left + radius, box.top + radius, radius, 2, fill, border);
+                    _var4++;
+                    __state = '6';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function Database_drawCandies(self, widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            return;
+        }
         function Rectangle_drawCandies(self, widget, element, ctx) {
             drawRectCandies(widget, element, ctx);
             return;
         }
         function findFree(widget, pos) {
-            var free, visuals, element, i, _var2;
+            var free, visuals, element, connection, visited, i, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     visuals = widget.visuals;
                     free = visuals.free;
+                    visited = {};
                     i = free.length - 1;
                     __state = '5';
                     break;
@@ -1072,8 +1180,16 @@ function createDrakonWidget() {
                         if (_var2) {
                             return element;
                         } else {
-                            i--;
-                            __state = '5';
+                            connection = performOnConnections(visuals, element.id, visited, function (conn) {
+                                _var3 = hitConnection(conn, pos);
+                                return _var3;
+                            });
+                            if (connection) {
+                                return connection;
+                            } else {
+                                i--;
+                                __state = '5';
+                            }
                         }
                     } else {
                         return undefined;
@@ -1099,21 +1215,34 @@ function createDrakonWidget() {
             runInsertAction(widget, socket);
             return;
         }
-        function buildBranchPath(ctx, x, y, w, h, padding) {
-            var left, right, top, bottom, middle;
-            left = x - w;
-            right = x + w;
-            top = y - h;
-            bottom = y + h;
+        function buildBranchCoords(left, top, width, height, padding) {
+            var x, right, bottom, middle;
+            x = left + width / 2;
+            right = left + width;
+            bottom = top + height;
             middle = bottom - padding;
-            ctx.beginPath();
-            ctx.moveTo(left, top);
-            ctx.lineTo(right, top);
-            ctx.lineTo(right, middle);
-            ctx.lineTo(x, bottom);
-            ctx.lineTo(left, middle);
-            ctx.closePath();
-            return middle;
+            return [
+                {
+                    x: left,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: middle
+                },
+                {
+                    x: x,
+                    y: bottom
+                },
+                {
+                    x: left,
+                    y: middle
+                }
+            ];
         }
         function GroupTopHandle_getMaxY(self) {
             return self.maxY;
@@ -1150,6 +1279,12 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function VertexHandle_getMinY(self) {
+            return self.minY;
+        }
+        function Frame_canEditLink(self) {
+            return false;
         }
         function cut(widget) {
             var type, nodes, elements;
@@ -1203,6 +1338,104 @@ function createDrakonWidget() {
                 return dst;
             } else {
                 return src;
+            }
+        }
+        function deepCloneCore(visited, obj) {
+            var array, copy, _var2, _var3, _var4, item, _var6, _var5, _var7, key, value, _var8, _var9, _var10;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (obj === undefined) {
+                        __state = '3';
+                    } else {
+                        if (obj === null) {
+                            __state = '3';
+                        } else {
+                            _var2 = typeof obj;
+                            if (_var2 === 'number') {
+                                __state = '36';
+                            } else {
+                                if (_var2 === 'boolean') {
+                                    __state = '36';
+                                } else {
+                                    if (_var2 === 'string') {
+                                        __state = '36';
+                                    } else {
+                                        if (_var2 === 'bigint') {
+                                            __state = '36';
+                                        } else {
+                                            if (_var2 === 'function') {
+                                                __state = '36';
+                                            } else {
+                                                if (_var2 === 'symbol') {
+                                                    __state = '36';
+                                                } else {
+                                                    if (obj instanceof RegExp) {
+                                                        __state = '36';
+                                                    } else {
+                                                        if (obj instanceof Date) {
+                                                            __state = '36';
+                                                        } else {
+                                                            _var10 = visited.has(obj);
+                                                            if (_var10) {
+                                                                throw new Error('deepClone: cycle detected');
+                                                            } else {
+                                                                visited.add(obj);
+                                                                _var8 = Array.isArray(obj);
+                                                                if (_var8) {
+                                                                    array = [];
+                                                                    _var3 = obj;
+                                                                    _var4 = 0;
+                                                                    __state = '32';
+                                                                } else {
+                                                                    copy = {};
+                                                                    _var6 = obj;
+                                                                    _var5 = Object.keys(_var6);
+                                                                    _var7 = 0;
+                                                                    __state = '43';
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case '3':
+                    return undefined;
+                case '32':
+                    if (_var4 < _var3.length) {
+                        item = _var3[_var4];
+                        _var9 = deepCloneCore(visited, item);
+                        array.push(_var9);
+                        _var4++;
+                        __state = '32';
+                    } else {
+                        return array;
+                    }
+                    break;
+                case '36':
+                    return obj;
+                case '43':
+                    if (_var7 < _var5.length) {
+                        key = _var5[_var7];
+                        value = _var6[key];
+                        copy[key] = deepCloneCore(visited, value);
+                        _var7++;
+                        __state = '43';
+                    } else {
+                        return copy;
+                    }
+                    break;
+                default:
+                    return;
+                }
             }
         }
         function lineFrom2Points(x1, y1, x2, y2) {
@@ -1479,9 +1712,14 @@ function createDrakonWidget() {
             return _var2;
         }
         function boxForHorizontalLine(left, top, right, margin) {
-            var _var2;
-            _var2 = createBoxWithMargin(left, top, right - left, 0, margin);
-            return _var2;
+            var _var2, _var3;
+            if (left <= right) {
+                _var2 = createBoxWithMargin(left, top, right - left, 0, margin);
+                return _var2;
+            } else {
+                _var3 = createBoxWithMargin(right, top, left - right, 0, margin);
+                return _var3;
+            }
         }
         function copyFields(dst, src, fields) {
             var _var2, _var3, field;
@@ -1582,6 +1820,12 @@ function createDrakonWidget() {
             comp = comparerAsc(property, left, right);
             return -1 * comp;
         }
+        function deepClone(obj) {
+            var visited, _var2;
+            visited = new Set();
+            _var2 = deepCloneCore(visited, obj);
+            return _var2;
+        }
         function findIndex(array, property, value) {
             var item, i;
             var __state = '2';
@@ -1614,6 +1858,29 @@ function createDrakonWidget() {
             var _var2;
             _var2 = Math.random();
             return _var2 * (max - min) + min;
+        }
+        function multiMapAdd(map, key, value) {
+            var bucket;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    bucket = map[key];
+                    if (bucket) {
+                        __state = '8';
+                    } else {
+                        bucket = [];
+                        map[key] = bucket;
+                        __state = '8';
+                    }
+                    break;
+                case '8':
+                    bucket.push(value);
+                    return;
+                default:
+                    return;
+                }
+            }
         }
         function incrementDictionaryValue(dict, prop) {
             var __state = '2';
@@ -1732,8 +1999,8 @@ function createDrakonWidget() {
                 case '2':
                     if (x >= box.left) {
                         if (y >= box.top) {
-                            if (x < box.left + box.width) {
-                                if (y < box.top + box.height) {
+                            if (x <= box.left + box.width) {
+                                if (y <= box.top + box.height) {
                                     return true;
                                 } else {
                                     __state = '8';
@@ -1798,9 +2065,14 @@ function createDrakonWidget() {
             }
         }
         function boxForVerticalLine(left, top, bottom, margin) {
-            var _var2;
-            _var2 = createBoxWithMargin(left, top, 0, bottom - top, margin);
-            return _var2;
+            var _var2, _var3;
+            if (top <= bottom) {
+                _var2 = createBoxWithMargin(left, top, 0, bottom - top, margin);
+                return _var2;
+            } else {
+                _var3 = createBoxWithMargin(left, bottom, 0, top - bottom, margin);
+                return _var3;
+            }
         }
         function stopMachine(obj, property) {
             var machine;
@@ -2759,28 +3031,33 @@ function createDrakonWidget() {
                         __state = '1';
                     } else {
                         clearSockets(self.visuals);
-                        _var2 = type;
-                        if (_var2 === 'case') {
-                            showInsert = function (visuals, node) {
-                                showCaseSockets(visuals, node, 'insert');
-                            };
-                            forType(self.visuals, 'case', showInsert);
+                        if (type in self.mindIcons) {
+                            showMindInsertSockets(self, 'insert', type);
                             __state = '11';
                         } else {
-                            if (_var2 === 'branch') {
-                                showAllBranchSockets(self.visuals, 'insert');
+                            _var2 = type;
+                            if (_var2 === 'case') {
+                                showInsert = function (visuals, node) {
+                                    showCaseSockets(visuals, node, 'insert');
+                                };
+                                forType(self.visuals, 'case', showInsert);
                                 __state = '11';
                             } else {
-                                if (_var2 === 'par') {
-                                    showAllParSockets(self.visuals, 'insert');
+                                if (_var2 === 'branch') {
+                                    showAllBranchSockets(self.visuals, 'insert');
                                     __state = '11';
                                 } else {
-                                    if (_var2 === 'duration') {
-                                        showDurationSockets(self.visuals, 'insert');
+                                    if (_var2 === 'par') {
+                                        showAllParSockets(self.visuals, 'insert');
                                         __state = '11';
                                     } else {
-                                        showBlockInsertSockets(self.visuals, 'insert', type);
-                                        __state = '11';
+                                        if (_var2 === 'duration') {
+                                            showDurationSockets(self.visuals, 'insert');
+                                            __state = '11';
+                                        } else {
+                                            showBlockInsertSockets(self.visuals, 'insert', type);
+                                            __state = '11';
+                                        }
                                     }
                                 }
                             }
@@ -3432,26 +3709,27 @@ function createDrakonWidget() {
             }
         }
         function resetSelection(widget) {
-            var _var2;
+            var oldSelection, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
+                case '1':
+                    return;
                 case '2':
-                    if (widget.selection) {
-                        _var2 = Object.keys(widget.selection.prims);
+                    oldSelection = widget.selection;
+                    resetSelectionCore(widget);
+                    if (oldSelection) {
+                        _var2 = Object.keys(oldSelection.prims);
                         if (_var2 === 0) {
-                            __state = '3';
+                            __state = '1';
                         } else {
-                            widget.config.onSelectionChanged([]);
-                            __state = '3';
+                            onSelectionChanged(widget, []);
+                            __state = '1';
                         }
                     } else {
-                        __state = '3';
+                        __state = '1';
                     }
                     break;
-                case '3':
-                    resetSelectionCore(widget);
-                    return;
                 default:
                     return;
                 }
@@ -3624,7 +3902,7 @@ function createDrakonWidget() {
             }
         }
         function tryAddFreeToBlock(widget) {
-            var added, visuals, selection, box, _var2, _var3, element, _var4, _var5;
+            var added, visuals, selection, box, _var2, _var3, element, _var4, _var5, _var6;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -3643,28 +3921,40 @@ function createDrakonWidget() {
                 case '5':
                     if (_var3 < _var2.length) {
                         element = _var2[_var3];
-                        _var5 = isSelected(widget, element.id);
-                        if (_var5) {
+                        _var4 = isSelected(widget, element.id);
+                        if (_var4) {
                             __state = '4';
                         } else {
                             if (element.innerBox) {
                                 box = element.innerBox;
-                                __state = '_item4';
+                                __state = '_item6';
                             } else {
                                 box = element.box;
-                                __state = '_item4';
+                                __state = '_item6';
                             }
                         }
                     } else {
                         return added;
                     }
                     break;
-                case '_item4':
-                    _var4 = boxContains(visuals.selectionFrame, box);
-                    if (_var4) {
-                        selection.prims[element.id] = 'free';
-                        added = true;
-                        __state = '4';
+                case '16':
+                    selection.prims[element.id] = 'free';
+                    added = true;
+                    __state = '4';
+                    break;
+                case '_item6':
+                    _var6 = boxesIntersect(visuals.selectionFrame, box);
+                    if (_var6) {
+                        if (element.boxes) {
+                            _var5 = intersectBoxes(element, visuals.selectionFrame);
+                            if (_var5) {
+                                __state = '16';
+                            } else {
+                                __state = '4';
+                            }
+                        } else {
+                            __state = '16';
+                        }
                     } else {
                         __state = '4';
                     }
@@ -4010,38 +4300,62 @@ function createDrakonWidget() {
             return;
         }
         function findVisualItem(widget, pos) {
-            var visuals, handle, element, node, edge, _var2, _var3, _var4;
-            visuals = widget.visuals;
-            _var2 = hitNugget(visuals, pos);
-            if (_var2) {
-                return { elType: 'nugget' };
-            } else {
-                handle = findHandle(visuals, pos);
-                if (handle) {
-                    return handle;
-                } else {
-                    element = findFree(widget, pos);
-                    if (element) {
-                        _var3 = freeToVisualItem(widget, element);
-                        return _var3;
+            var visuals, element, node, edge, handle, _var2, _var3, _var4, _var5, _var6;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    handle = findHandle(visuals, pos);
+                    if (handle) {
+                        return handle;
                     } else {
-                        node = findNode(visuals, pos);
-                        if (node) {
-                            _var4 = nodeToVisualItem(widget, node);
-                            return _var4;
+                        _var5 = hitNugget(visuals, pos);
+                        if (_var5) {
+                            return { elType: 'nugget' };
                         } else {
-                            edge = findEdge(visuals, pos);
-                            if (edge) {
-                                return {
-                                    id: edge.id,
-                                    type: edge.type,
-                                    elType: 'edge'
-                                };
+                            element = findFree(widget, pos);
+                            if (element) {
+                                if (element.type === 'connection') {
+                                    _var4 = connectionToVisualItem(widget, element);
+                                    return _var4;
+                                } else {
+                                    _var2 = freeToVisualItem(widget, element);
+                                    return _var2;
+                                }
                             } else {
-                                return undefined;
+                                node = findNode(visuals, pos);
+                                if (node) {
+                                    _var6 = isDownStub(node);
+                                    if (_var6) {
+                                        edge = node.up;
+                                        __state = '52';
+                                    } else {
+                                        _var3 = nodeToVisualItem(widget, node);
+                                        return _var3;
+                                    }
+                                } else {
+                                    edge = findEdge(visuals, pos);
+                                    if (edge) {
+                                        __state = '52';
+                                    } else {
+                                        return undefined;
+                                    }
+                                }
                             }
                         }
                     }
+                    break;
+                case '52':
+                    return {
+                        id: edge.id,
+                        primId: edge.id,
+                        type: edge.type,
+                        role: edge.role,
+                        elType: 'edge'
+                    };
+                default:
+                    return;
                 }
             }
         }
@@ -4053,6 +4367,7 @@ function createDrakonWidget() {
                 case '2':
                     prim = {
                         id: node.id,
+                        primId: node.id,
                         type: node.type,
                         elType: elType,
                         content: node.content || '',
@@ -4070,6 +4385,12 @@ function createDrakonWidget() {
                     setNotNull(node, prim, 'two');
                     setNotNull(node, prim, 'side');
                     setNotNull(node, prim, 'margin');
+                    setNotNull(node, prim, 'begin');
+                    setNotNull(node, prim, 'end');
+                    setNotNull(node, prim, 'parent');
+                    setNotNull(node, prim, 'ordinal');
+                    setNotNull(node, prim, 'treeType');
+                    setNotNull(node, prim, 'collapsed');
                     if (node.innerBox) {
                         Object.assign(prim, node.innerBox);
                         __state = '8';
@@ -4123,6 +4444,21 @@ function createDrakonWidget() {
                 }
             }
         }
+        function connectionToVisualItem(widget, connection) {
+            var prim;
+            prim = {
+                id: connection.id,
+                primId: connection.id,
+                type: connection.type,
+                elType: 'connection',
+                style: connection.style || '',
+                begin: connection.begin,
+                end: connection.end
+            };
+            Object.assign(prim, connection.boxes[0]);
+            primToClient(widget, prim);
+            return prim;
+        }
         function diagramToWidgetX(widget, diaX) {
             var zoom;
             zoom = widget.zoomFactor;
@@ -4138,20 +4474,52 @@ function createDrakonWidget() {
                 y: widgetY
             };
         }
+        function isDownStub(node) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (node.type === 'junction') {
+                        if (node.up) {
+                            if (node.up.role) {
+                                return true;
+                            } else {
+                                __state = '7';
+                            }
+                        } else {
+                            __state = '7';
+                        }
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '7':
+                    return false;
+                default:
+                    return;
+                }
+            }
+        }
         function addToSelectionCore(widget, node) {
-            var selection, visuals, head, wayUp, wayDown;
+            var selection, visuals, head, wayUp, wayDown, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     selection = widget.selection;
                     visuals = widget.visuals;
-                    if (selection.head) {
-                        head = visuals.nodes[selection.head];
-                        __state = '7';
+                    _var2 = isMind(widget);
+                    if (_var2) {
+                        _var3 = addToMindSelection(widget, node);
+                        return _var3;
                     } else {
-                        head = undefined;
-                        __state = '7';
+                        if (selection.head) {
+                            head = visuals.nodes[selection.head];
+                            __state = '7';
+                        } else {
+                            head = undefined;
+                            __state = '7';
+                        }
                     }
                     break;
                 case '7':
@@ -4204,8 +4572,46 @@ function createDrakonWidget() {
                 }
             }
         }
+        function getSelectedFree(widget) {
+            var visuals, prims, result, element, _var3, _var2, _var4, id, type;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    prims = widget.selection.prims;
+                    result = [];
+                    _var3 = prims;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '5';
+                    break;
+                case '4':
+                    _var4++;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var4 < _var2.length) {
+                        id = _var2[_var4];
+                        type = _var3[id];
+                        if (type === 'free') {
+                            element = getFree(visuals, id);
+                            result.push(element);
+                            __state = '4';
+                        } else {
+                            __state = '4';
+                        }
+                    } else {
+                        return result;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function selectPrim(widget, id) {
-            var selection, visuals, element, item, node;
+            var selection, visuals, connection, element, item, node;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -4216,30 +4622,37 @@ function createDrakonWidget() {
                     resetSelectionCore(widget);
                     selection = widget.selection;
                     visuals = widget.visuals;
-                    element = getFree(visuals, id);
-                    if (element) {
-                        selection.prims[id] = 'free';
-                        item = freeToVisualItem(widget, element);
-                        __state = '33';
+                    connection = getConnection(visuals, id);
+                    if (connection) {
+                        selection.prims[id] = 'connection';
+                        item = connectionToVisualItem(widget, connection);
+                        __state = '52';
                     } else {
-                        if (id in visuals.nodes) {
-                            selection.head = id;
-                            node = getNode(visuals, id);
-                            selection.prims[id] = 'node';
-                            item = nodeToVisualItem(widget, node);
-                            __state = '33';
+                        element = getFree(visuals, id);
+                        if (element) {
+                            selection.prims[id] = 'free';
+                            item = freeToVisualItem(widget, element);
+                            __state = '52';
                         } else {
-                            if (id in visuals.edges) {
-                                selection.prims[id] = 'edge';
-                                __state = '1';
+                            if (id in visuals.nodes) {
+                                selection.head = id;
+                                node = getNode(visuals, id);
+                                selection.prims[id] = 'node';
+                                item = nodeToVisualItem(widget, node);
+                                __state = '52';
                             } else {
-                                throw new Error('Can\'t select ' + id);
+                                if (id in visuals.edges) {
+                                    selection.prims[id] = 'edge';
+                                    __state = '1';
+                                } else {
+                                    throw new Error('Can\'t select ' + id);
+                                }
                             }
                         }
                     }
                     break;
-                case '33':
-                    widget.config.onSelectionChanged([item]);
+                case '52':
+                    onSelectionChanged(widget, [item]);
                     __state = '1';
                     break;
                 default:
@@ -4390,24 +4803,9 @@ function createDrakonWidget() {
         }
         function reportSelection(widget) {
             var prims;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (widget.config.onSelectionChanged) {
-                        prims = getSelectedPrims(widget);
-                        widget.config.onSelectionChanged(prims);
-                        __state = '1';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
+            prims = getSelectedPrims(widget);
+            onSelectionChanged(widget, prims);
+            return;
         }
         function addParBlockToSelection(widget, headNode, start) {
             var endId, visited, result, node, _var3, _var2, _var4, id, _;
@@ -4580,37 +4978,32 @@ function createDrakonWidget() {
             _var2 = findElementAt(visuals.edges, pos.x, pos.y);
             return _var2;
         }
-        function getSelectedFree(widget) {
-            var visuals, prims, result, element, _var3, _var2, _var4, id, type;
+        function getSelectedConnection(widget) {
+            var visuals, prims, _var3, _var2, _var4, id, type, _var5;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     visuals = widget.visuals;
                     prims = widget.selection.prims;
-                    result = [];
                     _var3 = prims;
                     _var2 = Object.keys(_var3);
                     _var4 = 0;
-                    __state = '5';
-                    break;
-                case '4':
-                    _var4++;
                     __state = '5';
                     break;
                 case '5':
                     if (_var4 < _var2.length) {
                         id = _var2[_var4];
                         type = _var3[id];
-                        if (type === 'free') {
-                            element = getFree(visuals, id);
-                            result.push(element);
-                            __state = '4';
+                        if (type === 'connection') {
+                            _var5 = getConnection(visuals, id);
+                            return _var5;
                         } else {
-                            __state = '4';
+                            _var4++;
+                            __state = '5';
                         }
                     } else {
-                        return result;
+                        return undefined;
                     }
                     break;
                 default:
@@ -4645,8 +5038,12 @@ function createDrakonWidget() {
                             if (edit.fields.type === 'branch') {
                                 return [];
                             } else {
-                                result.push(edit);
-                                __state = '6';
+                                if (edit.fields.type === 'connection') {
+                                    __state = '6';
+                                } else {
+                                    result.push(edit);
+                                    __state = '6';
+                                }
                             }
                         } else {
                             __state = '6';
@@ -4865,7 +5262,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_setStyle(self, ids, style) {
-            var styleStr, edits, _var2, _var3, id, _var4;
+            var styleStr, edits, type, edit, item, _var2, _var3, _var4, id, _var5;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -4881,21 +5278,86 @@ function createDrakonWidget() {
                     break;
                 case '6':
                     edits = [];
-                    _var2 = ids;
-                    _var3 = 0;
+                    _var3 = ids;
+                    _var4 = 0;
+                    __state = '8';
+                    break;
+                case '7':
+                    _var4++;
                     __state = '8';
                     break;
                 case '8':
-                    if (_var3 < _var2.length) {
-                        id = _var2[_var3];
-                        updateItem(edits, id, { style: styleStr });
-                        _var3++;
-                        __state = '8';
+                    if (_var4 < _var3.length) {
+                        id = _var3[_var4];
+                        if (id in self.model.items) {
+                            updateItem(edits, id, { style: styleStr });
+                            __state = '7';
+                        } else {
+                            _var2 = id;
+                            if (_var2 === 'header') {
+                                __state = '28';
+                            } else {
+                                if (_var2 === 'root') {
+                                    __state = '28';
+                                } else {
+                                    if (_var2 === 'params') {
+                                        type = 'params';
+                                        __state = '32';
+                                    } else {
+                                        throw new Error('Unexpected case value: ' + _var2);
+                                    }
+                                }
+                            }
+                        }
                     } else {
-                        _var4 = updateAndKeepSelection(self, edits);
-                        return _var4;
+                        _var5 = updateAndKeepSelection(self, edits);
+                        return _var5;
                     }
                     break;
+                case '28':
+                    type = 'header';
+                    __state = '32';
+                    break;
+                case '32':
+                    item = {
+                        style: styleStr,
+                        type: type,
+                        id: id
+                    };
+                    edit = createInsert(item);
+                    edits.push(edit);
+                    __state = '7';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function DrakonCanvas_patchDiagramStyle(self, style) {
+            var styleStr, change, newStyle, oldStyle, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    tracing.trace('DrakonCanvas.patchDiagramStyle', style);
+                    if (style) {
+                        __state = '24';
+                    } else {
+                        style = {};
+                        __state = '24';
+                    }
+                    break;
+                case '24':
+                    oldStyle = self.model.doc.style;
+                    newStyle = oldStyle || {};
+                    Object.assign(newStyle, style);
+                    styleStr = JSON.stringify(newStyle);
+                    change = {
+                        fields: { style: styleStr },
+                        op: 'update'
+                    };
+                    _var2 = updateAndKeepSelection(self, [change]);
+                    return _var2;
                 default:
                     return;
                 }
@@ -4907,23 +5369,26 @@ function createDrakonWidget() {
             return false;
         }
         function centerContent(visuals, node) {
-            var left, top;
-            left = Math.floor(node.x - node.w);
-            top = Math.floor(node.y - node.contentHeight / 2);
+            var left, top, _var2;
+            _var2 = Math.floor(node.x - node.w);
+            left = _var2 + 1;
+            top = Math.ceil(node.y - node.contentHeight / 2);
             renderContentCore(visuals, node, left, top);
             return;
         }
         function centerContentBottom(visuals, node) {
-            var top, left;
-            left = Math.floor(node.x - node.w);
-            top = Math.floor(node.y + node.h - node.contentHeight);
+            var top, left, _var2;
+            _var2 = Math.floor(node.x - node.w);
+            left = _var2 + 1;
+            top = Math.ceil(node.y + node.h - node.contentHeight);
             renderContentCore(visuals, node, left, top);
             return;
         }
         function centerContentTop(visuals, node) {
-            var left, top;
-            left = Math.floor(node.x - node.w);
-            top = Math.floor(node.y - node.h);
+            var left, top, _var2;
+            _var2 = Math.floor(node.x - node.w);
+            left = _var2 + 1;
+            top = Math.ceil(node.y - node.h);
             renderContentCore(visuals, node, left, top);
             return;
         }
@@ -5589,22 +6054,18 @@ function createDrakonWidget() {
             return;
         }
         function renderBranch(visuals, node, ctx) {
-            var middle, x, y, w, h, bottom, tx0, tx1, ty, line, tri;
+            var x, y, w, h, bottom, tx0, tx1, ty, tri, middle, radius;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
                     tri = visuals.config.triangleHeight;
-                    middle = buildBranchPath(ctx, node.x, node.y, node.w, node.h, tri);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildBranchPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, tri);
-                        ctx.stroke();
-                        __state = '22';
+                    radius = visuals.config.iconRadius || 0;
+                    if (radius) {
+                        tri -= radius;
+                        __state = '25';
                     } else {
-                        __state = '22';
+                        __state = '25';
                     }
                     break;
                 case '11':
@@ -5631,7 +6092,9 @@ function createDrakonWidget() {
                         __state = '11';
                     }
                     break;
-                case '22':
+                case '25':
+                    middle = node.y + node.h - tri;
+                    renderDrakonIconShape(ctx, visuals, node, buildBranchCoords, tri);
                     centerContentTop(visuals, node);
                     __state = '12';
                     break;
@@ -5641,56 +6104,205 @@ function createDrakonWidget() {
             }
         }
         function renderSimpleInput(visuals, node, ctx) {
+            renderDrakonIconShape(ctx, visuals, node, buildSimpleInputCoords, visuals.config.metre);
+            centerContent(visuals, node, ctx);
+            return;
+        }
+        function renderIconShapeComplex(ctx, visuals, node, buildPath, left, top, width, height, aux, keepPos) {
+            var line, x, y, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    line = setFillStroke(visuals, node, ctx);
+                    buildPath(ctx, left, top, width, height, aux);
+                    ctx.fill();
+                    clearShadow(ctx);
+                    __state = '19';
+                    break;
+                case '18':
+                    return;
+                case '19':
+                    if (line) {
+                        if (keepPos) {
+                            __state = '24';
+                        } else {
+                            _var2 = mustShift(visuals.config, line);
+                            if (_var2) {
+                                x = left + 0.5;
+                                y = top + 0.5;
+                                __state = '22';
+                            } else {
+                                __state = '24';
+                            }
+                        }
+                    } else {
+                        __state = '18';
+                    }
+                    break;
+                case '22':
+                    buildPath(ctx, x, y, width, height, aux);
+                    ctx.stroke();
+                    __state = '18';
+                    break;
+                case '24':
+                    x = left;
+                    y = top;
+                    __state = '22';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderIconShape(ctx, visuals, node, buildCoords, left, top, width, height, aux) {
             var line;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildSimpleInputPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildSimpleInputPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '15';
+                    line = setFillStroke(visuals, node, ctx);
+                    renderIconShapeFill(ctx, visuals, buildCoords, left, top, width, height, aux);
+                    __state = '22';
+                    break;
+                case '21':
+                    return;
+                case '22':
+                    renderIconShapeBorder(ctx, visuals, buildCoords, line, left, top, width, height, aux);
+                    __state = '21';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function sharpPoly(ctx, points) {
+            var p0, length, p, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    p0 = points[0];
+                    ctx.beginPath();
+                    ctx.moveTo(p0.x, p0.y);
+                    length = points.length;
+                    i = 1;
+                    __state = '9';
+                    break;
+                case '9':
+                    if (i < length) {
+                        p = points[i];
+                        ctx.lineTo(p.x, p.y);
+                        i++;
+                        __state = '9';
                     } else {
-                        __state = '15';
+                        ctx.closePath();
+                        return;
                     }
                     break;
-                case '15':
-                    centerContent(visuals, node, ctx);
+                default:
+                    return;
+                }
+            }
+        }
+        function renderDrakonIconShapeComplex(ctx, visuals, node, buildPath, aux) {
+            var left, top, width, height;
+            left = node.x - node.w;
+            top = node.y - node.h;
+            width = node.w * 2;
+            height = node.h * 2;
+            renderIconShapeComplex(ctx, visuals, node, buildPath, left, top, width, height, aux);
+            return;
+        }
+        function renderIconShapeBorder(ctx, visuals, buildCoords, line, left, top, width, height, aux) {
+            var x, y, coords2, radius, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (line) {
+                        radius = visuals.config.iconRadius || 0;
+                        _var2 = mustShift(visuals.config, line);
+                        if (_var2) {
+                            x = left + 0.5;
+                            y = top + 0.5;
+                            __state = '9';
+                        } else {
+                            x = left;
+                            y = top;
+                            __state = '9';
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                case '4':
+                    ctx.stroke();
+                    __state = '1';
+                    break;
+                case '9':
+                    coords2 = buildCoords(x, y, width, height, aux);
+                    if (radius) {
+                        roundedPoly(ctx, coords2, radius);
+                        __state = '4';
+                    } else {
+                        sharpPoly(ctx, coords2);
+                        __state = '4';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderDrakonIconShape(ctx, visuals, node, buildCoords, aux) {
+            var left, top, width, height;
+            left = node.x - node.w;
+            top = node.y - node.h;
+            width = node.w * 2;
+            height = node.h * 2;
+            renderIconShape(ctx, visuals, node, buildCoords, left, top, width, height, aux);
+            return;
+        }
+        function renderFreeIconShapeComplex(ctx, visuals, node, buildCoords, aux, keepPos) {
+            renderIconShapeComplex(ctx, visuals, node, buildCoords, node.left, node.top, node.width, node.height, aux, keepPos);
+            return;
+        }
+        function renderIconShapeFill(ctx, visuals, buildCoords, left, top, width, height, aux) {
+            var coords, radius;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    radius = visuals.config.iconRadius || 0;
+                    coords = buildCoords(left, top, width, height, aux);
+                    if (radius) {
+                        roundedPoly(ctx, coords, radius);
+                        __state = '4';
+                    } else {
+                        sharpPoly(ctx, coords);
+                        __state = '4';
+                    }
+                    break;
+                case '4':
+                    ctx.fill();
+                    clearShadow(ctx);
                     return;
                 default:
                     return;
                 }
             }
         }
+        function renderFreeIconShape(ctx, visuals, node, buildCoords, aux) {
+            renderIconShape(ctx, visuals, node, buildCoords, node.left, node.top, node.width, node.height, aux);
+            return;
+        }
         function renderLoopBegin(visuals, node, ctx) {
-            var line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildLoopBeginPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildLoopBeginPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '15';
-                    } else {
-                        __state = '15';
-                    }
-                    break;
-                case '15':
-                    centerContent(visuals, node, ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
+            renderDrakonIconShape(ctx, visuals, node, buildLoopBeginCoords, visuals.config.metre);
+            centerContent(visuals, node, ctx);
+            return;
         }
         function renderCase(visuals, node, ctx) {
             var left, bottom, middle, thickness, _var2;
@@ -5710,7 +6322,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
+                    line = setFillStroke(visuals, node, ctx);
                     buildCtrlStartPath(ctx, node.x, node.y, node.w, node.h);
                     ctx.fill();
                     clearShadow(ctx);
@@ -5731,22 +6343,18 @@ function createDrakonWidget() {
             }
         }
         function renderAddress(visuals, node, ctx) {
-            var middle, x, y, w, h, top, tx0, tx1, ty, line, tri;
+            var x, y, w, h, top, tx0, tx1, ty, tri, middle, radius;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     tri = visuals.config.triangleHeight;
-                    line = setFillStroke(visuals.config, node, ctx);
-                    middle = buildAddressPath(ctx, node.x, node.y, node.w, node.h, tri);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildAddressPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, tri);
-                        ctx.stroke();
-                        __state = '22';
+                    radius = visuals.config.iconRadius || 0;
+                    if (radius) {
+                        tri -= radius;
+                        __state = '25';
                     } else {
-                        __state = '22';
+                        __state = '25';
                     }
                     break;
                 case '11':
@@ -5773,7 +6381,9 @@ function createDrakonWidget() {
                         __state = '11';
                     }
                     break;
-                case '22':
+                case '25':
+                    middle = node.y - node.h + tri;
+                    renderDrakonIconShape(ctx, visuals, node, buildAddressCoords, tri);
                     centerContentBottom(visuals, node, ctx);
                     __state = '12';
                     break;
@@ -5782,24 +6392,63 @@ function createDrakonWidget() {
                 }
             }
         }
-        function buildLoopBeginPath(ctx, x, y, w, h, padding) {
-            var x0, x1, x3, x2, top, bottom, add;
+        function buildLoopBeginCoords(left, top, width, height, padding) {
+            var x0, x1, x3, x2, bottom, add, y;
             add = 5;
-            x0 = x - w - add;
+            x0 = left - add;
             x1 = x0 + padding;
-            x3 = x + w + add;
+            x3 = left + width + add;
             x2 = x3 - padding;
-            top = y - h;
-            bottom = y + h;
-            ctx.beginPath();
-            ctx.moveTo(x0, y);
-            ctx.lineTo(x1, top);
-            ctx.lineTo(x2, top);
-            ctx.lineTo(x3, y);
-            ctx.lineTo(x3, bottom);
-            ctx.lineTo(x0, bottom);
-            ctx.closePath();
-            return;
+            bottom = top + height;
+            y = top + height / 2;
+            return [
+                {
+                    x: x0,
+                    y: y
+                },
+                {
+                    x: x1,
+                    y: top
+                },
+                {
+                    x: x2,
+                    y: top
+                },
+                {
+                    x: x3,
+                    y: y
+                },
+                {
+                    x: x3,
+                    y: bottom
+                },
+                {
+                    x: x0,
+                    y: bottom
+                }
+            ];
+        }
+        function mustShift(config, line) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (config.zoom === 1) {
+                        if (line % 2 === 1) {
+                            return true;
+                        } else {
+                            __state = '11';
+                        }
+                    } else {
+                        __state = '11';
+                    }
+                    break;
+                case '11':
+                    return false;
+                default:
+                    return;
+                }
+            }
         }
         function buildQuestionPath(ctx, x, y, w, h, padding) {
             var x0, x1, x3, x2, top, bottom;
@@ -5847,20 +6496,44 @@ function createDrakonWidget() {
             ctx.restore();
             return;
         }
-        function buildBeginEndPath(ctx, x, y, w, h) {
-            var x0, x1, x3, x2, top, bottom;
-            x0 = x - w;
+        function buildBeginEndPath(ctx, left, top, width, height) {
+            var x0, x1, x3, x2, bottom, h, y;
+            h = height / 2;
+            y = top + h;
+            x0 = left;
             x1 = x0 + h;
-            x3 = x + w;
+            x3 = left + width;
             x2 = x3 - h;
-            top = y - h;
-            bottom = y + h;
+            bottom = top + height;
             ctx.beginPath();
             ctx.arc(x1, y, h, Math.PI * 0.5, Math.PI * 1.5);
             ctx.lineTo(x2, top);
             ctx.arc(x2, y, h, Math.PI * 1.5, Math.PI * 0.5);
             ctx.closePath();
             return;
+        }
+        function buildRectCoords(left, top, width, height) {
+            var right, bottom;
+            right = left + width;
+            bottom = top + height;
+            return [
+                {
+                    x: left,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: bottom
+                },
+                {
+                    x: left,
+                    y: bottom
+                }
+            ];
         }
         function roundedRect(ctx, left, top, width, height, radius) {
             var x1, right2, x2, y1, bottom2, y2;
@@ -5881,21 +6554,31 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
-        function buildSelectPath(ctx, x, y, w, h, padding) {
-            var x0, x1, x3, x2, top, bottom;
-            x0 = x - w;
+        function buildSelectCoords(left, top, width, height, padding) {
+            var x0, x1, x3, x2, bottom;
+            x0 = left;
             x1 = x0 + padding;
-            x3 = x + w;
+            x3 = left + width;
             x2 = x3 - padding;
-            top = y - h;
-            bottom = y + h;
-            ctx.beginPath();
-            ctx.moveTo(x0, bottom);
-            ctx.lineTo(x1, top);
-            ctx.lineTo(x3, top);
-            ctx.lineTo(x2, bottom);
-            ctx.closePath();
-            return;
+            bottom = top + height;
+            return [
+                {
+                    x: x0,
+                    y: bottom
+                },
+                {
+                    x: x1,
+                    y: top
+                },
+                {
+                    x: x3,
+                    y: top
+                },
+                {
+                    x: x2,
+                    y: bottom
+                }
+            ];
         }
         function buildOutputPath(ctx, x, y, w, h, padding, h2) {
             var x0, x1, x4, x3, x2, y0, y4, y3, y1, y2;
@@ -5938,24 +6621,76 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
-        function buildLoopEndPath(ctx, x, y, w, h, padding) {
-            var x0, x1, x3, x2, top, bottom, add;
+        function buildLoopEndCoords(left, top, width, height, padding) {
+            var add, x0, x1, x3, x2, bottom, y;
             add = 5;
-            x0 = x - w - add;
+            x0 = left - add;
             x1 = x0 + padding;
-            x3 = x + w + add;
+            x3 = left + width + add;
             x2 = x3 - padding;
-            top = y - h;
-            bottom = y + h;
-            ctx.beginPath();
-            ctx.moveTo(x0, y);
-            ctx.lineTo(x0, top);
-            ctx.lineTo(x3, top);
-            ctx.lineTo(x3, y);
-            ctx.lineTo(x2, bottom);
-            ctx.lineTo(x1, bottom);
-            ctx.closePath();
-            return;
+            bottom = top + height;
+            y = top + height / 2;
+            return [
+                {
+                    x: x0,
+                    y: y
+                },
+                {
+                    x: x0,
+                    y: top
+                },
+                {
+                    x: x3,
+                    y: top
+                },
+                {
+                    x: x3,
+                    y: y
+                },
+                {
+                    x: x2,
+                    y: bottom
+                },
+                {
+                    x: x1,
+                    y: bottom
+                }
+            ];
+        }
+        function buildQuestionCoords(left, top, width, height, padding) {
+            var x0, x1, x3, x2, bottom, y;
+            x0 = left;
+            x1 = x0 + padding;
+            x3 = left + width;
+            x2 = x3 - padding;
+            bottom = top + height;
+            y = top + height / 2;
+            return [
+                {
+                    x: x0,
+                    y: y
+                },
+                {
+                    x: x1,
+                    y: top
+                },
+                {
+                    x: x2,
+                    y: top
+                },
+                {
+                    x: x3,
+                    y: y
+                },
+                {
+                    x: x2,
+                    y: bottom
+                },
+                {
+                    x: x1,
+                    y: bottom
+                }
+            ];
         }
         function buildCtrlEndPath(ctx, x, y, w, h) {
             var x0, x1, x3, x2, top, bottom, radius;
@@ -6020,16 +6755,26 @@ function createDrakonWidget() {
             ctx.closePath();
             return;
         }
-        function setFillStroke(config, node, ctx) {
-            var theme, lineWidth, shadowColor, _var2, _var3, _var4;
+        function setFillStroke(visuals, node, ctx) {
+            var theme, shadowColor, config, lineWidth, _var2, _var3, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
+                    config = visuals.config;
                     theme = config.theme;
-                    ctx.strokeStyle = getThemeValue(config, node, 'iconBorder');
+                    if (visuals.highlight === node.id) {
+                        ctx.strokeStyle = theme.highlight;
+                        lineWidth = 2;
+                        __state = '11';
+                    } else {
+                        ctx.strokeStyle = getThemeValue(config, node, 'iconBorder');
+                        lineWidth = getThemeValue(config, node, 'borderWidth');
+                        __state = '11';
+                    }
+                    break;
+                case '11':
                     ctx.fillStyle = getThemeValue(config, node, 'iconBack');
-                    lineWidth = getThemeValue(config, node, 'borderWidth');
                     ctx.lineWidth = lineWidth;
                     __state = '35';
                     break;
@@ -6061,71 +6806,118 @@ function createDrakonWidget() {
                 }
             }
         }
-        function buildAddressPath(ctx, x, y, w, h, padding) {
-            var left, right, top, bottom, middle;
-            left = x - w;
-            right = x + w;
-            top = y - h;
-            bottom = y + h;
+        function buildAddressCoords(left, top, width, height, padding) {
+            var right, bottom, middle, x;
+            x = left + width / 2;
+            right = left + width;
+            bottom = top + height;
             middle = top + padding;
-            ctx.beginPath();
-            ctx.moveTo(left, bottom);
-            ctx.lineTo(left, middle);
-            ctx.lineTo(x, top);
-            ctx.lineTo(right, middle);
-            ctx.lineTo(right, bottom);
-            ctx.closePath();
-            return middle;
+            return [
+                {
+                    x: left,
+                    y: bottom
+                },
+                {
+                    x: left,
+                    y: middle
+                },
+                {
+                    x: x,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: middle
+                },
+                {
+                    x: right,
+                    y: bottom
+                }
+            ];
         }
-        function buildSimpleInputPath(ctx, x, y, w, h, padding) {
-            var add, left, right, top, bottom, x1;
-            add = 5;
-            left = x - w;
-            right = x + w;
-            top = y - h;
-            bottom = y + h;
+        function buildSimpleInputCoords(left, top, width, height, padding) {
+            var y, right, bottom, x1;
+            y = top + height / 2;
+            right = left + width;
+            bottom = top + height;
             x1 = left + padding;
-            ctx.beginPath();
-            ctx.moveTo(left, top);
-            ctx.lineTo(right, top);
-            ctx.lineTo(right, bottom);
-            ctx.lineTo(left, bottom);
-            ctx.lineTo(x1, y);
-            ctx.closePath();
-            return;
+            return [
+                {
+                    x: left,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: bottom
+                },
+                {
+                    x: left,
+                    y: bottom
+                },
+                {
+                    x: x1,
+                    y: y
+                }
+            ];
         }
-        function buildDurationPath(ctx, x, y, w, h, padding) {
-            var x0, x1, x3, x2, top, bottom;
-            x0 = x - w;
+        function buildDurationCoords(left, top, width, height, padding) {
+            var x0, x1, x3, x2, bottom;
+            x0 = left;
             x1 = x0 + padding;
-            x3 = x + w;
+            x3 = left + width;
             x2 = x3 - padding;
-            top = y - h;
-            bottom = y + h;
-            ctx.beginPath();
-            ctx.moveTo(x1, bottom);
-            ctx.lineTo(x0, top);
-            ctx.lineTo(x3, top);
-            ctx.lineTo(x2, bottom);
-            ctx.closePath();
-            return;
+            bottom = top + height;
+            return [
+                {
+                    x: x1,
+                    y: bottom
+                },
+                {
+                    x: x0,
+                    y: top
+                },
+                {
+                    x: x3,
+                    y: top
+                },
+                {
+                    x: x2,
+                    y: bottom
+                }
+            ];
         }
-        function buildSimpleOutputPath(ctx, x, y, w, h, padding) {
-            var add, left, right, top, bottom, x1;
-            add = 5;
-            left = x - w;
-            right = x + w;
-            top = y - h;
-            bottom = y + h;
+        function buildSimpleOutputCoords(left, top, width, height, padding) {
+            var y, right, bottom, x1;
+            y = top + height / 2;
+            right = left + width;
+            bottom = top + height;
             x1 = right - padding;
-            ctx.beginPath();
-            ctx.moveTo(left, top);
-            ctx.lineTo(x1, top);
-            ctx.lineTo(right, y);
-            ctx.lineTo(x1, bottom);
-            ctx.lineTo(left, bottom);
-            ctx.closePath();
-            return;
+            return [
+                {
+                    x: left,
+                    y: top
+                },
+                {
+                    x: x1,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: y
+                },
+                {
+                    x: x1,
+                    y: bottom
+                },
+                {
+                    x: left,
+                    y: bottom
+                }
+            ];
         }
         function setLineDashFromStyle(config, node, lineWidth, name, ctx) {
             var style, segments, _var2;
@@ -6176,79 +6968,55 @@ function createDrakonWidget() {
                 case '4':
                     segments[0] *= lineWidth;
                     segments[1] *= lineWidth;
-                    ctx.setLineDash(segments);
-                    return;
+                    __state = '18';
+                    break;
                 case '16':
                     segments = [];
-                    __state = '4';
+                    __state = '18';
                     break;
+                case '18':
+                    ctx.setLineDash(segments);
+                    return;
                 default:
                     return;
                 }
             }
         }
         function renderSelect(visuals, node, ctx) {
-            var padding, line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    padding = visuals.config.metre / 2;
-                    buildSelectPath(ctx, node.x, node.y, node.w, node.h, padding);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildSelectPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding);
-                        ctx.stroke();
-                        __state = '15';
-                    } else {
-                        __state = '15';
-                    }
-                    break;
-                case '15':
-                    centerContent(visuals, node, ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
+            var padding;
+            padding = visuals.config.metre / 2;
+            renderDrakonIconShape(ctx, visuals, node, buildSelectCoords, padding);
+            centerContent(visuals, node, ctx);
+            return;
         }
         function renderShelf(visuals, node, ctx) {
-            var h2, middle, thickness, left, top, width, height, line, _var2;
+            var h2, middle, thickness, left, top, width, height, _var2;
             var __state = '14';
             while (true) {
                 switch (__state) {
                 case '2':
                     h2 = getSecondaryHeightCore(visuals, node);
-                    middle = top + h2;
+                    middle = Math.round(top + h2);
                     _var2 = getThemeValue(visuals.config, node, 'borderWidth');
                     thickness = _var2 || 1;
                     ctx.setLineDash([]);
                     ctx.fillStyle = getThemeValue(visuals.config, node, 'internalLine');
                     ctx.fillRect(left, middle, node.w * 2, thickness);
-                    centerContentTop(visuals, node);
                     __state = '13';
                     break;
                 case '12':
                     return;
                 case '13':
+                    centerContentTop(visuals, node);
                     __state = '12';
                     break;
                 case '14':
+                    renderDrakonIconShape(ctx, visuals, node, buildRectCoords, undefined);
                     left = node.x - node.w;
                     top = node.y - node.h;
                     width = node.w * 2;
                     height = node.h * 2;
-                    line = setFillStroke(visuals.config, node, ctx);
-                    ctx.fillRect(left, top, width, height);
-                    clearShadow(ctx);
-                    if (line) {
-                        ctx.strokeRect(left + 0.5, top + 0.5, width, height);
-                        __state = '2';
-                    } else {
-                        __state = '2';
-                    }
+                    __state = '2';
                     break;
                 default:
                     return;
@@ -6256,57 +7024,16 @@ function createDrakonWidget() {
             }
         }
         function renderDuration(visuals, node, ctx) {
-            var padding, line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    padding = visuals.config.metre;
-                    buildDurationPath(ctx, node.x, node.y, node.w, node.h, padding);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildDurationPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, padding);
-                        ctx.stroke();
-                        __state = '15';
-                    } else {
-                        __state = '15';
-                    }
-                    break;
-                case '15':
-                    centerContent(visuals, node, ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
+            var padding;
+            padding = visuals.config.metre;
+            renderDrakonIconShape(ctx, visuals, node, buildDurationCoords, padding);
+            centerContent(visuals, node, ctx);
+            return;
         }
         function renderSimpleOutput(visuals, node, ctx) {
-            var line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildSimpleOutputPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildSimpleOutputPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '15';
-                    } else {
-                        __state = '15';
-                    }
-                    break;
-                case '15':
-                    centerContent(visuals, node, ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
+            renderDrakonIconShape(ctx, visuals, node, buildSimpleOutputCoords, visuals.config.metre);
+            centerContent(visuals, node, ctx);
+            return;
         }
         function renderTimer(visuals, node, ctx) {
             var left, right, top, bottom, x1, x2, x1low, x2low, padding, _var2;
@@ -6334,24 +7061,17 @@ function createDrakonWidget() {
             return;
         }
         function renderQuestion(visuals, node, ctx) {
-            var yesDiv, noDiv, yesRect, noRect, leftText, rightText, leftWidth, leftX, leftY, rightX, rightY, line, _var2;
+            var yesDiv, noDiv, yesRect, noRect, leftText, rightText, leftWidth, leftX, leftY, rightX, rightY, thickness, left, top, width, height, extra, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildQuestionPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildQuestionPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '4';
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '4':
+                    extra = 3;
+                    left = node.x - node.w - extra;
+                    top = node.y - node.h;
+                    width = node.w * 2 + extra * 2;
+                    height = node.h * 2;
+                    renderIconShape(ctx, visuals, node, buildQuestionCoords, left, top, width, height, visuals.config.metre);
                     centerContent(visuals, node, ctx);
                     __state = '12';
                     break;
@@ -6359,6 +7079,7 @@ function createDrakonWidget() {
                     return;
                 case '12':
                     if (visuals.config.canvasLabels) {
+                        thickness = visuals.config.theme.lineWidth || 1;
                         if (node.flag1) {
                             leftText = visuals.config.yes;
                             rightText = visuals.config.no;
@@ -6394,10 +7115,10 @@ function createDrakonWidget() {
                     ctx.font = visuals.config.canvasLabels;
                     _var2 = ctx.measureText(leftText);
                     leftWidth = _var2.width;
-                    leftX = node.x - 3;
+                    leftX = node.x - 2 - thickness;
                     leftY = node.y + node.h + 3;
                     rightX = node.x + node.w + 3;
-                    rightY = node.y - 3;
+                    rightY = node.y - 2 - thickness;
                     ctx.textAlign = 'right';
                     ctx.textBaseline = 'top';
                     ctx.fillText(leftText, leftX, leftY);
@@ -6442,7 +7163,7 @@ function createDrakonWidget() {
                     return;
                 case '14':
                     h2 = getSecondaryHeightCore(visuals, node);
-                    line = setFillStroke(visuals.config, node, ctx);
+                    line = setFillStroke(visuals, node, ctx);
                     padding = visuals.config.metre / 2;
                     buildProcessPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
                     ctx.fill();
@@ -6461,7 +7182,7 @@ function createDrakonWidget() {
             }
         }
         function renderComment(visuals, node, ctx) {
-            var left, top, width, height, config, theme, lineWidth, left2, top2, width2, height2, padding;
+            var left2, top2, width2, height2, lineWidth, padding, left, top, width, height, config, theme, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -6472,22 +7193,21 @@ function createDrakonWidget() {
                     height = node.h * 2;
                     config = visuals.config;
                     theme = config.theme;
-                    ctx.strokeStyle = getThemeValue(config, node, 'iconBorder');
+                    padding = config.commentPadding;
+                    lineWidth = setFillStroke(visuals, node, ctx);
                     ctx.fillStyle = theme.commentBack;
-                    lineWidth = getThemeValue(config, node, 'borderWidth');
                     if (theme.shadowColor) {
                         ctx.shadowColor = theme.shadowColor;
                         ctx.shadowBlur = theme.shadowBlur;
-                        __state = '28';
+                        __state = '57';
                     } else {
-                        __state = '28';
+                        __state = '57';
                     }
                     break;
                 case '26':
                     centerContent(visuals, node, ctx);
                     return;
                 case '27':
-                    padding = config.commentPadding;
                     ctx.fillStyle = getThemeValue(config, node, 'iconBack');
                     ctx.strokeStyle = getThemeValue(config, node, 'internalLine');
                     left2 = left + padding;
@@ -6496,21 +7216,26 @@ function createDrakonWidget() {
                     height2 = height - padding * 2;
                     roundedRect(ctx, left2, top2, width2, height2, padding);
                     ctx.fill();
+                    lineWidth = getThemeValue(config, node, 'borderWidth');
                     ctx.lineWidth = lineWidth || 1;
-                    roundedRect(ctx, left2 + 0.5, top2 + 0.5, width2, height2, padding);
+                    _var2 = mustShift(visuals.config, lineWidth);
+                    if (_var2) {
+                        left2 += 0.5;
+                        top2 += 0.5;
+                        __state = '47';
+                    } else {
+                        __state = '47';
+                    }
+                    break;
+                case '47':
+                    roundedRect(ctx, left2, top2, width2, height2, padding);
                     ctx.stroke();
                     __state = '26';
                     break;
-                case '28':
-                    ctx.fillRect(left, top, width, height);
-                    clearShadow(ctx);
-                    if (lineWidth) {
-                        ctx.lineWidth = lineWidth;
-                        ctx.strokeRect(left + 0.5, top + 0.5, width, height);
-                        __state = '27';
-                    } else {
-                        __state = '27';
-                    }
+                case '57':
+                    renderIconShapeFill(ctx, visuals, buildRectCoords, left, top, width, height, undefined);
+                    renderIconShapeBorder(ctx, visuals, buildRectCoords, lineWidth, left, top, width, height, undefined);
+                    __state = '27';
                     break;
                 default:
                     return;
@@ -6518,30 +7243,9 @@ function createDrakonWidget() {
             }
         }
         function renderHeader(visuals, node, ctx) {
-            var line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildBeginEndPath(ctx, node.x, node.y, node.w, node.h);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildBeginEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h);
-                        ctx.stroke();
-                        __state = '18';
-                    } else {
-                        __state = '18';
-                    }
-                    break;
-                case '18':
-                    centerContent(visuals, node, ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
+            renderDrakonIconShapeComplex(ctx, visuals, node, buildBeginEndPath, undefined);
+            centerContent(visuals, node, ctx);
+            return;
         }
         function renderOutput(visuals, node, ctx) {
             var left, top, middle, thickness, padding, line, x0, x1, x3, x2, y0, y1, y2, h2, _var2;
@@ -6554,6 +7258,7 @@ function createDrakonWidget() {
                     middle = top + h2;
                     _var2 = getThemeValue(visuals.config, node, 'borderWidth');
                     thickness = _var2 || 1;
+                    ctx.lineWidth = thickness;
                     ctx.strokeStyle = getThemeValue(visuals.config, node, 'internalLine');
                     x0 = node.x - node.w + 0.5;
                     x1 = x0 + padding;
@@ -6577,7 +7282,7 @@ function createDrakonWidget() {
                     break;
                 case '14':
                     h2 = getSecondaryHeightCore(visuals, node);
-                    line = setFillStroke(visuals.config, node, ctx);
+                    line = setFillStroke(visuals, node, ctx);
                     padding = visuals.config.metre / 2;
                     buildOutputPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
                     ctx.fill();
@@ -6600,32 +7305,9 @@ function createDrakonWidget() {
             return;
         }
         function renderAction(visuals, node, ctx) {
-            var left, top, width, height, line;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    left = node.x - node.w;
-                    top = node.y - node.h;
-                    width = node.w * 2;
-                    height = node.h * 2;
-                    line = setFillStroke(visuals.config, node, ctx);
-                    ctx.fillRect(left, top, width, height);
-                    clearShadow(ctx);
-                    if (line) {
-                        ctx.strokeRect(left + 0.5, top + 0.5, width, height);
-                        __state = '10';
-                    } else {
-                        __state = '10';
-                    }
-                    break;
-                case '10':
-                    centerContent(visuals, node, ctx);
-                    return;
-                default:
-                    return;
-                }
-            }
+            renderDrakonIconShape(ctx, visuals, node, buildRectCoords, undefined);
+            centerContent(visuals, node, ctx);
+            return;
         }
         function renderInput(visuals, node, ctx) {
             var left, top, middle, thickness, padding, line, x0, x1, x3, x2, y0, y1, y2, h2, _var2;
@@ -6638,6 +7320,7 @@ function createDrakonWidget() {
                     middle = top + h2;
                     _var2 = getThemeValue(visuals.config, node, 'borderWidth');
                     thickness = _var2 || 1;
+                    ctx.lineWidth = thickness;
                     ctx.strokeStyle = getThemeValue(visuals.config, node, 'internalLine');
                     x0 = node.x - node.w + 0.5;
                     x1 = x0 + padding * 2;
@@ -6661,7 +7344,7 @@ function createDrakonWidget() {
                     break;
                 case '14':
                     h2 = getSecondaryHeightCore(visuals, node);
-                    line = setFillStroke(visuals.config, node, ctx);
+                    line = setFillStroke(visuals, node, ctx);
                     padding = visuals.config.metre / 2;
                     buildInputPath(ctx, node.x, node.y, node.w, node.h, padding, h2);
                     ctx.fill();
@@ -6685,7 +7368,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
+                    line = setFillStroke(visuals, node, ctx);
                     buildCtrlEndPath(ctx, node.x, node.y, node.w, node.h);
                     ctx.fill();
                     clearShadow(ctx);
@@ -6706,38 +7389,141 @@ function createDrakonWidget() {
             }
         }
         function renderLoopEnd(visuals, node, ctx) {
-            var line;
+            renderDrakonIconShape(ctx, visuals, node, buildLoopEndCoords, visuals.config.metre);
+            centerContent(visuals, node, ctx);
+            return;
+        }
+        function renderRidea(visuals, node, ctx) {
+            renderDrakonIconShapeComplex(ctx, visuals, node, roundedRect, 15);
+            centerContent(visuals, node, ctx);
+            return;
+        }
+        function renderJunction(visuals, node, ctx) {
+            var radius, x, y, thickness, color, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
+                case '1':
+                    return;
                 case '2':
-                    line = setFillStroke(visuals.config, node, ctx);
-                    buildLoopEndPath(ctx, node.x, node.y, node.w, node.h, visuals.config.metre);
-                    ctx.fill();
-                    clearShadow(ctx);
-                    if (line) {
-                        buildLoopEndPath(ctx, node.x + 0.5, node.y + 0.5, node.w, node.h, visuals.config.metre);
-                        ctx.stroke();
-                        __state = '15';
+                    radius = visuals.config.lineRadius || 0;
+                    if (radius) {
+                        _var2 = shouldSmoothJunction(node);
+                        if (_var2) {
+                            ctx.lineCap = 'butt';
+                            if (node.up) {
+                                thickness = node.up.thickness;
+                                color = node.up.color;
+                                ctx.lineWidth = thickness;
+                                ctx.strokeStyle = color;
+                                if (node.left) {
+                                    if (node.down) {
+                                        if (node.right) {
+                                            line(ctx, node.x - radius, node.y, node.x + radius, node.y, node.right.thickness, thickness);
+                                            line(ctx, node.x, node.y - radius, node.x, node.y + radius, color, thickness);
+                                            __state = '1';
+                                        } else {
+                                            if (node.down.role === 'down') {
+                                                x = node.x - radius;
+                                                y = node.y + radius;
+                                                arc(ctx, x, y, radius, -Math.PI / 2, 0, thickness, color);
+                                                line(ctx, node.x, node.y - radius, node.x, node.y + radius, color, thickness);
+                                                __state = '1';
+                                            } else {
+                                                x = node.x - radius;
+                                                y = node.y - radius;
+                                                arc(ctx, x, y, radius, 0, Math.PI / 2, thickness, color);
+                                                line(ctx, node.x, node.y - radius, node.x, node.y + radius, color, thickness);
+                                                __state = '1';
+                                            }
+                                        }
+                                    } else {
+                                        if (node.right) {
+                                            if (node.sharp) {
+                                                line(ctx, node.x, node.y - radius, node.x, node.y, color, thickness);
+                                                __state = '37';
+                                            } else {
+                                                if (node.right.role === 'left') {
+                                                    x = node.x - radius;
+                                                    y = node.y - radius;
+                                                    arc(ctx, x, y, radius, 0, Math.PI / 2, thickness, color);
+                                                    __state = '37';
+                                                } else {
+                                                    x = node.x + radius;
+                                                    y = node.y - radius;
+                                                    arc(ctx, x, y, radius, Math.PI / 2, Math.PI, thickness, color);
+                                                    __state = '37';
+                                                }
+                                            }
+                                        } else {
+                                            x = node.x - radius;
+                                            y = node.y - radius;
+                                            arc(ctx, x, y, radius, 0, Math.PI / 2, thickness, color);
+                                            __state = '1';
+                                        }
+                                    }
+                                } else {
+                                    if (node.down) {
+                                        line(ctx, node.x, node.y - radius, node.x, node.y + radius, color, thickness);
+                                        if (node.sharp) {
+                                            line(ctx, node.x - radius, node.y, node.x, node.y, color, thickness);
+                                            __state = '1';
+                                        } else {
+                                            x = node.x + radius;
+                                            y = node.y + radius;
+                                            arc(ctx, x, y, radius, Math.PI, Math.PI * 3 / 2, node.right.thickness, color);
+                                            __state = '1';
+                                        }
+                                    } else {
+                                        x = node.x + radius;
+                                        y = node.y - radius;
+                                        arc(ctx, x, y, radius, Math.PI / 2, Math.PI, thickness, color);
+                                        __state = '1';
+                                    }
+                                }
+                            } else {
+                                if (node.down) {
+                                    thickness = node.down.thickness;
+                                    color = node.down.color;
+                                    ctx.lineWidth = thickness;
+                                    ctx.strokeStyle = color;
+                                    if (node.right) {
+                                        x = node.x + radius;
+                                        y = node.y + radius;
+                                        arc(ctx, x, y, radius, Math.PI, Math.PI / 2 * 3, thickness, color);
+                                        __state = '1';
+                                    } else {
+                                        x = node.x - radius;
+                                        y = node.y + radius;
+                                        arc(ctx, x, y, radius, -Math.PI / 2, 0, thickness, color);
+                                        __state = '1';
+                                    }
+                                } else {
+                                    __state = '1';
+                                }
+                            }
+                        } else {
+                            __state = '1';
+                        }
                     } else {
-                        __state = '15';
+                        __state = '1';
                     }
                     break;
-                case '15':
-                    centerContent(visuals, node, ctx);
-                    return;
+                case '37':
+                    line(ctx, node.x - radius, node.y, node.x + radius, node.y, color, thickness);
+                    __state = '1';
+                    break;
                 default:
                     return;
                 }
             }
         }
-        function renderJunction(node, ctx) {
-            return;
-        }
         function initIconRender(output, input) {
             var defaultValues;
             defaultValues = {
                 action: renderAction,
+                idea: renderAction,
+                ridea: renderRidea,
                 question: renderQuestion,
                 'case': renderCase,
                 select: renderSelect,
@@ -6751,6 +7537,7 @@ function createDrakonWidget() {
                 loopend: renderLoopEnd,
                 params: renderAction,
                 comment: renderComment,
+                conclusion: renderComment,
                 insertion: renderInsertion,
                 simpleinput: renderSimpleInput,
                 simpleoutput: renderSimpleOutput,
@@ -6771,6 +7558,8 @@ function createDrakonWidget() {
             var defaultValues;
             defaultValues = {
                 action: contentAction,
+                idea: contentAction,
+                ridea: contentAction,
                 question: contentQuestion,
                 'case': contentCase,
                 select: contentSelect,
@@ -6784,6 +7573,7 @@ function createDrakonWidget() {
                 loopend: contentAction,
                 params: contentAction,
                 comment: contentComment,
+                conclusion: contentComment,
                 insertion: contentInsertion,
                 simpleinput: contentSimpleInput,
                 simpleoutput: contentSimpleOutput,
@@ -6801,22 +7591,39 @@ function createDrakonWidget() {
             return;
         }
         function flowIcon(visuals, node) {
-            var context, size, config;
-            config = visuals.config;
-            context = {
-                type: node.type,
-                content: node.content,
-                secondary: node.secondary,
-                link: node.link,
-                style: node.style,
-                flag1: node.flag1,
-                margin: node.margin || 0,
-                config: config
-            };
-            node.core = config.buildIconCore(context);
-            size = measureCore(visuals, node);
-            setNodeSize(config, node, size);
-            return;
+            var context, size, config, existingW;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    existingW = node.w;
+                    config = visuals.config;
+                    context = {
+                        type: node.type,
+                        content: node.content,
+                        secondary: node.secondary,
+                        link: node.link,
+                        style: node.style,
+                        flag1: node.flag1,
+                        margin: node.margin || 0,
+                        config: config
+                    };
+                    node.core = config.buildIconCore(context);
+                    size = measureCore(visuals, node);
+                    setNodeSize(config, node, size);
+                    if (existingW) {
+                        node.w = existingW;
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function setNodeSize(config, node, size) {
             var __state = '2';
@@ -6973,10 +7780,27 @@ function createDrakonWidget() {
             return _var2;
         }
         function contentAction(visuals, node) {
-            var options, _var2;
-            options = {};
-            _var2 = buildTextContent(visuals, node, options);
-            return _var2;
+            var options, width, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if ('w' in node) {
+                        width = node.w * 2;
+                        __state = '9';
+                    } else {
+                        width = undefined;
+                        __state = '9';
+                    }
+                    break;
+                case '9':
+                    options = {};
+                    _var2 = buildTextContent(visuals, node, options, width);
+                    return _var2;
+                default:
+                    return;
+                }
+            }
         }
         function contentInsertion(visuals, node) {
             var options, padding, _var2;
@@ -7238,7 +8062,7 @@ function createDrakonWidget() {
                         nodes = getNodesFromSelection(self);
                         if (nodes.length === 1) {
                             node = nodes[0];
-                            _var2 = canEditNodeText(self, prim);
+                            _var2 = canEditNodeText(self, node);
                             if (_var2) {
                                 prim = nodeToVisualItem(self, node);
                                 startEditContent(self, prim);
@@ -7257,16 +8081,16 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.0.3';
+            return '1.2.0';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
-            var width, height, visuals, config, ctx, factor, box, canvas, zoom;
+            var width, height, visuals, config, ctx, factor, canvas, zoom, box;
             tracing.trace('DrakonCanvas.exportCanvas', zoom100);
             zoom = zoom100 / 10000;
             factor = 1;
             visuals = self.visuals;
             config = visuals.config;
-            box = self.visuals.box;
+            box = calculateDiagramBox(visuals, false);
             width = (box.right - box.left) * zoom;
             height = (box.bottom - box.top) * zoom;
             canvas = html.createElement('canvas', {
@@ -7294,35 +8118,41 @@ function createDrakonWidget() {
                     checkNotReadonly(self);
                     _var2 = itemId;
                     if (_var2 === 'header') {
-                        change = {
-                            fields: { name: content },
-                            op: 'update'
-                        };
-                        self.edit.updateDocument([change]);
-                        return [];
+                        __state = '14';
                     } else {
-                        if (_var2 === 'params') {
-                            change = {
-                                fields: { params: content },
-                                op: 'update'
-                            };
-                            if (content) {
-                                __state = '_item6';
-                            } else {
-                                _var3 = doEdit(self, [change]);
-                                return _var3;
-                            }
+                        if (_var2 === 'root') {
+                            __state = '14';
                         } else {
-                            change = {
-                                id: itemId,
-                                fields: { content: content },
-                                op: 'update'
-                            };
-                            __state = '_item6';
+                            if (_var2 === 'params') {
+                                change = {
+                                    fields: { params: content },
+                                    op: 'update'
+                                };
+                                if (content) {
+                                    __state = '_item7';
+                                } else {
+                                    _var3 = doEdit(self, [change]);
+                                    return _var3;
+                                }
+                            } else {
+                                change = {
+                                    id: itemId,
+                                    fields: { content: content },
+                                    op: 'update'
+                                };
+                                __state = '_item7';
+                            }
                         }
                     }
                     break;
-                case '_item6':
+                case '14':
+                    change = {
+                        fields: { name: content },
+                        op: 'update'
+                    };
+                    self.edit.updateDocument([change]);
+                    return [];
+                case '_item7':
                     _var4 = updateAndKeepSelection(self, [change]);
                     return _var4;
                 default:
@@ -7331,7 +8161,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_showItem(self, itemId) {
-            var visuals, box, width, height, nodeBox, nodeLeft, nodeTop, nodeRight, nodeBottom, scroll, scrollX, halfWidth, scrollY, halfHeight, zoom, node;
+            var visuals, box, width, height, nodeBox, nodeLeft, nodeTop, nodeRight, nodeBottom, scroll, scrollX, halfWidth, scrollY, halfHeight, zoom, node, nodeX, nodeY;
             var __state = '13';
             while (true) {
                 switch (__state) {
@@ -7389,17 +8219,50 @@ function createDrakonWidget() {
                     nodeTop = diagramToWidgetY(self, nodeBox.top);
                     nodeRight = diagramToWidgetX(self, nodeBox.left + nodeBox.width);
                     nodeBottom = diagramToWidgetY(self, nodeBox.top + nodeBox.height);
+                    nodeX = nodeBox.left + nodeBox.width / 2;
+                    nodeY = nodeBox.top + nodeBox.height / 2;
                     __state = '2';
                     break;
                 case '36':
                     halfWidth = Math.floor(width / 2);
-                    scrollX = node.x - halfWidth;
+                    scrollX = nodeX - halfWidth;
                     __state = '12';
                     break;
                 case '39':
                     halfHeight = Math.floor(height / 2);
-                    scrollY = node.y - halfHeight;
+                    scrollY = nodeY - halfHeight;
                     __state = '21';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function updateHighlight(widget, prim) {
+            var visuals, primId;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    visuals = widget.visuals;
+                    if (prim) {
+                        primId = prim.primId;
+                        __state = '8';
+                    } else {
+                        primId = undefined;
+                        __state = '8';
+                    }
+                    break;
+                case '8':
+                    if (visuals.highlight === primId) {
+                        __state = '1';
+                    } else {
+                        visuals.highlight = primId;
+                        paint(widget);
+                        __state = '1';
+                    }
                     break;
                 default:
                     return;
@@ -8104,23 +8967,28 @@ function createDrakonWidget() {
             }
         }
         function showLianaSockets(widget, prim) {
-            var source, visuals, _var15, _var14, _var16, targetId, record, _var12, _var11, _var13, _var9, _var8, _var10, _var6, _var5, _var7, id, downEdge, _var3, _var2, _var4, _var17, _var18, _var19, _var20, _var21;
+            var source, visuals, _var15, _var14, _var16, targetId, record, _var12, _var11, _var13, _var9, _var8, _var10, _var6, _var5, _var7, id, downEdge, _var3, _var2, _var4, _var17, _var18, _var19, _var20, _var21, _var22;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
-                    visuals = widget.visuals;
-                    clearSockets(visuals);
-                    _var21 = isReadonly(widget);
-                    if (_var21) {
-                        __state = '4';
-                    } else {
-                        source = findLianaSource(visuals, prim);
-                        if (source) {
-                            __state = '10';
-                        } else {
+                    _var22 = isDrakon(widget);
+                    if (_var22) {
+                        visuals = widget.visuals;
+                        clearSockets(visuals);
+                        _var21 = isReadonly(widget);
+                        if (_var21) {
                             __state = '4';
+                        } else {
+                            source = findLianaSource(visuals, prim);
+                            if (source) {
+                                __state = '10';
+                            } else {
+                                __state = '4';
+                            }
                         }
+                    } else {
+                        __state = '4';
                     }
                     break;
                 case '4':
@@ -8536,11 +9404,10 @@ function createDrakonWidget() {
             return;
         }
         function completeDrakonResize(handle) {
-            var maxWidth, style;
+            var style, maxWidth;
             maxWidth = handle.element.w;
-            style = buildStyleFromDiagram(handle.widget);
-            style.maxWidth = maxWidth * 2;
-            handle.widget.setDiagramStyle(style);
+            style = { maxWidth: maxWidth * 2 };
+            handle.widget.patchDiagramStyle(style);
             return;
         }
         function createLeftDrakonResizeHandle(widget, node, y, ctx) {
@@ -8556,6 +9423,7 @@ function createDrakonWidget() {
             handle.id = node.id;
             handle.minX = node.x - big;
             handle.maxX = node.x - config.minWidth / 2;
+            handle.primId = 'left-drakon-' + node.id + '-' + y;
             createHandle(widget.visuals, handle, ctx);
             return;
         }
@@ -8618,6 +9486,7 @@ function createDrakonWidget() {
             handle.id = node.id;
             handle.minX = node.x + config.minWidth / 2;
             handle.maxX = node.x + big;
+            handle.primId = 'right-drakon-' + node.id + '-' + y;
             createHandle(widget.visuals, handle, ctx);
             return;
         }
@@ -8724,7 +9593,7 @@ function createDrakonWidget() {
         function getSourceGuideBox(element) {
             var _var2, _var3;
             if (element.type === 'line') {
-                _var3 = calculateLineBox(element);
+                _var3 = calculateLineBox(element, 0);
                 return _var3;
             } else {
                 _var2 = createBox(element.left, element.top, element.width, element.height);
@@ -8800,7 +9669,7 @@ function createDrakonWidget() {
             }
         }
         function SelectBehavior_create(widget) {
-            var startX, startY, pos, deltaX, deltaY, currentSocket, prim, scroller, cursor, dragTarget, _var2, evt, _var3, _var4, _var5;
+            var startX, startY, pos, deltaX, deltaY, currentSocket, scroller, dragTarget, prim, cursor, ear, _var2, evt, _var3, _var4, _var5;
             var me = {
                 state: '2',
                 type: 'SelectBehavior'
@@ -8845,17 +9714,28 @@ function createDrakonWidget() {
                             pos = toDiagram(widget, evt);
                             currentSocket = findSocket(widget.visuals, pos.x, pos.y);
                             if (currentSocket) {
+                                prim = { primId: 'socket-' + currentSocket };
+                                updateHighlight(widget, prim);
                                 setCursor(evt.target, 'pointer');
                                 me.state = '2';
                             } else {
-                                prim = findVisualItem(widget, pos);
-                                if (prim) {
-                                    cursor = getCursorForItem(widget, prim, pos, evt);
-                                    setCursor(evt.target, cursor);
+                                ear = hitEars(widget.visuals, pos);
+                                if (ear) {
+                                    prim = { primId: ear };
+                                    updateHighlight(widget, prim);
+                                    setCursor(evt.target, 'grab');
                                     me.state = '2';
                                 } else {
-                                    setCursor(evt.target, 'default');
-                                    me.state = '2';
+                                    prim = findVisualItem(widget, pos);
+                                    updateHighlight(widget, prim);
+                                    if (prim) {
+                                        cursor = getCursorForItem(widget, prim, pos, evt);
+                                        setCursor(evt.target, cursor);
+                                        me.state = '2';
+                                    } else {
+                                        setCursor(evt.target, 'default');
+                                        me.state = '2';
+                                    }
                                 }
                             }
                             break;
@@ -9274,49 +10154,62 @@ function createDrakonWidget() {
             }
         }
         function chooseDragTarget(widget, evt) {
-            var pos, visuals, handle, element, selected, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
+            var pos, visuals, ear, element, mover, selected, handle, _var2, _var3, _var4, _var5;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     _var2 = isReadonly(widget);
                     if (_var2) {
-                        __state = '_item5';
+                        __state = '_item3';
                     } else {
                         visuals = widget.visuals;
                         pos = toDiagram(widget, evt);
-                        _var8 = hitNugget(visuals, pos);
-                        if (_var8) {
-                            selected = getSelectedFree(widget);
-                            _var9 = createFreeMover(widget, selected, evt);
-                            return _var9;
+                        ear = hitEars(widget.visuals, pos);
+                        if (ear) {
+                            visuals.ears.start(ear, evt);
+                            return visuals.ears;
                         } else {
                             handle = findHandle(visuals, pos);
                             if (handle) {
-                                _var3 = createHandleDrag(widget, handle, evt);
-                                return _var3;
+                                mover = createHandleDrag(widget, handle, evt);
+                                __state = '52';
                             } else {
-                                element = findFree(widget, pos);
-                                if (element) {
-                                    _var6 = isSelected(widget, element.id);
-                                    if (_var6) {
-                                        selected = getSelectedFree(widget);
-                                        _var7 = createFreeMover(widget, selected, evt);
-                                        return _var7;
-                                    } else {
-                                        _var4 = createFreeMover(widget, [element], evt);
-                                        return _var4;
-                                    }
+                                _var5 = hitNugget(visuals, pos);
+                                if (_var5) {
+                                    selected = getSelectedFree(widget);
+                                    mover = createFreeMover(widget, selected, evt);
+                                    __state = '52';
                                 } else {
-                                    __state = '_item5';
+                                    element = findFree(widget, pos);
+                                    if (element) {
+                                        if (element.type === 'connection') {
+                                            __state = '_item3';
+                                        } else {
+                                            _var4 = isSelected(widget, element.id);
+                                            if (_var4) {
+                                                selected = getSelectedFree(widget);
+                                                mover = createFreeMover(widget, selected, evt);
+                                                __state = '52';
+                                            } else {
+                                                mover = createFreeMover(widget, [element], evt);
+                                                __state = '52';
+                                            }
+                                        }
+                                    } else {
+                                        __state = '_item3';
+                                    }
                                 }
                             }
                         }
                     }
                     break;
-                case '_item5':
-                    _var5 = createFrameDrag(widget, evt);
-                    return _var5;
+                case '52':
+                    visuals.ears = undefined;
+                    return mover;
+                case '_item3':
+                    _var3 = createFrameDrag(widget, evt);
+                    return _var3;
                 default:
                     return;
                 }
@@ -9347,11 +10240,15 @@ function createDrakonWidget() {
                                     if (_var2 === 'block') {
                                         __state = '12';
                                     } else {
-                                        if (_var2 === 'free') {
-                                            pasteFree(self, clipboard);
-                                            __state = '1';
+                                        if (_var2 === 'mind') {
+                                            __state = '12';
                                         } else {
-                                            __state = '1';
+                                            if (_var2 === 'free') {
+                                                pasteFree(self, clipboard);
+                                                __state = '1';
+                                            } else {
+                                                __state = '1';
+                                            }
                                         }
                                     }
                                 }
@@ -9390,6 +10287,18 @@ function createDrakonWidget() {
             updateAndKeepSelection(self, [change]);
             return;
         }
+        function insertBranch(widget, branchNode, left) {
+            var socket;
+            tracing.trace('insertBranch', branchNode.id + '-' + left);
+            socket = {
+                op: 'insert',
+                type: 'branch',
+                node: branchNode,
+                left: left
+            };
+            runInsertAction(widget, socket);
+            return;
+        }
         function startEditStyle(widget) {
             var callback, delayed, prims, ids, oldStyle, x, y, accepted;
             var __state = '2';
@@ -9426,6 +10335,11 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function insertCase(widget, caseNode, left) {
+            tracing.trace('insertCase', caseNode.id + '-' + left);
+            insertCaseCore(widget, caseNode, left, 'insert');
+            return;
         }
         function mouseClick(widget, pos, evt) {
             var now, lastClick, diff, doubleClickTime, visuals, lastPrimId, prim, primId, _var2, _var3;
@@ -9567,6 +10481,18 @@ function createDrakonWidget() {
                 }
             }
         }
+        function pasteBranchBefore(widget, branchNode) {
+            var socket;
+            tracing.trace('pasteBranchBefore', branchNode.id);
+            socket = {
+                op: 'paste',
+                type: 'branch',
+                node: branchNode,
+                left: true
+            };
+            runInsertAction(widget, socket);
+            return;
+        }
         function startEditDiagramStyle(widget, x, y) {
             var callback, delayed, oldStyle;
             var __state = '2';
@@ -9614,6 +10540,65 @@ function createDrakonWidget() {
                 }
             }
         }
+        function pasteCaseAfter(widget, caseNode) {
+            tracing.trace('pasteCaseAfter', caseNode.id);
+            insertCaseCore(widget, caseNode, false, 'paste');
+            return;
+        }
+        function insertPath(widget, pathNode, left) {
+            var socket;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    tracing.trace('insertPath', pathNode.id + '-' + left);
+                    if (left) {
+                        if (pathNode.left) {
+                            socket = {
+                                op: 'insert',
+                                type: 'par',
+                                edge: pathNode.left,
+                                links: []
+                            };
+                            __state = '18';
+                        } else {
+                            socket = {
+                                op: 'insert',
+                                type: 'firstpar',
+                                node: pathNode,
+                                links: []
+                            };
+                            addRange(pathNode.up.links, socket.links);
+                            __state = '18';
+                        }
+                    } else {
+                        if (pathNode.right) {
+                            socket = {
+                                op: 'insert',
+                                type: 'par',
+                                edge: pathNode.right,
+                                links: []
+                            };
+                            __state = '18';
+                        } else {
+                            socket = {
+                                op: 'insert',
+                                type: 'par',
+                                node: pathNode,
+                                links: []
+                            };
+                            __state = '18';
+                        }
+                    }
+                    break;
+                case '18':
+                    runInsertAction(widget, socket);
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
         function swapYesNo(widget, prim) {
             var change, node, _var2;
             var __state = '2';
@@ -9637,6 +10622,48 @@ function createDrakonWidget() {
                 case '_item2':
                     _var2 = updateAndKeepSelection(widget, [change]);
                     return _var2;
+                default:
+                    return;
+                }
+            }
+        }
+        function insertCaseCore(widget, caseNode, left, op) {
+            var socket, node, jun, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (left) {
+                        jun = getUp(caseNode);
+                        if (jun.left) {
+                            _var2 = getLeft(jun);
+                            node = getDown(_var2);
+                            socket = {
+                                op: op,
+                                type: 'case',
+                                node: node
+                            };
+                            __state = '5';
+                        } else {
+                            socket = {
+                                op: op,
+                                type: 'first-case',
+                                node: caseNode
+                            };
+                            __state = '5';
+                        }
+                    } else {
+                        socket = {
+                            op: op,
+                            type: 'case',
+                            node: caseNode
+                        };
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    runInsertAction(widget, socket);
+                    return;
                 default:
                     return;
                 }
@@ -9668,6 +10695,41 @@ function createDrakonWidget() {
                         __state = '1';
                     }
                     break;
+                default:
+                    return;
+                }
+            }
+        }
+        function changeLayout(widget, prim, layout) {
+            var item, change, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    tracing.trace('changeLayout', prim.id + '-' + layout);
+                    item = widget.model.items[prim.id];
+                    if (item) {
+                        change = {
+                            id: prim.id,
+                            fields: { treeType: layout },
+                            op: 'update'
+                        };
+                        __state = '_item2';
+                    } else {
+                        change = {
+                            id: prim.id,
+                            fields: {
+                                treeType: layout,
+                                type: 'header'
+                            },
+                            op: 'insert'
+                        };
+                        __state = '_item2';
+                    }
+                    break;
+                case '_item2':
+                    _var2 = updateAndKeepSelection(widget, [change]);
+                    return _var2;
                 default:
                     return;
                 }
@@ -9793,6 +10855,1968 @@ function createDrakonWidget() {
                 }
             }
         }
+        function LeftMindResizeHandle_dragTo(self, x, y) {
+            self.element.w = (self.right - x) / 2;
+            self.element.x = self.right - self.element.w;
+            return;
+        }
+        function LeftMindResizeHandle_getMinX(self) {
+            return self.minX;
+        }
+        function LeftMindResizeHandle_getMaxX(self) {
+            return self.maxX;
+        }
+        function LeftMindResizeHandle_getCursor(self) {
+            return 'ew-resize';
+        }
+        function LeftMindResizeHandle_xEnabled(self) {
+            return true;
+        }
+        function LeftMindResizeHandle_complete(self) {
+            completeMindResize(self);
+            return;
+        }
+        function LeftMindResizeHandle_yEnabled(self) {
+            return false;
+        }
+        function RightMindResizeHandle_getCursor(self) {
+            return 'ew-resize';
+        }
+        function RightMindResizeHandle_getMinX(self) {
+            return self.minX;
+        }
+        function RightMindResizeHandle_complete(self) {
+            completeMindResize(self);
+            return;
+        }
+        function RightMindResizeHandle_getMaxX(self) {
+            return self.maxX;
+        }
+        function RightMindResizeHandle_xEnabled(self) {
+            return true;
+        }
+        function RightMindResizeHandle_dragTo(self, x, y) {
+            self.element.w = (x - self.left) / 2;
+            self.element.x = self.left + self.element.w;
+            return;
+        }
+        function RightMindResizeHandle_yEnabled(self) {
+            return false;
+        }
+        function addToMindSelection(widget, node) {
+            var selection, visuals, selected, toSelect, sibling, finalNodes, _var2, _var3, subroot, _var4, _var5, node2, _var6;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    selection = widget.selection;
+                    visuals = widget.visuals;
+                    selected = Object.keys(selection.prims);
+                    if (selected.length === 0) {
+                        toSelect = [node];
+                        __state = '17';
+                    } else {
+                        sibling = getWithCommonParent(visuals, node, selected);
+                        if (sibling) {
+                            toSelect = getSiblingsBetween(visuals, node, sibling);
+                            __state = '17';
+                        } else {
+                            _var6 = isUpperInTree(visuals, node, selected);
+                            if (_var6) {
+                                toSelect = [node];
+                                __state = '17';
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+                case '17':
+                    finalNodes = [];
+                    _var2 = toSelect;
+                    _var3 = 0;
+                    __state = '20';
+                    break;
+                case '20':
+                    if (_var3 < _var2.length) {
+                        subroot = _var2[_var3];
+                        getMindSubtree(subroot, finalNodes);
+                        _var3++;
+                        __state = '20';
+                    } else {
+                        __state = '22';
+                    }
+                    break;
+                case '22':
+                    _var4 = finalNodes;
+                    _var5 = 0;
+                    __state = '25';
+                    break;
+                case '25':
+                    if (_var5 < _var4.length) {
+                        node2 = _var4[_var5];
+                        selection.prims[node2.id] = 'node';
+                        _var5++;
+                        __state = '25';
+                    } else {
+                        return true;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function isMindIcon(widget, node) {
+            return widget.mindIcons[node.type];
+        }
+        function mindCandy(widget, node, ctx) {
+            var left, top, right, bottom, fill, border, size, lineWidth, config, visuals;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    config = visuals.config;
+                    left = node.x - node.w;
+                    top = node.y - node.h;
+                    right = node.x + node.w;
+                    bottom = node.y + node.h;
+                    fill = config.theme.candyFill;
+                    border = config.theme.candyBorder;
+                    size = 10;
+                    lineWidth = 2;
+                    __state = '10';
+                    break;
+                case '9':
+                    return;
+                case '10':
+                    createLeftMindResizeHandle(widget, node, top, ctx);
+                    centerSquare(ctx, node.x, top, size, fill, border, lineWidth);
+                    createRightMindResizeHandle(widget, node, top, ctx);
+                    __state = '14';
+                    break;
+                case '14':
+                    createLeftMindResizeHandle(widget, node, node.y, ctx);
+                    createRightMindResizeHandle(widget, node, node.y, ctx);
+                    __state = '15';
+                    break;
+                case '15':
+                    createLeftMindResizeHandle(widget, node, bottom, ctx);
+                    centerSquare(ctx, node.x, bottom, size, fill, border, lineWidth);
+                    createRightMindResizeHandle(widget, node, bottom, ctx);
+                    __state = '9';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function setSameWidthForMindChildren(parent) {
+            var width, _var2, _var3, node, _var4, _var5;
+            var __state = '6';
+            while (true) {
+                switch (__state) {
+                case '4':
+                    return;
+                case '6':
+                    width = 0;
+                    _var2 = parent.children;
+                    _var3 = 0;
+                    __state = '9';
+                    break;
+                case '9':
+                    if (_var3 < _var2.length) {
+                        node = _var2[_var3];
+                        width = Math.max(width, node.w);
+                        _var3++;
+                        __state = '9';
+                    } else {
+                        __state = '11';
+                    }
+                    break;
+                case '11':
+                    _var4 = parent.children;
+                    _var5 = 0;
+                    __state = '14';
+                    break;
+                case '14':
+                    if (_var5 < _var4.length) {
+                        node = _var4[_var5];
+                        node.w = width;
+                        _var5++;
+                        __state = '14';
+                    } else {
+                        __state = '4';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function mindInsertCore(widget, socket, parent, ordinal, payload) {
+            var roots, edits;
+            edits = [];
+            roots = createMindIconOrPaste(widget, socket, parent, payload, edits);
+            insertMindChildren(edits, parent, roots, ordinal);
+            return edits;
+        }
+        function insertIntoMindEdge(widget, edge, type) {
+            var socket, edits, _var2;
+            socket = {
+                iconType: type,
+                node: edge.target
+            };
+            edits = mindBeforeInsert(widget, socket, undefined);
+            _var2 = doEdit(widget, edits);
+            return _var2;
+        }
+        function transformMind(widget, node, type) {
+            var edits, _var2;
+            edits = [];
+            updateItem(edits, node.id, { type: type });
+            _var2 = updateAndKeepSelection(widget, edits);
+            return _var2;
+        }
+        function getWithCommonParent(visuals, node, ids) {
+            var other, _var2, _var3, id;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var2 = ids;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        id = _var2[_var3];
+                        other = getNode(visuals, id);
+                        if (other.parent === node.parent) {
+                            return other;
+                        } else {
+                            _var3++;
+                            __state = '5';
+                        }
+                    } else {
+                        return undefined;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function createMindEdges(visuals, node) {
+            var ttype, childJun, config, prev, connector, rootJun, child, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (node.children.length === 0) {
+                        __state = '4';
+                    } else {
+                        config = visuals.config;
+                        ttype = getTType(node);
+                        _var2 = ttype;
+                        if (_var2 === 'vertical') {
+                            if (node.children.length === 1) {
+                                __state = '47';
+                            } else {
+                                __state = '5';
+                            }
+                        } else {
+                            if (_var2 === 'horizontal') {
+                                if (node.children.length === 1) {
+                                    __state = '51';
+                                } else {
+                                    __state = '11';
+                                }
+                            } else {
+                                if (_var2 === 'treeview') {
+                                    __state = '12';
+                                } else {
+                                    throw new Error('Unexpected case value: ' + _var2);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case '4':
+                    return;
+                case '5':
+                    prev = undefined;
+                    connector = undefined;
+                    _var3 = node.children;
+                    _var4 = 0;
+                    __state = '17';
+                    break;
+                case '11':
+                    prev = undefined;
+                    connector = undefined;
+                    _var5 = node.children;
+                    _var6 = 0;
+                    __state = '78';
+                    break;
+                case '12':
+                    rootJun = createJunction(visuals, undefined);
+                    if (node.parent) {
+                        rootJun.x = node.x - node.w + config.metre;
+                        rootJun.y = node.y + node.h;
+                        rootJun.role = 'root';
+                        rootJun.sharp = true;
+                        __state = '120';
+                    } else {
+                        rootJun.x = node.x - node.w - config.metre;
+                        rootJun.y = node.y;
+                        createEdge(visuals, rootJun, node, false);
+                        __state = '120';
+                    }
+                    break;
+                case '17':
+                    if (_var4 < _var3.length) {
+                        child = _var3[_var4];
+                        createMindEdges(visuals, child);
+                        childJun = createJunction(visuals, undefined);
+                        childJun.x = child.x;
+                        childJun.y = node.y + node.h + config.metre;
+                        createEdge(visuals, childJun, child, true);
+                        if (prev) {
+                            childJun.sharp = true;
+                            _var9 = Math.abs(childJun.x - node.x);
+                            if (_var9 <= 5) {
+                                node.x = childJun.x;
+                                connector = childJun;
+                                __state = '44';
+                            } else {
+                                if (connector) {
+                                    __state = '44';
+                                } else {
+                                    if (prev.x < node.x) {
+                                        if (child.x > node.x) {
+                                            connector = createJunction(visuals, undefined);
+                                            connector.x = node.x;
+                                            connector.y = childJun.y;
+                                            createMindEdge(visuals, prev, connector, false, child);
+                                            createMindEdge(visuals, connector, childJun, false, child);
+                                            __state = '24';
+                                        } else {
+                                            if (child.x === node.x) {
+                                                connector = childJun;
+                                                __state = '44';
+                                            } else {
+                                                __state = '44';
+                                            }
+                                        }
+                                    } else {
+                                        __state = '44';
+                                    }
+                                }
+                            }
+                        } else {
+                            if (child.x === node.x) {
+                                connector = childJun;
+                                __state = '24';
+                            } else {
+                                __state = '24';
+                            }
+                        }
+                    } else {
+                        prev.sharp = false;
+                        connector.sharp = true;
+                        createEdge(visuals, node, connector, true);
+                        __state = '4';
+                    }
+                    break;
+                case '24':
+                    prev = childJun;
+                    _var4++;
+                    __state = '17';
+                    break;
+                case '44':
+                    createMindEdge(visuals, prev, childJun, false, child);
+                    __state = '24';
+                    break;
+                case '47':
+                    child = node.children[0];
+                    createEdge(visuals, node, child, true);
+                    createMindEdges(visuals, child);
+                    __state = '4';
+                    break;
+                case '51':
+                    child = node.children[0];
+                    createEdge(visuals, node, child, false);
+                    createMindEdges(visuals, child);
+                    __state = '4';
+                    break;
+                case '78':
+                    if (_var6 < _var5.length) {
+                        child = _var5[_var6];
+                        createMindEdges(visuals, child);
+                        childJun = createJunction(visuals, undefined);
+                        childJun.y = child.y;
+                        childJun.x = node.x + node.w + config.metre;
+                        createEdge(visuals, childJun, child, false);
+                        if (prev) {
+                            childJun.sharp = true;
+                            if (connector) {
+                                __state = '98';
+                            } else {
+                                if (prev.y < node.y) {
+                                    if (child.y > node.y) {
+                                        connector = createJunction(visuals, undefined);
+                                        connector.x = childJun.x;
+                                        connector.y = node.y;
+                                        createMindEdge(visuals, prev, connector, true, child);
+                                        createMindEdge(visuals, connector, childJun, true, child);
+                                        __state = '84';
+                                    } else {
+                                        if (child.y === node.y) {
+                                            connector = childJun;
+                                            __state = '98';
+                                        } else {
+                                            __state = '98';
+                                        }
+                                    }
+                                } else {
+                                    __state = '98';
+                                }
+                            }
+                        } else {
+                            if (child.y === node.y) {
+                                connector = childJun;
+                                __state = '84';
+                            } else {
+                                __state = '84';
+                            }
+                        }
+                    } else {
+                        prev.sharp = false;
+                        connector.sharp = true;
+                        createEdge(visuals, node, connector, false);
+                        __state = '4';
+                    }
+                    break;
+                case '84':
+                    prev = childJun;
+                    _var6++;
+                    __state = '78';
+                    break;
+                case '98':
+                    createMindEdge(visuals, prev, childJun, true, child);
+                    __state = '84';
+                    break;
+                case '113':
+                    if (_var8 < _var7.length) {
+                        child = _var7[_var8];
+                        createMindEdges(visuals, child);
+                        childJun = createJunction(visuals, undefined);
+                        childJun.y = child.y;
+                        childJun.x = prev.x;
+                        childJun.sharp = true;
+                        createEdge(visuals, childJun, child, false);
+                        createMindEdge(visuals, prev, childJun, true, child);
+                        prev = childJun;
+                        _var8++;
+                        __state = '113';
+                    } else {
+                        prev.sharp = false;
+                        __state = '4';
+                    }
+                    break;
+                case '120':
+                    prev = rootJun;
+                    _var7 = node.children;
+                    _var8 = 0;
+                    __state = '113';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildMindTree(visuals) {
+            var _var3, _var2, _var4, id, node, _var6, _var5, _var7, _var9, _var8, _var10;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var3 = visuals.nodes;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '7';
+                    break;
+                case '4':
+                    _var9 = visuals.nodes;
+                    _var8 = Object.keys(_var9);
+                    _var10 = 0;
+                    __state = '14';
+                    break;
+                case '5':
+                    _var6 = visuals.nodes;
+                    _var5 = Object.keys(_var6);
+                    _var7 = 0;
+                    __state = '10';
+                    break;
+                case '6':
+                    _var4++;
+                    __state = '7';
+                    break;
+                case '7':
+                    if (_var4 < _var2.length) {
+                        id = _var2[_var4];
+                        node = _var3[id];
+                        node.children = [];
+                        if (node.parent) {
+                            node.parent = getNode(visuals, node.parent);
+                            __state = '6';
+                        } else {
+                            __state = '6';
+                        }
+                    } else {
+                        __state = '5';
+                    }
+                    break;
+                case '10':
+                    if (_var7 < _var5.length) {
+                        id = _var5[_var7];
+                        node = _var6[id];
+                        if (node.parent) {
+                            node.parent.children.push(node);
+                            __state = '11';
+                        } else {
+                            __state = '11';
+                        }
+                    } else {
+                        __state = '4';
+                    }
+                    break;
+                case '11':
+                    _var7++;
+                    __state = '10';
+                    break;
+                case '14':
+                    if (_var10 < _var8.length) {
+                        id = _var8[_var10];
+                        node = _var9[id];
+                        sortBy(node.children, 'ordinal');
+                        _var10++;
+                        __state = '14';
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function mindChildInsert(widget, socket, payload) {
+            var model, parent, ordinal, _var2;
+            model = widget.model;
+            parent = socket.node;
+            ordinal = 0;
+            _var2 = mindInsertCore(widget, socket, parent, ordinal, payload);
+            return _var2;
+        }
+        function showMindInsertSockets(widget, op, type) {
+            var visuals, _var3, _var2, _var4, id, node, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    _var3 = visuals.nodes;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '5';
+                    break;
+                case '4':
+                    _var4++;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var4 < _var2.length) {
+                        id = _var2[_var4];
+                        node = _var3[id];
+                        _var5 = isMindIcon(widget, node);
+                        if (_var5) {
+                            showMindSocketsForIcon(visuals, node, op, type);
+                            __state = '4';
+                        } else {
+                            __state = '4';
+                        }
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function getHorSiblings(node) {
+            var ttype, parent, _var2, _var3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    parent = node.parent;
+                    ttype = getTType(parent);
+                    _var2 = ttype;
+                    if (_var2 === 'vertical') {
+                        return [node.id];
+                    } else {
+                        if (_var2 === 'horizontal') {
+                            __state = '_item7';
+                        } else {
+                            if (_var2 === 'treeview') {
+                                __state = '_item7';
+                            } else {
+                                throw new Error('Unexpected case value: ' + _var2);
+                            }
+                        }
+                    }
+                    break;
+                case '_item7':
+                    _var3 = parent.children.map(function (child) {
+                        return child.id;
+                    });
+                    return _var3;
+                default:
+                    return;
+                }
+            }
+        }
+        function createMindIconOrPaste(widget, socket, parent, payload, edits) {
+            var id, newItem, roots, edit, oldToNew, _var2, _var3, citem, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    roots = [];
+                    if (payload) {
+                        __state = '9';
+                    } else {
+                        _var4 = getTTypeForChildren(parent);
+                        newItem = {
+                            type: socket.iconType,
+                            content: '',
+                            parent: parent.id,
+                            treeType: _var4
+                        };
+                        id = createItem(widget.model, edits, newItem);
+                        roots.push(id);
+                        __state = '8';
+                    }
+                    break;
+                case '8':
+                    return roots;
+                case '9':
+                    oldToNew = generateNewIds(widget, payload.items);
+                    oldToNew['target'] = parent.id;
+                    _var2 = payload.items;
+                    _var3 = 0;
+                    __state = '29';
+                    break;
+                case '29':
+                    if (_var3 < _var2.length) {
+                        citem = _var2[_var3];
+                        if (citem.parent === 'target') {
+                            roots.push(citem.id);
+                            __state = '36';
+                        } else {
+                            __state = '36';
+                        }
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                case '36':
+                    citem.parent = oldToNew[citem.parent];
+                    edit = createInsert(citem);
+                    edits.push(edit);
+                    _var3++;
+                    __state = '29';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function mindBeforeInsert(widget, socket, payload) {
+            var model, parent, ordinal, _var2;
+            model = widget.model;
+            parent = socket.node.parent;
+            ordinal = socket.node.ordinal;
+            _var2 = mindInsertCore(widget, socket, parent, ordinal, payload);
+            return _var2;
+        }
+        function createMindEdge(visuals, head, tail, vertical, target) {
+            var ed;
+            ed = createEdge(visuals, head, tail, vertical);
+            ed.role = 'mind-child';
+            ed.target = target;
+            return ed;
+        }
+        function isParent(parent, node) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    __state = '9';
+                    break;
+                case '9':
+                    if (parent.id === node.id) {
+                        return true;
+                    } else {
+                        node = node.parent;
+                        if (node) {
+                            __state = '9';
+                        } else {
+                            return false;
+                        }
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildMindEdgeMenu(widget, edge) {
+            var menu, clipboard, _var2, _var3, _var4, _var5, _var6;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    menu = [];
+                    _var3 = isReadonly(widget);
+                    if (_var3) {
+                        __state = '3';
+                    } else {
+                        clipboard = widget.visuals.config.getClipboard();
+                        if (clipboard) {
+                            if (clipboard.type === 'mind') {
+                                _var2 = tr(widget, 'Paste');
+                                pushMenuItem('paste_mind', menu, _var2, undefined, function () {
+                                    pasteIntoMindEdge(widget, edge, clipboard.content);
+                                });
+                                menu.push({ type: 'separator' });
+                                __state = '_item4';
+                            } else {
+                                __state = '_item4';
+                            }
+                        } else {
+                            __state = '_item4';
+                        }
+                    }
+                    break;
+                case '3':
+                    return menu;
+                case '_item4':
+                    _var4 = tr(widget, 'Idea');
+                    pushMenuItem('insert_idea', menu, _var4, widget.visuals.config.imagePath + 'rectangle.png', function () {
+                        insertIntoMindEdge(widget, edge, 'idea');
+                    });
+                    _var5 = tr(widget, 'Idea - rounded');
+                    pushMenuItem('insert_ridea', menu, _var5, widget.visuals.config.imagePath + 'rounded.png', function () {
+                        insertIntoMindEdge(widget, edge, 'ridea');
+                    });
+                    _var6 = tr(widget, 'Conclusion');
+                    pushMenuItem('insert_conclusion', menu, _var6, widget.visuals.config.imagePath + 'comment.png', function () {
+                        insertIntoMindEdge(widget, edge, 'conclusion');
+                    });
+                    __state = '3';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function createMindSockets(widget) {
+            var selectedNodes, nodes, node, config, radius, before, after, visuals, child, cpos, sib, r2, _var2, _var3, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var4 = isMind(widget);
+                    if (_var4) {
+                        _var3 = isReadonly(widget);
+                        if (_var3) {
+                            __state = '7';
+                        } else {
+                            visuals = widget.visuals;
+                            config = widget.visuals.config;
+                            radius = config.socketTouchRadius;
+                            r2 = radius * 1.5;
+                            selectedNodes = getNodesFromSelection(widget);
+                            nodes = selectedNodes.filter(function (node) {
+                                _var2 = isMindIcon(widget, node);
+                                return _var2;
+                            });
+                            if (nodes.length === 1) {
+                                node = nodes[0];
+                                __state = '39';
+                            } else {
+                                clearSockets(visuals);
+                                __state = '7';
+                            }
+                        }
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '7':
+                    return;
+                case '8':
+                    if (node.parent) {
+                        sib = getMindSiblingSocketPos(r2, node);
+                        __state = '16';
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '16':
+                    before = createSocket(visuals, sib.before.x, sib.before.y, 'insert', 'mind-before', radius);
+                    before.node = node;
+                    before.iconType = 'idea';
+                    after = createSocket(visuals, sib.after.x, sib.after.y, 'insert', 'mind-after', radius);
+                    after.node = node;
+                    after.iconType = 'idea';
+                    __state = '7';
+                    break;
+                case '39':
+                    if (node.children.length === 0) {
+                        cpos = getMindChildSocketPos(r2, node);
+                        child = createSocket(visuals, cpos.x, cpos.y, 'insert', 'mind-child', radius);
+                        child.node = node;
+                        child.iconType = 'idea';
+                        __state = '8';
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function setSameHeightForMindChildren(parent) {
+            var height, _var2, _var3, node, _var4, _var5;
+            var __state = '6';
+            while (true) {
+                switch (__state) {
+                case '4':
+                    return;
+                case '6':
+                    height = 0;
+                    _var2 = parent.children;
+                    _var3 = 0;
+                    __state = '9';
+                    break;
+                case '9':
+                    if (_var3 < _var2.length) {
+                        node = _var2[_var3];
+                        height = Math.max(height, node.h);
+                        _var3++;
+                        __state = '9';
+                    } else {
+                        __state = '11';
+                    }
+                    break;
+                case '11':
+                    _var4 = parent.children;
+                    _var5 = 0;
+                    __state = '14';
+                    break;
+                case '14':
+                    if (_var5 < _var4.length) {
+                        node = _var4[_var5];
+                        node.h = height;
+                        _var5++;
+                        __state = '14';
+                    } else {
+                        __state = '4';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function getMindSubtree(node, output) {
+            var _var2, _var3, child;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    output.push(node);
+                    _var2 = node.children;
+                    _var3 = 0;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (_var3 < _var2.length) {
+                        child = _var2[_var3];
+                        getMindSubtree(child, output);
+                        _var3++;
+                        __state = '6';
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function calculateHorizontalSubtree(config, node) {
+            var right, top, left, height, nTop, nBottom, shift, first, lastY, last, _var2, _var3, child, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    top = 0;
+                    left = node.w * 2 + config.metre * 2;
+                    __state = '11';
+                    break;
+                case '10':
+                    return;
+                case '11':
+                    right = node.subtreeBox.width;
+                    _var2 = node.children;
+                    _var3 = 0;
+                    __state = '14';
+                    break;
+                case '14':
+                    if (_var3 < _var2.length) {
+                        child = _var2[_var3];
+                        right = Math.max(right, left + child.subtreeBox.width);
+                        child.subtreeBox.left = left;
+                        child.subtreeBox.top = top;
+                        top += child.subtreeBox.height + config.metre;
+                        _var3++;
+                        __state = '14';
+                    } else {
+                        __state = '32';
+                    }
+                    break;
+                case '32':
+                    node.x = node.w;
+                    node.subtreeBox.width = right;
+                    height = top - config.metre;
+                    first = node.children[0];
+                    if (node.children.length === 1) {
+                        node.y = first.y;
+                        __state = '43';
+                    } else {
+                        node.y = Math.round(height / 2);
+                        last = node.children[node.children.length - 1];
+                        lastY = last.y + last.subtreeBox.top;
+                        if (node.y < first.y) {
+                            node.y = first.y;
+                            __state = '43';
+                        } else {
+                            if (node.y > lastY) {
+                                node.y = lastY;
+                                __state = '43';
+                            } else {
+                                __state = '43';
+                            }
+                        }
+                    }
+                    break;
+                case '43':
+                    nTop = node.y - node.h;
+                    nBottom = node.y + node.h;
+                    if (nTop < 0) {
+                        shift = -nTop;
+                        _var4 = node.children;
+                        _var5 = 0;
+                        __state = '47';
+                    } else {
+                        __state = '51';
+                    }
+                    break;
+                case '47':
+                    if (_var5 < _var4.length) {
+                        child = _var4[_var5];
+                        child.subtreeBox.top += shift;
+                        _var5++;
+                        __state = '47';
+                    } else {
+                        height += shift;
+                        node.y += shift;
+                        nBottom += shift;
+                        __state = '51';
+                    }
+                    break;
+                case '51':
+                    node.subtreeBox.height = Math.max(nBottom, height);
+                    __state = '10';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function calculateVerticalSubtree(config, node) {
+            var bottom, left, top, width, nLeft, nRight, shift, first, last, lastX, _var2, _var3, child, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    left = 0;
+                    top = node.h * 2 + config.metre * 2;
+                    __state = '11';
+                    break;
+                case '10':
+                    return;
+                case '11':
+                    bottom = node.subtreeBox.height;
+                    _var2 = node.children;
+                    _var3 = 0;
+                    __state = '14';
+                    break;
+                case '14':
+                    if (_var3 < _var2.length) {
+                        child = _var2[_var3];
+                        bottom = Math.max(bottom, top + child.subtreeBox.height);
+                        child.subtreeBox.left = left;
+                        child.subtreeBox.top = top;
+                        left += child.subtreeBox.width + config.metre;
+                        _var3++;
+                        __state = '14';
+                    } else {
+                        __state = '33';
+                    }
+                    break;
+                case '33':
+                    node.y = node.h;
+                    node.subtreeBox.height = bottom;
+                    width = left - config.metre;
+                    first = node.children[0];
+                    if (node.children.length === 1) {
+                        node.x = first.x;
+                        __state = '41';
+                    } else {
+                        last = node.children[node.children.length - 1];
+                        node.x = Math.round(width / 2);
+                        lastX = last.x + last.subtreeBox.left;
+                        if (node.x < first.x) {
+                            node.x = first.x;
+                            __state = '41';
+                        } else {
+                            if (node.x > lastX) {
+                                node.x = lastX;
+                                __state = '41';
+                            } else {
+                                __state = '41';
+                            }
+                        }
+                    }
+                    break;
+                case '41':
+                    nLeft = node.x - node.w;
+                    nRight = node.x + node.w;
+                    if (nLeft < 0) {
+                        shift = -nLeft;
+                        _var4 = node.children;
+                        _var5 = 0;
+                        __state = '48';
+                    } else {
+                        __state = '54';
+                    }
+                    break;
+                case '48':
+                    if (_var5 < _var4.length) {
+                        child = _var4[_var5];
+                        child.subtreeBox.left += shift;
+                        _var5++;
+                        __state = '48';
+                    } else {
+                        width += shift;
+                        node.x += shift;
+                        nRight += shift;
+                        __state = '54';
+                    }
+                    break;
+                case '54':
+                    node.subtreeBox.width = Math.max(nRight, width);
+                    __state = '10';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function createLeftMindResizeHandle(widget, node, y, ctx) {
+            var config, big, handle;
+            big = 1000;
+            config = widget.visuals.config;
+            handle = LeftMindResizeHandle();
+            handle.widget = widget;
+            handle.element = node;
+            handle.x = node.x - node.w;
+            handle.y = y;
+            handle.id = node.id;
+            handle.right = node.x + node.w;
+            handle.minX = node.x - big;
+            handle.maxX = handle.right - config.minWidth;
+            handle.primId = 'left-mind-' + node.id + '-' + y;
+            createHandle(widget.visuals, handle, ctx);
+            return;
+        }
+        function getTTypeForChildren(parent) {
+            var parentType;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    parentType = getTType(parent);
+                    if (parent.type === 'header') {
+                        if (parentType === 'vertical') {
+                            return 'treeview';
+                        } else {
+                            __state = '9';
+                        }
+                    } else {
+                        __state = '9';
+                    }
+                    break;
+                case '9':
+                    return parentType;
+                default:
+                    return;
+                }
+            }
+        }
+        function setSameWidthMind(visuals) {
+            var ttype, _var3, _var2, _var4, id, node;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var3 = visuals.nodes;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '5';
+                    break;
+                case '4':
+                    _var4++;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var4 < _var2.length) {
+                        id = _var2[_var4];
+                        node = _var3[id];
+                        ttype = getTType(node);
+                        if (ttype === 'treeview') {
+                            __state = '9';
+                        } else {
+                            if (ttype === 'horizontal') {
+                                __state = '9';
+                            } else {
+                                __state = '4';
+                            }
+                        }
+                    } else {
+                        return;
+                    }
+                    break;
+                case '9':
+                    setSameWidthForMindChildren(node);
+                    __state = '4';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function copyMind(widget, nodes) {
+            var ids, items, item, block, _var2, _var3, node, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    ids = {};
+                    items = [];
+                    _var2 = nodes;
+                    _var3 = 0;
+                    __state = '13';
+                    break;
+                case '9':
+                    block = { items: items };
+                    widget.visuals.config.setClipboard('mind', block);
+                    return 'mind';
+                case '10':
+                    _var4 = items;
+                    _var5 = 0;
+                    __state = '20';
+                    break;
+                case '13':
+                    if (_var3 < _var2.length) {
+                        node = _var2[_var3];
+                        if (node.id === 'root') {
+                            item = {
+                                type: 'header',
+                                id: node.id
+                            };
+                            __state = '21';
+                        } else {
+                            item = copyWholeItem(widget, node.itemId);
+                            __state = '21';
+                        }
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                case '19':
+                    _var5++;
+                    __state = '20';
+                    break;
+                case '20':
+                    if (_var5 < _var4.length) {
+                        item = _var4[_var5];
+                        if (item.parent) {
+                            if (item.parent in ids) {
+                                __state = '25';
+                            } else {
+                                __state = '23';
+                            }
+                        } else {
+                            __state = '23';
+                        }
+                    } else {
+                        __state = '9';
+                    }
+                    break;
+                case '21':
+                    items.push(item);
+                    ids[node.id] = true;
+                    _var3++;
+                    __state = '13';
+                    break;
+                case '23':
+                    item.parent = 'target';
+                    __state = '25';
+                    break;
+                case '25':
+                    if (item.type === 'header') {
+                        item.type = 'idea';
+                        item.content = widget.model.doc.name;
+                        __state = '19';
+                    } else {
+                        __state = '19';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function isMind(widget) {
+            if (widget.model.type === 'graf') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function completeMindResize(handle) {
+            var ids, edits, w, _var2, _var3, id;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    ids = getHorSiblings(handle.element);
+                    w = snapUp(handle.widget.visuals.config, handle.element.w);
+                    edits = [];
+                    _var2 = ids;
+                    _var3 = 0;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (_var3 < _var2.length) {
+                        id = _var2[_var3];
+                        updateItem(edits, id, { w: w });
+                        _var3++;
+                        __state = '6';
+                    } else {
+                        updateAndKeepSelection(handle.widget, edits);
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function insertMindChildren(edits, parent, ids, ordinal) {
+            var insert, index, id, sibling, exOrdinal, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    i = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (i < ids.length) {
+                        id = ids[i];
+                        index = findIndex(edits, 'id', id);
+                        insert = edits[index];
+                        insert.fields.ordinal = ordinal + i;
+                        i++;
+                        __state = '5';
+                    } else {
+                        __state = '11';
+                    }
+                    break;
+                case '10':
+                    return;
+                case '11':
+                    exOrdinal = ordinal + ids.length;
+                    i = ordinal;
+                    __state = '13';
+                    break;
+                case '13':
+                    if (i < parent.children.length) {
+                        sibling = parent.children[i];
+                        updateItem(edits, sibling.id, { ordinal: exOrdinal });
+                        exOrdinal++;
+                        i++;
+                        __state = '13';
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function createRightMindResizeHandle(widget, node, y, ctx) {
+            var config, big, handle;
+            big = 1000;
+            config = widget.visuals.config;
+            handle = RightMindResizeHandle();
+            handle.widget = widget;
+            handle.element = node;
+            handle.x = node.x + node.w;
+            handle.y = y;
+            handle.id = node.id;
+            handle.left = node.x - node.w;
+            handle.minX = node.x - node.w + config.minWidth;
+            handle.maxX = node.x + big;
+            handle.primId = 'right-mind-' + node.id + '-' + y;
+            createHandle(widget.visuals, handle, ctx);
+            return;
+        }
+        function pasteIntoMindEdge(widget, edge, payload) {
+            var socket, edits, _var2;
+            socket = { node: edge.target };
+            edits = mindBeforeInsert(widget, socket, payload);
+            _var2 = doEdit(widget, edits);
+            return _var2;
+        }
+        function mindAfterInsert(widget, socket, payload) {
+            var model, parent, ordinal, _var2;
+            model = widget.model;
+            parent = socket.node.parent;
+            ordinal = socket.node.ordinal + 1;
+            _var2 = mindInsertCore(widget, socket, parent, ordinal, payload);
+            return _var2;
+        }
+        function positionMind(visuals) {
+            calculateSubtreeBox(visuals.config, visuals.header);
+            bakeSubtreeCoords(visuals.header, 0, 0);
+            createMindEdges(visuals, visuals.header);
+            return;
+        }
+        function getMindSiblingSocketPos(r2, node) {
+            var parenType, bx, by, ax, ay, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    parenType = getTType(node.parent);
+                    _var2 = parenType;
+                    if (_var2 === 'vertical') {
+                        bx = node.x - node.w - r2;
+                        by = node.y;
+                        ax = node.x + node.w + r2;
+                        ay = node.y;
+                        __state = '3';
+                    } else {
+                        if (_var2 === 'horizontal') {
+                            __state = '10';
+                        } else {
+                            if (_var2 === 'treeview') {
+                                __state = '10';
+                            } else {
+                                throw new Error('Unexpected case value: ' + _var2);
+                            }
+                        }
+                    }
+                    break;
+                case '3':
+                    return {
+                        before: {
+                            x: bx,
+                            y: by
+                        },
+                        after: {
+                            x: ax,
+                            y: ay
+                        }
+                    };
+                case '10':
+                    bx = node.x;
+                    by = node.y - node.h - r2;
+                    ax = node.x;
+                    ay = node.y + node.h + r2;
+                    __state = '3';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function getSiblingsBetween(visuals, node, sibling) {
+            var result, other, parent, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    result = [];
+                    parent = node.parent;
+                    if (node.ordinal < sibling.ordinal) {
+                        i = node.ordinal;
+                        __state = '7';
+                    } else {
+                        i = node.ordinal;
+                        __state = '12';
+                    }
+                    break;
+                case '3':
+                    return result;
+                case '7':
+                    if (i < sibling.ordinal) {
+                        other = parent.children[i];
+                        result.push(other);
+                        i++;
+                        __state = '7';
+                    } else {
+                        __state = '3';
+                    }
+                    break;
+                case '12':
+                    if (i > sibling.ordinal) {
+                        other = parent.children[i];
+                        result.push(other);
+                        i--;
+                        __state = '12';
+                    } else {
+                        __state = '3';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function setSameHeightMind(visuals) {
+            var ttype, _var3, _var2, _var4, id, node;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var3 = visuals.nodes;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '5';
+                    break;
+                case '4':
+                    _var4++;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var4 < _var2.length) {
+                        id = _var2[_var4];
+                        node = _var3[id];
+                        ttype = getTType(node);
+                        if (ttype === 'vertical') {
+                            setSameHeightForMindChildren(node);
+                            __state = '4';
+                        } else {
+                            __state = '4';
+                        }
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function calculateTvSubtree(config, node) {
+            var left, top, right, _var2, _var3, child;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (node.parent) {
+                        left = config.metre * 2;
+                        __state = '7';
+                    } else {
+                        left = 0;
+                        __state = '7';
+                    }
+                    break;
+                case '7':
+                    top = node.h * 2 + config.metre;
+                    __state = '11';
+                    break;
+                case '10':
+                    node.x = node.w;
+                    node.y = node.h;
+                    node.subtreeBox.width = right;
+                    node.subtreeBox.height = top - config.metre;
+                    return;
+                case '11':
+                    right = node.subtreeBox.width;
+                    _var2 = node.children;
+                    _var3 = 0;
+                    __state = '14';
+                    break;
+                case '14':
+                    if (_var3 < _var2.length) {
+                        child = _var2[_var3];
+                        right = Math.max(right, left + child.subtreeBox.width);
+                        child.subtreeBox.left = left;
+                        child.subtreeBox.top = top;
+                        top += child.subtreeBox.height + config.metre;
+                        _var3++;
+                        __state = '14';
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function getMindChildSocketPos(r2, node) {
+            var ttype, cx, cy, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    ttype = getTType(node);
+                    _var2 = ttype;
+                    if (_var2 === 'vertical') {
+                        cx = node.x;
+                        cy = node.y + node.h + r2;
+                        __state = '3';
+                    } else {
+                        if (_var2 === 'horizontal') {
+                            cx = node.x + node.w + r2;
+                            cy = node.y;
+                            __state = '3';
+                        } else {
+                            if (_var2 === 'treeview') {
+                                cx = node.x - node.w + 20;
+                                cy = node.y + node.h + r2;
+                                __state = '3';
+                            } else {
+                                throw new Error('Unexpected case value: ' + _var2);
+                            }
+                        }
+                    }
+                    break;
+                case '3':
+                    return {
+                        x: cx,
+                        y: cy
+                    };
+                default:
+                    return;
+                }
+            }
+        }
+        function showMindSocketsForIcon(visuals, node, op, type) {
+            var config, child, cpos, radius, sib, before, after;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    radius = config.socketTouchRadius;
+                    __state = '9';
+                    break;
+                case '4':
+                    return;
+                case '9':
+                    if (node.children.length === 0) {
+                        cpos = getMindChildSocketPos(0, node);
+                        child = createSocket(visuals, cpos.x, cpos.y, op, 'mind-child', radius);
+                        child.node = node;
+                        child.iconType = type;
+                        __state = '15';
+                    } else {
+                        __state = '15';
+                    }
+                    break;
+                case '15':
+                    if (node.parent) {
+                        sib = getMindSiblingSocketPos(0, node);
+                        __state = '18';
+                    } else {
+                        __state = '4';
+                    }
+                    break;
+                case '18':
+                    if (node.ordinal === 0) {
+                        before = createSocket(visuals, sib.before.x, sib.before.y, op, 'mind-before', radius);
+                        before.node = node;
+                        before.iconType = type;
+                        __state = '21';
+                    } else {
+                        __state = '21';
+                    }
+                    break;
+                case '21':
+                    after = createSocket(visuals, sib.after.x, sib.after.y, op, 'mind-after', radius);
+                    after.node = node;
+                    after.iconType = type;
+                    __state = '4';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function isUpperInTree(visuals, parent, ids) {
+            var node, _var2, _var3, id, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var2 = ids;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        id = _var2[_var3];
+                        node = getNode(visuals, id);
+                        _var4 = isParent(parent, node);
+                        if (_var4) {
+                            return true;
+                        } else {
+                            _var3++;
+                            __state = '5';
+                        }
+                    } else {
+                        return false;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildMenuByTypeMind(widget, prim, node) {
+            var menu, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19, _var20, _var21, _var22, _var23, _var24, _var25, _var26;
+            var __state = '27';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (prim.type === 'header') {
+                        _var5 = tr(widget, 'Rename');
+                        pushMenuItem('rename', menu, _var5, undefined, function () {
+                            startEditContent(widget, prim);
+                        });
+                        __state = '_item16';
+                    } else {
+                        _var6 = canEditNodeText(widget, prim);
+                        if (_var6) {
+                            _var13 = canEditSecondary(prim);
+                            if (_var13) {
+                                _var14 = tr(widget, 'Edit upper text');
+                                pushMenuItem('edit_secondary', menu, _var14, undefined, function () {
+                                    startEditSecondary(widget, prim);
+                                });
+                                __state = '_item11';
+                            } else {
+                                __state = '_item11';
+                            }
+                        } else {
+                            __state = '_item16';
+                        }
+                    }
+                    break;
+                case '8':
+                    return menu;
+                case '16':
+                    _var3 = canDelete(widget.visuals, node);
+                    if (_var3) {
+                        menu.push({ type: 'separator' });
+                        _var4 = tr(widget, 'Delete');
+                        pushMenuItem('delete_one', menu, _var4, widget.visuals.config.imagePath + 'delete.png', function () {
+                            deleteOne(widget, node);
+                        });
+                        __state = '_item20';
+                    } else {
+                        __state = '_item20';
+                    }
+                    break;
+                case '27':
+                    menu = [];
+                    _var8 = tr(widget, 'Copy');
+                    pushMenuItem('copy_one', menu, _var8, undefined, function () {
+                        copy(widget);
+                    });
+                    _var11 = isReadonly(widget);
+                    if (_var11) {
+                        __state = '31';
+                    } else {
+                        _var9 = canDelete(widget.visuals, node);
+                        if (_var9) {
+                            _var10 = tr(widget, 'Cut');
+                            pushMenuItem('cut_one', menu, _var10, undefined, function () {
+                                cut(widget);
+                            });
+                            __state = '31';
+                        } else {
+                            __state = '31';
+                        }
+                    }
+                    break;
+                case '31':
+                    menu.push({ type: 'separator' });
+                    __state = '2';
+                    break;
+                case '59':
+                    menu.push({ type: 'separator' });
+                    _var2 = getTType(prim);
+                    if (_var2 === 'horizontal') {
+                        _var18 = tr(widget, 'Tree-like layout');
+                        pushMenuItem('layout_tree', menu, _var18, widget.visuals.config.imagePath + 'layout_tree.png', function () {
+                            changeLayout(widget, prim, 'treeview');
+                        });
+                        _var19 = tr(widget, 'Vertical layout');
+                        pushMenuItem('layout_ver', menu, _var19, widget.visuals.config.imagePath + 'layout_ver.png', function () {
+                            changeLayout(widget, prim, 'vertical');
+                        });
+                        __state = '71';
+                    } else {
+                        if (_var2 === 'vertical') {
+                            _var20 = tr(widget, 'Tree-like layout');
+                            pushMenuItem('layout_tree', menu, _var20, widget.visuals.config.imagePath + 'layout_tree.png', function () {
+                                changeLayout(widget, prim, 'treeview');
+                            });
+                            _var21 = tr(widget, 'Horizontal layout');
+                            pushMenuItem('layout_hor', menu, _var21, widget.visuals.config.imagePath + 'layout_hor.png', function () {
+                                changeLayout(widget, prim, 'horizontal');
+                            });
+                            __state = '71';
+                        } else {
+                            if (_var2 === 'treeview') {
+                                _var22 = tr(widget, 'Vertical layout');
+                                pushMenuItem('layout_ver', menu, _var22, widget.visuals.config.imagePath + 'layout_ver.png', function () {
+                                    changeLayout(widget, prim, 'vertical');
+                                });
+                                _var23 = tr(widget, 'Horizontal layout');
+                                pushMenuItem('layout_hor', menu, _var23, widget.visuals.config.imagePath + 'layout_hor.png', function () {
+                                    changeLayout(widget, prim, 'horizontal');
+                                });
+                                __state = '71';
+                            } else {
+                                throw new Error('Unexpected case value: ' + _var2);
+                            }
+                        }
+                    }
+                    break;
+                case '71':
+                    if (node.type === 'header') {
+                        __state = '16';
+                    } else {
+                        menu.push({ type: 'separator' });
+                        if (node.type === 'idea') {
+                            __state = '76';
+                        } else {
+                            _var24 = tr(widget, 'Idea');
+                            pushMenuItem('transform', menu, '> ' + _var24, widget.visuals.config.imagePath + 'action.png', function () {
+                                transformMind(widget, node, 'idea');
+                            });
+                            __state = '76';
+                        }
+                    }
+                    break;
+                case '76':
+                    if (node.type === 'ridea') {
+                        __state = '78';
+                    } else {
+                        _var25 = tr(widget, 'Idea - rounded');
+                        pushMenuItem('transform', menu, '> ' + _var25, widget.visuals.config.imagePath + 'rounded.png', function () {
+                            transformMind(widget, node, 'ridea');
+                        });
+                        __state = '78';
+                    }
+                    break;
+                case '78':
+                    if (node.type === 'conclusion') {
+                        __state = '16';
+                    } else {
+                        _var26 = tr(widget, 'Conclusion');
+                        pushMenuItem('transform', menu, '> ' + _var26, widget.visuals.config.imagePath + 'comment.png', function () {
+                            transformMind(widget, node, 'conclusion');
+                        });
+                        __state = '16';
+                    }
+                    break;
+                case '_item16':
+                    _var12 = isReadonly(widget);
+                    if (_var12) {
+                        __state = '8';
+                    } else {
+                        __state = '59';
+                    }
+                    break;
+                case '_item20':
+                    _var16 = canEditStyle(node);
+                    if (_var16) {
+                        menu.push({ type: 'separator' });
+                        _var17 = tr(widget, 'Format');
+                        pushMenuItem('format', menu, _var17, undefined, function () {
+                            startEditStyle(widget);
+                        });
+                        __state = '8';
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                case '_item11':
+                    _var7 = tr(widget, 'Edit content');
+                    pushMenuItem('edit_content', menu, _var7, undefined, function () {
+                        startEditContent(widget, prim);
+                    });
+                    menu.push({ type: 'separator' });
+                    _var15 = tr(widget, 'Edit link');
+                    pushMenuItem('edit_link', menu, _var15, undefined, function () {
+                        startEditLink(widget, prim);
+                    });
+                    __state = '_item16';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function deleteMind(widget, nodes) {
+            var ids, parents, parent, children, ordinal, edits, pids, _var2, _var3, node, _var4, _var5, _var6, _var7, child, _var8, _var9;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    edits = [];
+                    ids = {};
+                    _var2 = nodes;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        node = _var2[_var3];
+                        ids[node.id] = true;
+                        _var3++;
+                        __state = '5';
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '6':
+                    return edits;
+                case '7':
+                    parents = {};
+                    _var4 = nodes;
+                    _var5 = 0;
+                    __state = '11';
+                    break;
+                case '10':
+                    children = parent.children.filter(function (sibling) {
+                        return !ids[sibling.id];
+                    });
+                    ordinal = 0;
+                    _var6 = children;
+                    _var7 = 0;
+                    __state = '18';
+                    break;
+                case '11':
+                    if (_var5 < _var4.length) {
+                        node = _var4[_var5];
+                        if (node.parent.id in ids) {
+                            __state = '12';
+                        } else {
+                            parents[node.parent.id] = true;
+                            __state = '12';
+                        }
+                    } else {
+                        pids = Object.keys(parents);
+                        if (pids.length === 1) {
+                            parent = getNode(widget.visuals, pids[0]);
+                            __state = '10';
+                        } else {
+                            throw new Error('deleteMind: bad number of parents: ' + pids.length);
+                        }
+                    }
+                    break;
+                case '12':
+                    _var5++;
+                    __state = '11';
+                    break;
+                case '18':
+                    if (_var7 < _var6.length) {
+                        child = _var6[_var7];
+                        if (child.ordinal != ordinal) {
+                            updateItem(edits, child.id, { ordinal: ordinal });
+                            __state = '20';
+                        } else {
+                            __state = '20';
+                        }
+                    } else {
+                        __state = '25';
+                    }
+                    break;
+                case '20':
+                    ordinal++;
+                    _var7++;
+                    __state = '18';
+                    break;
+                case '25':
+                    _var8 = nodes;
+                    _var9 = 0;
+                    __state = '29';
+                    break;
+                case '29':
+                    if (_var9 < _var8.length) {
+                        node = _var8[_var9];
+                        deleteItemCore(edits, node.id);
+                        _var9++;
+                        __state = '29';
+                    } else {
+                        __state = '6';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function DrakonCanvas_onMouseLeave(self, evt) {
             var __state = '2';
             while (true) {
@@ -9848,7 +12872,7 @@ function createDrakonWidget() {
             }
         }
         function handleRightClick(widget, pos, evt) {
-            var prim, visuals, menu, node, callback, edge, selected, _var2, _var3, _var4, _var5, _var6, _var7;
+            var prim, visuals, menu, node, callback, edge, selected, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -9871,8 +12895,8 @@ function createDrakonWidget() {
                             } else {
                                 if (node.type == 'junction') {
                                     if (node.subtype === 'parbegin') {
-                                        _var4 = ensureSelectedOne(widget, prim.id);
-                                        if (_var4) {
+                                        _var5 = ensureSelectedOne(widget, prim.id);
+                                        if (_var5) {
                                             menu = buildBeginParMenu(widget, node);
                                             __state = '28';
                                         } else {
@@ -9884,10 +12908,16 @@ function createDrakonWidget() {
                                         __state = '28';
                                     }
                                 } else {
-                                    _var3 = ensureSelectedOne(widget, prim.id);
-                                    if (_var3) {
-                                        menu = buildMenuByType(widget, prim, node);
-                                        __state = '28';
+                                    _var4 = ensureSelectedOne(widget, prim.id);
+                                    if (_var4) {
+                                        _var9 = isMind(widget);
+                                        if (_var9) {
+                                            menu = buildMenuByTypeMind(widget, prim, node);
+                                            __state = '28';
+                                        } else {
+                                            menu = buildMenuByType(widget, prim, node);
+                                            __state = '28';
+                                        }
                                     } else {
                                         menu = buildBlockMenu(widget);
                                         __state = '28';
@@ -9897,18 +12927,38 @@ function createDrakonWidget() {
                         } else {
                             if (_var2 === 'edge') {
                                 edge = getEdge(visuals, prim.id);
-                                if (edge.role === 'parceiling') {
-                                    _var5 = ensureSelectedOne(widget, edge.tail.id);
-                                    if (_var5) {
-                                        menu = buildBeginParMenu(widget, edge.tail);
+                                _var3 = edge.role;
+                                if (_var3 === 'parceiling') {
+                                    selectPrim(widget, prim.id);
+                                    menu = buildParCeilMenu(widget, edge);
+                                    __state = '50';
+                                } else {
+                                    if (_var3 === 'down') {
+                                        selectPrim(widget, prim.id);
+                                        menu = buildDownEdgeMenu(widget, edge);
                                         __state = '50';
                                     } else {
-                                        menu = buildBlockMenu(widget);
-                                        __state = '50';
+                                        if (_var3 === 'mind-child') {
+                                            selectPrim(widget, prim.id);
+                                            menu = buildMindEdgeMenu(widget, edge);
+                                            __state = '50';
+                                        } else {
+                                            if (_var3 === 'ceil') {
+                                                selectPrim(widget, prim.id);
+                                                menu = buildCeilEdgeMenu(widget, edge);
+                                                __state = '50';
+                                            } else {
+                                                if (_var3 === 'selectceil') {
+                                                    selectPrim(widget, prim.id);
+                                                    menu = buildSelectCeilEdgeMenu(widget, edge);
+                                                    __state = '50';
+                                                } else {
+                                                    menu = [];
+                                                    __state = '30';
+                                                }
+                                            }
+                                        }
                                     }
-                                } else {
-                                    menu = [];
-                                    __state = '30';
                                 }
                             } else {
                                 if (_var2 === 'free') {
@@ -9923,8 +12973,26 @@ function createDrakonWidget() {
                                     if (_var2 === 'nugget') {
                                         __state = '79';
                                     } else {
-                                        menu = [];
-                                        __state = '30';
+                                        if (_var2 === 'connection') {
+                                            _var8 = isSelected(widget, prim.id);
+                                            if (_var8) {
+                                                __state = '87';
+                                            } else {
+                                                selectPrim(widget, prim.id);
+                                                __state = '87';
+                                            }
+                                        } else {
+                                            if (_var2 === 'handle') {
+                                                if (prim.makeContextMenu) {
+                                                    menu = prim.makeContextMenu();
+                                                    __state = '30';
+                                                } else {
+                                                    __state = '69';
+                                                }
+                                            } else {
+                                                __state = '69';
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -9966,6 +13034,10 @@ function createDrakonWidget() {
                     paint(widget);
                     __state = '30';
                     break;
+                case '69':
+                    menu = [];
+                    __state = '30';
+                    break;
                 case '79':
                     selected = getSelectedFree(widget);
                     if (selected.length > 1) {
@@ -9975,6 +13047,10 @@ function createDrakonWidget() {
                         prim = freeToVisualItem(widget, selected[0]);
                         __state = '64';
                     }
+                    break;
+                case '87':
+                    menu = buildConnectionMenu(widget, prim);
+                    __state = '67';
                     break;
                 default:
                     return;
@@ -9992,6 +13068,87 @@ function createDrakonWidget() {
                 y: scroll.y
             };
             return scroll;
+        }
+        function shouldSmoothJunction(node) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (node.type === 'junction') {
+                        if (node.sharp) {
+                            __state = '5';
+                        } else {
+                            if (node.role) {
+                                if (node.role in unit.noSmooth) {
+                                    __state = '5';
+                                } else {
+                                    __state = '15';
+                                }
+                            } else {
+                                __state = '15';
+                            }
+                        }
+                    } else {
+                        __state = '5';
+                    }
+                    break;
+                case '3':
+                    return true;
+                case '5':
+                    return false;
+                case '8':
+                    if (node.left.role) {
+                        if (node.left.role in unit.noSmooth) {
+                            __state = '5';
+                        } else {
+                            __state = '9';
+                        }
+                    } else {
+                        __state = '9';
+                    }
+                    break;
+                case '9':
+                    if (node.right) {
+                        if (node.right.role) {
+                            if (node.right.role in unit.noSmooth) {
+                                __state = '5';
+                            } else {
+                                __state = '3';
+                            }
+                        } else {
+                            __state = '3';
+                        }
+                    } else {
+                        __state = '3';
+                    }
+                    break;
+                case '15':
+                    if (node.subtype === 'parend') {
+                        __state = '5';
+                    } else {
+                        if (node.left) {
+                            if (node.left.role === 'left') {
+                                if (node.left.finalTarget) {
+                                    if (node.left.finalTarget.subtype === 'parend') {
+                                        __state = '5';
+                                    } else {
+                                        __state = '8';
+                                    }
+                                } else {
+                                    __state = '8';
+                                }
+                            } else {
+                                __state = '8';
+                            }
+                        } else {
+                            __state = '9';
+                        }
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function drawIcon(visuals, node, ctx) {
             var render;
@@ -10016,56 +13173,161 @@ function createDrakonWidget() {
                 }
             }
         }
-        function drawEdge(visuals, edge, ctx) {
-            var x1, y1, x2, y2, thickness, w, h, color, low, _var2;
+        function drawEdge(widget, edge, ctx) {
+            var x1, y1, x2, y2, thickness, color, radius, low, config, visuals, startPos, endPos, length, socketY, showMeat, _var2, _var3, _var4, _var5, _var6, _var7;
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
                 case '2':
+                    visuals = widget.visuals;
+                    config = visuals.config;
+                    ctx.lineCap = 'butt';
                     x1 = getX(edge.head);
                     y1 = getY(edge.head);
                     x2 = getX(edge.tail);
                     y2 = getY(edge.tail);
                     thickness = visuals.config.theme.lineWidth || 1;
+                    radius = visuals.config.lineRadius || 0;
                     color = visuals.config.theme.lines;
+                    if (visuals.highlight === edge.id) {
+                        color = visuals.config.theme.highlight;
+                        thickness = 2;
+                        __state = '17';
+                    } else {
+                        __state = '17';
+                    }
+                    break;
+                case '17':
                     ctx.fillStyle = color;
                     if (edge.vertical) {
-                        if (edge.head.skewer.main) {
-                            thickness *= 3;
-                            __state = '10';
-                        } else {
-                            __state = '10';
-                        }
+                        __state = '77';
                     } else {
-                        w = x2 - x1;
                         if (edge.role === 'parceiling') {
-                            ctx.fillRect(x1, y1, w, thickness * 2);
-                            low = y1 + visuals.config.parallelWidth;
-                            ctx.fillRect(x1, low, w, thickness);
-                            __state = '1';
+                            __state = '76';
                         } else {
-                            ctx.fillRect(x1, y1, w, thickness);
-                            _var2 = edge.role;
-                            if (_var2 === 'arrow') {
-                                drawArrowHead(ctx, color, x1 + thickness, y1, Math.PI);
-                                __state = '1';
-                            } else {
-                                if (_var2 === 'rarrow') {
-                                    drawArrowHead(ctx, color, x2 - thickness, y1, 0);
-                                    __state = '1';
-                                } else {
-                                    __state = '1';
-                                }
-                            }
+                            __state = '61';
                         }
                     }
                     break;
-                case '10':
-                    h = y2 - y1;
-                    ctx.fillRect(x1, y1, thickness, h);
-                    __state = '1';
+                case '60':
+                    edge.thickness = thickness;
+                    edge.color = color;
+                    return;
+                case '61':
+                    _var2 = edge.role;
+                    if (_var2 === 'arrow') {
+                        drawArrowHead(ctx, color, x1 + thickness, y1, Math.PI);
+                        __state = '69';
+                    } else {
+                        if (_var2 === 'rarrow') {
+                            drawArrowHead(ctx, color, x2 - thickness, y1, 0);
+                            __state = '69';
+                        } else {
+                            __state = '69';
+                        }
+                    }
+                    break;
+                case '68':
+                    line(ctx, x1, y1, x2, y2, color, thickness);
+                    __state = '60';
+                    break;
+                case '69':
+                    if (radius) {
+                        _var3 = shouldSmoothJunction(edge.head);
+                        if (_var3) {
+                            if (edge.role === 'arrow') {
+                                __state = '_item6';
+                            } else {
+                                x1 += radius;
+                                __state = '_item6';
+                            }
+                        } else {
+                            __state = '_item6';
+                        }
+                    } else {
+                        __state = '68';
+                    }
+                    break;
+                case '76':
+                    line(ctx, x1, y1, x2, y2, color, thickness * 2);
+                    low = y1 + visuals.config.parallelWidth;
+                    line(ctx, x1, low, x2, low, color, thickness);
+                    __state = '60';
+                    break;
+                case '77':
+                    if (radius) {
+                        _var5 = shouldSmoothJunction(edge.head);
+                        if (_var5) {
+                            y1 += radius;
+                            __state = '_item8';
+                        } else {
+                            __state = '_item8';
+                        }
+                    } else {
+                        __state = '112';
+                    }
+                    break;
+                case '84':
+                    line(ctx, x1, y1, x2, y2, color, thickness);
+                    showMeat = false;
+                    _var7 = isReadonly(widget);
+                    if (_var7) {
+                        __state = '60';
+                    } else {
+                        if (showMeat && edge.role === 'down') {
+                            if (visuals.highlight === edge.id) {
+                                startPos = getVerticalStartPos(edge);
+                                endPos = getVerticalEndPos(edge);
+                                length = endPos - startPos;
+                                if (length <= config.socketTouchRadius * 2) {
+                                    socketY = Math.round((startPos + endPos) / 2);
+                                    drawPointSocket(ctx, x1, socketY, config.theme.highlight, 'black', config);
+                                    __state = '60';
+                                } else {
+                                    drawVerticalSocket(ctx, x1, startPos, endPos, config.theme.highlight, 'black', config);
+                                    __state = '60';
+                                }
+                            } else {
+                                __state = '60';
+                            }
+                        } else {
+                            __state = '60';
+                        }
+                    }
+                    break;
+                case '112':
+                    if (edge.head.skewer) {
+                        if (edge.head.skewer.main) {
+                            thickness *= 3;
+                            __state = '84';
+                        } else {
+                            __state = '84';
+                        }
+                    } else {
+                        __state = '84';
+                    }
+                    break;
+                case '_item8':
+                    _var6 = shouldSmoothJunction(edge.tail);
+                    if (_var6) {
+                        y2 -= radius;
+                        __state = '112';
+                    } else {
+                        __state = '112';
+                    }
+                    break;
+                case '_item6':
+                    _var4 = shouldSmoothJunction(edge.tail);
+                    if (_var4) {
+                        if (edge.role === 'rarrow') {
+                            __state = '68';
+                        } else {
+                            x2 -= radius;
+                            __state = '68';
+                        }
+                    } else {
+                        __state = '68';
+                    }
                     break;
                 default:
                     return;
@@ -10089,6 +13351,29 @@ function createDrakonWidget() {
             prim.height *= zoom;
             return;
         }
+        function parseCoords(item, node) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (item.coords) {
+                        try {
+                            node.coords = JSON.parse(item.coords);
+                        } catch (ex) {
+                            console.error('Error parsing coords for item ' + item.id + ' ' + ex.message);
+                        }
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function traceLoops(visuals) {
             var trace;
             trace = function (vis, node) {
@@ -10103,6 +13388,70 @@ function createDrakonWidget() {
             left = items[leftId];
             right = items[rightId];
             return left.branchId - right.branchId;
+        }
+        function multilineRounded(ctx, coords, color, width, radius) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            roundedLine(ctx, coords, radius);
+            ctx.stroke();
+            return;
+        }
+        function multiline(config, ctx, coords, color, width, tail, head, iconBack) {
+            var radius, _var2, _var3, point;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (coords.length === 2) {
+                        __state = '3';
+                    } else {
+                        radius = config.lineRadius || 0;
+                        if (radius) {
+                            if (width % 2 === 0) {
+                                __state = '9';
+                            } else {
+                                _var2 = coords;
+                                _var3 = 0;
+                                __state = '14';
+                            }
+                        } else {
+                            __state = '3';
+                        }
+                    }
+                    break;
+                case '3':
+                    multilineSharp(ctx, coords, color, width);
+                    __state = '8';
+                    break;
+                case '7':
+                    return;
+                case '8':
+                    drawTail(ctx, coords, tail, color, iconBack, width);
+                    __state = '10';
+                    break;
+                case '9':
+                    multilineRounded(ctx, coords, color, width, radius);
+                    __state = '8';
+                    break;
+                case '10':
+                    drawHead(ctx, coords, head, color, iconBack, width);
+                    __state = '7';
+                    break;
+                case '14':
+                    if (_var3 < _var2.length) {
+                        point = _var2[_var3];
+                        point.x += 0.5;
+                        point.y += 0.5;
+                        _var3++;
+                        __state = '14';
+                    } else {
+                        __state = '9';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function setIconDefaultProps(icons, names, props) {
             var icon, _var5, _var6, name, _var3, _var2, _var4, key, value;
@@ -10175,7 +13524,7 @@ function createDrakonWidget() {
                 case '2':
                     ctx.strokeStyle = color;
                     ctx.lineWidth = width;
-                    if (width % 2 == 0) {
+                    if (width % 2 === 0) {
                         __state = '6';
                     } else {
                         x1 += 0.5;
@@ -10210,6 +13559,7 @@ function createDrakonWidget() {
                     __state = '5';
                     break;
                 case '4':
+                    delete leftDown.right.role;
                     return;
                 case '5':
                     _var2 = visuals.branches;
@@ -10317,8 +13667,8 @@ function createDrakonWidget() {
                         y1 = _var5 + hh;
                         x2 = x1;
                         y2 = _var6 - th;
-                        startPos = edge.head.y + edge.head.h;
-                        endPos = edge.tail.y - edge.tail.h;
+                        startPos = getVerticalStartPos(edge);
+                        endPos = getVerticalEndPos(edge);
                         length = endPos - startPos;
                         box = createBox(x1 - radius, startPos, radius * 2, length);
                         __state = '9';
@@ -10707,7 +14057,7 @@ function createDrakonWidget() {
             }
         }
         function drawSocket(visuals, socket, ctx, config) {
-            var fill, border, radius;
+            var fill, border, radius, primId;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -10719,10 +14069,10 @@ function createDrakonWidget() {
                             border = config.socketBody;
                             __state = '30';
                         } else {
-                            __state = '29';
+                            __state = '49';
                         }
                     } else {
-                        __state = '29';
+                        __state = '49';
                     }
                     break;
                 case '15':
@@ -10730,11 +14080,6 @@ function createDrakonWidget() {
                 case '16':
                     drawPointSocket(ctx, socket.x, socket.y, fill, border, config);
                     __state = '15';
-                    break;
-                case '29':
-                    fill = config.socketBody;
-                    border = config.socketBorder;
-                    __state = '30';
                     break;
                 case '30':
                     if (socket.node) {
@@ -10763,6 +14108,18 @@ function createDrakonWidget() {
                     } else {
                         drawHorizontalSocket(ctx, socket.startPos, socket.endPos, socket.y, fill, border, config);
                         __state = '15';
+                    }
+                    break;
+                case '49':
+                    primId = 'socket-' + socket.id;
+                    if (visuals.highlight === primId) {
+                        fill = config.socketBody;
+                        border = config.theme.highlight;
+                        __state = '30';
+                    } else {
+                        fill = config.socketBody;
+                        border = config.socketBorder;
+                        __state = '30';
                     }
                     break;
                 default:
@@ -10925,6 +14282,9 @@ function createDrakonWidget() {
                 }
             }
         }
+        function getVerticalEndPos(edge) {
+            return edge.tail.y - edge.tail.h;
+        }
         function copyEdgeLinks(socket) {
             var edge;
             edge = socket.edge;
@@ -10932,11 +14292,14 @@ function createDrakonWidget() {
             addRange(edge.links, socket.links);
             return;
         }
+        function getVerticalStartPos(edge) {
+            return edge.head.y + edge.head.h;
+        }
         function end() {
             return 'End';
         }
         function drawNodeCandy(widget, id, ctx, config) {
-            var node, visuals, _var2;
+            var node, visuals, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -10951,16 +14314,22 @@ function createDrakonWidget() {
                         if (node.type === 'arrow-loop') {
                             __state = '8';
                         } else {
-                            _var2 = shouldAlignWidth(visuals, node);
-                            if (_var2) {
-                                if (visuals.config.allowResize) {
-                                    skewerResizeCandy(widget, node, ctx);
-                                    __state = '1';
+                            _var3 = isMindIcon(widget, node);
+                            if (_var3) {
+                                mindCandy(widget, node, ctx);
+                                __state = '1';
+                            } else {
+                                _var2 = shouldAlignWidth(visuals, node);
+                                if (_var2) {
+                                    if (visuals.config.allowResize) {
+                                        skewerResizeCandy(widget, node, ctx);
+                                        __state = '1';
+                                    } else {
+                                        __state = '10';
+                                    }
                                 } else {
                                     __state = '10';
                                 }
-                            } else {
-                                __state = '10';
                             }
                         }
                     }
@@ -10980,17 +14349,45 @@ function createDrakonWidget() {
         }
         function createHandle(visuals, handle, ctx) {
             var touch, fill, border, size, lineWidth, config;
-            config = visuals.config;
-            touch = config.socketTouchRadius;
-            handle.box = boxFromPoint(handle.x, handle.y, touch, touch);
-            handle.elType = 'handle';
-            fill = config.theme.handleFill;
-            border = config.theme.candyBorder;
-            size = 10;
-            lineWidth = 2;
-            centerSquare(ctx, handle.x, handle.y, size, fill, border, lineWidth);
-            visuals.handles.push(handle);
-            return;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    touch = config.socketTouchRadius;
+                    handle.box = boxFromPoint(handle.x, handle.y, touch, touch);
+                    handle.elType = 'handle';
+                    fill = config.theme.handleFill;
+                    border = config.theme.candyBorder;
+                    size = 10;
+                    lineWidth = 2;
+                    if (visuals.highlight) {
+                        if (visuals.highlight === handle.primId) {
+                            border = config.theme.highlight;
+                            __state = '10';
+                        } else {
+                            __state = '10';
+                        }
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                case '6':
+                    centerSquare(ctx, handle.x, handle.y, size, fill, border, lineWidth);
+                    visuals.handles.push(handle);
+                    return;
+                case '10':
+                    if (handle.color) {
+                        fill = handle.color;
+                        __state = '6';
+                    } else {
+                        __state = '6';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function standardCandy(node, ctx, config) {
             var left, top, right, bottom, fill, border, size, lineWidth;
@@ -11354,47 +14751,128 @@ function createDrakonWidget() {
                 }
             }
         }
-        function buildBlockMenu(widget) {
-            var menu, _var2, _var3, _var4, _var5, _var6;
+        function calculateSubtreeBox(config, node) {
+            var subtreeBox, ttype, _var2, _var3, _var4, child;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    subtreeBox = createBox(0, 0, node.w * 2, node.h * 2);
+                    node.subtreeBox = subtreeBox;
+                    if (node.children.length === 0) {
+                        node.x = node.w;
+                        node.y = node.h;
+                        __state = '9';
+                    } else {
+                        __state = '11';
+                    }
+                    break;
+                case '9':
+                    return;
+                case '10':
+                    ttype = getTType(node);
+                    _var2 = ttype;
+                    if (_var2 === 'vertical') {
+                        calculateVerticalSubtree(config, node);
+                        __state = '9';
+                    } else {
+                        if (_var2 === 'horizontal') {
+                            calculateHorizontalSubtree(config, node);
+                            __state = '9';
+                        } else {
+                            if (_var2 === 'treeview') {
+                                calculateTvSubtree(config, node);
+                                __state = '9';
+                            } else {
+                                throw new Error('Unexpected case value: ' + _var2);
+                            }
+                        }
+                    }
+                    break;
+                case '11':
+                    _var3 = node.children;
+                    _var4 = 0;
+                    __state = '13';
+                    break;
+                case '13':
+                    if (_var4 < _var3.length) {
+                        child = _var3[_var4];
+                        calculateSubtreeBox(config, child);
+                        _var4++;
+                        __state = '13';
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildDownEdgeMenu(widget, edge) {
+            var menu, clipboard, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     menu = [];
-                    _var2 = tr(widget, 'Copy');
-                    pushMenuItem('copy_block', menu, _var2, undefined, function () {
-                        copy(widget);
-                    });
-                    _var5 = isReadonly(widget);
-                    if (_var5) {
+                    _var3 = isReadonly(widget);
+                    if (_var3) {
                         __state = '3';
                     } else {
-                        _var3 = tr(widget, 'Cut');
-                        pushMenuItem('cut_block', menu, _var3, undefined, function () {
-                            cut(widget);
-                        });
-                        menu.push({ type: 'separator' });
-                        _var4 = tr(widget, 'Delete');
-                        pushMenuItem('delete_block', menu, _var4, widget.visuals.config.imagePath + 'delete.png', function () {
-                            deleteSelection(widget);
-                        });
-                        menu.push({ type: 'separator' });
-                        _var6 = tr(widget, 'Format');
-                        pushMenuItem('format', menu, _var6, undefined, function () {
-                            startEditStyle(widget);
-                        });
-                        __state = '3';
+                        clipboard = widget.visuals.config.getClipboard();
+                        if (clipboard) {
+                            if (clipboard.type === 'block') {
+                                _var2 = tr(widget, 'Paste');
+                                pushMenuItem('paste_block', menu, _var2, undefined, function () {
+                                    pasteIntoEdge(widget, edge, clipboard.content);
+                                });
+                                menu.push({ type: 'separator' });
+                                __state = '_item4';
+                            } else {
+                                __state = '_item4';
+                            }
+                        } else {
+                            __state = '_item4';
+                        }
                     }
                     break;
                 case '3':
                     return menu;
+                case '_item4':
+                    _var4 = tr(widget, 'Action');
+                    pushMenuItem('insert_action', menu, _var4, widget.visuals.config.imagePath + 'action.png', function () {
+                        insertIntoEdge(widget, edge, 'action');
+                    });
+                    _var5 = tr(widget, 'Question');
+                    pushMenuItem('insert_question', menu, _var5, widget.visuals.config.imagePath + 'question.png', function () {
+                        insertIntoEdge(widget, edge, 'question');
+                    });
+                    _var6 = tr(widget, 'Choice');
+                    pushMenuItem('insert_choice', menu, _var6, widget.visuals.config.imagePath + 'select.png', function () {
+                        insertIntoEdge(widget, edge, 'select');
+                    });
+                    _var7 = tr(widget, 'FOR Loop');
+                    pushMenuItem('insert_loop', menu, _var7, widget.visuals.config.imagePath + 'foreach.png', function () {
+                        insertIntoEdge(widget, edge, 'foreach');
+                    });
+                    _var8 = tr(widget, 'Comment');
+                    pushMenuItem('insert_comment', menu, _var8, widget.visuals.config.imagePath + 'comment.png', function () {
+                        insertIntoEdge(widget, edge, 'comment');
+                    });
+                    _var9 = tr(widget, 'Insertion');
+                    pushMenuItem('insert_insertion', menu, _var9, widget.visuals.config.imagePath + 'insertion.png', function () {
+                        insertIntoEdge(widget, edge, 'insertion');
+                    });
+                    __state = '3';
+                    break;
                 default:
                     return;
                 }
             }
         }
         function buildMenuByType(widget, prim, node) {
-            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19, _var20, _var21, _var22, _var23, _var24, _var25, _var26, _var27, _var28;
+            var menu, func, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11, _var12, _var13, _var14, _var15, _var16, _var17, _var18, _var19, _var20, _var21, _var22, _var23, _var24, _var25, _var26, _var27, _var28, _var29, _var30, _var31, _var32, _var33, _var34, _var35, _var36;
             var __state = '27';
             while (true) {
                 switch (__state) {
@@ -11405,34 +14883,34 @@ function createDrakonWidget() {
                             startEditContent(widget, prim);
                         });
                         if (widget.visuals.params) {
-                            __state = '_item19';
+                            __state = '_item21';
                         } else {
-                            _var15 = isReadonly(widget);
-                            if (_var15) {
-                                __state = '_item19';
+                            _var16 = isReadonly(widget);
+                            if (_var16) {
+                                __state = '_item21';
                             } else {
                                 _var7 = tr(widget, 'Add parameters');
                                 pushMenuItem('add_params', menu, _var7, undefined, function () {
                                     addParameters(widget, prim);
                                 });
-                                __state = '_item19';
+                                __state = '_item21';
                             }
                         }
                     } else {
                         _var8 = canEditNodeText(widget, prim);
                         if (_var8) {
-                            _var17 = canEditSecondary(prim);
-                            if (_var17) {
-                                _var18 = tr(widget, 'Edit upper text');
-                                pushMenuItem('edit_secondary', menu, _var18, undefined, function () {
+                            _var18 = canEditSecondary(prim);
+                            if (_var18) {
+                                _var19 = tr(widget, 'Edit upper text');
+                                pushMenuItem('edit_secondary', menu, _var19, undefined, function () {
                                     startEditSecondary(widget, prim);
                                 });
-                                __state = '_item12';
+                                __state = '_item13';
                             } else {
-                                __state = '_item12';
+                                __state = '_item13';
                             }
                         } else {
-                            __state = '_item19';
+                            __state = '_item21';
                         }
                     }
                     break;
@@ -11448,8 +14926,8 @@ function createDrakonWidget() {
                         __state = '16';
                     } else {
                         if (_var2 === 'address') {
-                            _var20 = tr(widget, 'Go to branch');
-                            pushMenuItem('go_to_target_branch', menu, _var20, undefined, function () {
+                            _var21 = tr(widget, 'Go to branch');
+                            pushMenuItem('go_to_target_branch', menu, _var21, undefined, function () {
                                 widget.showItem(node.branch.id);
                             });
                             menu.push({ type: 'separator' });
@@ -11457,18 +14935,30 @@ function createDrakonWidget() {
                             __state = '16';
                         } else {
                             if (_var2 === 'branch') {
-                                _var21 = getBranchMargin(node);
-                                if (_var21 === 0) {
-                                    __state = '_item26';
+                                _var22 = getBranchMargin(node);
+                                if (_var22 === 0) {
+                                    __state = '_item28';
                                 } else {
-                                    _var22 = tr(widget, 'Reset margin');
-                                    pushMenuItem('reset_margin', menu, _var22, undefined, function () {
+                                    _var23 = tr(widget, 'Reset margin');
+                                    pushMenuItem('reset_margin', menu, _var23, undefined, function () {
                                         resetMargin(widget, node.id);
                                     });
-                                    __state = '_item26';
+                                    __state = '_item28';
                                 }
                             } else {
-                                __state = '16';
+                                if (_var2 === 'case') {
+                                    _var35 = tr(widget, 'Insert Case to the left');
+                                    pushMenuItem('insert_case_left', menu, _var35, widget.visuals.config.imagePath + 'case.png', function () {
+                                        insertCase(widget, node, true);
+                                    });
+                                    _var36 = tr(widget, 'Insert Case to the right');
+                                    pushMenuItem('insert_case_right', menu, _var36, widget.visuals.config.imagePath + 'case.png', function () {
+                                        insertCase(widget, node, false);
+                                    });
+                                    __state = '16';
+                                } else {
+                                    __state = '16';
+                                }
                             }
                         }
                     }
@@ -11481,9 +14971,9 @@ function createDrakonWidget() {
                         pushMenuItem('delete_one', menu, _var5, widget.visuals.config.imagePath + 'delete.png', function () {
                             deleteOne(widget, node);
                         });
-                        __state = '_item27';
+                        __state = '_item29';
                     } else {
-                        __state = '_item27';
+                        __state = '_item29';
                     }
                     break;
                 case '27':
@@ -11497,15 +14987,15 @@ function createDrakonWidget() {
                             pushMenuItem('copy_one', menu, _var10, undefined, function () {
                                 copy(widget);
                             });
-                            _var14 = isReadonly(widget);
-                            if (_var14) {
+                            _var15 = isReadonly(widget);
+                            if (_var15) {
                                 __state = '31';
                             } else {
                                 _var11 = canDelete(widget.visuals, node);
                                 if (_var11) {
                                     _var12 = tr(widget, 'Cut');
                                     pushMenuItem('cut_one', menu, _var12, undefined, function () {
-                                        cutOneItem(widget, node);
+                                        cut(widget);
                                     });
                                     __state = '31';
                                 } else {
@@ -11522,36 +15012,41 @@ function createDrakonWidget() {
                     __state = '2';
                     break;
                 case '60':
-                    _var28 = tr(widget, 'Edit content');
-                    pushMenuItem('edit_content', menu, _var28, undefined, function () {
+                    _var29 = tr(widget, 'Edit content');
+                    pushMenuItem('edit_content', menu, _var29, undefined, function () {
                         startEditContent(widget, prim);
                     });
-                    _var27 = isReadonly(widget);
-                    if (_var27) {
+                    _var28 = isReadonly(widget);
+                    if (_var28) {
                         __state = '8';
                     } else {
                         menu.push({ type: 'separator' });
-                        _var26 = tr(widget, 'Delete');
-                        pushMenuItem('delete_one', menu, _var26, widget.visuals.config.imagePath + 'delete.png', function () {
+                        _var27 = tr(widget, 'Delete');
+                        pushMenuItem('delete_one', menu, _var27, widget.visuals.config.imagePath + 'delete.png', function () {
                             deleteOne(widget, node);
+                        });
+                        menu.push({ type: 'separator' });
+                        _var30 = tr(widget, 'Format');
+                        pushMenuItem('format', menu, _var30, undefined, function () {
+                            startEditStyle(widget);
                         });
                         __state = '8';
                     }
                     break;
-                case '_item19':
-                    _var16 = isReadonly(widget);
-                    if (_var16) {
+                case '_item21':
+                    _var17 = isReadonly(widget);
+                    if (_var17) {
                         __state = '8';
                     } else {
                         __state = '9';
                     }
                     break;
-                case '_item27':
-                    _var24 = canEditStyle(node);
-                    if (_var24) {
+                case '_item29':
+                    _var25 = canEditStyle(node);
+                    if (_var25) {
                         menu.push({ type: 'separator' });
-                        _var25 = tr(widget, 'Format');
-                        pushMenuItem('format', menu, _var25, undefined, function () {
+                        _var26 = tr(widget, 'Format');
+                        pushMenuItem('format', menu, _var26, undefined, function () {
                             startEditStyle(widget);
                         });
                         __state = '8';
@@ -11559,36 +15054,57 @@ function createDrakonWidget() {
                         __state = '8';
                     }
                     break;
-                case '_item26':
-                    _var23 = tr(widget, 'Increase margin');
-                    pushMenuItem('increase_margin', menu, _var23, undefined, function () {
+                case '_item28':
+                    _var24 = tr(widget, 'Increase margin');
+                    pushMenuItem('increase_margin', menu, _var24, undefined, function () {
                         increaseMargin(widget, node.id);
                     });
+                    _var31 = tr(widget, 'Insert Branch to the left');
+                    pushMenuItem('insert_branch_left', menu, _var31, widget.visuals.config.imagePath + 'branch.png', function () {
+                        insertBranch(widget, node, true);
+                    });
                     if (widget.visuals.end) {
-                        __state = '16';
-                    } else {
-                        if (node.itemId === widget.visuals.branches[widget.visuals.branches.length - 1]) {
-                            _var13 = tr(widget, 'Insert branch with End');
-                            pushMenuItem('insert_end_branch', menu, _var13, undefined, function () {
-                                branchInsertEnd(widget);
-                            });
+                        _var32 = isLastBranch(widget, node);
+                        if (_var32) {
                             __state = '16';
                         } else {
+                            _var33 = tr(widget, 'Insert Branch to the right');
+                            pushMenuItem('insert_branch_right', menu, _var33, widget.visuals.config.imagePath + 'branch.png', function () {
+                                insertBranch(widget, node, false);
+                            });
                             __state = '16';
+                        }
+                    } else {
+                        _var14 = isLastBranch(widget, node);
+                        if (_var14) {
+                            _var13 = tr(widget, 'Insert Branch with End');
+                            pushMenuItem('insert_end_branch', menu, _var13, widget.visuals.config.imagePath + 'end.png', function () {
+                                branchInsertEnd(widget);
+                            });
+                            __state = '_item38';
+                        } else {
+                            __state = '_item38';
                         }
                     }
                     break;
-                case '_item12':
+                case '_item38':
+                    _var34 = tr(widget, 'Insert Branch to the right');
+                    pushMenuItem('insert_branch_right', menu, _var34, widget.visuals.config.imagePath + 'branch.png', function () {
+                        insertBranch(widget, node, false);
+                    });
+                    __state = '16';
+                    break;
+                case '_item13':
                     _var9 = tr(widget, 'Edit content');
                     pushMenuItem('edit_content', menu, _var9, undefined, function () {
                         startEditContent(widget, prim);
                     });
                     menu.push({ type: 'separator' });
-                    _var19 = tr(widget, 'Edit link');
-                    pushMenuItem('edit_link', menu, _var19, undefined, function () {
+                    _var20 = tr(widget, 'Edit link');
+                    pushMenuItem('edit_link', menu, _var20, undefined, function () {
                         startEditLink(widget, prim);
                     });
-                    __state = '_item19';
+                    __state = '_item21';
                     break;
                 default:
                     return;
@@ -11599,6 +15115,29 @@ function createDrakonWidget() {
             var nodeId;
             nodeId = visuals.itemsToNodes[itemId];
             return visuals.nodes[nodeId];
+        }
+        function drawTail(ctx, coords, tail, color, iconBack, width) {
+            var angle, first, second;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (tail) {
+                        first = coords[0];
+                        second = coords[1];
+                        angle = findAngle(first.x, first.y, second.x, second.y);
+                        drawCap(ctx, tail, first.x, first.y, angle + Math.PI, color, iconBack, width);
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function createStyles(widget) {
             var scrollable, config;
@@ -11695,9 +15234,27 @@ function createDrakonWidget() {
                 }
             }
         }
-        function onSelectionChanged(prims) {
-            console.log('onSelectionChanged', prims);
-            return;
+        function onSelectionChanged(widget, prims) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    tracing.trace('onSelectionChanged', prims);
+                    if (widget.config.onSelectionChanged) {
+                        widget.config.onSelectionChanged(prims);
+                        __state = '9';
+                    } else {
+                        __state = '9';
+                    }
+                    break;
+                case '9':
+                    createResetEars(widget);
+                    createMindSockets(widget);
+                    return;
+                default:
+                    return;
+                }
+            }
         }
         function copyTheme(userTheme, config) {
             var theme;
@@ -11729,6 +15286,7 @@ function createDrakonWidget() {
                         'lineWidth': 1,
                         'borderWidth': 1,
                         'guides': 'darkred',
+                        'highlight': 'magenta',
                         'commentBack': '#2293bb'
                     };
                     Object.assign(theme, userTheme);
@@ -11783,6 +15341,55 @@ function createDrakonWidget() {
                     } else {
                         return;
                     }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildDrakonHeader(visuals, model) {
+            var header, headerItem, params, paramsItem, paramsContent, headerContent;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    headerContent = model.doc.name;
+                    headerItem = model.items['header'];
+                    if (headerItem) {
+                        header = nodeFromItem(visuals, headerItem);
+                        header.content = headerContent;
+                        __state = '8';
+                    } else {
+                        header = createNode(visuals, undefined, 'header', headerContent, 'header');
+                        __state = '8';
+                    }
+                    break;
+                case '8':
+                    flowIcon(visuals, visuals.header);
+                    __state = '14';
+                    break;
+                case '13':
+                    return;
+                case '14':
+                    paramsContent = model.doc.params;
+                    if (paramsContent) {
+                        paramsItem = model.items['params'];
+                        if (paramsItem) {
+                            params = nodeFromItem(visuals, paramsItem);
+                            params.content = paramsContent;
+                            __state = '22';
+                        } else {
+                            params = createNode(visuals, undefined, 'params', paramsContent, 'params');
+                            __state = '22';
+                        }
+                    } else {
+                        __state = '13';
+                    }
+                    break;
+                case '22':
+                    flowIcon(visuals, params);
+                    visuals.params = params;
+                    __state = '13';
                     break;
                 default:
                     return;
@@ -11853,7 +15460,11 @@ function createDrakonWidget() {
             return skewer;
         }
         function getX(node) {
-            return node.skewer.coord;
+            if ('x' in node) {
+                return node.x;
+            } else {
+                return node.skewer.coord;
+            }
         }
         function getBoundary(visuals, skewer) {
             var boundary, metre;
@@ -11947,7 +15558,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    tr = visuals.config.touchRadius;
+                    tr = visuals.config.socketTouchRadius;
                     nodes = visuals.nodes;
                     _var3 = nodes;
                     _var2 = Object.keys(_var3);
@@ -12738,7 +16349,11 @@ function createDrakonWidget() {
             }
         }
         function getY(node) {
-            return node.level.coord;
+            if ('y' in node) {
+                return node.y;
+            } else {
+                return node.level.coord;
+            }
         }
         function buildSkewers(visuals) {
             var _var3, _var2, _var4, id, node, _var6, _var5, _var7;
@@ -12809,10 +16424,25 @@ function createDrakonWidget() {
             }
         }
         function isDrawableNode(node) {
-            if (node.skewer) {
-                return true;
-            } else {
-                return false;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (node.skewer) {
+                        __state = '3';
+                    } else {
+                        if ('x' in node) {
+                            __state = '3';
+                        } else {
+                            return false;
+                        }
+                    }
+                    break;
+                case '3':
+                    return true;
+                default:
+                    return;
+                }
             }
         }
         function skewerTail(skewer) {
@@ -12970,6 +16600,8 @@ function createDrakonWidget() {
                         'branchFont': 'bold 14px ' + face,
                         'imagePath': '',
                         'metre': 20,
+                        'lineRadius': 0,
+                        'iconRadius': 0,
                         'freeSnap': 5,
                         'triangleHeight': 20,
                         'padding': 10,
@@ -12990,7 +16622,7 @@ function createDrakonWidget() {
                         'socketRadius': 10,
                         'socketBody': 'yellow',
                         'socketBorder': 'black',
-                        'canvasLabels': '14px Arial',
+                        'canvasLabels': '14px ' + face,
                         'insertionPadding': 10,
                         'commentPadding': 10,
                         'parallelWidth': 5,
@@ -13000,8 +16632,7 @@ function createDrakonWidget() {
                         'centerContent': false,
                         'buildIconCore': buildIconCore,
                         'getClipboard': getClipboard,
-                        'setClipboard': setClipboard,
-                        'onSelectionChanged': onSelectionChanged
+                        'setClipboard': setClipboard
                     };
                     Object.assign(config, userConfig);
                     __state = '12';
@@ -13604,7 +17235,7 @@ function createDrakonWidget() {
             }
         }
         function layoutSelect(visuals, stack, select) {
-            var node, left, jun, _var2, _var3, caseNode, i, _var4;
+            var node, left, jun, edge, _var2, _var3, caseNode, i, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -13639,9 +17270,11 @@ function createDrakonWidget() {
                     if (_var3 < _var2.length) {
                         caseNode = _var2[_var3];
                         jun = createJunction(visuals, undefined);
+                        jun.role = 'case';
                         makeDownEdgeCore(visuals, jun, caseNode, undefined);
                         if (left) {
-                            createEdge(visuals, left, jun, false);
+                            edge = createEdge(visuals, left, jun, false);
+                            edge.role = 'selectceil';
                             __state = '19';
                         } else {
                             __state = '19';
@@ -13926,6 +17559,31 @@ function createDrakonWidget() {
             makeDownEdge(visuals, jun, node, finalTarget);
             return jun;
         }
+        function arc(ctx, x, y, radius, begin, end, thickness, color) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    ctx.lineWidth = thickness;
+                    ctx.strokeStyle = color;
+                    if (thickness % 2 === 0) {
+                        __state = '5';
+                    } else {
+                        x += 0.5;
+                        y += 0.5;
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, begin, end);
+                    ctx.stroke();
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
         function goUp(node) {
             var __state = '2';
             while (true) {
@@ -14098,37 +17756,44 @@ function createDrakonWidget() {
             return node.left.head;
         }
         function getSelectedPrims(widget) {
-            var prims, node, element, visuals, prim, _var3, _var2, _var4, id, elType;
+            var prims, node, element, visuals, prim, connection, _var2, _var4, _var3, _var5, id, elType;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     visuals = widget.visuals;
                     prims = [];
-                    _var3 = widget.selection.prims;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
+                    _var4 = widget.selection.prims;
+                    _var3 = Object.keys(_var4);
+                    _var5 = 0;
                     __state = '7';
                     break;
                 case '6':
-                    _var4++;
+                    _var5++;
                     __state = '7';
                     break;
                 case '7':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        elType = _var3[id];
-                        if (elType === 'node') {
+                    if (_var5 < _var3.length) {
+                        id = _var3[_var5];
+                        elType = _var4[id];
+                        _var2 = elType;
+                        if (_var2 === 'node') {
                             node = getNode(visuals, id);
                             prim = nodeToVisualItem(widget, node);
                             __state = '12';
                         } else {
-                            if (elType === 'free') {
+                            if (_var2 === 'free') {
                                 element = getFree(visuals, id);
                                 prim = freeToVisualItem(widget, element);
                                 __state = '12';
                             } else {
-                                __state = '6';
+                                if (_var2 === 'connection') {
+                                    connection = getConnection(visuals, id);
+                                    prim = connectionToVisualItem(widget, connection);
+                                    __state = '12';
+                                } else {
+                                    __state = '6';
+                                }
                             }
                         }
                     } else {
@@ -14162,9 +17827,53 @@ function createDrakonWidget() {
                     break;
                 case '4':
                     widget.visuals = visuals;
+                    createResetEars(widget);
                     initScrollPos(widget);
                     _var2 = Object.keys(visuals.fonts);
                     return _var2;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildCeilEdgeMenu(widget, edge) {
+            var menu, clipboard, branchNode, _var2, _var3, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    menu = [];
+                    _var3 = isReadonly(widget);
+                    if (_var3) {
+                        __state = '3';
+                    } else {
+                        branchNode = edge.tail.down.tail;
+                        clipboard = widget.visuals.config.getClipboard();
+                        if (clipboard) {
+                            if (clipboard.type === 'branch') {
+                                _var2 = tr(widget, 'Paste');
+                                pushMenuItem('paste_branch', menu, _var2, undefined, function () {
+                                    pasteBranchBefore(widget, branchNode);
+                                });
+                                menu.push({ type: 'separator' });
+                                __state = '_item4';
+                            } else {
+                                __state = '_item4';
+                            }
+                        } else {
+                            __state = '_item4';
+                        }
+                    }
+                    break;
+                case '3':
+                    return menu;
+                case '_item4':
+                    _var4 = tr(widget, 'Insert Branch');
+                    pushMenuItem('insert_branch', menu, _var4, widget.visuals.config.imagePath + 'branch.png', function () {
+                        insertBranch(widget, branchNode, true);
+                    });
+                    __state = '3';
+                    break;
                 default:
                     return;
                 }
@@ -15203,6 +18912,7 @@ function createDrakonWidget() {
                     }
                     break;
                 case '7':
+                    setNotNull(item, node, 'w');
                     setNotNull(item, node, 'flag1');
                     setNotNull(item, node, 'branchId');
                     setNotNull(item, node, 'one');
@@ -15211,6 +18921,10 @@ function createDrakonWidget() {
                     setNotNull(item, node, 'link');
                     setNotNull(item, node, 'margin');
                     setNotNull(item, node, 'secondary');
+                    setNotNull(item, node, 'parent');
+                    setNotNull(item, node, 'ordinal');
+                    setNotNull(item, node, 'treeType');
+                    setNotNull(item, node, 'collapsed');
                     parseStyle(item, node);
                     return node;
                 case '15':
@@ -15322,7 +19036,7 @@ function createDrakonWidget() {
             }
         }
         function buildBackgroundMenu(widget, x, y) {
-            var clipboard, menu, _var2, _var3, _var4, _var5, _var6;
+            var clipboard, menu, _var2, _var3, _var4, _var5, _var6, _var7;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -15336,43 +19050,52 @@ function createDrakonWidget() {
                         if (clipboard) {
                             _var2 = clipboard.type;
                             if (_var2 === 'case') {
-                                __state = '_item7';
+                                __state = '_item8';
                             } else {
                                 if (_var2 === 'branch') {
-                                    __state = '_item7';
+                                    __state = '_item8';
                                 } else {
                                     if (_var2 === 'block') {
-                                        __state = '_item7';
+                                        __state = '_item8';
                                     } else {
-                                        if (_var2 === 'free') {
-                                            _var5 = tr(widget, 'Paste');
-                                            pushMenuItem('paste', menu, _var5, undefined, function (evt) {
-                                                pasteFree(widget, clipboard, evt);
-                                            });
-                                            menu.push({ type: 'separator' });
-                                            __state = '_item10';
+                                        if (_var2 === 'mind') {
+                                            _var7 = isMind(widget);
+                                            if (_var7) {
+                                                __state = '_item8';
+                                            } else {
+                                                __state = '_item11';
+                                            }
                                         } else {
-                                            __state = '_item10';
+                                            if (_var2 === 'free') {
+                                                _var5 = tr(widget, 'Paste');
+                                                pushMenuItem('paste', menu, _var5, undefined, function (evt) {
+                                                    pasteFree(widget, clipboard, evt);
+                                                });
+                                                menu.push({ type: 'separator' });
+                                                __state = '_item11';
+                                            } else {
+                                                __state = '_item11';
+                                            }
                                         }
                                     }
                                 }
                             }
                         } else {
-                            __state = '_item10';
+                            __state = '_item11';
                         }
                     }
                     break;
                 case '3':
                     return menu;
-                case '_item7':
+                case '_item8':
                     _var3 = tr(widget, 'Paste');
                     pushMenuItem('paste', menu, _var3, undefined, function () {
                         widget.showPasteSockets(clipboard.type);
                     });
                     menu.push({ type: 'separator' });
-                    __state = '_item10';
+                    __state = '_item11';
                     break;
-                case '_item10':
+                case '_item11':
                     _var6 = tr(widget, 'Diagram format');
                     pushMenuItem('diagram_format', menu, _var6, undefined, function () {
                         startEditDiagramStyle(widget, x, y);
@@ -15575,13 +19298,14 @@ function createDrakonWidget() {
             }
         }
         function drawFreeIcons(widget, ctx) {
-            var visuals, element, common, showNugget, x, y, _var2, _var3, _var5, _var4, _var6, id, type;
+            var visuals, common, showNugget, x, y, visited, element, _var2, _var3, _var5, _var4, _var6, id, type, _var8, _var7, _var9;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     showNugget = false;
                     visuals = widget.visuals;
+                    visited = {};
                     _var2 = visuals.free;
                     _var3 = 0;
                     __state = '8';
@@ -15603,11 +19327,12 @@ function createDrakonWidget() {
                 case '8':
                     if (_var3 < _var2.length) {
                         element = _var2[_var3];
-                        drawFreeIcon(widget, element, ctx);
+                        drawFreeIcon(widget, element, ctx, visited);
                         _var3++;
                         __state = '8';
                     } else {
                         ctx.setLineDash([]);
+                        clearShadow(ctx);
                         __state = '5';
                     }
                     break;
@@ -15621,7 +19346,6 @@ function createDrakonWidget() {
                         type = _var5[id];
                         if (type === 'free') {
                             element = getFree(visuals, id);
-                            drawFreeCandies(widget, element, ctx);
                             if (element.type === 'group-duration') {
                                 __state = '11';
                             } else {
@@ -15641,14 +19365,54 @@ function createDrakonWidget() {
                         x = Math.floor((common.right + common.left) / 2 + 20);
                         y = Math.floor(common.top - 40);
                         visuals.nugget = drawNugget(ctx, x, y);
-                        __state = '4';
+                        __state = '32';
                     } else {
                         visuals.nugget = undefined;
-                        __state = '4';
+                        __state = '32';
+                    }
+                    break;
+                case '29':
+                    drawEars(visuals, ctx);
+                    __state = '4';
+                    break;
+                case '32':
+                    _var8 = widget.selection.prims;
+                    _var7 = Object.keys(_var8);
+                    _var9 = 0;
+                    __state = '34';
+                    break;
+                case '33':
+                    _var9++;
+                    __state = '34';
+                    break;
+                case '34':
+                    if (_var9 < _var7.length) {
+                        id = _var7[_var9];
+                        type = _var8[id];
+                        if (type === 'free') {
+                            element = getFree(visuals, id);
+                            drawFreeCandies(widget, element, ctx);
+                            __state = '33';
+                        } else {
+                            __state = '33';
+                        }
+                    } else {
+                        __state = '29';
                     }
                     break;
                 default:
                     return;
+                }
+            }
+        }
+        function getTType(node) {
+            if (node.treeType) {
+                return node.treeType;
+            } else {
+                if (node.type === 'header') {
+                    return 'vertical';
+                } else {
+                    return 'treeview';
                 }
             }
         }
@@ -15776,8 +19540,37 @@ function createDrakonWidget() {
                 }
             }
         }
+        function bakeSubtreeCoords(node, parentX, parentY) {
+            var subtreeX, subtreeY, _var2, _var3, child;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    subtreeX = node.subtreeBox.left + parentX;
+                    subtreeY = node.subtreeBox.top + parentY;
+                    node.x += subtreeX;
+                    node.y += subtreeY;
+                    _var2 = node.children;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        child = _var2[_var3];
+                        bakeSubtreeCoords(child, subtreeX, subtreeY);
+                        _var3++;
+                        __state = '5';
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function calculateDiagramBox(visuals) {
-            var box, metre, _var3, _var2, _var4, id, node, _var5, _var6, element;
+            var box, metre, right, bottom, padding, _var3, _var2, _var4, id, node, _var5, _var6, element, _var10, _var9, _var11, connection, _var7, _var8, conbox;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -15806,8 +19599,25 @@ function createDrakonWidget() {
                     }
                     break;
                 case '17':
-                    box.left -= metre;
-                    box.top -= metre, box.right += metre, box.bottom += metre, box.width = box.right - box.left;
+                    if (visuals.type === 'drakon') {
+                        padding = metre;
+                        __state = '19';
+                    } else {
+                        padding = metre * 2;
+                        __state = '19';
+                    }
+                    break;
+                case '18':
+                    _var5 = visuals.free;
+                    _var6 = 0;
+                    __state = '21';
+                    break;
+                case '19':
+                    box.left -= padding;
+                    box.top -= padding;
+                    box.right += padding;
+                    box.bottom += padding;
+                    box.width = box.right - box.left;
                     box.height = box.bottom - box.top;
                     if (visuals.type === 'free') {
                         box.top -= 30;
@@ -15816,11 +19626,6 @@ function createDrakonWidget() {
                         __state = '33';
                     }
                     break;
-                case '18':
-                    _var5 = visuals.free;
-                    _var6 = 0;
-                    __state = '21';
-                    break;
                 case '21':
                     if (_var6 < _var5.length) {
                         element = _var5[_var6];
@@ -15828,12 +19633,11 @@ function createDrakonWidget() {
                         _var6++;
                         __state = '21';
                     } else {
-                        __state = '34';
+                        __state = '40';
                     }
                     break;
                 case '33':
-                    visuals.box = box;
-                    return;
+                    return box;
                 case '34':
                     if (box.left === Number.MAX_SAFE_INTEGER) {
                         box.left = 0;
@@ -15845,67 +19649,63 @@ function createDrakonWidget() {
                         __state = '17';
                     }
                     break;
+                case '40':
+                    _var10 = visuals.connectionById;
+                    _var9 = Object.keys(_var10);
+                    _var11 = 0;
+                    __state = '42';
+                    break;
+                case '42':
+                    if (_var11 < _var9.length) {
+                        id = _var9[_var11];
+                        connection = _var10[id];
+                        buildConnectionBoxes(visuals, connection);
+                        _var7 = connection.boxes;
+                        _var8 = 0;
+                        __state = '44';
+                    } else {
+                        __state = '34';
+                    }
+                    break;
+                case '44':
+                    if (_var8 < _var7.length) {
+                        conbox = _var7[_var8];
+                        right = conbox.left + conbox.width;
+                        bottom = conbox.top + conbox.height;
+                        nextBox(box, conbox.left, conbox.top, right, bottom);
+                        _var8++;
+                        __state = '44';
+                    } else {
+                        _var11++;
+                        __state = '42';
+                    }
+                    break;
                 default:
                     return;
                 }
             }
         }
         function calculateBoxFromFree(elementBox, box) {
-            var left, top, right, bottom, _var2, _var3, _var4, _var5;
+            var left, top, right, bottom;
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
-                    return;
                 case '2':
                     left = elementBox.left;
                     top = elementBox.top;
                     if ('width' in elementBox) {
                         right = left + elementBox.width;
                         bottom = top + elementBox.height;
-                        __state = '_item2';
+                        __state = '17';
                     } else {
                         right = left;
                         bottom = top;
-                        __state = '_item2';
+                        __state = '17';
                     }
                     break;
-                case '_item2':
-                    _var2 = isNaN(left);
-                    if (_var2) {
-                        __state = '_item3';
-                    } else {
-                        box.left = Math.min(box.left, left);
-                        __state = '_item3';
-                    }
-                    break;
-                case '_item3':
-                    _var3 = isNaN(top);
-                    if (_var3) {
-                        __state = '_item4';
-                    } else {
-                        box.top = Math.min(box.top, top);
-                        __state = '_item4';
-                    }
-                    break;
-                case '_item4':
-                    _var4 = isNaN(right);
-                    if (_var4) {
-                        __state = '_item5';
-                    } else {
-                        box.right = Math.max(box.right, right);
-                        __state = '_item5';
-                    }
-                    break;
-                case '_item5':
-                    _var5 = isNaN(bottom);
-                    if (_var5) {
-                        __state = '1';
-                    } else {
-                        box.bottom = Math.max(box.bottom, bottom);
-                        __state = '1';
-                    }
-                    break;
+                case '17':
+                    nextBox(box, left, top, right, bottom);
+                    return;
                 default:
                     return;
                 }
@@ -16021,6 +19821,7 @@ function createDrakonWidget() {
                 'shadowBlur',
                 'lineWidth',
                 'borderWidth',
+                'borderStyle',
                 'shadowOffsetX',
                 'shadowOffsetY'
             ];
@@ -16046,17 +19847,22 @@ function createDrakonWidget() {
                 switch (__state) {
                 case '2':
                     incrementDictionaryValue(common, 'count');
-                    _var4 = isFree(widget, prim);
-                    if (_var4) {
-                        accepted = getFreeAccepted(widget, prim);
+                    if (prim.type === 'connection') {
+                        accepted = getConnectionProps();
                         __state = '_item2';
                     } else {
-                        _var5 = canEditSecondary(prim);
-                        if (_var5) {
-                            incrementDictionaryValue(common, 'internalLine');
-                            __state = '3';
+                        _var4 = isFree(widget, prim);
+                        if (_var4) {
+                            accepted = getFreeAccepted(widget, prim);
+                            __state = '_item2';
                         } else {
-                            __state = '3';
+                            _var5 = canEditSecondary(prim);
+                            if (_var5) {
+                                incrementDictionaryValue(common, 'internalLine');
+                                __state = '3';
+                            } else {
+                                __state = '3';
+                            }
                         }
                     }
                     break;
@@ -16189,6 +19995,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
+                    config = deepClone(config);
                     diagramStyle = diagramStyle || {};
                     result = {};
                     Object.assign(result, config);
@@ -16224,7 +20031,7 @@ function createDrakonWidget() {
             return 'No';
         }
         function sanitizeScroll(widget, x, y) {
-            var visuals, box, x2, y2, zoom, x3, y3, wwidth, wheight;
+            var visuals, box, x2, y2, zoom, x3, y3, wwidth, wheight, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -16256,9 +20063,11 @@ function createDrakonWidget() {
                 case '5':
                     y2 = Math.min(box.bottom - wheight, y);
                     y3 = Math.max(box.top, y2);
+                    _var2 = Math.round(x3);
+                    _var3 = Math.round(y3);
                     return {
-                        x: x3,
-                        y: y3
+                        x: _var2,
+                        y: _var3
                     };
                 default:
                     return;
@@ -16266,67 +20075,40 @@ function createDrakonWidget() {
             }
         }
         function buildVisuals(widget) {
-            var visuals, model, context, node, branch, element, ctx, config, _var5, _var6, bItemId, _var3, _var2, _var4, id, item, _var8, _var7, _var9, skewer, _var10, _var11;
-            var __state = '2';
+            var context, node, branch, element, visuals, model, ctx, config, _var2, _var3, _var7, _var8, bItemId, _var5, _var4, _var6, id, item, _var10, _var9, _var11, skewer, _var12, _var13;
+            var __state = '67';
             while (true) {
                 switch (__state) {
                 case '2':
-                    model = widget.model;
-                    config = mergeStyleIntoConfig(model.doc.style, widget.config);
-                    ctx = widget.canvas.getContext('2d');
-                    config.zoom = widget.zoomFactor;
-                    _var10 = model.branches.slice();
-                    visuals = {
-                        ctx: ctx,
-                        nextId: 1,
-                        nodes: {},
-                        edges: {},
-                        skewers: {},
-                        levels: {},
-                        byType: {},
-                        skewerLinks: [],
-                        levelLinks: [],
-                        itemsToNodes: {},
-                        branches: _var10,
-                        tempEdges: [],
-                        blocks: [],
-                        sockets: [],
-                        subs: [],
-                        free: [],
-                        handles: [],
-                        guides: [],
-                        fonts: {},
-                        type: model.type,
-                        config: config,
-                        container: widget.contentContainer
-                    };
-                    if (model.type === 'free') {
+                    _var3 = model.type;
+                    if (_var3 === 'drakon') {
+                        buildDrakonHeader(visuals, model);
                         __state = '14';
                     } else {
-                        visuals.header = createNode(visuals, undefined, 'header', model.doc.name, 'header');
-                        flowIcon(visuals, visuals.header);
-                        visuals.params = createParamsNode(visuals, model.doc.params);
-                        __state = '14';
+                        if (_var3 === 'graf') {
+                            buildGrafHeader(visuals, model);
+                            __state = '14';
+                        } else {
+                            if (_var3 === 'free') {
+                                __state = '14';
+                            } else {
+                                throw new Error('Unexpected case value: ' + _var3);
+                            }
+                        }
                     }
                     break;
                 case '4':
-                    removeTempEdges(visuals);
-                    positionDurations(visuals);
                     buildBoxes(widget, visuals);
-                    forType(visuals, 'address', putCycleMark);
-                    calculateDiagramBox(visuals);
-                    connectLoops(visuals);
-                    traceLoops(visuals);
-                    forType(visuals, 'arrow-loop', markArrow);
+                    visuals.box = calculateDiagramBox(visuals);
                     return visuals;
                 case '5':
-                    _var5 = visuals.branches;
-                    _var6 = 0;
+                    _var7 = visuals.branches;
+                    _var8 = 0;
                     __state = '12';
                     break;
                 case '12':
-                    if (_var6 < _var5.length) {
-                        bItemId = _var5[_var6];
+                    if (_var8 < _var7.length) {
+                        bItemId = _var7[_var8];
                         context = {
                             visuals: visuals,
                             addresses: []
@@ -16334,42 +20116,64 @@ function createDrakonWidget() {
                         linkNodeToChildren(context, bItemId);
                         branch = getNode(visuals, bItemId);
                         branch.addresses = context.addresses;
-                        _var6++;
+                        _var8++;
                         __state = '12';
                     } else {
                         __state = '22';
                     }
                     break;
                 case '14':
-                    _var3 = model.items;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
+                    _var5 = model.items;
+                    _var4 = Object.keys(_var5);
+                    _var6 = 0;
                     __state = '16';
                     break;
                 case '15':
-                    _var4++;
+                    _var6++;
                     __state = '16';
                     break;
                 case '16':
-                    if (_var4 < _var2.length) {
-                        id = _var2[_var4];
-                        item = _var3[id];
-                        _var11 = isFree(widget, item);
-                        if (_var11) {
-                            element = freeFromItem(visuals, id, item);
-                            flowFreeIcon(widget, visuals, element);
+                    if (_var6 < _var4.length) {
+                        id = _var4[_var6];
+                        item = _var5[id];
+                        if (item.type === 'connection') {
+                            addConnectionToVisuals(visuals, id, item);
                             __state = '15';
                         } else {
-                            node = nodeFromItem(visuals, item);
-                            flowIcon(visuals, node);
-                            __state = '15';
+                            _var12 = isFree(widget, item);
+                            if (_var12) {
+                                element = freeFromItem(visuals, id, item);
+                                flowFreeIcon(widget, visuals, element);
+                                __state = '15';
+                            } else {
+                                if (item.type === 'header') {
+                                    __state = '15';
+                                } else {
+                                    if (item.type === 'params') {
+                                        __state = '15';
+                                    } else {
+                                        node = nodeFromItem(visuals, item);
+                                        flowIcon(visuals, node);
+                                        __state = '15';
+                                    }
+                                }
+                            }
                         }
                     } else {
                         sortFreeIcons(visuals);
-                        if (model.type === 'free') {
-                            __state = '4';
-                        } else {
+                        _var2 = model.type;
+                        if (_var2 === 'drakon') {
                             __state = '5';
+                        } else {
+                            if (_var2 === 'graf') {
+                                __state = '56';
+                            } else {
+                                if (_var2 === 'free') {
+                                    __state = '89';
+                                } else {
+                                    throw new Error('Unexpected case value: ' + _var2);
+                                }
+                            }
                         }
                     }
                     break;
@@ -16388,17 +20192,17 @@ function createDrakonWidget() {
                     break;
                 case '26':
                     buildSkewers(visuals);
-                    _var8 = visuals.skewers;
-                    _var7 = Object.keys(_var8);
-                    _var9 = 0;
+                    _var10 = visuals.skewers;
+                    _var9 = Object.keys(_var10);
+                    _var11 = 0;
                     __state = '29';
                     break;
                 case '29':
-                    if (_var9 < _var7.length) {
-                        id = _var7[_var9];
-                        skewer = _var8[id];
+                    if (_var11 < _var9.length) {
+                        id = _var9[_var11];
+                        skewer = _var10[id];
                         setSameWidth(visuals, skewer);
-                        _var9++;
+                        _var11++;
                         __state = '29';
                     } else {
                         reflowContent(visuals);
@@ -16406,12 +20210,77 @@ function createDrakonWidget() {
                         positionSkewers(visuals);
                         positionLevels(visuals);
                         drawParams(visuals);
-                        __state = '4';
+                        __state = '79';
                     }
+                    break;
+                case '56':
+                    buildMindTree(visuals);
+                    setSameWidthMind(visuals);
+                    reflowContent(visuals);
+                    setSameHeightMind(visuals);
+                    positionMind(visuals);
+                    __state = '4';
+                    break;
+                case '67':
+                    model = widget.model;
+                    config = mergeStyleIntoConfig(model.doc.style, widget.config);
+                    ctx = widget.canvas.getContext('2d');
+                    config.zoom = widget.zoomFactor;
+                    _var13 = model.branches.slice();
+                    visuals = {
+                        ctx: ctx,
+                        nextId: 1,
+                        nodes: {},
+                        edges: {},
+                        skewers: {},
+                        levels: {},
+                        byType: {},
+                        skewerLinks: [],
+                        levelLinks: [],
+                        itemsToNodes: {},
+                        branches: _var13,
+                        tempEdges: [],
+                        blocks: [],
+                        sockets: [],
+                        subs: [],
+                        free: [],
+                        handles: [],
+                        guides: [],
+                        fonts: {},
+                        connections: {},
+                        connectionById: {},
+                        ears: undefined,
+                        type: model.type,
+                        config: config,
+                        container: widget.contentContainer
+                    };
+                    __state = '2';
+                    break;
+                case '79':
+                    removeTempEdges(visuals);
+                    positionDurations(visuals);
+                    forType(visuals, 'address', putCycleMark);
+                    connectLoops(visuals);
+                    traceLoops(visuals);
+                    forType(visuals, 'arrow-loop', markArrow);
+                    __state = '4';
+                    break;
+                case '89':
+                    __state = '4';
                     break;
                 default:
                     return;
                 }
+            }
+        }
+        function isLastBranch(widget, node) {
+            var branches, last;
+            branches = widget.visuals.branches;
+            last = branches.length - 1;
+            if (node.itemId === branches[last]) {
+                return true;
+            } else {
+                return false;
             }
         }
         function isOnScrollbars(widget, evt) {
@@ -16496,6 +20365,29 @@ function createDrakonWidget() {
                 return undefined;
             }
         }
+        function drawHead(ctx, coords, head, color, iconBack, width) {
+            var angle, first, second;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (head) {
+                        first = coords[coords.length - 2];
+                        second = coords[coords.length - 1];
+                        angle = findAngle(first.x, first.y, second.x, second.y);
+                        drawCap(ctx, head, second.x, second.y, angle, color, iconBack, width);
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function putCycleMark(visuals, address) {
             var __state = '2';
             while (true) {
@@ -16561,7 +20453,7 @@ function createDrakonWidget() {
                     if (_var4 < _var2.length) {
                         id = _var2[_var4];
                         edge = _var3[id];
-                        drawEdge(visuals, edge, ctx);
+                        drawEdge(widget, edge, ctx);
                         _var4++;
                         __state = '18';
                     } else {
@@ -16824,6 +20716,45 @@ function createDrakonWidget() {
                 }
             }
         }
+        function buildBlockMenu(widget) {
+            var menu, _var2, _var3, _var4, _var5, _var6;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    menu = [];
+                    _var2 = tr(widget, 'Copy');
+                    pushMenuItem('copy_block', menu, _var2, undefined, function () {
+                        copy(widget);
+                    });
+                    _var5 = isReadonly(widget);
+                    if (_var5) {
+                        __state = '3';
+                    } else {
+                        _var3 = tr(widget, 'Cut');
+                        pushMenuItem('cut_block', menu, _var3, undefined, function () {
+                            cut(widget);
+                        });
+                        menu.push({ type: 'separator' });
+                        _var4 = tr(widget, 'Delete');
+                        pushMenuItem('delete_block', menu, _var4, widget.visuals.config.imagePath + 'delete.png', function () {
+                            deleteSelection(widget);
+                        });
+                        menu.push({ type: 'separator' });
+                        _var6 = tr(widget, 'Format');
+                        pushMenuItem('format', menu, _var6, undefined, function () {
+                            startEditStyle(widget);
+                        });
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    return menu;
+                default:
+                    return;
+                }
+            }
+        }
         function findEdgeLinks(visuals, startEdge, edge) {
             var source, itemId, link, _var2, _var3, prevEdge;
             var __state = '2';
@@ -16906,12 +20837,52 @@ function createDrakonWidget() {
                 }
             }
         }
+        function buildParCeilMenu(widget, edge) {
+            var menu, _var2, _var3, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    menu = [];
+                    _var2 = isReadonly(widget);
+                    if (_var2) {
+                        __state = '4';
+                    } else {
+                        if (edge.head.left) {
+                            __state = '_item4';
+                        } else {
+                            _var5 = tr(widget, 'Add path to the left');
+                            pushMenuItem('add_path_left', menu, _var5, widget.visuals.config.imagePath + 'par.png', function () {
+                                insertPath(widget, edge.head, true);
+                            });
+                            __state = '_item4';
+                        }
+                    }
+                    break;
+                case '4':
+                    return menu;
+                case '_item4':
+                    _var4 = tr(widget, 'Add path');
+                    pushMenuItem('add_path', menu, _var4, widget.visuals.config.imagePath + 'par.png', function () {
+                        insertPath(widget, edge.head, false);
+                    });
+                    menu.push({ type: 'separator' });
+                    _var3 = tr(widget, 'Delete path');
+                    pushMenuItem('delete_path', menu, _var3, widget.visuals.config.imagePath + 'delete.png', function () {
+                        deleteParPath(widget, edge.tail);
+                    });
+                    __state = '4';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function canEditStyle(node) {
             var noStyle;
             noStyle = {
                 junction: true,
-                'arrow-loop': true,
-                header: true
+                'arrow-loop': true
             };
             if (node.type in noStyle) {
                 return false;
@@ -16919,8 +20890,58 @@ function createDrakonWidget() {
                 return true;
             }
         }
+        function isDrakon(widget) {
+            if (widget.model.type === 'drakon') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function buildSelectCeilEdgeMenu(widget, edge) {
+            var menu, clipboard, caseNode, _var2, _var3, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    menu = [];
+                    _var3 = isReadonly(widget);
+                    if (_var3) {
+                        __state = '3';
+                    } else {
+                        caseNode = edge.head.down.tail;
+                        clipboard = widget.visuals.config.getClipboard();
+                        if (clipboard) {
+                            if (clipboard.type === 'case') {
+                                _var2 = tr(widget, 'Paste');
+                                pushMenuItem('paste_case', menu, _var2, undefined, function () {
+                                    pasteCaseAfter(widget, caseNode);
+                                });
+                                menu.push({ type: 'separator' });
+                                __state = '_item4';
+                            } else {
+                                __state = '_item4';
+                            }
+                        } else {
+                            __state = '_item4';
+                        }
+                    }
+                    break;
+                case '3':
+                    return menu;
+                case '_item4':
+                    _var4 = tr(widget, 'Insert Case');
+                    pushMenuItem('insert_case', menu, _var4, widget.visuals.config.imagePath + 'case.png', function () {
+                        insertCase(widget, caseNode, false);
+                    });
+                    __state = '3';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function buildBeginParMenu(widget, node) {
-            var menu, _var2, _var3, _var4;
+            var menu, _var2, _var3, _var4, _var5, _var6;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -16930,12 +20951,21 @@ function createDrakonWidget() {
                     if (_var4) {
                         __state = '4';
                     } else {
+                        _var5 = tr(widget, 'Add path to the left');
+                        pushMenuItem('add_path_left', menu, _var5, widget.visuals.config.imagePath + 'par.png', function () {
+                            insertPath(widget, node, true);
+                        });
+                        _var6 = tr(widget, 'Add path to the right');
+                        pushMenuItem('add_path_right', menu, _var6, widget.visuals.config.imagePath + 'par.png', function () {
+                            insertPath(widget, node, false);
+                        });
                         _var2 = isFirstPar(node);
                         if (_var2) {
                             __state = '4';
                         } else {
+                            menu.push({ type: 'separator' });
                             _var3 = tr(widget, 'Delete path');
-                            pushMenuItem('delete_path', menu, _var3, undefined, function () {
+                            pushMenuItem('delete_path', menu, _var3, widget.visuals.config.imagePath + 'delete.png', function () {
                                 deleteParPath(widget, node);
                             });
                             __state = '4';
@@ -16961,6 +20991,31 @@ function createDrakonWidget() {
                 }
             });
             return;
+        }
+        function buildGrafHeader(visuals, model) {
+            var header, root, headerContent;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    headerContent = model.doc.name;
+                    root = model.items['root'];
+                    if (root) {
+                        header = nodeFromItem(visuals, root);
+                        header.content = headerContent;
+                        __state = '5';
+                    } else {
+                        header = createNode(visuals, undefined, 'header', headerContent, 'root');
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    flowIcon(visuals, visuals.header);
+                    return;
+                default:
+                    return;
+                }
+            }
         }
         function forTypeTogether(visuals, type, action) {
             var ids, nodes, _var2;
@@ -17158,6 +21213,22 @@ function createDrakonWidget() {
                 case '8':
                     if (item.side) {
                         item.side = oldToNew[item.side];
+                        __state = '10';
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                case '10':
+                    if (item.begin) {
+                        item.begin = oldToNew[item.begin];
+                        __state = '12';
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '12':
+                    if (item.end) {
+                        item.end = oldToNew[item.end];
                         __state = '1';
                     } else {
                         __state = '1';
@@ -17188,6 +21259,17 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function pasteIntoEdge(widget, edge, payload) {
+            var edits, socket, _var2;
+            socket = {
+                edge: edge,
+                links: []
+            };
+            copyEdgeLinks(socket);
+            edits = pasteBlock(widget, socket, payload);
+            _var2 = doEdit(widget, edits);
+            return _var2;
         }
         function pasteBlock(widget, socket, payload) {
             var edits, firstId, create;
@@ -17266,7 +21348,7 @@ function createDrakonWidget() {
             return _var2;
         }
         function copyCore(widget) {
-            var nodes, elements, _var2, _var3, _var4, _var5;
+            var nodes, elements, all, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
             nodes = getNodesFromSelection(widget);
             _var2 = nodes.length;
             if (_var2 === 0) {
@@ -17279,11 +21361,25 @@ function createDrakonWidget() {
                 }
             } else {
                 if (_var2 === 1) {
-                    _var3 = copyOneItem(widget, nodes[0]);
-                    return _var3;
+                    _var6 = isMind(widget);
+                    if (_var6) {
+                        all = [];
+                        getMindSubtree(nodes[0], all);
+                        _var7 = copyMind(widget, all);
+                        return _var7;
+                    } else {
+                        _var3 = copyOneItem(widget, nodes[0]);
+                        return _var3;
+                    }
                 } else {
-                    _var4 = copyManyItems(widget, nodes);
-                    return _var4;
+                    _var8 = isMind(widget);
+                    if (_var8) {
+                        _var9 = copyMind(widget, nodes);
+                        return _var9;
+                    } else {
+                        _var4 = copyManyItems(widget, nodes);
+                        return _var4;
+                    }
                 }
             }
         }
@@ -17311,7 +21407,7 @@ function createDrakonWidget() {
             return 'duration';
         }
         function pasteInSocket(widget, socket) {
-            var edits, clipboard, payload, ctype, _var2;
+            var edits, clipboard, payload, ctype, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -17321,59 +21417,85 @@ function createDrakonWidget() {
                     if (clipboard) {
                         payload = clipboard.content;
                         ctype = clipboard.type;
-                        _var2 = socket.type;
-                        if (_var2 === 'block') {
-                            if (socket.type === ctype) {
-                                edits = pasteBlock(widget, socket, payload);
-                                __state = '4';
+                        if (ctype === 'mind') {
+                            __state = '63';
+                        } else {
+                            __state = '37';
+                        }
+                    } else {
+                        __state = '36';
+                    }
+                    break;
+                case '36':
+                    return edits;
+                case '37':
+                    _var2 = socket.type;
+                    if (_var2 === 'block') {
+                        if (socket.type === ctype) {
+                            edits = pasteBlock(widget, socket, payload);
+                            __state = '63';
+                        } else {
+                            __state = '63';
+                        }
+                    } else {
+                        if (_var2 === 'case') {
+                            if (ctype === 'case') {
+                                edits = caseInsertCore(widget, socket.node, payload.items[0]);
+                                __state = '63';
                             } else {
-                                __state = '4';
+                                __state = '63';
                             }
                         } else {
-                            if (_var2 === 'case') {
-                                if (ctype === 'case') {
-                                    edits = caseInsertCore(widget, socket.node, payload.items[0]);
-                                    __state = '4';
+                            if (_var2 === 'duration') {
+                                if (ctype === 'duration') {
+                                    edits = pasteDuration(widget, socket.node, payload.items[0]);
+                                    __state = '63';
                                 } else {
-                                    __state = '4';
+                                    __state = '63';
                                 }
                             } else {
-                                if (_var2 === 'duration') {
-                                    if (ctype === 'duration') {
-                                        edits = pasteDuration(widget, socket.node, payload.items[0]);
-                                        __state = '4';
+                                if (_var2 === 'first-case') {
+                                    if (ctype === 'case') {
+                                        edits = firstCaseInsertCore(widget, socket.node, payload.items[0]);
+                                        __state = '63';
                                     } else {
-                                        __state = '4';
+                                        __state = '63';
                                     }
                                 } else {
-                                    if (_var2 === 'first-case') {
-                                        if (ctype === 'case') {
-                                            edits = firstCaseInsertCore(widget, socket.node, payload.items[0]);
-                                            __state = '4';
+                                    if (_var2 === 'branch') {
+                                        if (socket.type === ctype) {
+                                            edits = pasteBranch(widget, socket, payload);
+                                            __state = '63';
                                         } else {
-                                            __state = '4';
+                                            __state = '63';
                                         }
                                     } else {
-                                        if (_var2 === 'branch') {
-                                            if (socket.type === ctype) {
-                                                edits = pasteBranch(widget, socket, payload);
-                                                __state = '4';
-                                            } else {
-                                                __state = '4';
-                                            }
-                                        } else {
-                                            __state = '4';
-                                        }
+                                        __state = '63';
                                     }
                                 }
                             }
                         }
-                    } else {
-                        __state = '4';
                     }
                     break;
-                case '4':
-                    return edits;
+                case '63':
+                    _var3 = socket.type;
+                    if (_var3 === 'mind-before') {
+                        edits = mindBeforeInsert(widget, socket, payload);
+                        __state = '36';
+                    } else {
+                        if (_var3 === 'mind-after') {
+                            edits = mindAfterInsert(widget, socket, payload);
+                            __state = '36';
+                        } else {
+                            if (_var3 === 'mind-child') {
+                                edits = mindChildInsert(widget, socket, payload);
+                                __state = '36';
+                            } else {
+                                __state = '36';
+                            }
+                        }
+                    }
+                    break;
                 default:
                     return;
                 }
@@ -17421,13 +21543,6 @@ function createDrakonWidget() {
                     return;
                 }
             }
-        }
-        function cutOneItem(widget, node) {
-            var type, edits;
-            type = copyOneItem(widget, node);
-            edits = deleteOne(widget, node);
-            widget.showPasteSockets(type);
-            return;
         }
         function getCopyFunction(node) {
             var _var2;
@@ -17575,17 +21690,71 @@ function createDrakonWidget() {
             return 'block';
         }
         function copyFree(widget, elements) {
-            var copy, block, _var2;
-            copy = elements.map(function (element) {
-                _var2 = copyItem(widget, element.id);
-                return _var2;
-            });
-            block = {
-                start: undefined,
-                items: copy
-            };
-            widget.visuals.config.setClipboard('free', block);
-            return undefined;
+            var copy, block, visited, _var2, _var3, element, _var5, _var4, _var6, id, count, _var7, _var8;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    copy = elements.map(function (element) {
+                        _var7 = copyItem(widget, element.id);
+                        return _var7;
+                    });
+                    __state = '13';
+                    break;
+                case '12':
+                    block = {
+                        start: undefined,
+                        items: copy
+                    };
+                    widget.visuals.config.setClipboard('free', block);
+                    return undefined;
+                case '13':
+                    visited = {};
+                    _var2 = elements;
+                    _var3 = 0;
+                    __state = '22';
+                    break;
+                case '22':
+                    if (_var3 < _var2.length) {
+                        element = _var2[_var3];
+                        performOnConnections(widget.visuals, element.id, visited, function () {
+                            return false;
+                        });
+                        _var3++;
+                        __state = '22';
+                    } else {
+                        __state = '26';
+                    }
+                    break;
+                case '26':
+                    _var5 = visited;
+                    _var4 = Object.keys(_var5);
+                    _var6 = 0;
+                    __state = '28';
+                    break;
+                case '27':
+                    _var6++;
+                    __state = '28';
+                    break;
+                case '28':
+                    if (_var6 < _var4.length) {
+                        id = _var4[_var6];
+                        count = _var5[id];
+                        if (count === 2) {
+                            _var8 = copyItem(widget, id);
+                            copy.push(_var8);
+                            __state = '27';
+                        } else {
+                            __state = '27';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function createPastedItem(edits, item) {
             var edit;
@@ -17605,14 +21774,27 @@ function createDrakonWidget() {
             ]);
             return _var2;
         }
+        function insertIntoEdge(widget, edge, type) {
+            var socket, action, edits, _var2;
+            socket = {
+                edge: edge,
+                links: []
+            };
+            copyEdgeLinks(socket);
+            action = widget.insertActions[type];
+            edits = action(widget, socket);
+            _var2 = doEdit(widget, edits);
+            return _var2;
+        }
         function connectBranch(visuals, branch, upper, lower) {
-            var branchLower, floor, _var2, _var3, address;
+            var ceil, branchLower, floor, _var2, _var3, address;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     branch.topNode = createJunction(visuals, undefined);
-                    createEdge(visuals, upper, branch.topNode, false);
+                    ceil = createEdge(visuals, upper, branch.topNode, false);
+                    ceil.role = 'ceil';
                     createEdge(visuals, branch.topNode, branch, true);
                     if (branch.addresses.length === 0) {
                         __state = '5';
@@ -17898,7 +22080,7 @@ function createDrakonWidget() {
             }
         }
         function deleteOne(widget, node) {
-            var edits, _var2, _var3, _var4;
+            var edits, nodes, _var2, _var3, _var4, _var5;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -17908,41 +22090,49 @@ function createDrakonWidget() {
                     edits = [];
                     _var3 = canDelete(widget.visuals, node);
                     if (_var3) {
-                        _var2 = node.type;
-                        if (_var2 === 'question') {
-                            edits = deleteQuestion(widget, node);
+                        _var5 = isMindIcon(widget, node);
+                        if (_var5) {
+                            nodes = [];
+                            getMindSubtree(node, nodes);
+                            edits = deleteMind(widget, nodes);
                             __state = '_item12';
                         } else {
-                            if (_var2 === 'loopbegin') {
-                                edits = deleteLoop(node);
+                            _var2 = node.type;
+                            if (_var2 === 'question') {
+                                edits = deleteQuestion(widget, node);
                                 __state = '_item12';
                             } else {
-                                if (_var2 === 'loopend') {
-                                    edits = deleteLoop(node.loopStart);
+                                if (_var2 === 'loopbegin') {
+                                    edits = deleteLoop(node);
                                     __state = '_item12';
                                 } else {
-                                    if (_var2 === 'params') {
-                                        edits = deleteParams(node);
+                                    if (_var2 === 'loopend') {
+                                        edits = deleteLoop(node.loopStart);
                                         __state = '_item12';
                                     } else {
-                                        if (_var2 === 'case') {
-                                            edits = deleteCase(widget, node);
+                                        if (_var2 === 'params') {
+                                            edits = deleteParams(widget, node);
                                             __state = '_item12';
                                         } else {
-                                            if (_var2 === 'select') {
-                                                edits = deleteSelect(widget, node);
+                                            if (_var2 === 'case') {
+                                                edits = deleteCase(widget, node);
                                                 __state = '_item12';
                                             } else {
-                                                if (_var2 === 'branch') {
-                                                    edits = deleteBranch(widget, node);
+                                                if (_var2 === 'select') {
+                                                    edits = deleteSelect(widget, node);
                                                     __state = '_item12';
                                                 } else {
-                                                    if (_var2 === 'duration') {
-                                                        edits = deleteDuration(widget, node);
+                                                    if (_var2 === 'branch') {
+                                                        edits = deleteBranch(widget, node);
                                                         __state = '_item12';
                                                     } else {
-                                                        edits = deleteSimple(node);
-                                                        __state = '_item12';
+                                                        if (_var2 === 'duration') {
+                                                            edits = deleteDuration(widget, node);
+                                                            __state = '_item12';
+                                                        } else {
+                                                            edits = deleteSimple(node);
+                                                            __state = '_item12';
+                                                        }
                                                     }
                                                 }
                                             }
@@ -17979,7 +22169,7 @@ function createDrakonWidget() {
             return _var2;
         }
         function deleteSelection(widget) {
-            var nodes, elements;
+            var nodes, elements, connection;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -17989,8 +22179,18 @@ function createDrakonWidget() {
                     elements = getSelectedFree(widget);
                     if (elements.length === 0) {
                         nodes = getNodesFromSelection(widget);
-                        deleteSelectionCore(widget, nodes);
-                        __state = '1';
+                        if (nodes.length === 0) {
+                            connection = getSelectedConnection(widget);
+                            if (connection) {
+                                deleteConnection(widget, connection.id);
+                                __state = '1';
+                            } else {
+                                __state = '1';
+                            }
+                        } else {
+                            deleteSelectionCore(widget, nodes);
+                            __state = '1';
+                        }
                     } else {
                         deleteFree(widget, elements);
                         __state = '1';
@@ -18069,22 +22269,40 @@ function createDrakonWidget() {
             deleteItem(edits, node);
             return;
         }
-        function deleteParams(node) {
-            var change;
-            change = {
-                fields: { params: '' },
-                op: 'update'
-            };
-            return [change];
+        function deleteParams(widget, node) {
+            var edits, change;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    change = {
+                        fields: { params: '' },
+                        op: 'update'
+                    };
+                    edits = [change];
+                    if ('params' in widget.model.items) {
+                        deleteItemCore(edits, 'params');
+                        __state = '6';
+                    } else {
+                        __state = '6';
+                    }
+                    break;
+                case '6':
+                    return edits;
+                default:
+                    return;
+                }
+            }
         }
         function deleteFree(widget, elements) {
-            var edits, toDelete, _var2, _var3, element, _var4;
+            var edits, toDelete, toDeleteConnections, _var2, _var3, element, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     edits = [];
                     toDelete = {};
+                    toDeleteConnections = {};
                     _var2 = elements;
                     _var3 = 0;
                     __state = '36';
@@ -18093,6 +22311,9 @@ function createDrakonWidget() {
                     if (_var3 < _var2.length) {
                         element = _var2[_var3];
                         deleteItemCore(edits, element.id);
+                        performOnConnections(widget.visuals, element.id, toDeleteConnections, function (connection) {
+                            deleteItemCore(edits, connection.id);
+                        });
                         toDelete[element.id] = true;
                         _var3++;
                         __state = '36';
@@ -18397,7 +22618,7 @@ function createDrakonWidget() {
             }
         }
         function deleteSelectionCore(widget, nodes) {
-            var _var2;
+            var edits, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -18412,8 +22633,15 @@ function createDrakonWidget() {
                             deleteOne(widget, nodes[0]);
                             __state = '1';
                         } else {
-                            deleteBlock(widget, nodes);
-                            __state = '1';
+                            _var3 = isMindIcon(widget, nodes[0]);
+                            if (_var3) {
+                                edits = deleteMind(widget, nodes);
+                                doEdit(widget, edits);
+                                __state = '1';
+                            } else {
+                                deleteBlock(widget, nodes);
+                                __state = '1';
+                            }
                         }
                     }
                     break;
@@ -18461,6 +22689,106 @@ function createDrakonWidget() {
             norm = sanitizeScroll(widget, x, y);
             copyScrollToScrollable(widget, norm.x, norm.y);
             return;
+        }
+        function nextBox(box, left, top, right, bottom) {
+            var _var2, _var3, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    _var2 = isNaN(left);
+                    if (_var2) {
+                        __state = '_item3';
+                    } else {
+                        box.left = Math.min(box.left, left);
+                        __state = '_item3';
+                    }
+                    break;
+                case '_item3':
+                    _var3 = isNaN(top);
+                    if (_var3) {
+                        __state = '_item4';
+                    } else {
+                        box.top = Math.min(box.top, top);
+                        __state = '_item4';
+                    }
+                    break;
+                case '_item4':
+                    _var4 = isNaN(right);
+                    if (_var4) {
+                        __state = '_item5';
+                    } else {
+                        box.right = Math.max(box.right, right);
+                        __state = '_item5';
+                    }
+                    break;
+                case '_item5':
+                    _var5 = isNaN(bottom);
+                    if (_var5) {
+                        __state = '1';
+                    } else {
+                        box.bottom = Math.max(box.bottom, bottom);
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function multilineSharp(ctx, coords, color, width) {
+            var x, y, first, point, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = width;
+                    ctx.beginPath();
+                    first = coords[0];
+                    if (width % 2 === 0) {
+                        x = first.x;
+                        y = first.y;
+                        __state = '16';
+                    } else {
+                        x = first.x + 0.5;
+                        y = first.y + 0.5;
+                        __state = '16';
+                    }
+                    break;
+                case '12':
+                    if (i < coords.length) {
+                        point = coords[i];
+                        if (width % 2 === 0) {
+                            x = point.x;
+                            y = point.y;
+                            __state = '21';
+                        } else {
+                            x = point.x + 0.5;
+                            y = point.y + 0.5;
+                            __state = '21';
+                        }
+                    } else {
+                        ctx.stroke();
+                        return;
+                    }
+                    break;
+                case '16':
+                    ctx.moveTo(x, y);
+                    i = 1;
+                    __state = '12';
+                    break;
+                case '21':
+                    ctx.lineTo(x, y);
+                    i++;
+                    __state = '12';
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function crawlSubdiagram(visuals, startEdge) {
             var outerSub, innerSub, outerCrawler, innerCrawler;
@@ -18567,6 +22895,321 @@ function createDrakonWidget() {
                 return false;
             }
         }
+        function createResetEars(widget) {
+            var ears, element, elements, visuals, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    visuals = widget.visuals;
+                    elements = getSelectedFree(widget);
+                    if (elements.length === 1) {
+                        element = elements[0];
+                        _var2 = canConnect(widget, element);
+                        if (_var2) {
+                            ears = Ears_create(widget, element);
+                            ears.run();
+                            visuals.ears = ears;
+                            __state = '1';
+                        } else {
+                            __state = '15';
+                        }
+                    } else {
+                        __state = '15';
+                    }
+                    break;
+                case '15':
+                    visuals.ears = undefined;
+                    __state = '1';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function recalculateEarsVisuals(widget, evt, ears) {
+            var pos, target, box, _var2, _var3, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    pos = toDiagram(widget, evt);
+                    _var2 = hitBox(ears.element, pos.x, pos.y);
+                    if (_var2) {
+                        ears.lineTarget = undefined;
+                        ears.hideEar = false;
+                        ears.target = undefined;
+                        __state = '1';
+                    } else {
+                        target = findFree(widget, pos);
+                        if (target) {
+                            _var3 = canConnect(widget, target);
+                            if (_var3) {
+                                _var4 = areConnected(widget.visuals, ears.element.id, target.id);
+                                if (_var4) {
+                                    __state = '15';
+                                } else {
+                                    ears.lineTarget = target;
+                                    ears.hideEar = true;
+                                    ears.target = target;
+                                    __state = '1';
+                                }
+                            } else {
+                                __state = '15';
+                            }
+                        } else {
+                            __state = '15';
+                        }
+                    }
+                    break;
+                case '15':
+                    box = ears.boxes[ears.selected];
+                    ears.lineTarget = box;
+                    ears.hideEar = false;
+                    ears.target = undefined;
+                    __state = '1';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function Ears_create(widget, element) {
+            var startX, startY, startBoxLeft, startBoxTop, box, dx, dy, left, top, config, role, evt, ear;
+            var me = {
+                state: '16',
+                type: 'Ears'
+            };
+            function _main_Ears(__resolve, __reject) {
+                try {
+                    while (true) {
+                        switch (me.state) {
+                        case '2':
+                            me.state = '28';
+                            return;
+                        case '3':
+                            me.selected = ear;
+                            box = me.boxes[ear];
+                            startX = evt.clientX;
+                            startY = evt.clientY;
+                            startBoxLeft = box.left;
+                            startBoxTop = box.top;
+                            me.state = '5';
+                            break;
+                        case '5':
+                            me.state = '10';
+                            return;
+                        case '16':
+                            config = widget.visuals.config;
+                            me.element = element;
+                            setupEarBoxes(me, element, config.socketTouchRadius);
+                            me.state = '2';
+                            break;
+                        case '32':
+                            dx = snapUp(config, evt.clientX - startX);
+                            dy = snapUp(config, evt.clientY - startY);
+                            left = startBoxLeft + dx;
+                            top = startBoxTop + dy;
+                            if (left === box.left) {
+                                if (top === box.top) {
+                                    me.state = '5';
+                                } else {
+                                    me.state = '37';
+                                }
+                            } else {
+                                me.state = '37';
+                            }
+                            break;
+                        case '37':
+                            box.left = left;
+                            box.top = top;
+                            recalculateEarsVisuals(widget, evt, me);
+                            paint(widget);
+                            me.state = '5';
+                            break;
+                        case '43':
+                            if (me.target) {
+                                role = getEarRole(me);
+                                createConnection(widget, element.id, me.target.id, role);
+                                me.state = '2';
+                            } else {
+                                setupEarBoxes(me, element, config.socketTouchRadius);
+                                widget.redraw();
+                                me.state = '2';
+                            }
+                            break;
+                        default:
+                            return;
+                        }
+                    }
+                } catch (ex) {
+                    me.state = undefined;
+                    __reject(ex);
+                }
+            }
+            me.run = function () {
+                me.run = undefined;
+                return new Promise(function (__resolve, __reject) {
+                    me.onDrag = function (_evt_) {
+                        evt = _evt_;
+                        switch (me.state) {
+                        case '10':
+                            me.state = '32';
+                            _main_Ears(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.complete = function () {
+                        switch (me.state) {
+                        case '10':
+                            me.state = '43';
+                            _main_Ears(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.start = function (_ear_, _evt_) {
+                        ear = _ear_;
+                        evt = _evt_;
+                        switch (me.state) {
+                        case '28':
+                            me.state = '3';
+                            _main_Ears(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    _main_Ears(__resolve, __reject);
+                });
+            };
+            return me;
+        }
+        function Ears(widget, element) {
+            var __obj = Ears_create(widget, element);
+            return __obj.run();
+        }
+        function setupEarBoxes(ears, element, radius) {
+            var x, y, right, bottom;
+            ears.target = undefined;
+            ears.lineTarget = undefined;
+            ears.hideEar = false;
+            ears.selected = undefined;
+            x = Math.floor(element.left + element.width / 2);
+            y = Math.floor(element.top + element.height / 2);
+            right = element.left + element.width;
+            bottom = element.top + element.height;
+            ears.boxes = {};
+            ears.boxes.up = boxFromPoint(x, element.top - radius * 2, radius, radius);
+            ears.boxes.left = boxFromPoint(element.left - radius * 2, y, radius, radius);
+            ears.boxes.right = boxFromPoint(right + radius * 2, y, radius, radius);
+            ears.boxes.down = boxFromPoint(x, bottom + radius * 2, radius, radius);
+            return;
+        }
+        function drawEarsLine(visuals, ears, ctx) {
+            var lines, lineWidth, coords, role;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (ears.lineTarget) {
+                        lines = visuals.config.theme.lines;
+                        lineWidth = visuals.config.theme.lineWidth;
+                        role = getEarRole(ears);
+                        coords = buildConnectionLineCoords(ears.element, ears.lineTarget, role);
+                        if (coords.length === 0) {
+                            __state = '1';
+                        } else {
+                            multiline(visuals.config, ctx, coords, lines, lineWidth, undefined, undefined, undefined);
+                            __state = '1';
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function getEarRole(ears) {
+            var _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var2 = ears.selected;
+                    if (_var2 === 'up') {
+                        __state = '3';
+                    } else {
+                        if (_var2 === 'down') {
+                            __state = '3';
+                        } else {
+                            return 'horizontal';
+                        }
+                    }
+                    break;
+                case '3':
+                    return 'vertical';
+                default:
+                    return;
+                }
+            }
+        }
+        function hitEars(visuals, pos) {
+            var _var3, _var2, _var4, key, box, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (visuals.ears) {
+                        _var3 = visuals.ears.boxes;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '7';
+                    } else {
+                        return undefined;
+                    }
+                    break;
+                case '7':
+                    if (_var4 < _var2.length) {
+                        key = _var2[_var4];
+                        box = _var3[key];
+                        _var5 = hitBox(box, pos.x, pos.y);
+                        if (_var5) {
+                            return key;
+                        } else {
+                            _var4++;
+                            __state = '7';
+                        }
+                    } else {
+                        return undefined;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function createGlyphIcon(widget, type, render) {
+            var obj;
+            obj = GlyphIcon();
+            obj.type = type;
+            obj.width = 20;
+            obj.height = 20;
+            obj.render = render;
+            widget.freeIcons[type] = obj;
+            return;
+        }
         function getFree(visuals, id) {
             var _var2, _var3, element;
             var __state = '2';
@@ -18650,6 +23293,16 @@ function createDrakonWidget() {
                 }
             }
         }
+        function createSimpleFree(widget, type, render, width, height) {
+            var obj;
+            obj = SimpleFree();
+            obj.type = type;
+            obj.width = width;
+            obj.height = height;
+            obj.render = render;
+            widget.freeIcons[type] = obj;
+            return;
+        }
         function hitFreeElement(widget, element, pos) {
             var elementActions, _var2, _var3;
             _var2 = hitBox(element.box, pos.x, pos.y);
@@ -18669,6 +23322,7 @@ function createDrakonWidget() {
         }
         function snapUp(config, size) {
             var _var2;
+            size = Math.round(size);
             _var2 = snapUpTo(config.freeSnap, size);
             return _var2;
         }
@@ -18688,6 +23342,7 @@ function createDrakonWidget() {
             Object.assign(element, item);
             element.id = id;
             parseStyle(item, element);
+            parseCoords(item, element);
             visuals.free.push(element);
             return element;
         }
@@ -18757,6 +23412,38 @@ function createDrakonWidget() {
         function HandleNE_xEnabled(self) {
             return true;
         }
+        function RoundedRadius_dragTo(self, x, y) {
+            self.element.aux = self.right - x - self.touch * 2;
+            return;
+        }
+        function RoundedRadius_getMinY(self) {
+            return self.minY;
+        }
+        function RoundedRadius_yEnabled(self) {
+            return false;
+        }
+        function RoundedRadius_getCursor(self) {
+            return 'ew-resize';
+        }
+        function RoundedRadius_getMaxY(self) {
+            return self.maxY;
+        }
+        function RoundedRadius_getMinX(self) {
+            return self.minX;
+        }
+        function RoundedRadius_getMaxX(self) {
+            return self.maxX;
+        }
+        function RoundedRadius_complete(self) {
+            var change;
+            change = {
+                id: self.element.id,
+                fields: { aux: self.element.aux },
+                op: 'update'
+            };
+            updateAndKeepSelection(self.widget, [change]);
+            return;
+        }
         function HandleSW_getMaxX(self) {
             return self.maxX;
         }
@@ -18820,6 +23507,62 @@ function createDrakonWidget() {
             };
             updateAndKeepSelection(handle.widget, [change]);
             return;
+        }
+        function CalloutPointer_yEnabled(self) {
+            return true;
+        }
+        function CalloutPointer_getMinY(self) {
+            return self.minY;
+        }
+        function CalloutPointer_getMaxY(self) {
+            return self.maxY;
+        }
+        function CalloutPointer_complete(self) {
+            var change;
+            change = {
+                id: self.element.id,
+                fields: {
+                    px: self.element.px,
+                    py: self.element.py
+                },
+                op: 'update'
+            };
+            updateAndKeepSelection(self.widget, [change]);
+            return;
+        }
+        function CalloutPointer_xEnabled(self) {
+            return true;
+        }
+        function CalloutPointer_dragTo(self, x, y) {
+            var _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    _var2 = hitBox(self.element, x, y);
+                    if (_var2) {
+                        __state = '1';
+                    } else {
+                        self.element.px = x - self.left;
+                        self.element.py = y - self.top;
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function CalloutPointer_getMaxX(self) {
+            return self.maxX;
+        }
+        function CalloutPointer_getCursor(self) {
+            return 'grab';
+        }
+        function CalloutPointer_getMinX(self) {
+            return self.minX;
         }
         function findHorizontalForHandle(handle, element, y) {
             var ebox;
@@ -18892,6 +23635,24 @@ function createDrakonWidget() {
         }
         function HandleSouth_xEnabled(self) {
             return false;
+        }
+        function createRadiusHandleLeft(widget, element, ctx) {
+            var handle, touch, visuals, right;
+            visuals = widget.visuals;
+            handle = RoundedRadiusLeft();
+            setCommonHandleFields(widget, element, handle);
+            touch = visuals.config.socketTouchRadius;
+            right = element.left + element.width;
+            handle.x = element.left + element.aux + touch * 2;
+            handle.y = element.top;
+            handle.minX = element.left + touch * 2;
+            handle.maxX = right - touch * 2;
+            handle.left = element.left;
+            handle.touch = touch;
+            handle.color = 'yellow';
+            handle.primId = 'radius-left-' + element.id;
+            createHandle(visuals, handle, ctx);
+            return;
         }
         function LineEnd_getMinY(self) {
             return Number.MIN_SAFE_INTEGER;
@@ -19007,6 +23768,59 @@ function createDrakonWidget() {
         function LineStart_getMinY(self) {
             return Number.MIN_SAFE_INTEGER;
         }
+        function RoundedRadiusLeft_xEnabled(self) {
+            return true;
+        }
+        function RoundedRadiusLeft_complete(self) {
+            var change;
+            change = {
+                id: self.element.id,
+                fields: { aux: self.element.aux },
+                op: 'update'
+            };
+            updateAndKeepSelection(self.widget, [change]);
+            return;
+        }
+        function RoundedRadiusLeft_dragTo(self, x, y) {
+            self.element.aux = x - self.left - self.touch * 2;
+            return;
+        }
+        function RoundedRadiusLeft_getCursor(self) {
+            return 'ew-resize';
+        }
+        function RoundedRadiusLeft_getMaxY(self) {
+            return self.maxY;
+        }
+        function RoundedRadiusLeft_yEnabled(self) {
+            return false;
+        }
+        function RoundedRadiusLeft_getMaxX(self) {
+            return self.maxX;
+        }
+        function RoundedRadiusLeft_getMinY(self) {
+            return self.minY;
+        }
+        function RoundedRadiusLeft_getMinX(self) {
+            return self.minX;
+        }
+        function createRadiusHandle(widget, element, ctx) {
+            var handle, right, touch, visuals;
+            visuals = widget.visuals;
+            handle = RoundedRadius();
+            setCommonHandleFields(widget, element, handle);
+            right = element.left + element.width;
+            touch = visuals.config.socketTouchRadius;
+            handle.x = right - element.aux - touch * 2;
+            handle.y = element.top;
+            handle.minX = element.left + touch * 2;
+            handle.maxX = right - touch * 2;
+            handle.right = right;
+            handle.touch = touch;
+            handle.color = 'yellow';
+            handle.primId = 'radius-' + element.id;
+            createHandle(visuals, handle, ctx);
+            return;
+        }
         function findGuidesForPoint(handle, x, y) {
             var sourceBox;
             sourceBox = createBox(x, y, 0, 0);
@@ -19052,6 +23866,66 @@ function createDrakonWidget() {
             ebox = createBox(element.left, element.top, element.width, element.height);
             findVerticalGuide(handle.widget, element.id, ebox, x);
             return;
+        }
+        function VertexHandle_makeContextMenu(self) {
+            var items, _var2, _var3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    items = [];
+                    _var2 = tr(self.widget, 'Add vertex');
+                    pushMenuItem('add_vertex', items, _var2, undefined, function () {
+                        self.addVertex(self.widget, self.element.id, self.ordinal);
+                    });
+                    if (self.element.coords.length === 3) {
+                        __state = '4';
+                    } else {
+                        items.push({ type: 'separator' });
+                        _var3 = tr(self.widget, 'Remove vertex');
+                        pushMenuItem('remove_vertex', items, _var3, self.widget.visuals.config.imagePath + 'delete.png', function () {
+                            removeVertex(self.widget, self.element.id, self.ordinal);
+                        });
+                        __state = '4';
+                    }
+                    break;
+                case '4':
+                    return items;
+                default:
+                    return;
+                }
+            }
+        }
+        function VertexHandle_xEnabled(self) {
+            return true;
+        }
+        function VertexHandle_dragTo(self, x, y) {
+            var point;
+            point = self.element.coords[self.ordinal];
+            point.x = x - self.left;
+            point.y = y - self.top;
+            return;
+        }
+        function VertexHandle_yEnabled(self) {
+            return true;
+        }
+        function VertexHandle_getMinX(self) {
+            return self.minX;
+        }
+        function VertexHandle_complete(self) {
+            var element;
+            element = self.element;
+            savePoly(self.widget, element.id, self.left, self.top, element.coords);
+            return;
+        }
+        function VertexHandle_getCursor(self) {
+            return 'move';
+        }
+        function VertexHandle_getMaxX(self) {
+            return self.maxX;
+        }
+        function VertexHandle_getMaxY(self) {
+            return self.maxY;
         }
         function HandleSE_yEnabled(self) {
             return true;
@@ -19122,48 +23996,560 @@ function createDrakonWidget() {
                 return false;
             }
         }
-        function centerContentFree(visuals, element) {
-            var top, centerY;
-            centerY = element.top + element.height / 2;
-            top = Math.floor(centerY - element.contentHeight / 2);
-            renderContentCore(visuals, element, element.left, top);
-            return;
-        }
-        function initFreeFunctions(widget) {
-            var groupLeft, groupRight, arrow;
-            widget.freeIcons = {};
-            arrow = Line();
-            arrow.style = JSON.stringify({ headStyle: 'arrow' });
-            widget.freeIcons['group-duration'] = GroupDuration();
-            widget.freeIcons['rectangle'] = Rectangle();
-            widget.freeIcons['line'] = Line();
-            widget.freeIcons['text'] = Text();
-            groupLeft = GroupDuration();
-            groupLeft.flag1 = 1;
-            groupRight = GroupDuration();
-            groupRight.flag1 = 0;
-            widget.freeIcons['group-duration-right'] = groupLeft;
-            widget.freeIcons['group-duration-left'] = groupRight;
-            widget.freeIcons['arrow'] = arrow;
-            return;
-        }
-        function drawFreeIcon(widget, element, ctx) {
-            var elementActions;
+        function intersectBoxes(element, frame) {
+            var _var2, _var3, box, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
-                case '1':
+                case '2':
+                    _var2 = element.boxes;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        box = _var2[_var3];
+                        _var4 = boxesIntersect(box, frame);
+                        if (_var4) {
+                            return true;
+                        } else {
+                            _var3++;
+                            __state = '5';
+                        }
+                    } else {
+                        return false;
+                    }
+                    break;
+                default:
                     return;
+                }
+            }
+        }
+        function removeVertex(widget, id, ordinal) {
+            var element, visuals;
+            var __state = '22';
+            while (true) {
+                switch (__state) {
+                case '11':
+                    savePoly(widget, id, element.left, element.top, element.coords);
+                    return;
+                case '12':
+                    element.coords.splice(ordinal, 1);
+                    __state = '11';
+                    break;
+                case '22':
+                    visuals = widget.visuals;
+                    element = getFree(visuals, id);
+                    __state = '12';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function addVertex(widget, id, ordinal) {
+            var newVertex, old, element, radius, visuals, shift, pindex, nindex, prev, next, len, dx, dy, cx1, cx2, cy1, cy2, _var2, _var3, point, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11;
+            var __state = '22';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    dx = -shift;
+                    dy = 0;
+                    _var2 = element.coords;
+                    _var3 = 0;
+                    __state = '14';
+                    break;
+                case '11':
+                    savePoly(widget, id, element.left, element.top, element.coords);
+                    return;
+                case '12':
+                    newVertex = {
+                        x: old.x + dx,
+                        y: old.y + dy,
+                        radius: 0
+                    };
+                    element.coords.splice(ordinal + 1, 0, newVertex);
+                    __state = '11';
+                    break;
+                case '13':
+                    _var3++;
+                    __state = '14';
+                    break;
+                case '14':
+                    if (_var3 < _var2.length) {
+                        point = _var2[_var3];
+                        if (point.x < old.x) {
+                            point.x -= shift * 2;
+                            __state = '13';
+                        } else {
+                            __state = '13';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '22':
+                    visuals = widget.visuals;
+                    radius = visuals.config.socketTouchRadius;
+                    shift = radius * 2;
+                    element = getFree(visuals, id);
+                    old = element.coords[ordinal];
+                    __state = '38';
+                    break;
+                case '38':
+                    len = element.coords.length;
+                    pindex = (ordinal + len - 1) % len;
+                    nindex = (ordinal + 1) % len;
+                    prev = element.coords[pindex];
+                    next = element.coords[nindex];
+                    cx1 = old.x - prev.x;
+                    cx2 = next.x - old.x;
+                    cy1 = old.y - prev.y;
+                    cy2 = next.y - old.y;
+                    _var10 = Math.abs(cx2);
+                    _var11 = Math.abs(cy2);
+                    if (_var10 > _var11) {
+                        if (cx1 * cx2 >= 0) {
+                            if (next.x < old.x) {
+                                __state = '2';
+                            } else {
+                                __state = '45';
+                            }
+                        } else {
+                            if (cy2 > 0) {
+                                __state = '53';
+                            } else {
+                                __state = '54';
+                            }
+                        }
+                    } else {
+                        if (cy1 * cy2 >= 0) {
+                            if (next.y < old.y) {
+                                __state = '53';
+                            } else {
+                                __state = '54';
+                            }
+                        } else {
+                            if (cx2 > 0) {
+                                __state = '45';
+                            } else {
+                                __state = '2';
+                            }
+                        }
+                    }
+                    break;
+                case '45':
+                    dx = shift;
+                    dy = 0;
+                    _var4 = element.coords;
+                    _var5 = 0;
+                    __state = '47';
+                    break;
+                case '46':
+                    _var5++;
+                    __state = '47';
+                    break;
+                case '47':
+                    if (_var5 < _var4.length) {
+                        point = _var4[_var5];
+                        if (point.x > old.x) {
+                            point.x += shift * 2;
+                            __state = '46';
+                        } else {
+                            __state = '46';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '53':
+                    dx = 0;
+                    dy = -shift;
+                    _var6 = element.coords;
+                    _var7 = 0;
+                    __state = '58';
+                    break;
+                case '54':
+                    dx = 0;
+                    dy = shift;
+                    _var8 = element.coords;
+                    _var9 = 0;
+                    __state = '62';
+                    break;
+                case '57':
+                    _var7++;
+                    __state = '58';
+                    break;
+                case '58':
+                    if (_var7 < _var6.length) {
+                        point = _var6[_var7];
+                        if (point.y < old.y) {
+                            point.y -= shift * 2;
+                            __state = '57';
+                        } else {
+                            __state = '57';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '61':
+                    _var9++;
+                    __state = '62';
+                    break;
+                case '62':
+                    if (_var9 < _var8.length) {
+                        point = _var8[_var9];
+                        if (point.y > old.y) {
+                            point.y += shift * 2;
+                            __state = '61';
+                        } else {
+                            __state = '61';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function centerContentFree(visuals, element) {
+            var top, centerY;
+            centerY = element.top + element.height / 2;
+            top = Math.ceil(centerY - element.contentHeight / 2);
+            renderContentCore(visuals, element, element.left + 1, top);
+            return;
+        }
+        function initFreeFunctions(widget) {
+            var groupLeft, groupRight, arrow, rounded, poly, tri, tab;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    widget.freeIcons = {};
+                    arrow = Line();
+                    arrow.style = JSON.stringify({ headStyle: 'arrow' });
+                    widget.freeIcons['group-duration'] = GroupDuration();
+                    widget.freeIcons['rectangle'] = createRectangular(renderRectangle, 'rectangle');
+                    widget.freeIcons['line'] = Line();
+                    widget.freeIcons['text'] = Text();
+                    widget.freeIcons['f_begin'] = createRectangular(renderSoap, 'f_begin');
+                    rounded = createRectangular(renderRounded, 'rounded', { aux: 10 });
+                    rounded.drawCandies = drawRoundedCandies;
+                    widget.freeIcons['rounded'] = rounded;
+                    widget.freeIcons['f_ptr_right'] = PtrRight();
+                    widget.freeIcons['f_ptr_left'] = PtrLeft();
+                    widget.freeIcons['callout'] = Callout();
+                    widget.freeIcons['frame'] = Frame();
+                    widget.freeIcons['f_circle'] = createRectangular(renderEllipse, 'f_circle');
+                    poly = Polygon();
+                    poly.buildCoords = buildCoordsPoly;
+                    widget.freeIcons['polygon'] = poly;
+                    tri = Polygon();
+                    tri.buildCoords = buildCoordsTri;
+                    widget.freeIcons['triangle'] = tri;
+                    widget.freeIcons['polyline'] = Polyline();
+                    groupLeft = GroupDuration();
+                    groupLeft.flag1 = 1;
+                    groupRight = GroupDuration();
+                    groupRight.flag1 = 0;
+                    widget.freeIcons['group-duration-right'] = groupLeft;
+                    widget.freeIcons['group-duration-left'] = groupRight;
+                    widget.freeIcons['arrow'] = arrow;
+                    __state = '26';
+                    break;
+                case '25':
+                    return;
+                case '26':
+                    createSimpleFree(widget, 'human', renderHuman, 60, 140);
+                    createSimpleFree(widget, 'portrait', renderPortrait, 60, 80);
+                    createSimpleFree(widget, 'computer', renderComputer, 180, 120);
+                    createSimpleFree(widget, 'notebook', renderNotebook, 140, 80);
+                    createSimpleFree(widget, 'server1', renderServer1, 60, 100);
+                    createSimpleFree(widget, 'server2', renderServer2, 120, 40);
+                    createSimpleFree(widget, 'tablet', renderTablet, 80, 100);
+                    createSimpleFree(widget, 'phone', renderPhone, 40, 80);
+                    widget.freeIcons['cloud'] = Cloud();
+                    widget.freeIcons['database'] = Database();
+                    __state = '36';
+                    break;
+                case '36':
+                    createSimpleFree(widget, 'placeholder', renderPlaceholder, 200, 140);
+                    widget.freeIcons['combobox'] = Combobox();
+                    createSimpleFree(widget, 'vscroll', renderVScroll, 20, 160);
+                    createSimpleFree(widget, 'hscroll', renderHScroll, 160, 20);
+                    createSimpleFree(widget, 'check_true', renderCheckTrue, 20, 20);
+                    createSimpleFree(widget, 'check_false', renderCheckFalse, 20, 20);
+                    createSimpleFree(widget, 'radio_true', renderRadioTrue, 20, 20);
+                    createSimpleFree(widget, 'radio_false', renderRadioFalse, 20, 20);
+                    __state = '61';
+                    break;
+                case '46':
+                    widget.noConnect = {};
+                    widget.noConnect['line'] = true;
+                    widget.noConnect['connection'] = true;
+                    widget.noConnect['callout'] = true;
+                    widget.noConnect['text'] = true;
+                    widget.noConnect['frame'] = true;
+                    widget.noConnect['polyline'] = true;
+                    widget.noConnect['hscroll'] = true;
+                    widget.noConnect['vscroll'] = true;
+                    widget.noConnect['check_true'] = true;
+                    widget.noConnect['check_false'] = true;
+                    widget.noConnect['radio_true'] = true;
+                    widget.noConnect['radio_false'] = true;
+                    widget.noConnect['cross'] = true;
+                    widget.noConnect['check'] = true;
+                    widget.noConnect['left-angle'] = true;
+                    widget.noConnect['left-angle2'] = true;
+                    widget.noConnect['up-angle'] = true;
+                    widget.noConnect['right-angle'] = true;
+                    widget.noConnect['right-angle2'] = true;
+                    widget.noConnect['down-angle'] = true;
+                    widget.noConnect['menu'] = true;
+                    widget.noConnect['tab'] = true;
+                    widget.noConnect['dots3v'] = true;
+                    widget.noConnect['dots3h'] = true;
+                    __state = '25';
+                    break;
+                case '61':
+                    createGlyphIcon(widget, 'check', renderCheck);
+                    createGlyphIcon(widget, 'cross', renderCross);
+                    createGlyphIcon(widget, 'left-angle', renderLeftAngle);
+                    createGlyphIcon(widget, 'left-angle2', renderLeftAngle2);
+                    createGlyphIcon(widget, 'right-angle', renderRightAngle);
+                    createGlyphIcon(widget, 'right-angle2', renderRightAngle2);
+                    createGlyphIcon(widget, 'up-angle', renderUpAngle);
+                    createGlyphIcon(widget, 'down-angle', renderDownAngle);
+                    createGlyphIcon(widget, 'menu', renderMenu);
+                    createGlyphIcon(widget, 'dots3v', renderDots3V);
+                    createGlyphIcon(widget, 'dots3h', renderDots3H);
+                    tab = createRectangular(renderTab, 'tab', { aux: 10 });
+                    tab.drawCandies = drawRoundedCandies;
+                    widget.freeIcons['tab'] = tab;
+                    __state = '46';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function addLineVertex(widget, id, ordinal) {
+            var newVertex, old, element, radius, visuals, shift, len, dx, dy, cx1, cx2, cy1, cy2, next, prev, _var2, _var3, point, _var4, _var5, _var6, _var7, _var8, _var9, _var10, _var11;
+            var __state = '22';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    dx = -shift;
+                    dy = 0;
+                    _var2 = element.coords;
+                    _var3 = 0;
+                    __state = '14';
+                    break;
+                case '11':
+                    savePoly(widget, id, element.left, element.top, element.coords);
+                    return;
+                case '12':
+                    newVertex = {
+                        x: old.x + dx,
+                        y: old.y + dy,
+                        radius: 0
+                    };
+                    element.coords.splice(ordinal + 1, 0, newVertex);
+                    __state = '11';
+                    break;
+                case '13':
+                    _var3++;
+                    __state = '14';
+                    break;
+                case '14':
+                    if (_var3 < _var2.length) {
+                        point = _var2[_var3];
+                        if (point.x < old.x) {
+                            point.x -= shift * 2;
+                            __state = '13';
+                        } else {
+                            __state = '13';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '22':
+                    visuals = widget.visuals;
+                    radius = visuals.config.socketTouchRadius;
+                    shift = radius * 2;
+                    element = getFree(visuals, id);
+                    old = element.coords[ordinal];
+                    __state = '38';
+                    break;
+                case '38':
+                    len = element.coords.length;
+                    if (ordinal === 0) {
+                        next = element.coords[ordinal + 1];
+                        cx2 = next.x - old.x;
+                        cy2 = next.y - old.y;
+                        if (cx2 > 0) {
+                            __state = '45';
+                        } else {
+                            __state = '2';
+                        }
+                    } else {
+                        if (ordinal === len - 1) {
+                            prev = element.coords[ordinal - 1];
+                            cx1 = old.x - prev.x;
+                            cy1 = old.y - prev.y;
+                            if (cx1 > 0) {
+                                __state = '45';
+                            } else {
+                                __state = '2';
+                            }
+                        } else {
+                            prev = element.coords[ordinal - 1];
+                            next = element.coords[ordinal + 1];
+                            cx1 = old.x - prev.x;
+                            cx2 = next.x - old.x;
+                            cy1 = old.y - prev.y;
+                            cy2 = next.y - old.y;
+                            _var10 = Math.abs(cx2);
+                            _var11 = Math.abs(cy2);
+                            if (_var10 > _var11) {
+                                if (cx1 * cx2 >= 0) {
+                                    if (next.x < old.x) {
+                                        __state = '2';
+                                    } else {
+                                        __state = '45';
+                                    }
+                                } else {
+                                    if (cy2 > 0) {
+                                        __state = '53';
+                                    } else {
+                                        __state = '54';
+                                    }
+                                }
+                            } else {
+                                if (cy1 * cy2 >= 0) {
+                                    if (next.y < old.y) {
+                                        __state = '53';
+                                    } else {
+                                        __state = '54';
+                                    }
+                                } else {
+                                    if (cx2 > 0) {
+                                        __state = '45';
+                                    } else {
+                                        __state = '2';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case '45':
+                    dx = shift;
+                    dy = 0;
+                    _var4 = element.coords;
+                    _var5 = 0;
+                    __state = '47';
+                    break;
+                case '46':
+                    _var5++;
+                    __state = '47';
+                    break;
+                case '47':
+                    if (_var5 < _var4.length) {
+                        point = _var4[_var5];
+                        if (point.x > old.x) {
+                            point.x += shift * 2;
+                            __state = '46';
+                        } else {
+                            __state = '46';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '53':
+                    dx = 0;
+                    dy = -shift;
+                    _var6 = element.coords;
+                    _var7 = 0;
+                    __state = '58';
+                    break;
+                case '54':
+                    dx = 0;
+                    dy = shift;
+                    _var8 = element.coords;
+                    _var9 = 0;
+                    __state = '62';
+                    break;
+                case '57':
+                    _var7++;
+                    __state = '58';
+                    break;
+                case '58':
+                    if (_var7 < _var6.length) {
+                        point = _var6[_var7];
+                        if (point.y < old.y) {
+                            point.y -= shift * 2;
+                            __state = '57';
+                        } else {
+                            __state = '57';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '61':
+                    _var9++;
+                    __state = '62';
+                    break;
+                case '62':
+                    if (_var9 < _var8.length) {
+                        point = _var8[_var9];
+                        if (point.y > old.y) {
+                            point.y += shift * 2;
+                            __state = '61';
+                        } else {
+                            __state = '61';
+                        }
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function drawFreeIcon(widget, element, ctx, visited) {
+            var elementActions;
+            var __state = '13';
+            while (true) {
+                switch (__state) {
                 case '2':
                     ctx.setLineDash([]);
                     elementActions = widget.freeIcons[element.type];
                     if (elementActions) {
                         elementActions.render(widget.visuals, element, ctx);
-                        __state = '1';
+                        __state = '12';
                     } else {
                         console.error('drawFreeIcon: callback not found for element of type: ' + element.type);
-                        __state = '1';
+                        __state = '12';
                     }
+                    break;
+                case '11':
+                    return;
+                case '12':
+                    __state = '11';
+                    break;
+                case '13':
+                    performOnConnections(widget.visuals, element.id, visited, function (connection) {
+                        drawConnection(widget, connection, ctx);
+                    });
+                    __state = '2';
                     break;
                 default:
                     return;
@@ -19197,6 +24583,9 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function canConnect(widget, element) {
+            return !widget.noConnect[element.type];
         }
         function rearrangeZIndexes(widget, toDelete, edits) {
             var currentZ, _var2, _var3, element;
@@ -19298,6 +24687,503 @@ function createDrakonWidget() {
             element.box = createBox(element.left, element.top, element.width, element.height);
             return;
         }
+        function renderPlaceholder(visuals, element, ctx) {
+            var left, top, line, right, bottom, radius, config, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    renderFreeIconShape(ctx, visuals, element, buildRectCoords, undefined);
+                    line = ctx.lineWidth || 1;
+                    clearShadow(ctx);
+                    radius = config.iconRadius || 0;
+                    left = element.left + radius;
+                    top = element.top + radius;
+                    _var2 = mustShift(visuals.config, line);
+                    if (_var2) {
+                        left += 0.5;
+                        top += 0.5;
+                        __state = '30';
+                    } else {
+                        __state = '30';
+                    }
+                    break;
+                case '30':
+                    right = left + element.width - radius * 2;
+                    bottom = top + element.height - radius * 2;
+                    line1(ctx, left, top, right, bottom);
+                    line1(ctx, right, top, left, bottom);
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function Frame_hit(self, element, pos) {
+            var _var2, _var3, box, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var2 = element.boxes;
+                    _var3 = 0;
+                    __state = '13';
+                    break;
+                case '13':
+                    if (_var3 < _var2.length) {
+                        box = _var2[_var3];
+                        _var4 = hitBox(box, pos.x, pos.y);
+                        if (_var4) {
+                            return true;
+                        } else {
+                            _var3++;
+                            __state = '13';
+                        }
+                    } else {
+                        return false;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function Frame_getAccepted(self) {
+            var accepted;
+            accepted = [];
+            accepted.push('lines');
+            accepted.push('lineWidth');
+            accepted.push('lineStyle');
+            return accepted;
+        }
+        function Frame_render(self, visuals, element, ctx) {
+            var config, line, color;
+            config = visuals.config;
+            line = getLineWidth(visuals, element);
+            color = getLineColor(visuals, element);
+            ctx.lineWidth = line;
+            ctx.strokeStyle = color;
+            setLineDashFromStyle(config, element, line, 'lineStyle', ctx);
+            renderIconShapeBorder(ctx, visuals, buildRectCoords, line, element.left, element.top, element.width, element.height, undefined);
+            return;
+        }
+        function Frame_drawCandies(self, widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            return;
+        }
+        function Frame_create(self, pos) {
+            var item;
+            item = {
+                type: 'frame',
+                left: pos.x,
+                top: pos.y,
+                width: 300,
+                height: 200
+            };
+            return item;
+        }
+        function Frame_canGuide(self) {
+            return true;
+        }
+        function Frame_calculateBox(self, element, config) {
+            var margin, right, bottom, margin2, _var2, _var3, _var4, _var5;
+            margin = config.socketTouchRadius;
+            margin2 = config.socketTouchRadius / 2;
+            element.innerBox = createBox(element.left, element.top, element.width, element.height);
+            element.box = createBoxWithMargin(element.left, element.top, element.width, element.height, margin2);
+            element.boxes = [];
+            right = element.left + element.width;
+            bottom = element.top + element.height;
+            _var2 = boxForVerticalLine(element.left, element.top, bottom, margin2);
+            element.boxes.push(_var2);
+            _var3 = boxForVerticalLine(right, element.top, bottom, margin2);
+            element.boxes.push(_var3);
+            _var4 = boxForHorizontalLine(element.left, element.top, right, margin2);
+            element.boxes.push(_var4);
+            _var5 = boxForHorizontalLine(element.left, bottom, right, margin2);
+            element.boxes.push(_var5);
+            return;
+        }
+        function Frame_canEditContent(self) {
+            return false;
+        }
+        function Frame_flow(self, visuals, element) {
+            var options;
+            options = {};
+            return undefined;
+        }
+        function renderCross(visuals, element, ctx) {
+            var xp, yp, x0, x1, y0, y1, w, h, x, y;
+            ctx.lineWidth = getLineWidth(visuals, element);
+            ctx.strokeStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            xp = w * 0.3;
+            yp = h * 0.3;
+            x0 = x - w + xp;
+            x1 = x + w - xp;
+            y0 = y - h + yp;
+            y1 = y + h - yp;
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x1, y0);
+            ctx.lineTo(x0, y1);
+            ctx.closePath();
+            ctx.stroke();
+            return;
+        }
+        function Polyline_create(self, pos) {
+            var item, coords, _var2;
+            coords = [
+                {
+                    x: 0,
+                    y: 100,
+                    radius: 0
+                },
+                {
+                    x: 0,
+                    y: 50,
+                    radius: 0
+                },
+                {
+                    x: 50,
+                    y: 0,
+                    radius: 0
+                },
+                {
+                    x: 200,
+                    y: 0,
+                    radius: 0
+                }
+            ];
+            _var2 = JSON.stringify(coords);
+            item = {
+                type: 'polyline',
+                left: pos.x,
+                top: pos.y,
+                coords: _var2
+            };
+            calculatePolygonRect(item);
+            return item;
+        }
+        function Polyline_canEditLink(self) {
+            return false;
+        }
+        function Polyline_canGuide(self) {
+            return false;
+        }
+        function Polyline_canEditContent(self) {
+            return false;
+        }
+        function Polyline_render(self, visuals, element, ctx) {
+            var config, minLine, style, iconBack, coords, lineWidth, lines;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    style = element.style || {};
+                    minLine = 40;
+                    config = visuals.config;
+                    lineWidth = getLineWidth(visuals, element);
+                    lines = getLineColor(visuals, element);
+                    iconBack = getThemeValue(config, element, 'iconBack');
+                    setLineDashFromStyle(config, element, lineWidth, 'lineStyle', ctx);
+                    __state = '74';
+                    break;
+                case '11':
+                    return;
+                case '74':
+                    ctx.fillStyle = lines;
+                    ctx.strokeStyle = lines;
+                    coords = element.coords.map(function (point) {
+                        return {
+                            x: point.x + element.left,
+                            y: point.y + element.top
+                        };
+                    });
+                    multilineSharp(ctx, coords, line, lineWidth);
+                    drawTail(ctx, coords, style.tailStyle, line, iconBack, lineWidth);
+                    drawHead(ctx, coords, style.headStyle, line, iconBack, lineWidth);
+                    __state = '11';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function Polyline_drawCandies(self, widget, element, ctx) {
+            var visuals, handle, left, top, point, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    i = 0;
+                    __state = '11';
+                    break;
+                case '11':
+                    if (i < element.coords.length) {
+                        point = element.coords[i];
+                        handle = VertexHandle();
+                        setCommonHandleFields(widget, element, handle);
+                        left = element.left;
+                        top = element.top;
+                        handle.addVertex = addLineVertex;
+                        handle.x = left + point.x;
+                        handle.y = top + point.y;
+                        handle.radius = point.radius;
+                        handle.minX = Number.MIN_SAFE_INTEGER;
+                        handle.maxX = Number.MAX_SAFE_INTEGER;
+                        handle.minY = Number.MIN_SAFE_INTEGER;
+                        handle.maxY = Number.MAX_SAFE_INTEGER;
+                        handle.left = left;
+                        handle.top = top;
+                        handle.color = 'yellow';
+                        handle.ordinal = i;
+                        handle.primId = 'vertex-' + i + '-' + element.id;
+                        createHandle(visuals, handle, ctx);
+                        i++;
+                        __state = '11';
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function Polyline_flow(self, visuals, element) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, element, options, element.width);
+            return _var2;
+        }
+        function Polyline_hit(self, element, pos) {
+            var coords, left, top, prev, curr, x1, y1, x2, y2, hit, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    coords = element.coords;
+                    left = element.left;
+                    top = element.top;
+                    i = 1;
+                    __state = '12';
+                    break;
+                case '12':
+                    if (i < coords.length) {
+                        prev = coords[i - 1];
+                        curr = coords[i];
+                        x1 = prev.x + left;
+                        y1 = prev.y + top;
+                        x2 = curr.x + left;
+                        y2 = curr.y + top;
+                        hit = hitLine(x1, y1, x2, y2, pos, element.margin);
+                        if (hit) {
+                            return true;
+                        } else {
+                            i++;
+                            __state = '12';
+                        }
+                    } else {
+                        return false;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function Polyline_getAccepted(self) {
+            var accepted;
+            accepted = [];
+            accepted.push('lines');
+            accepted.push('lineWidth');
+            accepted.push('lineStyle');
+            accepted.push('headStyle');
+            accepted.push('tailStyle');
+            return accepted;
+        }
+        function Polyline_calculateBox(self, element, config) {
+            var margin;
+            margin = config.socketTouchRadius;
+            element.margin = margin;
+            element.box = createBoxWithMargin(element.left, element.top, element.width, element.height, margin);
+            return;
+        }
+        function renderRadioFalse(visuals, element, ctx) {
+            var config, w, h, x, y;
+            config = visuals.config;
+            setFillStroke(visuals, element, ctx);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            circlePath(ctx, x, y, w);
+            ctx.fill();
+            clearShadow(ctx);
+            ctx.stroke();
+            return;
+        }
+        function renderMenu(visuals, element, ctx) {
+            var w, h, x, y, line, xp, yp, x0, x1, y0, y1, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    ctx.lineWidth = getLineWidth(visuals, element);
+                    ctx.strokeStyle = getLineColor(visuals, element);
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    line = ctx.lineWidth || 1;
+                    _var2 = mustShift(visuals.config, line);
+                    if (_var2) {
+                        x += 0.5;
+                        y += 0.5;
+                        __state = '12';
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '12':
+                    xp = Math.round(w * 0.5);
+                    yp = Math.round(h * 0.5);
+                    x0 = x - w + xp;
+                    x1 = x + w - xp;
+                    y0 = y - h + yp;
+                    y1 = y + h - yp;
+                    line1(ctx, x0, y0, x1, y0);
+                    line1(ctx, x0, y, x1, y);
+                    line1(ctx, x0, y1, x1, y1);
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function Combobox_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function Combobox_flow(self, visuals, element) {
+            var options, _var2;
+            options = { centerContent: false };
+            _var2 = buildTextContent(visuals, element, options, element.width);
+            return _var2;
+        }
+        function Combobox_drawCandies(self, widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            return;
+        }
+        function Combobox_hit(self, element, pos) {
+            return true;
+        }
+        function Combobox_create(self, pos) {
+            var item;
+            item = {
+                type: 'combobox',
+                left: pos.x,
+                top: pos.y,
+                width: 200,
+                height: 30
+            };
+            return item;
+        }
+        function Combobox_canEditLink(self) {
+            return true;
+        }
+        function Combobox_getAccepted(self) {
+            var accepted;
+            accepted = getStandardProps();
+            return accepted;
+        }
+        function Combobox_canGuide(self) {
+            return true;
+        }
+        function Combobox_render(self, visuals, element, ctx) {
+            var xp, yp, x0, x1, y0, y1, w, h, x, y, config, _var2;
+            config = visuals.config;
+            renderFreeIconShape(ctx, visuals, element, buildRectCoords, undefined);
+            centerContentFree(visuals, element, ctx);
+            _var2 = getComboButtonWidth(element);
+            w = Math.round(_var2 / 2);
+            h = element.height / 2;
+            x = element.left + element.width - w;
+            y = element.top + h;
+            xp = w * 0.5;
+            yp = h * 0.6;
+            x0 = x - w + xp;
+            x1 = x + w - xp;
+            y0 = y - h + yp;
+            y1 = y + h - yp;
+            clearShadow(ctx);
+            ctx.fillStyle = getThemeValue(config, element, 'iconBorder');
+            triPath(ctx, x0, y0, x1, y0, x, y1);
+            ctx.fill();
+            return;
+        }
+        function Combobox_canEditContent(self) {
+            return true;
+        }
+        function PtrRight_canEditContent(self) {
+            return true;
+        }
+        function PtrRight_canGuide(self) {
+            return true;
+        }
+        function PtrRight_render(self, visuals, element, ctx) {
+            renderFreeIconShape(ctx, visuals, element, buildPtrRightCoords, element.aux);
+            centerContentFree(visuals, element, ctx);
+            return;
+        }
+        function PtrRight_getAccepted(self) {
+            var accepted;
+            accepted = getStandardProps();
+            return accepted;
+        }
+        function PtrRight_canEditLink(self) {
+            return true;
+        }
+        function PtrRight_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function PtrRight_flow(self, visuals, element) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, element, options, element.width - element.aux);
+            return _var2;
+        }
+        function PtrRight_drawCandies(self, widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            createRadiusHandle(widget, element, ctx);
+            return;
+        }
+        function PtrRight_create(self, pos) {
+            var item;
+            item = {
+                type: 'f_ptr_right',
+                left: pos.x,
+                top: pos.y,
+                width: 200,
+                height: 50,
+                aux: 30
+            };
+            return item;
+        }
+        function PtrRight_hit(self, element, pos) {
+            return true;
+        }
         function Text_drawCandies(self, widget, element, ctx) {
             drawRectCandies(widget, element, ctx);
             return;
@@ -19339,7 +25225,10 @@ function createDrakonWidget() {
         }
         function Text_flow(self, visuals, element) {
             var options, _var2;
-            options = { centerContent: false };
+            options = {
+                centerContent: false,
+                padding: 0
+            };
             _var2 = buildTextContent(visuals, element, options, element.width);
             return _var2;
         }
@@ -19373,6 +25262,116 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function drawRoundedCandies(widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            createRadiusHandle(widget, element, ctx);
+            return;
+        }
+        function renderTablet(visuals, element, ctx) {
+            var r, border, w, h, x, y, config;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    r = w / 5;
+                    border = h / 4;
+                    setFillStroke(visuals, element, ctx);
+                    if (visuals.highlight === element.id) {
+                        ctx.fillStyle = config.theme.highlight;
+                        __state = '5';
+                    } else {
+                        ctx.fillStyle = getThemeValue(config, element, 'iconBorder');
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    roundedRect(ctx, element.left, element.top, element.width, element.height, r);
+                    ctx.fill();
+                    clearShadow(ctx);
+                    ctx.fillStyle = getThemeValue(config, element, 'iconBack');
+                    ctx.fillRect(x - w + ctx.lineWidth, y - h + border, w * 2 - ctx.lineWidth * 2, h * 2 - border * 2);
+                    circlePath(ctx, x, y - h + border / 2, border / 4);
+                    ctx.fill();
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderServer2(visuals, element, ctx) {
+            var w, h, x, y, line, b, vx, r, border, left, right, cy, w2, top, i, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    r = w / 5;
+                    border = Math.round(h / 6);
+                    left = x - w + border;
+                    right = x + w - border;
+                    cy = y - h + border;
+                    w2 = w * 2 - border * 2;
+                    renderFreeIconShape(ctx, visuals, element, buildRectCoords, undefined);
+                    line = ctx.lineWidth || 1;
+                    clearShadow(ctx);
+                    _var2 = mustShift(visuals.config, line);
+                    if (_var2) {
+                        x += 0.5;
+                        y += 0.5;
+                        __state = '11';
+                    } else {
+                        __state = '11';
+                    }
+                    break;
+                case '11':
+                    b = Math.round(w / 8);
+                    vx = x - w + b * 2;
+                    i = 0;
+                    __state = '23';
+                    break;
+                case '23':
+                    if (i < 4) {
+                        line1(ctx, vx, y - h, vx, y + h);
+                        vx += b;
+                        i++;
+                        __state = '23';
+                    } else {
+                        top = y - b;
+                        ctx.strokeRect(x + w - b * 4, top, b, b);
+                        ctx.strokeRect(x + w - b * 2, top, b, b);
+                        line1(ctx, x - w, y + b, x + w, y + b);
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderDownAngle(visuals, element, ctx) {
+            var w, h, x, y, padding, y0, y1, x0, x1;
+            ctx.lineWidth = getLineWidth(visuals, element);
+            ctx.strokeStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            padding = w * 0.3;
+            y0 = y - h / 3;
+            y1 = y + h / 3;
+            x0 = x - w + padding;
+            x1 = x + w - padding;
+            line2(ctx, x0, y0, x, y1, x1, y0);
+            return;
         }
         function GroupDuration_hit(self, element, pos) {
             var _var2, _var3, box, _var4, _var5;
@@ -19469,8 +25468,8 @@ function createDrakonWidget() {
                 switch (__state) {
                 case '2':
                     config = visuals.config;
-                    lineWidth = getThemeValue(config, element, 'lineWidth');
-                    color = getThemeValue(config, element, 'lines');
+                    lineWidth = getLineWidth(visuals, element);
+                    color = getLineColor(visuals, element);
                     if (lineWidth % 2 === 0) {
                         x = element.x;
                         y = element.y;
@@ -19635,6 +25634,112 @@ function createDrakonWidget() {
             accepted.push('lineWidth');
             return accepted;
         }
+        function renderPhone(visuals, element, ctx) {
+            var r, border, w, h, x, y, config;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    r = w / 5;
+                    border = h / 4;
+                    setFillStroke(visuals, element, ctx);
+                    if (visuals.highlight === element.id) {
+                        ctx.fillStyle = config.theme.highlight;
+                        __state = '5';
+                    } else {
+                        ctx.fillStyle = getThemeValue(config, element, 'iconBorder');
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    roundedRect(ctx, element.left, element.top, element.width, element.height, r);
+                    ctx.fill();
+                    clearShadow(ctx);
+                    ctx.fillStyle = getThemeValue(config, element, 'iconBack');
+                    ctx.fillRect(x - w + ctx.lineWidth, y - h + border, w * 2 - ctx.lineWidth * 2, h * 2 - border * 2);
+                    circlePath(ctx, x, y - h + border / 2, border / 4);
+                    ctx.fill();
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function Callout_canEditLink(self) {
+            return true;
+        }
+        function Callout_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function Callout_canEditContent(self) {
+            return true;
+        }
+        function Callout_flow(self, visuals, element) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, element, options, element.width);
+            return _var2;
+        }
+        function Callout_render(self, visuals, element, ctx) {
+            var renderCallback;
+            renderCallback = function (ctx, left, top) {
+                calloutPath(ctx, left, top, element.width, element.height, element.px, element.py);
+            };
+            renderIconShapeComplex(ctx, visuals, element, renderCallback, element.left, element.top);
+            centerContentFree(visuals, element, ctx);
+            return;
+        }
+        function Callout_drawCandies(self, widget, element, ctx) {
+            var handle, left, top, visuals;
+            drawRectCandies(widget, element, ctx);
+            visuals = widget.visuals;
+            handle = CalloutPointer();
+            setCommonHandleFields(widget, element, handle);
+            left = element.left;
+            top = element.top;
+            handle.x = left + element.px;
+            handle.y = top + element.py;
+            handle.minX = Number.MIN_SAFE_INTEGER;
+            handle.maxX = Number.MAX_SAFE_INTEGER;
+            handle.minY = Number.MIN_SAFE_INTEGER;
+            handle.maxY = Number.MAX_SAFE_INTEGER;
+            handle.left = left;
+            handle.top = top;
+            handle.color = 'yellow';
+            handle.primId = 'callout-' + element.id;
+            createHandle(visuals, handle, ctx);
+            return;
+        }
+        function Callout_create(self, pos) {
+            var item;
+            item = {
+                type: 'callout',
+                left: pos.x,
+                top: pos.y,
+                width: 200,
+                height: 50,
+                px: -30,
+                py: 20
+            };
+            return item;
+        }
+        function Callout_canGuide(self) {
+            return false;
+        }
+        function Callout_getAccepted(self) {
+            var accepted;
+            accepted = getStandardProps();
+            return accepted;
+        }
+        function Callout_hit(self, element, pos) {
+            return true;
+        }
         function drawRectCandies(widget, element, ctx) {
             var visuals, config, left, top, right, bottom, big, nw, sw, we, midX, midY, ne, ea, se, no, so;
             var __state = '2';
@@ -19665,6 +25770,7 @@ function createDrakonWidget() {
                     nw.maxY = bottom - config.freeSnap;
                     nw.right = right;
                     nw.bottom = bottom;
+                    nw.primId = 'nw-' + element.id;
                     createHandle(visuals, nw, ctx);
                     we = HandleWest();
                     setCommonHandleFields(widget, element, we);
@@ -19673,6 +25779,7 @@ function createDrakonWidget() {
                     we.minX = left - big;
                     we.maxX = right - config.freeSnap;
                     we.right = right;
+                    we.primId = 'we-' + element.id;
                     createHandle(visuals, we, ctx);
                     sw = HandleSW();
                     setCommonHandleFields(widget, element, sw);
@@ -19684,6 +25791,7 @@ function createDrakonWidget() {
                     sw.maxY = bottom + big;
                     sw.top = top;
                     sw.right = right;
+                    sw.primId = 'sw-' + element.id;
                     createHandle(visuals, sw, ctx);
                     __state = '51';
                     break;
@@ -19698,6 +25806,7 @@ function createDrakonWidget() {
                     ne.maxY = bottom - config.freeSnap;
                     ne.left = left;
                     ne.bottom = bottom;
+                    ne.primId = 'ne-' + element.id;
                     createHandle(visuals, ne, ctx);
                     ea = HandleEast();
                     setCommonHandleFields(widget, element, ea);
@@ -19706,6 +25815,7 @@ function createDrakonWidget() {
                     ea.minX = left + config.freeSnap;
                     ea.maxX = right + big;
                     ea.left = left;
+                    ea.primId = 'ea-' + element.id;
                     createHandle(visuals, ea, ctx);
                     se = HandleSE();
                     setCommonHandleFields(widget, element, se);
@@ -19717,6 +25827,7 @@ function createDrakonWidget() {
                     se.maxY = bottom + big;
                     se.top = top;
                     se.left = left;
+                    se.primId = 'se-' + element.id;
                     createHandle(visuals, se, ctx);
                     __state = '15';
                     break;
@@ -19728,6 +25839,7 @@ function createDrakonWidget() {
                     no.minY = top - big;
                     no.maxY = bottom - config.freeSnap;
                     no.bottom = bottom;
+                    no.primId = 'no-' + element.id;
                     createHandle(visuals, no, ctx);
                     so = HandleSouth();
                     setCommonHandleFields(widget, element, so);
@@ -19736,6 +25848,7 @@ function createDrakonWidget() {
                     so.minY = top + config.freeSnap;
                     so.maxY = bottom + big;
                     so.top = top;
+                    so.primId = 'so-' + element.id;
                     createHandle(visuals, so, ctx);
                     __state = '35';
                     break;
@@ -19743,6 +25856,287 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function Cloud_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function Cloud_drawCandies(self, widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            return;
+        }
+        function Cloud_getAccepted(self) {
+            var accepted;
+            accepted = getStandardProps();
+            return accepted;
+        }
+        function Cloud_create(self, pos) {
+            var item;
+            item = {
+                type: 'cloud',
+                left: pos.x,
+                top: pos.y,
+                width: 200,
+                height: 100
+            };
+            return item;
+        }
+        function Cloud_render(self, visuals, element, ctx) {
+            var top, centerY, left, padding;
+            padding = 0.08;
+            left = Math.round(element.left + element.width * padding);
+            renderFreeIconShapeComplex(ctx, visuals, element, cloudPath, element.aux);
+            centerY = element.top + element.height / 3 * 2;
+            top = Math.floor(centerY - element.contentHeight / 2);
+            renderContentCore(visuals, element, left, top);
+            return;
+        }
+        function Cloud_hit(self, element, pos) {
+            return true;
+        }
+        function Cloud_canEditContent(self) {
+            return true;
+        }
+        function Cloud_canEditLink(self) {
+            return true;
+        }
+        function Cloud_flow(self, visuals, element) {
+            var options, width, padding, _var2;
+            padding = 0.08;
+            options = {};
+            width = Math.round(element.width * (1 - padding * 2));
+            _var2 = buildTextContent(visuals, element, options, width);
+            return _var2;
+        }
+        function Cloud_canGuide(self) {
+            return true;
+        }
+        function renderPortrait(visuals, element, ctx) {
+            var left, right, top, bottom, g, r, b, nh, ux, uy, mx, wy, vy, w, h, x, y, line, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    line = setFillStroke(visuals, element, ctx);
+                    _var2 = mustShift(visuals.config, line);
+                    if (_var2) {
+                        x += 0.5;
+                        y += 0.5;
+                        __state = '3';
+                    } else {
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    left = x - w;
+                    right = x + w;
+                    top = y - h;
+                    bottom = y + h;
+                    g = 0.3;
+                    r = h / (2 + g);
+                    b = r * 0.4;
+                    nh = r * 0.8;
+                    ux = x + nh;
+                    uy = y + 0.2 * h;
+                    mx = x - nh;
+                    wy = y + 0.6 * h;
+                    vy = (uy + wy) / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(x - r, top + r);
+                    ctx.arc(x, top + r, r, -Math.PI, 0);
+                    ctx.lineTo(x + r, top + r + b);
+                    ctx.arc(x, top + r + b, r, 0, Math.PI);
+                    ctx.closePath();
+                    ctx.fill();
+                    clearShadow(ctx);
+                    ctx.stroke();
+                    setFillStroke(visuals, element, ctx);
+                    ctx.beginPath();
+                    ctx.moveTo(x, wy);
+                    ctx.lineTo(ux, uy);
+                    ctx.lineTo(right, vy);
+                    ctx.lineTo(right, bottom);
+                    ctx.lineTo(left, bottom);
+                    ctx.lineTo(left, vy);
+                    ctx.lineTo(mx, uy);
+                    ctx.closePath();
+                    ctx.fill();
+                    clearShadow(ctx);
+                    ctx.stroke();
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function isAboveNESW(bx, by, x, y) {
+            x -= bx;
+            y -= by;
+            return -x > y;
+        }
+        function getLineWidth(visuals, element) {
+            var lineWidth, config;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    if (visuals.highlight === element.id) {
+                        lineWidth = 2;
+                        __state = '7';
+                    } else {
+                        lineWidth = getThemeValue(config, element, 'lineWidth');
+                        __state = '7';
+                    }
+                    break;
+                case '7':
+                    return lineWidth;
+                default:
+                    return;
+                }
+            }
+        }
+        function isAboveNWSE(bx, by, x, y) {
+            x -= bx;
+            y -= by;
+            return x > y;
+        }
+        function getLineColor(visuals, element) {
+            var config, color;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    if (visuals.highlight === element.id) {
+                        color = config.theme.highlight;
+                        __state = '7';
+                    } else {
+                        color = getThemeValue(config, element, 'lines');
+                        __state = '7';
+                    }
+                    break;
+                case '7':
+                    return color;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderRightAngle(visuals, element, ctx) {
+            var w, h, x, y;
+            ctx.lineWidth = getLineWidth(visuals, element);
+            ctx.strokeStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            rightAngle(ctx, x, y, w, h);
+            return;
+        }
+        function renderHuman(visuals, element, ctx) {
+            var top, bottom, w2, h2, l, m, r2, r, k, ar, right, rpdm, rbok, rc, rgr, lgr, lc, lbok, lpdm, left, ln, hx, ttop, pdm, ph, ld, w, h, x, y, line, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    line = setFillStroke(visuals, element, ctx);
+                    _var2 = mustShift(visuals.config, line);
+                    if (_var2) {
+                        x += 0.5;
+                        y += 0.5;
+                        __state = '4';
+                    } else {
+                        __state = '4';
+                    }
+                    break;
+                case '4':
+                    top = y - h;
+                    bottom = y + h;
+                    w2 = w * 2;
+                    h2 = h * 2;
+                    l = Math.round(h2 * 0.4);
+                    m = 0;
+                    r2 = Math.floor((w2 - m * 3) / 8);
+                    r = Math.round(r2 * 1.5);
+                    k = Math.round(r * 2.3);
+                    ar = Math.round(r2 * 0.8);
+                    right = x + r2 * 2 + ar * 2;
+                    rpdm = right - ar * 2;
+                    rbok = rpdm - m;
+                    rc = rbok - r2;
+                    rgr = rbok - r2 * 2;
+                    lgr = rgr - m;
+                    lc = lgr - r2;
+                    lbok = lgr - r2 * 2;
+                    lpdm = lbok - m;
+                    left = lpdm - ar * 2;
+                    ln = lpdm - r2;
+                    hx = Math.round((lgr + rgr) / 2);
+                    ttop = top + k;
+                    pdm = ttop + ar * 2;
+                    ph = bottom - l;
+                    ld = bottom - r2;
+                    circlePath(ctx, hx, top + r, r);
+                    ctx.fill();
+                    clearShadow(ctx);
+                    ctx.stroke();
+                    setFillStroke(visuals, element, ctx);
+                    ctx.beginPath();
+                    ctx.moveTo(rpdm, ttop);
+                    ctx.arc(rpdm, pdm, ar * 2, -Math.PI / 2, 0);
+                    ctx.lineTo(right, ph);
+                    ctx.arc(right - ar, ph, ar, 0, Math.PI);
+                    ctx.lineTo(rpdm, pdm);
+                    ctx.lineTo(rbok, pdm);
+                    ctx.lineTo(rbok, ld);
+                    ctx.arc(rc, ld, r2, 0, Math.PI);
+                    ctx.lineTo(rgr, ph);
+                    ctx.lineTo(lgr, ph);
+                    ctx.lineTo(lgr, ld);
+                    ctx.arc(lc, ld, r2, 0, Math.PI);
+                    ctx.lineTo(lbok, pdm);
+                    ctx.lineTo(lpdm, pdm);
+                    ctx.lineTo(lpdm, ph);
+                    ctx.arc(lpdm - ar, ph, ar, 0, Math.PI);
+                    ctx.lineTo(left, ttop + ar * 2);
+                    ctx.arc(left + ar * 2, ttop + ar * 2, ar * 2, -Math.PI, -Math.PI / 2);
+                    ctx.closePath();
+                    ctx.fill();
+                    clearShadow(ctx);
+                    ctx.stroke();
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderLeftAngle(visuals, element, ctx) {
+            var w, h, x, y;
+            ctx.lineWidth = getLineWidth(visuals, element);
+            ctx.strokeStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            leftAngle(ctx, x, y, w, h);
+            return;
+        }
+        function createRectangular(render, type, props) {
+            var self;
+            self = Rectangle();
+            self.type = type;
+            self.render = render;
+            self.props = props;
+            return self;
         }
         function Rectangle_hit(self, element, pos) {
             return true;
@@ -19755,38 +26149,26 @@ function createDrakonWidget() {
         }
         function Rectangle_create(self, pos) {
             var item;
-            item = {
-                type: 'rectangle',
-                left: pos.x,
-                top: pos.y,
-                width: 200,
-                height: 50
-            };
-            return item;
-        }
-        function Rectangle_render(self, visuals, element, ctx) {
-            var line, left, top, width, height;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
-                    left = element.left;
-                    top = element.top;
-                    width = element.width;
-                    height = element.height;
-                    line = setFillStroke(visuals.config, element, ctx);
-                    ctx.fillRect(left, top, width, height);
-                    clearShadow(ctx);
-                    if (line) {
-                        ctx.strokeRect(left + 0.5, top + 0.5, width, height);
-                        __state = '5';
+                    item = {
+                        type: self.type,
+                        left: pos.x,
+                        top: pos.y,
+                        width: 200,
+                        height: 50
+                    };
+                    if (self.props) {
+                        Object.assign(item, self.props);
+                        __state = '3';
                     } else {
-                        __state = '5';
+                        __state = '3';
                     }
                     break;
-                case '5':
-                    centerContentFree(visuals, element, ctx);
-                    return;
+                case '3':
+                    return item;
                 default:
                     return;
                 }
@@ -19810,6 +26192,239 @@ function createDrakonWidget() {
             calculateRectBox(element);
             return;
         }
+        function Database_render(self, visuals, element, ctx) {
+            var top, centerY;
+            renderFreeIconShapeComplex(ctx, visuals, element, databasePath, element.aux);
+            databaseLidPath(ctx, element.left, element.top, element.width, element.height);
+            ctx.stroke();
+            centerY = Math.round(element.top + element.height / 2 + element.height * 0.05);
+            top = Math.floor(centerY - element.contentHeight / 2);
+            renderContentCore(visuals, element, element.left, top);
+            return;
+        }
+        function Database_hit(self, element, pos) {
+            return true;
+        }
+        function Database_canEditLink(self) {
+            return true;
+        }
+        function Database_canGuide(self) {
+            return true;
+        }
+        function Database_getAccepted(self) {
+            var accepted;
+            accepted = getStandardProps();
+            return accepted;
+        }
+        function Database_canEditContent(self) {
+            return true;
+        }
+        function Database_create(self, pos) {
+            var item;
+            item = {
+                type: 'database',
+                left: pos.x,
+                top: pos.y,
+                width: 200,
+                height: 200
+            };
+            return item;
+        }
+        function Database_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function buildCoordsTri() {
+            var coords, _var2;
+            coords = [
+                {
+                    x: 0,
+                    y: 100,
+                    radius: 0
+                },
+                {
+                    x: 100,
+                    y: 0,
+                    radius: 0
+                },
+                {
+                    x: 200,
+                    y: 100,
+                    radius: 0
+                }
+            ];
+            _var2 = JSON.stringify(coords);
+            return _var2;
+        }
+        function savePoly(widget, id, left, top, coords) {
+            var change, fields, _var2;
+            _var2 = JSON.stringify(coords);
+            fields = {
+                left: left,
+                top: top,
+                coords: _var2
+            };
+            calculatePolygonRect(fields);
+            change = {
+                id: id,
+                fields: fields,
+                op: 'update'
+            };
+            updateAndKeepSelection(widget, [change]);
+            return;
+        }
+        function calculatePolygonRect(item) {
+            var coords, left, top, right, bottom, x, y, _var2, _var3, point, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    coords = JSON.parse(item.coords);
+                    left = Number.MAX_SAFE_INTEGER, top = Number.MAX_SAFE_INTEGER, right = Number.MIN_SAFE_INTEGER, bottom = Number.MIN_SAFE_INTEGER;
+                    _var2 = coords;
+                    _var3 = 0;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (_var3 < _var2.length) {
+                        point = _var2[_var3];
+                        x = item.left + point.x;
+                        y = item.top + point.y;
+                        left = Math.min(left, x);
+                        right = Math.max(right, x);
+                        top = Math.min(top, y);
+                        bottom = Math.max(bottom, y);
+                        point.x = x;
+                        point.y = y;
+                        _var3++;
+                        __state = '6';
+                    } else {
+                        item.left = left;
+                        item.top = top;
+                        item.width = right - left;
+                        item.height = bottom - top;
+                        __state = '11';
+                    }
+                    break;
+                case '10':
+                    return;
+                case '11':
+                    _var4 = coords;
+                    _var5 = 0;
+                    __state = '13';
+                    break;
+                case '13':
+                    if (_var5 < _var4.length) {
+                        point = _var4[_var5];
+                        point.x = point.x - item.left;
+                        point.y = point.y - item.top;
+                        _var5++;
+                        __state = '13';
+                    } else {
+                        item.coords = JSON.stringify(coords);
+                        __state = '10';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function hitLine(x1, y1, x2, y2, pos, margin) {
+            var line, distance, box, _var2, _var3;
+            var __state = '37';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (x1 === x2) {
+                        if (y1 === y2) {
+                            return true;
+                        } else {
+                            __state = '15';
+                        }
+                    } else {
+                        if (y1 === y2) {
+                            __state = '12';
+                        } else {
+                            __state = '16';
+                        }
+                    }
+                    break;
+                case '12':
+                    return true;
+                case '15':
+                    return true;
+                case '16':
+                    line = lineFrom2Points(x1, y1, x2, y2);
+                    distance = distanceLineToPoint(line, pos.x, pos.y);
+                    _var2 = Math.abs(distance);
+                    if (_var2 >= margin) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                case '37':
+                    box = calculateLineBoxCore(x1, y1, x2, y2, margin);
+                    _var3 = hitBox(box, pos.x, pos.y);
+                    if (_var3) {
+                        __state = '2';
+                    } else {
+                        return false;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildCoordsPoly() {
+            var coords, _var2;
+            coords = [
+                {
+                    x: 0,
+                    y: 100,
+                    radius: 0
+                },
+                {
+                    x: 0,
+                    y: 50,
+                    radius: 0
+                },
+                {
+                    x: 50,
+                    y: 0,
+                    radius: 0
+                },
+                {
+                    x: 200,
+                    y: 0,
+                    radius: 0
+                },
+                {
+                    x: 200,
+                    y: 100,
+                    radius: 0
+                }
+            ];
+            _var2 = JSON.stringify(coords);
+            return _var2;
+        }
+        function renderUpAngle(visuals, element, ctx) {
+            var w, h, x, y, padding, y0, y1, x0, x1;
+            ctx.lineWidth = getLineWidth(visuals, element);
+            ctx.strokeStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            padding = w * 0.3;
+            y0 = y - h / 3;
+            y1 = y + h / 3;
+            x0 = x - w + padding;
+            x1 = x + w - padding;
+            line2(ctx, x0, y1, x, y0, x1, y1);
+            return;
+        }
         function drawGroupHandles(widget, element, ctx, config) {
             var big, topHandle, bottomHandle, visuals;
             var __state = '2';
@@ -19829,6 +26444,8 @@ function createDrakonWidget() {
                     __state = '29';
                     break;
                 case '21':
+                    topHandle.primId = 'top-' + element.id;
+                    bottomHandle.primId = 'bottom-' + element.id;
                     createHandle(visuals, topHandle, ctx);
                     createHandle(visuals, bottomHandle, ctx);
                     return;
@@ -19864,50 +26481,649 @@ function createDrakonWidget() {
                 }
             }
         }
-        function Line_flow(self, visuals, element) {
+        function renderRounded(visuals, element, ctx) {
+            renderFreeIconShapeComplex(ctx, visuals, element, roundedRect, element.aux);
+            centerContentFree(visuals, element, ctx);
             return;
         }
-        function Line_hit(self, element, pos) {
-            var line, distance, x1, x2, y1, y2, _var2;
+        function renderRectangle(visuals, element, ctx) {
+            renderFreeIconShape(ctx, visuals, element, buildRectCoords, undefined);
+            centerContentFree(visuals, element, ctx);
+            return;
+        }
+        function SimpleFree_create(self, pos) {
+            var item;
+            item = {
+                type: self.type,
+                left: pos.x,
+                top: pos.y,
+                width: self.width,
+                height: self.height
+            };
+            return item;
+        }
+        function SimpleFree_getAccepted(self) {
+            return [
+                'iconBack',
+                'iconBorder',
+                'borderWidth',
+                'shadowColor',
+                'shadowBlur',
+                'shadowOffsetX',
+                'shadowOffsetY'
+            ];
+        }
+        function SimpleFree_canEditLink(self) {
+            return false;
+        }
+        function SimpleFree_drawCandies(self, widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            return;
+        }
+        function SimpleFree_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function SimpleFree_canGuide(self) {
+            return true;
+        }
+        function SimpleFree_flow(self, visuals, element) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, element, options, element.width);
+            return _var2;
+        }
+        function renderLeftAngle2(visuals, element, ctx) {
+            var w, h, x, y, dx;
+            ctx.lineWidth = getLineWidth(visuals, element);
+            ctx.strokeStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            dx = w / 3;
+            leftAngle(ctx, x + dx, y, w, h);
+            leftAngle(ctx, x - dx, y, w, h);
+            return;
+        }
+        function renderCheck(visuals, element, ctx) {
+            var xp, yp, x0, x1, x2, y0, y1, w, h, x, y;
+            ctx.lineWidth = getLineWidth(visuals, element);
+            ctx.strokeStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            xp = w * 0.3;
+            yp = h * 0.3;
+            x0 = x - w + xp;
+            x1 = x0 + xp;
+            x2 = x + w - xp;
+            y0 = y - h + yp;
+            y1 = y + h - yp;
+            ctx.beginPath();
+            ctx.moveTo(x0, y);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y0);
+            ctx.stroke();
+            return;
+        }
+        function renderCheckTrue(visuals, element, ctx) {
+            var line, config, xp, yp, x0, y0, x1, y1, w, h, x, y, lineWidth;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
-                    if (element.x2 === 0) {
-                        if (element.y0 === 0) {
-                            return false;
-                        } else {
-                            __state = '12';
-                        }
+                    config = visuals.config;
+                    renderFreeIconShape(ctx, visuals, element, buildRectCoords, undefined);
+                    line = ctx.lineWidth || 1;
+                    clearShadow(ctx);
+                    lineWidth = getThemeValue(config, element, 'borderWidth');
+                    if (lineWidth === 0) {
+                        lineWidth = 1;
+                        __state = '41';
                     } else {
-                        if (element.y0 === 0) {
-                            __state = '15';
-                        } else {
-                            __state = '16';
-                        }
+                        __state = '41';
                     }
                     break;
-                case '12':
-                    return true;
-                case '15':
-                    return true;
-                case '16':
-                    x1 = element.left;
-                    x2 = x1 + element.x2;
-                    y1 = element.top;
-                    y2 = y1 + element.y2;
-                    line = lineFrom2Points(x1, y1, x2, y2);
-                    distance = distanceLineToPoint(line, pos.x, pos.y);
-                    _var2 = Math.abs(distance);
-                    if (_var2 >= element.margin) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                case '41':
+                    ctx.lineWidth = lineWidth;
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    xp = w * 0.6;
+                    yp = h * 0.6;
+                    x0 = x - w + xp;
+                    y0 = y - h + yp;
+                    x1 = x + w - xp;
+                    y1 = y + h - yp;
+                    line2(ctx, x0, y, x, y1, x1, y0);
+                    return;
                 default:
                     return;
                 }
             }
+        }
+        function databasePath(ctx, left, top, width, height) {
+            var h2, scale, ctop, cbottom, h, w, x, y;
+            h = height / 2;
+            w = width / 2;
+            x = left + w;
+            y = top + h;
+            h2 = makeCylinderHeight(w);
+            scale = h / h2;
+            ctop = y - h2 + w;
+            cbottom = y + h2 - w;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(1, scale);
+            ctx.translate(-x, -y);
+            ctx.beginPath();
+            ctx.arc(x, ctop, w, -Math.PI, 0);
+            ctx.arc(x, cbottom, w, 0, Math.PI);
+            ctx.closePath();
+            ctx.restore();
+            return;
+        }
+        function leftAngle(ctx, x, y, w, h) {
+            var padding, x0, x1, y0, y1;
+            padding = h * 0.3;
+            x0 = x - w / 3;
+            x1 = x + w / 3;
+            y0 = y - h + padding;
+            y1 = y + h - padding;
+            line2(ctx, x1, y0, x0, y, x1, y1);
+            return;
+        }
+        function buildPtrRightCoords(left, top, width, height, aux) {
+            var right, bottom, middle, y;
+            right = left + width;
+            bottom = top + height;
+            middle = right - aux;
+            y = Math.floor(top + height / 2);
+            return [
+                {
+                    x: left,
+                    y: top
+                },
+                {
+                    x: middle,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: y
+                },
+                {
+                    x: middle,
+                    y: bottom
+                },
+                {
+                    x: left,
+                    y: bottom
+                }
+            ];
+        }
+        function leftBottomCorner(ctx, x, y, radius) {
+            ctx.arc(x + radius, y - radius, radius, Math.PI * 0.5, Math.PI * 1);
+            return;
+        }
+        function polygonPath(ctx, left, top, coords, radius) {
+            var absCoords;
+            absCoords = coords.map(function (point) {
+                return {
+                    x: point.x + left,
+                    y: point.y + top,
+                    radius: point.radius
+                };
+            });
+            sharpPoly(ctx, absCoords);
+            return;
+        }
+        function ellipseShape(ctx, left, top, width, height) {
+            var cx, cy, rx, ry;
+            cx = Math.round(left + width / 2);
+            cy = Math.round(top + height / 2);
+            rx = Math.round(width / 2);
+            ry = Math.round(height / 2);
+            ctx.beginPath();
+            ctx.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+            return;
+        }
+        function calloutPath(ctx, left, top, width, height, px, py) {
+            var right, bottom, dpx, dpy, nw, se, ne, sw, radius, beginX, endX, beginY, endY, pwidth, _var2, _var3, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    radius = 10;
+                    right = left + width;
+                    bottom = top + height;
+                    dpx = px + left;
+                    dpy = py + top;
+                    nw = isAboveNWSE(left, top, dpx, dpy);
+                    se = isAboveNWSE(right, bottom, dpx, dpy);
+                    ne = isAboveNESW(right, top, dpx, dpy);
+                    sw = isAboveNESW(left, bottom, dpx, dpy);
+                    ctx.beginPath();
+                    if (dpx < left) {
+                        if (nw) {
+                            __state = '7';
+                        } else {
+                            if (sw) {
+                                __state = '15';
+                            } else {
+                                __state = '14';
+                            }
+                        }
+                    } else {
+                        if (dpx > right) {
+                            if (ne) {
+                                __state = '7';
+                            } else {
+                                if (se) {
+                                    __state = '13';
+                                } else {
+                                    __state = '14';
+                                }
+                            }
+                        } else {
+                            if (dpy > bottom) {
+                                __state = '14';
+                            } else {
+                                __state = '7';
+                            }
+                        }
+                    }
+                    break;
+                case '6':
+                    ctx.closePath();
+                    return;
+                case '7':
+                    pwidth = 40;
+                    leftTopCorner(ctx, left, top, radius);
+                    _var2 = findCalloutRoot(left, right, dpx, pwidth);
+                    beginX = _var2 - pwidth / 2;
+                    endX = beginX + pwidth;
+                    ctx.lineTo(beginX, top);
+                    ctx.lineTo(dpx, dpy);
+                    ctx.lineTo(endX, top);
+                    rightTopCorner(ctx, right, top, radius);
+                    rightBottomCorner(ctx, right, bottom, radius);
+                    leftBottomCorner(ctx, left, bottom, radius);
+                    __state = '6';
+                    break;
+                case '13':
+                    pwidth = 20;
+                    leftTopCorner(ctx, left, top, radius);
+                    rightTopCorner(ctx, right, top, radius);
+                    _var3 = findCalloutRoot(top, bottom, dpy, pwidth);
+                    beginY = _var3 - pwidth / 2;
+                    endY = beginY + pwidth;
+                    ctx.lineTo(right, beginY);
+                    ctx.lineTo(dpx, dpy);
+                    ctx.lineTo(right, endY);
+                    rightBottomCorner(ctx, right, bottom, radius);
+                    leftBottomCorner(ctx, left, bottom, radius);
+                    __state = '6';
+                    break;
+                case '14':
+                    pwidth = 40;
+                    leftTopCorner(ctx, left, top, radius);
+                    rightTopCorner(ctx, right, top, radius);
+                    rightBottomCorner(ctx, right, bottom, radius);
+                    _var4 = findCalloutRoot(left, right, dpx, pwidth);
+                    beginX = _var4 + pwidth / 2;
+                    endX = beginX - pwidth;
+                    ctx.lineTo(beginX, bottom);
+                    ctx.lineTo(dpx, dpy);
+                    ctx.lineTo(endX, bottom);
+                    leftBottomCorner(ctx, left, bottom, radius);
+                    __state = '6';
+                    break;
+                case '15':
+                    pwidth = 20;
+                    leftTopCorner(ctx, left, top, radius);
+                    rightTopCorner(ctx, right, top, radius);
+                    rightBottomCorner(ctx, right, bottom, radius);
+                    leftBottomCorner(ctx, left, bottom, radius);
+                    _var5 = findCalloutRoot(top, bottom, dpy, pwidth);
+                    beginY = _var5 + pwidth / 2;
+                    endY = beginY - pwidth;
+                    ctx.lineTo(left, beginY);
+                    ctx.lineTo(dpx, dpy);
+                    ctx.lineTo(left, endY);
+                    __state = '6';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function findCalloutRoot(min, max, pos, width) {
+            var size, result, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    size = max - min;
+                    if (width * 4 >= size) {
+                        __state = '11';
+                    } else {
+                        if (pos < min + size / 3) {
+                            result = min + size / 4;
+                            __state = '_item2';
+                        } else {
+                            if (pos > max - size / 3) {
+                                result = max - size / 4;
+                                __state = '_item2';
+                            } else {
+                                __state = '11';
+                            }
+                        }
+                    }
+                    break;
+                case '11':
+                    result = min + size / 2;
+                    __state = '_item2';
+                    break;
+                case '_item2':
+                    _var2 = Math.round(result);
+                    return _var2;
+                default:
+                    return;
+                }
+            }
+        }
+        function databaseLidPath(ctx, left, top, width, height) {
+            var h2, scale, ctop, h, w, x, y;
+            h = height / 2;
+            w = width / 2;
+            x = left + w;
+            y = top + h;
+            h2 = makeCylinderHeight(w);
+            scale = h / h2;
+            ctop = y - h2 + w;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(1, scale);
+            ctx.translate(-x, -y);
+            ctx.beginPath();
+            ctx.arc(x, ctop, w, 0, Math.PI);
+            ctx.restore();
+            return;
+        }
+        function circlePath(ctx, x, y, r) {
+            ctx.beginPath();
+            ctx.ellipse(x, y, r, r, 0, 0, Math.PI * 2);
+            return;
+        }
+        function makeCylinderHeight(w) {
+            var _var2;
+            _var2 = Math.round(w * 10);
+            return _var2;
+        }
+        function rightBottomCorner(ctx, x, y, radius) {
+            ctx.arc(x - radius, y - radius, radius, Math.PI * 0, Math.PI * 0.5);
+            return;
+        }
+        function polygonCoords(left, top, coords) {
+            var _var2;
+            _var2 = coords.map(function (point) {
+                return {
+                    x: point.x + left,
+                    y: point.y + top
+                };
+            });
+            return _var2;
+        }
+        function buildPtrLeftCoords(left, top, width, height, aux) {
+            var right, bottom, middle, y;
+            right = left + width;
+            bottom = top + height;
+            middle = left + aux;
+            y = Math.floor(top + height / 2);
+            return [
+                {
+                    x: left,
+                    y: y
+                },
+                {
+                    x: middle,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: top
+                },
+                {
+                    x: right,
+                    y: bottom
+                },
+                {
+                    x: middle,
+                    y: bottom
+                }
+            ];
+        }
+        function rightAngle(ctx, x, y, w, h) {
+            var padding, x0, x1, y0, y1;
+            padding = h * 0.3;
+            x0 = x - w / 3;
+            x1 = x + w / 3;
+            y0 = y - h + padding;
+            y1 = y + h - padding;
+            line2(ctx, x0, y0, x1, y, x0, y1);
+            return;
+        }
+        function cloudPath(ctx, left, top, width, height) {
+            var r1, bottom, w2, leftX, rightX, midY, x0, y0, x1, y1, x2, y2, x3, y3, rleft, rright, scale, h, w, x, y, clx, cly, clbegin, clend, crx, cry, crbegin, crend;
+            h = height / 2;
+            w = width / 2;
+            x = left + w;
+            y = top + h;
+            r1 = Math.round(h * 2 / 3);
+            bottom = y + h;
+            w2 = Math.round(h * 490 / 260);
+            leftX = x - w2 + r1;
+            rightX = x + w2 - r1;
+            midY = bottom - r1 * 2;
+            x0 = x - w2 / 2;
+            y0 = y - h;
+            x1 = x - w2 / 4;
+            y1 = y - h + r1 / 2;
+            x2 = x + 0.34 * w2;
+            y2 = y - h - r1 * 1.3;
+            x3 = rightX;
+            y3 = midY;
+            rleft = r1 * 0.8;
+            rright = r1 * 1.4;
+            scale = w / h / 2;
+            clx = x - w2 * 0.34;
+            cly = midY + h * 0.16;
+            clbegin = -0.9 * Math.PI;
+            clend = -0.25 * Math.PI;
+            crx = x + w2 * 0.2;
+            cry = midY;
+            crbegin = -0.9 * Math.PI;
+            crend = 0;
+            rright = r1;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(scale, 1);
+            ctx.translate(-x, -y);
+            ctx.beginPath();
+            ctx.moveTo(leftX, bottom);
+            ctx.arc(leftX, bottom - r1, r1, Math.PI / 2, Math.PI * 3 / 2);
+            ctx.arc(clx, cly, rleft, clbegin, clend);
+            ctx.arc(crx, cry, rright, crbegin, crend);
+            ctx.arc(rightX, bottom - r1, r1, -Math.PI / 2, Math.PI / 2);
+            ctx.closePath();
+            ctx.restore();
+            return;
+        }
+        function rightTopCorner(ctx, x, y, radius) {
+            ctx.arc(x - radius, y + radius, radius, Math.PI * 1.5, Math.PI * 0);
+            return;
+        }
+        function triPath(ctx, x0, y0, x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.closePath();
+            return;
+        }
+        function leftTopCorner(ctx, x, y, radius) {
+            ctx.arc(x + radius, y + radius, radius, Math.PI * 1, Math.PI * 1.5);
+            return;
+        }
+        function buildTabPath(ctx, left, top, width, height, aux) {
+            var right, bottom;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    right = left + width;
+                    bottom = top + height;
+                    ctx.beginPath();
+                    if (aux) {
+                        ctx.arc(left - aux, bottom - aux, aux, Math.PI * 0.5, Math.PI * 0, true);
+                        ctx.arc(left + aux, top + aux, aux, Math.PI * 1, Math.PI * 1.5);
+                        ctx.arc(right - aux, top + aux, aux, Math.PI * 1.5, Math.PI * 2);
+                        ctx.arc(right + aux, bottom - aux, aux, Math.PI * 1, Math.PI * 0.5, true);
+                        __state = '1';
+                    } else {
+                        ctx.moveTo(left, bottom);
+                        ctx.lineTo(left, top);
+                        ctx.lineTo(right, top);
+                        ctx.lineTo(right, bottom);
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderSoap(visuals, element, ctx) {
+            renderFreeIconShapeComplex(ctx, visuals, element, buildBeginEndPath, undefined);
+            centerContentFree(visuals, element, ctx);
+            return;
+        }
+        function renderComputer(visuals, element, ctx) {
+            var w, h, x, y, x0, y0, w2, h2, p, m, n, config;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    x0 = x - w;
+                    y0 = y - h;
+                    w2 = w * 2;
+                    h2 = h * 2;
+                    p = Math.ceil(h / 10);
+                    m = Math.round(h2 * 0.8);
+                    n = Math.round(w2 * 0.2);
+                    setFillStroke(visuals, element, ctx);
+                    if (visuals.highlight === element.id) {
+                        ctx.fillStyle = config.theme.highlight;
+                        __state = '6';
+                    } else {
+                        ctx.fillStyle = getThemeValue(config, element, 'iconBorder');
+                        __state = '6';
+                    }
+                    break;
+                case '6':
+                    ctx.fillRect(x0, y0, w2, m);
+                    ctx.fillRect(x - n / 2, y0 + m, n, h2 - m - p);
+                    ctx.fillRect(x - n, y + h - p, n * 2, p);
+                    clearShadow(ctx);
+                    ctx.fillStyle = getThemeValue(config, element, 'iconBack');
+                    ctx.fillRect(x0 + p, y0 + p, w2 - p * 2, m - p * 2);
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function calculateLineBoxCore(x1, y1, x2, y2, margin) {
+            var left, right, top, bottom, width, height, _var2;
+            left = Math.min(x1, x2);
+            right = Math.max(x1, x2);
+            top = Math.min(y1, y2);
+            bottom = Math.max(y1, y2);
+            width = right - left;
+            height = bottom - top;
+            _var2 = createBoxWithMargin(left, top, width, height, margin);
+            return _var2;
+        }
+        function renderServer1(visuals, element, ctx) {
+            var w, h, x, y, line, cy, r, border, left, right, w2, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    r = w / 5;
+                    renderFreeIconShapeComplex(ctx, visuals, element, roundedRect, r);
+                    line = ctx.lineWidth || 1;
+                    clearShadow(ctx);
+                    _var2 = mustShift(visuals.config, line);
+                    if (_var2) {
+                        x += 0.5;
+                        y += 0.5;
+                        __state = '27';
+                    } else {
+                        __state = '27';
+                    }
+                    break;
+                case '27':
+                    border = Math.round(h / 6);
+                    left = x - w + border;
+                    right = x + w - border;
+                    cy = y - h + border;
+                    w2 = w * 2 - border * 2;
+                    ctx.strokeRect(left, cy, w2, border);
+                    cy += border * 2;
+                    line1(ctx, left, cy, right, cy);
+                    cy += border;
+                    line1(ctx, left, cy, right, cy);
+                    cy += border;
+                    line1(ctx, left, cy, right, cy);
+                    cy += border;
+                    cy = y + h - border * 3;
+                    line1(ctx, left, cy, right, cy);
+                    circlePath(ctx, x, cy, border);
+                    ctx.fill();
+                    ctx.stroke();
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function Line_flow(self, visuals, element) {
+            return;
+        }
+        function Line_hit(self, element, pos) {
+            var x1, x2, y1, y2, _var2;
+            x1 = element.left;
+            x2 = x1 + element.x2;
+            y1 = element.top;
+            y2 = y1 + element.y2;
+            _var2 = hitLine(x1, y1, x2, y2, pos, element.margin);
+            return _var2;
         }
         function Line_formatLines(self) {
             return true;
@@ -19956,11 +27172,13 @@ function createDrakonWidget() {
             start.y = element.top;
             start.right = element.left + element.x2;
             start.bottom = element.top + element.y2;
+            start.primId = 'linestart-' + element.id;
             createHandle(visuals, start, ctx);
             end = LineEnd();
             setCommonHandleFields(widget, element, end);
             end.x = element.left + element.x2;
             end.y = element.top + element.y2;
+            end.primId = 'lineend-' + element.id;
             createHandle(visuals, end, ctx);
             return;
         }
@@ -19968,7 +27186,7 @@ function createDrakonWidget() {
             var margin;
             margin = config.socketTouchRadius;
             element.margin = margin;
-            element.innerBox = calculateLineBox(element);
+            element.innerBox = calculateLineBox(element, 0);
             element.box = createBoxWithMargin(element.innerBox.left, element.innerBox.top, element.innerBox.width, element.innerBox.height, margin);
             return;
         }
@@ -19983,18 +27201,18 @@ function createDrakonWidget() {
             return accepted;
         }
         function Line_render(self, visuals, element, ctx) {
-            var lineWidth, config, color, x1, x2, y1, y2, angle, iconBack;
+            var lineWidth, config, color, angle, iconBack, x1, x2, y1, y2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
-                    config = visuals.config;
-                    lineWidth = getThemeValue(config, element, 'lineWidth');
-                    color = getThemeValue(config, element, 'lines');
                     x1 = element.left;
                     x2 = x1 + element.x2;
                     y1 = element.top;
                     y2 = y1 + element.y2;
+                    config = visuals.config;
+                    lineWidth = getLineWidth(visuals, element);
+                    color = getLineColor(visuals, element);
                     setLineDashFromStyle(config, element, lineWidth, 'lineStyle', ctx);
                     __state = '20';
                     break;
@@ -20036,6 +27254,20 @@ function createDrakonWidget() {
             handle.widget = widget;
             handle.element = element;
             handle.id = element.id;
+            return;
+        }
+        function renderRadioTrue(visuals, element, ctx) {
+            var config, w, h, x, y, r;
+            renderRadioFalse(visuals, element, ctx);
+            config = visuals.config;
+            ctx.fillStyle = getThemeValue(config, element, 'iconBorder');
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            r = w / 3;
+            circlePath(ctx, x, y, r);
+            ctx.fill();
             return;
         }
         function drawCap(ctx, style, x, y, angle, color, fillColor, width) {
@@ -20150,20 +27382,976 @@ function createDrakonWidget() {
             ctx.stroke();
             return;
         }
-        function calculateLineBox(element) {
-            var left, right, top, bottom, width, height, x1, x2, y1, y2, _var2;
+        function renderEllipse(visuals, element, ctx) {
+            renderFreeIconShapeComplex(ctx, visuals, element, ellipseShape, undefined, true);
+            centerContentFree(visuals, element, ctx);
+            return;
+        }
+        function renderVScroll(visuals, element, ctx) {
+            var line, padding, x0, x1, y0, y1, y2, y3, config, w, h, x, y;
+            config = visuals.config;
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            renderFreeIconShape(ctx, visuals, element, buildRectCoords, undefined);
+            line = ctx.lineWidth || 1;
+            clearShadow(ctx);
+            ctx.fillStyle = ctx.strokeStyle;
+            padding = w / 4;
+            x0 = x - w + padding;
+            x1 = x + w - padding;
+            y0 = y - h + padding;
+            y1 = y - h + w * 1.5;
+            y2 = y + h - w * 1.5;
+            y3 = y + h - padding;
+            ctx.beginPath();
+            ctx.moveTo(x0, y1);
+            ctx.lineTo(x, y0);
+            ctx.lineTo(x1, y1);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(x, y3);
+            ctx.lineTo(x0, y2);
+            ctx.lineTo(x1, y2);
+            ctx.closePath();
+            ctx.fill();
+            return;
+        }
+        function renderRightAngle2(visuals, element, ctx) {
+            var w, h, x, y, dx;
+            ctx.lineWidth = getLineWidth(visuals, element);
+            ctx.strokeStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            dx = w / 3;
+            rightAngle(ctx, x - dx, y, w, h);
+            rightAngle(ctx, x + dx, y, w, h);
+            return;
+        }
+        function Polygon_getAccepted(self) {
+            var accepted;
+            accepted = getStandardProps();
+            return accepted;
+        }
+        function Polygon_canEditContent(self) {
+            return true;
+        }
+        function Polygon_canEditLink(self) {
+            return true;
+        }
+        function Polygon_canGuide(self) {
+            return true;
+        }
+        function Polygon_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function Polygon_drawCandies(self, widget, element, ctx) {
+            var visuals, handle, left, top, point, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    i = 0;
+                    __state = '11';
+                    break;
+                case '11':
+                    if (i < element.coords.length) {
+                        point = element.coords[i];
+                        handle = VertexHandle();
+                        setCommonHandleFields(widget, element, handle);
+                        left = element.left;
+                        top = element.top;
+                        handle.addVertex = addVertex;
+                        handle.x = left + point.x;
+                        handle.y = top + point.y;
+                        handle.radius = point.radius;
+                        handle.minX = Number.MIN_SAFE_INTEGER;
+                        handle.maxX = Number.MAX_SAFE_INTEGER;
+                        handle.minY = Number.MIN_SAFE_INTEGER;
+                        handle.maxY = Number.MAX_SAFE_INTEGER;
+                        handle.left = left;
+                        handle.top = top;
+                        handle.color = 'yellow';
+                        handle.ordinal = i;
+                        handle.primId = 'vertex-' + i + '-' + element.id;
+                        createHandle(visuals, handle, ctx);
+                        i++;
+                        __state = '11';
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function Polygon_hit(self, element, pos) {
+            return true;
+        }
+        function Polygon_create(self, pos) {
+            var item, _var2;
+            _var2 = self.buildCoords();
+            item = {
+                type: 'polygon',
+                left: pos.x,
+                top: pos.y,
+                coords: _var2
+            };
+            calculatePolygonRect(item);
+            return item;
+        }
+        function Polygon_render(self, visuals, element, ctx) {
+            var buildCoords, _var2;
+            buildCoords = function (left, top) {
+                _var2 = polygonCoords(left, top, element.coords);
+                return _var2;
+            };
+            renderFreeIconShape(ctx, visuals, element, buildCoords);
+            centerContentFree(visuals, element, ctx);
+            return;
+        }
+        function Polygon_flow(self, visuals, element) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, element, options, element.width);
+            return _var2;
+        }
+        function PtrLeft_create(self, pos) {
+            var item;
+            item = {
+                type: 'f_ptr_left',
+                left: pos.x,
+                top: pos.y,
+                width: 200,
+                height: 50,
+                aux: 30
+            };
+            return item;
+        }
+        function PtrLeft_render(self, visuals, element, ctx) {
+            var top, centerY;
+            renderFreeIconShape(ctx, visuals, element, buildPtrLeftCoords, element.aux);
+            centerY = element.top + element.height / 2;
+            top = Math.floor(centerY - element.contentHeight / 2);
+            renderContentCore(visuals, element, element.left + element.aux, top);
+            return;
+        }
+        function PtrLeft_canEditLink(self) {
+            return true;
+        }
+        function PtrLeft_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function PtrLeft_canEditContent(self) {
+            return true;
+        }
+        function PtrLeft_flow(self, visuals, element) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, element, options, element.width - element.aux);
+            return _var2;
+        }
+        function PtrLeft_hit(self, element, pos) {
+            return true;
+        }
+        function PtrLeft_canGuide(self) {
+            return true;
+        }
+        function PtrLeft_getAccepted(self) {
+            var accepted;
+            accepted = getStandardProps();
+            return accepted;
+        }
+        function GlyphIcon_create(self, pos) {
+            var item;
+            item = {
+                type: self.type,
+                left: pos.x,
+                top: pos.y,
+                width: self.width,
+                height: self.height
+            };
+            return item;
+        }
+        function GlyphIcon_canEditContent(self) {
+            return false;
+        }
+        function GlyphIcon_flow(self, visuals, element) {
+            var options, _var2;
+            options = {};
+            _var2 = buildTextContent(visuals, element, options, element.width);
+            return _var2;
+        }
+        function GlyphIcon_drawCandies(self, widget, element, ctx) {
+            drawRectCandies(widget, element, ctx);
+            return;
+        }
+        function GlyphIcon_canGuide(self) {
+            return true;
+        }
+        function GlyphIcon_hit(self, element, pos) {
+            return true;
+        }
+        function GlyphIcon_calculateBox(self, element, config) {
+            calculateRectBox(element);
+            return;
+        }
+        function GlyphIcon_getAccepted(self) {
+            var accepted;
+            accepted = [];
+            accepted.push('lines');
+            accepted.push('lineWidth');
+            return accepted;
+        }
+        function GlyphIcon_canEditLink(self) {
+            return false;
+        }
+        function renderDots3V(visuals, element, ctx) {
+            var lineWidth, w, h, x, y, h2, y0, y1, r;
+            lineWidth = getLineWidth(visuals, element);
+            ctx.fillStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            h2 = h * 0.6;
+            y0 = y - h2;
+            y1 = y + h2;
+            r = lineWidth || 1;
+            circlePath(ctx, x, y0, r);
+            ctx.fill();
+            circlePath(ctx, x, y, r);
+            ctx.fill();
+            circlePath(ctx, x, y1, r);
+            ctx.fill();
+            return;
+        }
+        function renderCheckFalse(visuals, element, ctx) {
+            renderFreeIconShape(ctx, visuals, element, buildRectCoords, undefined);
+            return;
+        }
+        function renderNotebook(visuals, element, ctx) {
+            var w, h, x, y, border, tp, r, config;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    config = visuals.config;
+                    w = element.width / 2;
+                    h = element.height / 2;
+                    x = element.left + w;
+                    y = element.top + h;
+                    border = Math.round(h / 5);
+                    tp = Math.round(w / 5);
+                    r = border;
+                    setFillStroke(visuals, element, ctx);
+                    if (visuals.highlight === element.id) {
+                        ctx.fillStyle = config.theme.highlight;
+                        __state = '6';
+                    } else {
+                        ctx.fillStyle = getThemeValue(config, element, 'iconBorder');
+                        __state = '6';
+                    }
+                    break;
+                case '6':
+                    roundedRect(ctx, element.left + border * 2, element.top, element.width - border * 4, element.height, r);
+                    ctx.fill();
+                    ctx.fillRect(x - w, y + h - border, w * 2, border);
+                    clearShadow(ctx);
+                    ctx.fillStyle = getThemeValue(config, element, 'iconBack');
+                    ctx.fillRect(x - w + border * 3, y - h + border, w * 2 - border * 6, h * 2 - border * 2);
+                    ctx.fillRect(x - tp, y + h - border, tp * 2, border / 2);
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderHScroll(visuals, element, ctx) {
+            var padding, y0, y1, x0, x1, x2, x3, config, w, h, x, y;
+            config = visuals.config;
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            renderFreeIconShape(ctx, visuals, element, buildRectCoords, undefined);
+            clearShadow(ctx);
+            ctx.fillStyle = ctx.strokeStyle;
+            padding = h / 4;
+            y0 = y - h + padding;
+            y1 = y + h - padding;
+            x0 = x - w + padding;
+            x1 = x - w + h * 1.5;
+            x2 = x + w - h * 1.5;
+            x3 = x + w - padding;
+            ctx.beginPath();
+            ctx.moveTo(x0, y);
+            ctx.lineTo(x1, y0);
+            ctx.lineTo(x1, y1);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(x2, y0);
+            ctx.lineTo(x3, y);
+            ctx.lineTo(x2, y1);
+            ctx.closePath();
+            ctx.fill();
+            return;
+        }
+        function renderTab(visuals, element, ctx) {
+            var line, x, y, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    line = setFillStroke(visuals, element, ctx);
+                    buildTabPath(ctx, element.left, element.top, element.width, element.height, element.aux);
+                    ctx.closePath();
+                    ctx.fill();
+                    clearShadow(ctx);
+                    __state = '19';
+                    break;
+                case '12':
+                    return;
+                case '13':
+                    centerContentFree(visuals, element, ctx);
+                    __state = '12';
+                    break;
+                case '19':
+                    if (line) {
+                        _var2 = mustShift(visuals.config, line);
+                        if (_var2) {
+                            x = element.left + 0.5;
+                            y = element.top + 0.5;
+                            __state = '29';
+                        } else {
+                            x = element.left;
+                            y = element.top;
+                            __state = '29';
+                        }
+                    } else {
+                        __state = '13';
+                    }
+                    break;
+                case '29':
+                    buildTabPath(ctx, x, y, element.width, element.height, element.aux);
+                    ctx.stroke();
+                    __state = '13';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function renderDots3H(visuals, element, ctx) {
+            var lineWidth, w, h, x, y, h2, x0, x1, r;
+            lineWidth = getLineWidth(visuals, element);
+            ctx.fillStyle = getLineColor(visuals, element);
+            w = element.width / 2;
+            h = element.height / 2;
+            x = element.left + w;
+            y = element.top + h;
+            h2 = h * 0.6;
+            x0 = x - h2;
+            x1 = x + h2;
+            r = lineWidth || 1;
+            circlePath(ctx, x0, y, r);
+            ctx.fill();
+            circlePath(ctx, x, y, r);
+            ctx.fill();
+            circlePath(ctx, x1, y, r);
+            ctx.fill();
+            return;
+        }
+        function calculateLineBox(element, margin) {
+            var x1, x2, y1, y2, _var2;
             x1 = element.left;
             x2 = x1 + element.x2;
             y1 = element.top;
             y2 = y1 + element.y2;
-            left = Math.min(x1, x2);
-            right = Math.max(x1, x2);
-            top = Math.min(y1, y2);
-            bottom = Math.max(y1, y2);
-            width = right - left;
-            height = bottom - top;
-            _var2 = createBox(left, top, width, height);
+            _var2 = calculateLineBoxCore(x1, y1, x2, y2, margin);
             return _var2;
+        }
+        function createConnection(widget, begin, end, role) {
+            var item, edits, _var2;
+            item = {
+                type: 'connection',
+                begin: begin,
+                end: end,
+                role: role
+            };
+            edits = [];
+            insertFreeItem(widget, edits, item);
+            _var2 = doEdit(widget, edits);
+            return _var2;
+        }
+        function buildConnectionMenu(widget, prim) {
+            var menu, _var2, _var3, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    menu = [];
+                    _var3 = isReadonly(widget);
+                    if (_var3) {
+                        __state = '3';
+                    } else {
+                        _var2 = tr(widget, 'Delete');
+                        pushMenuItem('delete_connection', menu, _var2, widget.visuals.config.imagePath + 'delete.png', function () {
+                            deleteSelection(widget);
+                        });
+                        menu.push({ type: 'separator' });
+                        _var4 = tr(widget, 'Format');
+                        pushMenuItem('format', menu, _var4, undefined, function () {
+                            startEditStyle(widget);
+                        });
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    return menu;
+                default:
+                    return;
+                }
+            }
+        }
+        function getConnection(visuals, id) {
+            return visuals.connectionById[id];
+        }
+        function drawConnection(widget, connection, ctx) {
+            var end, begin, visuals, config, minLine, style, iconBack, coords, lineWidth, lines, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    style = connection.style || {};
+                    minLine = 40;
+                    visuals = widget.visuals;
+                    config = visuals.config;
+                    begin = getFree(visuals, connection.begin);
+                    end = getFree(visuals, connection.end);
+                    lineWidth = getLineWidth(visuals, connection);
+                    lines = getLineColor(visuals, connection);
+                    iconBack = getThemeValue(visuals.config, connection, 'iconBack');
+                    setLineDashFromStyle(config, connection, lineWidth, 'lineStyle', ctx);
+                    __state = '74';
+                    break;
+                case '11':
+                    return false;
+                case '74':
+                    coords = buildConnectionLineCoords(begin, end, connection.role);
+                    if (coords.length === 0) {
+                        __state = '11';
+                    } else {
+                        _var2 = isSelected(widget, connection.id);
+                        if (_var2) {
+                            multiline(config, ctx, coords, 'black', lineWidth + 4, undefined, undefined, iconBack);
+                            multiline(config, ctx, coords, '#00ff00', lineWidth + 2, undefined, undefined, iconBack);
+                            __state = '76';
+                        } else {
+                            __state = '76';
+                        }
+                    }
+                    break;
+                case '76':
+                    multiline(config, ctx, coords, lines, lineWidth, style.tailStyle, style.headStyle, iconBack);
+                    __state = '11';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildConnectionBoxes(visuals, connection) {
+            var end, begin, coords, prev, coord, margin, i, _var2, _var3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    connection.boxes = [];
+                    begin = getFree(visuals, connection.begin);
+                    end = getFree(visuals, connection.end);
+                    coords = buildConnectionLineCoords(begin, end, connection.role);
+                    if (coords.length === 0) {
+                        __state = '8';
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                case '8':
+                    return;
+                case '10':
+                    margin = visuals.config.socketTouchRadius;
+                    prev = coords[0];
+                    i = 1;
+                    __state = '13';
+                    break;
+                case '13':
+                    if (i < coords.length) {
+                        coord = coords[i];
+                        if (prev.x === coord.x) {
+                            _var2 = boxForVerticalLine(prev.x, prev.y, coord.y, margin);
+                            connection.boxes.push(_var2);
+                            __state = '16';
+                        } else {
+                            _var3 = boxForHorizontalLine(prev.x, prev.y, coord.x, margin);
+                            connection.boxes.push(_var3);
+                            __state = '16';
+                        }
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                case '16':
+                    prev = coord;
+                    i++;
+                    __state = '13';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function getConnectionProps() {
+            return [
+                'lines',
+                'lineWidth',
+                'tailStyle',
+                'lineStyle',
+                'headStyle'
+            ];
+        }
+        function addConnectionToVisuals(visuals, id, item) {
+            var element;
+            element = clone(item);
+            element.id = id;
+            parseStyle(item, element);
+            multiMapAdd(visuals.connections, element.begin, element);
+            multiMapAdd(visuals.connections, element.end, element);
+            visuals.connectionById[id] = element;
+            return;
+        }
+        function performOnConnections(visuals, id, visited, action) {
+            var connections, mustExit, _var2, _var3, connection;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    connections = visuals.connections[id];
+                    if (connections) {
+                        _var2 = connections;
+                        _var3 = 0;
+                        __state = '7';
+                    } else {
+                        return undefined;
+                    }
+                    break;
+                case '6':
+                    _var3++;
+                    __state = '7';
+                    break;
+                case '7':
+                    if (_var3 < _var2.length) {
+                        connection = _var2[_var3];
+                        if (connection.id in visited) {
+                            visited[connection.id]++;
+                            __state = '6';
+                        } else {
+                            visited[connection.id] = 1;
+                            mustExit = action(connection);
+                            if (mustExit) {
+                                return connection;
+                            } else {
+                                __state = '6';
+                            }
+                        }
+                    } else {
+                        return undefined;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function hitConnection(connection, pos) {
+            var _var2, _var3, box, _var4;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var2 = connection.boxes;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        box = _var2[_var3];
+                        _var4 = hitBox(box, pos.x, pos.y);
+                        if (_var4) {
+                            return true;
+                        } else {
+                            _var3++;
+                            __state = '5';
+                        }
+                    } else {
+                        return false;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function buildConnectionLineCoords(begin, end, role) {
+            var minLine, bleft, bright, by, eleft, eright, ey, midX, left, right, btop, bbottom, bx, etop, ebottom, ex, midY, top, bottom, _var2, _var3, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    minLine = 40;
+                    if (role === 'vertical') {
+                        __state = '97';
+                    } else {
+                        __state = '73';
+                    }
+                    break;
+                case '73':
+                    bleft = begin.left;
+                    bright = begin.left + begin.width;
+                    by = Math.floor(begin.top + begin.height / 2);
+                    eleft = end.left;
+                    eright = end.left + end.width;
+                    ey = Math.floor(end.top + end.height / 2);
+                    if (by === ey) {
+                        if (bright <= eleft) {
+                            return [
+                                {
+                                    x: bright,
+                                    y: by
+                                },
+                                {
+                                    x: eleft,
+                                    y: ey
+                                }
+                            ];
+                        } else {
+                            if (eright <= bleft) {
+                                return [
+                                    {
+                                        x: bleft,
+                                        y: ey
+                                    },
+                                    {
+                                        x: eright,
+                                        y: by
+                                    }
+                                ];
+                            } else {
+                                return [];
+                            }
+                        }
+                    } else {
+                        if (bright + minLine <= eleft) {
+                            midX = Math.floor((bright + eleft) / 2);
+                            return [
+                                {
+                                    x: bright,
+                                    y: by
+                                },
+                                {
+                                    x: midX,
+                                    y: by
+                                },
+                                {
+                                    x: midX,
+                                    y: ey
+                                },
+                                {
+                                    x: eleft,
+                                    y: ey
+                                }
+                            ];
+                        } else {
+                            if (eright + minLine <= bleft) {
+                                midX = Math.floor((eright + bleft) / 2);
+                                return [
+                                    {
+                                        x: bleft,
+                                        y: by
+                                    },
+                                    {
+                                        x: midX,
+                                        y: by
+                                    },
+                                    {
+                                        x: midX,
+                                        y: ey
+                                    },
+                                    {
+                                        x: eright,
+                                        y: ey
+                                    }
+                                ];
+                            } else {
+                                _var2 = Math.abs(bleft - eleft);
+                                _var3 = Math.abs(bright - eright);
+                                if (_var2 <= _var3) {
+                                    if (bleft <= eleft) {
+                                        left = bleft - minLine;
+                                        __state = '90';
+                                    } else {
+                                        left = eleft - minLine;
+                                        __state = '90';
+                                    }
+                                } else {
+                                    if (bright >= eright) {
+                                        right = bright + minLine;
+                                        __state = '95';
+                                    } else {
+                                        right = eright + minLine;
+                                        __state = '95';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case '90':
+                    return [
+                        {
+                            x: bleft,
+                            y: by
+                        },
+                        {
+                            x: left,
+                            y: by
+                        },
+                        {
+                            x: left,
+                            y: ey
+                        },
+                        {
+                            x: eleft,
+                            y: ey
+                        }
+                    ];
+                case '95':
+                    return [
+                        {
+                            x: bright,
+                            y: by
+                        },
+                        {
+                            x: right,
+                            y: by
+                        },
+                        {
+                            x: right,
+                            y: ey
+                        },
+                        {
+                            x: eright,
+                            y: ey
+                        }
+                    ];
+                case '97':
+                    btop = begin.top;
+                    bbottom = begin.top + begin.height;
+                    bx = Math.floor(begin.left + begin.width / 2);
+                    etop = end.top;
+                    ebottom = end.top + end.height;
+                    ex = Math.floor(end.left + end.width / 2);
+                    if (bx === ex) {
+                        if (bbottom <= etop) {
+                            return [
+                                {
+                                    x: bx,
+                                    y: bbottom
+                                },
+                                {
+                                    x: bx,
+                                    y: etop
+                                }
+                            ];
+                        } else {
+                            if (ebottom <= btop) {
+                                return [
+                                    {
+                                        x: bx,
+                                        y: btop
+                                    },
+                                    {
+                                        x: bx,
+                                        y: ebottom
+                                    }
+                                ];
+                            } else {
+                                return [];
+                            }
+                        }
+                    } else {
+                        if (bbottom + minLine <= etop) {
+                            midY = Math.floor((bbottom + etop) / 2);
+                            return [
+                                {
+                                    x: bx,
+                                    y: bbottom
+                                },
+                                {
+                                    x: bx,
+                                    y: midY
+                                },
+                                {
+                                    x: ex,
+                                    y: midY
+                                },
+                                {
+                                    x: ex,
+                                    y: etop
+                                }
+                            ];
+                        } else {
+                            if (ebottom + minLine <= btop) {
+                                midY = Math.floor((ebottom + btop) / 2);
+                                return [
+                                    {
+                                        x: bx,
+                                        y: btop
+                                    },
+                                    {
+                                        x: bx,
+                                        y: midY
+                                    },
+                                    {
+                                        x: ex,
+                                        y: midY
+                                    },
+                                    {
+                                        x: ex,
+                                        y: ebottom
+                                    }
+                                ];
+                            } else {
+                                _var4 = Math.abs(btop - etop);
+                                _var5 = Math.abs(bbottom - ebottom);
+                                if (_var4 <= _var5) {
+                                    if (btop <= etop) {
+                                        top = btop - minLine;
+                                        __state = '114';
+                                    } else {
+                                        top = etop - minLine;
+                                        __state = '114';
+                                    }
+                                } else {
+                                    if (bbottom >= ebottom) {
+                                        bottom = bbottom + minLine;
+                                        __state = '119';
+                                    } else {
+                                        bottom = ebottom + minLine;
+                                        __state = '119';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case '114':
+                    return [
+                        {
+                            x: bx,
+                            y: btop
+                        },
+                        {
+                            x: bx,
+                            y: top
+                        },
+                        {
+                            x: ex,
+                            y: top
+                        },
+                        {
+                            x: ex,
+                            y: etop
+                        }
+                    ];
+                case '119':
+                    return [
+                        {
+                            x: bx,
+                            y: bbottom
+                        },
+                        {
+                            x: bx,
+                            y: bottom
+                        },
+                        {
+                            x: ex,
+                            y: bottom
+                        },
+                        {
+                            x: ex,
+                            y: ebottom
+                        }
+                    ];
+                default:
+                    return;
+                }
+            }
+        }
+        function deleteConnection(widget, id) {
+            var edits, _var2;
+            edits = [];
+            deleteItemCore(edits, id);
+            _var2 = doEdit(widget, edits);
+            return _var2;
+        }
+        function areConnected(visuals, id1, id2) {
+            var connections, _var2, _var3, connection;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    connections = visuals.connections[id1];
+                    if (connections) {
+                        _var2 = connections;
+                        _var3 = 0;
+                        __state = '6';
+                    } else {
+                        return false;
+                    }
+                    break;
+                case '6':
+                    if (_var3 < _var2.length) {
+                        connection = _var2[_var3];
+                        if (connection.begin === id2) {
+                            __state = '9';
+                        } else {
+                            if (connection.end === id2) {
+                                __state = '9';
+                            } else {
+                                _var3++;
+                                __state = '6';
+                            }
+                        }
+                    } else {
+                        return false;
+                    }
+                    break;
+                case '9':
+                    return true;
+                default:
+                    return;
+                }
+            }
         }
         function canGuide(widget, element) {
             var elementType, _var2;
@@ -20452,15 +28640,22 @@ function createDrakonWidget() {
                         __state = '_item2';
                     }
                     break;
+                case '26':
+                    _var3++;
+                    __state = '27';
+                    break;
                 case '27':
                     if (_var3 < _var2.length) {
                         item = _var2[_var3];
-                        oldPos = getFreePosition(item);
-                        x = snapUp(config, oldPos.x + dx);
-                        y = snapUp(config, oldPos.y + dy);
-                        setFreePosition(item, x, y);
-                        _var3++;
-                        __state = '27';
+                        if (item.type === 'connection') {
+                            __state = '26';
+                        } else {
+                            oldPos = getFreePosition(item);
+                            x = snapUp(config, oldPos.x + dx);
+                            y = snapUp(config, oldPos.y + dy);
+                            setFreePosition(item, x, y);
+                            __state = '26';
+                        }
                     } else {
                         __state = '34';
                     }
@@ -20472,13 +28667,20 @@ function createDrakonWidget() {
                     _var5 = 0;
                     __state = '38';
                     break;
+                case '37':
+                    _var5++;
+                    __state = '38';
+                    break;
                 case '38':
                     if (_var5 < _var4.length) {
                         item = _var4[_var5];
-                        item.zIndex = currentZ;
-                        currentZ++;
-                        _var5++;
-                        __state = '38';
+                        if (item.type === 'connection') {
+                            __state = '37';
+                        } else {
+                            item.zIndex = currentZ;
+                            currentZ++;
+                            __state = '37';
+                        }
                     } else {
                         __state = '16';
                     }
@@ -20686,6 +28888,9 @@ function createDrakonWidget() {
             widget.insertActions['case'] = caseInsert;
             widget.insertActions['first-case'] = firstCaseInsert;
             widget.insertActions['foreach'] = foreachInsert;
+            widget.insertActions['mind-child'] = mindChildInsert;
+            widget.insertActions['mind-before'] = mindBeforeInsert;
+            widget.insertActions['mind-after'] = mindAfterInsert;
             widget.insertActions['parblock'] = parBlockInsert;
             widget.insertActions['par'] = parInsert;
             widget.insertActions['firstpar'] = firstParInsert;
@@ -22703,6 +30908,9 @@ function createDrakonWidget() {
             self.showPasteSockets = function (type) {
                 return DrakonCanvas_showPasteSockets(self, type);
             };
+            self.patchDiagramStyle = function (style) {
+                return DrakonCanvas_patchDiagramStyle(self, style);
+            };
             self.onContextMenu = function (evt) {
                 return DrakonCanvas_onContextMenu(self, evt);
             };
@@ -22947,6 +31155,56 @@ function createDrakonWidget() {
             };
             return self;
         }
+        function LeftMindResizeHandle() {
+            var self = {};
+            self.dragTo = function (x, y) {
+                return LeftMindResizeHandle_dragTo(self, x, y);
+            };
+            self.getMinX = function () {
+                return LeftMindResizeHandle_getMinX(self);
+            };
+            self.getMaxX = function () {
+                return LeftMindResizeHandle_getMaxX(self);
+            };
+            self.getCursor = function () {
+                return LeftMindResizeHandle_getCursor(self);
+            };
+            self.xEnabled = function () {
+                return LeftMindResizeHandle_xEnabled(self);
+            };
+            self.complete = function () {
+                return LeftMindResizeHandle_complete(self);
+            };
+            self.yEnabled = function () {
+                return LeftMindResizeHandle_yEnabled(self);
+            };
+            return self;
+        }
+        function RightMindResizeHandle() {
+            var self = {};
+            self.getCursor = function () {
+                return RightMindResizeHandle_getCursor(self);
+            };
+            self.getMinX = function () {
+                return RightMindResizeHandle_getMinX(self);
+            };
+            self.complete = function () {
+                return RightMindResizeHandle_complete(self);
+            };
+            self.getMaxX = function () {
+                return RightMindResizeHandle_getMaxX(self);
+            };
+            self.xEnabled = function () {
+                return RightMindResizeHandle_xEnabled(self);
+            };
+            self.dragTo = function (x, y) {
+                return RightMindResizeHandle_dragTo(self, x, y);
+            };
+            self.yEnabled = function () {
+                return RightMindResizeHandle_yEnabled(self);
+            };
+            return self;
+        }
         function HandleNorth() {
             var self = {};
             self.xEnabled = function () {
@@ -23009,6 +31267,37 @@ function createDrakonWidget() {
             };
             return self;
         }
+        function RoundedRadius() {
+            var self = {};
+            self.xEnabled = function () {
+                return RoundedRadius_xEnabled(self);
+            };
+            self.dragTo = function (x, y) {
+                return RoundedRadius_dragTo(self, x, y);
+            };
+            self.getMinY = function () {
+                return RoundedRadius_getMinY(self);
+            };
+            self.yEnabled = function () {
+                return RoundedRadius_yEnabled(self);
+            };
+            self.getCursor = function () {
+                return RoundedRadius_getCursor(self);
+            };
+            self.getMaxY = function () {
+                return RoundedRadius_getMaxY(self);
+            };
+            self.getMinX = function () {
+                return RoundedRadius_getMinX(self);
+            };
+            self.getMaxX = function () {
+                return RoundedRadius_getMaxX(self);
+            };
+            self.complete = function () {
+                return RoundedRadius_complete(self);
+            };
+            return self;
+        }
         function HandleSW() {
             var self = {};
             self.getMaxX = function () {
@@ -23037,6 +31326,37 @@ function createDrakonWidget() {
             };
             self.xEnabled = function () {
                 return HandleSW_xEnabled(self);
+            };
+            return self;
+        }
+        function CalloutPointer() {
+            var self = {};
+            self.yEnabled = function () {
+                return CalloutPointer_yEnabled(self);
+            };
+            self.getMinY = function () {
+                return CalloutPointer_getMinY(self);
+            };
+            self.getMaxY = function () {
+                return CalloutPointer_getMaxY(self);
+            };
+            self.complete = function () {
+                return CalloutPointer_complete(self);
+            };
+            self.xEnabled = function () {
+                return CalloutPointer_xEnabled(self);
+            };
+            self.dragTo = function (x, y) {
+                return CalloutPointer_dragTo(self, x, y);
+            };
+            self.getMaxX = function () {
+                return CalloutPointer_getMaxX(self);
+            };
+            self.getCursor = function () {
+                return CalloutPointer_getCursor(self);
+            };
+            self.getMinX = function () {
+                return CalloutPointer_getMinX(self);
             };
             return self;
         }
@@ -23164,6 +31484,37 @@ function createDrakonWidget() {
             };
             return self;
         }
+        function RoundedRadiusLeft() {
+            var self = {};
+            self.xEnabled = function () {
+                return RoundedRadiusLeft_xEnabled(self);
+            };
+            self.complete = function () {
+                return RoundedRadiusLeft_complete(self);
+            };
+            self.dragTo = function (x, y) {
+                return RoundedRadiusLeft_dragTo(self, x, y);
+            };
+            self.getCursor = function () {
+                return RoundedRadiusLeft_getCursor(self);
+            };
+            self.getMaxY = function () {
+                return RoundedRadiusLeft_getMaxY(self);
+            };
+            self.yEnabled = function () {
+                return RoundedRadiusLeft_yEnabled(self);
+            };
+            self.getMaxX = function () {
+                return RoundedRadiusLeft_getMaxX(self);
+            };
+            self.getMinY = function () {
+                return RoundedRadiusLeft_getMinY(self);
+            };
+            self.getMinX = function () {
+                return RoundedRadiusLeft_getMinX(self);
+            };
+            return self;
+        }
         function HandleWest() {
             var self = {};
             self.getMinX = function () {
@@ -23192,6 +31543,40 @@ function createDrakonWidget() {
             };
             self.getMaxX = function () {
                 return HandleWest_getMaxX(self);
+            };
+            return self;
+        }
+        function VertexHandle() {
+            var self = {};
+            self.makeContextMenu = function () {
+                return VertexHandle_makeContextMenu(self);
+            };
+            self.xEnabled = function () {
+                return VertexHandle_xEnabled(self);
+            };
+            self.dragTo = function (x, y) {
+                return VertexHandle_dragTo(self, x, y);
+            };
+            self.getMinY = function () {
+                return VertexHandle_getMinY(self);
+            };
+            self.yEnabled = function () {
+                return VertexHandle_yEnabled(self);
+            };
+            self.getMinX = function () {
+                return VertexHandle_getMinX(self);
+            };
+            self.complete = function () {
+                return VertexHandle_complete(self);
+            };
+            self.getCursor = function () {
+                return VertexHandle_getCursor(self);
+            };
+            self.getMaxX = function () {
+                return VertexHandle_getMaxX(self);
+            };
+            self.getMaxY = function () {
+                return VertexHandle_getMaxY(self);
             };
             return self;
         }
@@ -23254,6 +31639,142 @@ function createDrakonWidget() {
             };
             self.complete = function () {
                 return HandleEast_complete(self);
+            };
+            return self;
+        }
+        function Frame() {
+            var self = {};
+            self.hit = function (element, pos) {
+                return Frame_hit(self, element, pos);
+            };
+            self.getAccepted = function () {
+                return Frame_getAccepted(self);
+            };
+            self.render = function (visuals, element, ctx) {
+                return Frame_render(self, visuals, element, ctx);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return Frame_drawCandies(self, widget, element, ctx);
+            };
+            self.create = function (pos) {
+                return Frame_create(self, pos);
+            };
+            self.canEditLink = function () {
+                return Frame_canEditLink(self);
+            };
+            self.canGuide = function () {
+                return Frame_canGuide(self);
+            };
+            self.calculateBox = function (element, config) {
+                return Frame_calculateBox(self, element, config);
+            };
+            self.canEditContent = function () {
+                return Frame_canEditContent(self);
+            };
+            self.flow = function (visuals, element) {
+                return Frame_flow(self, visuals, element);
+            };
+            return self;
+        }
+        function Polyline() {
+            var self = {};
+            self.create = function (pos) {
+                return Polyline_create(self, pos);
+            };
+            self.canEditLink = function () {
+                return Polyline_canEditLink(self);
+            };
+            self.canGuide = function () {
+                return Polyline_canGuide(self);
+            };
+            self.canEditContent = function () {
+                return Polyline_canEditContent(self);
+            };
+            self.render = function (visuals, element, ctx) {
+                return Polyline_render(self, visuals, element, ctx);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return Polyline_drawCandies(self, widget, element, ctx);
+            };
+            self.flow = function (visuals, element) {
+                return Polyline_flow(self, visuals, element);
+            };
+            self.hit = function (element, pos) {
+                return Polyline_hit(self, element, pos);
+            };
+            self.getAccepted = function () {
+                return Polyline_getAccepted(self);
+            };
+            self.calculateBox = function (element, config) {
+                return Polyline_calculateBox(self, element, config);
+            };
+            return self;
+        }
+        function Combobox() {
+            var self = {};
+            self.calculateBox = function (element, config) {
+                return Combobox_calculateBox(self, element, config);
+            };
+            self.flow = function (visuals, element) {
+                return Combobox_flow(self, visuals, element);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return Combobox_drawCandies(self, widget, element, ctx);
+            };
+            self.hit = function (element, pos) {
+                return Combobox_hit(self, element, pos);
+            };
+            self.create = function (pos) {
+                return Combobox_create(self, pos);
+            };
+            self.canEditLink = function () {
+                return Combobox_canEditLink(self);
+            };
+            self.getAccepted = function () {
+                return Combobox_getAccepted(self);
+            };
+            self.canGuide = function () {
+                return Combobox_canGuide(self);
+            };
+            self.render = function (visuals, element, ctx) {
+                return Combobox_render(self, visuals, element, ctx);
+            };
+            self.canEditContent = function () {
+                return Combobox_canEditContent(self);
+            };
+            return self;
+        }
+        function PtrRight() {
+            var self = {};
+            self.canEditContent = function () {
+                return PtrRight_canEditContent(self);
+            };
+            self.canGuide = function () {
+                return PtrRight_canGuide(self);
+            };
+            self.render = function (visuals, element, ctx) {
+                return PtrRight_render(self, visuals, element, ctx);
+            };
+            self.getAccepted = function () {
+                return PtrRight_getAccepted(self);
+            };
+            self.canEditLink = function () {
+                return PtrRight_canEditLink(self);
+            };
+            self.calculateBox = function (element, config) {
+                return PtrRight_calculateBox(self, element, config);
+            };
+            self.flow = function (visuals, element) {
+                return PtrRight_flow(self, visuals, element);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return PtrRight_drawCandies(self, widget, element, ctx);
+            };
+            self.create = function (pos) {
+                return PtrRight_create(self, pos);
+            };
+            self.hit = function (element, pos) {
+                return PtrRight_hit(self, element, pos);
             };
             return self;
         }
@@ -23322,6 +31843,74 @@ function createDrakonWidget() {
             };
             return self;
         }
+        function Callout() {
+            var self = {};
+            self.canEditLink = function () {
+                return Callout_canEditLink(self);
+            };
+            self.calculateBox = function (element, config) {
+                return Callout_calculateBox(self, element, config);
+            };
+            self.canEditContent = function () {
+                return Callout_canEditContent(self);
+            };
+            self.flow = function (visuals, element) {
+                return Callout_flow(self, visuals, element);
+            };
+            self.render = function (visuals, element, ctx) {
+                return Callout_render(self, visuals, element, ctx);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return Callout_drawCandies(self, widget, element, ctx);
+            };
+            self.create = function (pos) {
+                return Callout_create(self, pos);
+            };
+            self.canGuide = function () {
+                return Callout_canGuide(self);
+            };
+            self.getAccepted = function () {
+                return Callout_getAccepted(self);
+            };
+            self.hit = function (element, pos) {
+                return Callout_hit(self, element, pos);
+            };
+            return self;
+        }
+        function Cloud() {
+            var self = {};
+            self.calculateBox = function (element, config) {
+                return Cloud_calculateBox(self, element, config);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return Cloud_drawCandies(self, widget, element, ctx);
+            };
+            self.getAccepted = function () {
+                return Cloud_getAccepted(self);
+            };
+            self.create = function (pos) {
+                return Cloud_create(self, pos);
+            };
+            self.render = function (visuals, element, ctx) {
+                return Cloud_render(self, visuals, element, ctx);
+            };
+            self.hit = function (element, pos) {
+                return Cloud_hit(self, element, pos);
+            };
+            self.canEditContent = function () {
+                return Cloud_canEditContent(self);
+            };
+            self.canEditLink = function () {
+                return Cloud_canEditLink(self);
+            };
+            self.flow = function (visuals, element) {
+                return Cloud_flow(self, visuals, element);
+            };
+            self.canGuide = function () {
+                return Cloud_canGuide(self);
+            };
+            return self;
+        }
         function Rectangle() {
             var self = {};
             self.hit = function (element, pos) {
@@ -23339,9 +31928,6 @@ function createDrakonWidget() {
             self.create = function (pos) {
                 return Rectangle_create(self, pos);
             };
-            self.render = function (visuals, element, ctx) {
-                return Rectangle_render(self, visuals, element, ctx);
-            };
             self.canEditContent = function () {
                 return Rectangle_canEditContent(self);
             };
@@ -23353,6 +31939,71 @@ function createDrakonWidget() {
             };
             self.calculateBox = function (element, config) {
                 return Rectangle_calculateBox(self, element, config);
+            };
+            return self;
+        }
+        function Database() {
+            var self = {};
+            self.render = function (visuals, element, ctx) {
+                return Database_render(self, visuals, element, ctx);
+            };
+            self.hit = function (element, pos) {
+                return Database_hit(self, element, pos);
+            };
+            self.canEditLink = function () {
+                return Database_canEditLink(self);
+            };
+            self.canGuide = function () {
+                return Database_canGuide(self);
+            };
+            self.flow = function (visuals, element) {
+                return Database_flow(self, visuals, element);
+            };
+            self.getAccepted = function () {
+                return Database_getAccepted(self);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return Database_drawCandies(self, widget, element, ctx);
+            };
+            self.canEditContent = function () {
+                return Database_canEditContent(self);
+            };
+            self.create = function (pos) {
+                return Database_create(self, pos);
+            };
+            self.calculateBox = function (element, config) {
+                return Database_calculateBox(self, element, config);
+            };
+            return self;
+        }
+        function SimpleFree() {
+            var self = {};
+            self.canEditContent = function () {
+                return SimpleFree_canEditContent(self);
+            };
+            self.create = function (pos) {
+                return SimpleFree_create(self, pos);
+            };
+            self.getAccepted = function () {
+                return SimpleFree_getAccepted(self);
+            };
+            self.canEditLink = function () {
+                return SimpleFree_canEditLink(self);
+            };
+            self.hit = function (element, pos) {
+                return SimpleFree_hit(self, element, pos);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return SimpleFree_drawCandies(self, widget, element, ctx);
+            };
+            self.calculateBox = function (element, config) {
+                return SimpleFree_calculateBox(self, element, config);
+            };
+            self.canGuide = function () {
+                return SimpleFree_canGuide(self);
+            };
+            self.flow = function (visuals, element) {
+                return SimpleFree_flow(self, visuals, element);
             };
             return self;
         }
@@ -23390,6 +32041,105 @@ function createDrakonWidget() {
             };
             return self;
         }
+        function Polygon() {
+            var self = {};
+            self.getAccepted = function () {
+                return Polygon_getAccepted(self);
+            };
+            self.canEditContent = function () {
+                return Polygon_canEditContent(self);
+            };
+            self.canEditLink = function () {
+                return Polygon_canEditLink(self);
+            };
+            self.canGuide = function () {
+                return Polygon_canGuide(self);
+            };
+            self.calculateBox = function (element, config) {
+                return Polygon_calculateBox(self, element, config);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return Polygon_drawCandies(self, widget, element, ctx);
+            };
+            self.hit = function (element, pos) {
+                return Polygon_hit(self, element, pos);
+            };
+            self.create = function (pos) {
+                return Polygon_create(self, pos);
+            };
+            self.render = function (visuals, element, ctx) {
+                return Polygon_render(self, visuals, element, ctx);
+            };
+            self.flow = function (visuals, element) {
+                return Polygon_flow(self, visuals, element);
+            };
+            return self;
+        }
+        function PtrLeft() {
+            var self = {};
+            self.create = function (pos) {
+                return PtrLeft_create(self, pos);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return PtrLeft_drawCandies(self, widget, element, ctx);
+            };
+            self.render = function (visuals, element, ctx) {
+                return PtrLeft_render(self, visuals, element, ctx);
+            };
+            self.canEditLink = function () {
+                return PtrLeft_canEditLink(self);
+            };
+            self.calculateBox = function (element, config) {
+                return PtrLeft_calculateBox(self, element, config);
+            };
+            self.canEditContent = function () {
+                return PtrLeft_canEditContent(self);
+            };
+            self.flow = function (visuals, element) {
+                return PtrLeft_flow(self, visuals, element);
+            };
+            self.hit = function (element, pos) {
+                return PtrLeft_hit(self, element, pos);
+            };
+            self.canGuide = function () {
+                return PtrLeft_canGuide(self);
+            };
+            self.getAccepted = function () {
+                return PtrLeft_getAccepted(self);
+            };
+            return self;
+        }
+        function GlyphIcon() {
+            var self = {};
+            self.create = function (pos) {
+                return GlyphIcon_create(self, pos);
+            };
+            self.canEditContent = function () {
+                return GlyphIcon_canEditContent(self);
+            };
+            self.flow = function (visuals, element) {
+                return GlyphIcon_flow(self, visuals, element);
+            };
+            self.drawCandies = function (widget, element, ctx) {
+                return GlyphIcon_drawCandies(self, widget, element, ctx);
+            };
+            self.canGuide = function () {
+                return GlyphIcon_canGuide(self);
+            };
+            self.hit = function (element, pos) {
+                return GlyphIcon_hit(self, element, pos);
+            };
+            self.calculateBox = function (element, config) {
+                return GlyphIcon_calculateBox(self, element, config);
+            };
+            self.getAccepted = function () {
+                return GlyphIcon_getAccepted(self);
+            };
+            self.canEditLink = function () {
+                return GlyphIcon_canEditLink(self);
+            };
+            return self;
+        }
         unit.flowTextBlock = flowTextBlock;
         unit.renderFlowBlock = renderFlowBlock;
         unit.createDummyCanvas = createDummyCanvas;
@@ -23407,20 +32157,37 @@ function createDrakonWidget() {
         unit.FrameDrag = FrameDrag;
         unit.HandleDrag = HandleDrag;
         unit.FreeMover = FreeMover;
+        unit.LeftMindResizeHandle = LeftMindResizeHandle;
+        unit.RightMindResizeHandle = RightMindResizeHandle;
         unit.HandleNorth = HandleNorth;
         unit.HandleNE = HandleNE;
+        unit.RoundedRadius = RoundedRadius;
         unit.HandleSW = HandleSW;
+        unit.CalloutPointer = CalloutPointer;
         unit.HandleNW = HandleNW;
         unit.HandleSouth = HandleSouth;
         unit.LineEnd = LineEnd;
         unit.LineStart = LineStart;
+        unit.RoundedRadiusLeft = RoundedRadiusLeft;
         unit.HandleWest = HandleWest;
+        unit.VertexHandle = VertexHandle;
         unit.HandleSE = HandleSE;
         unit.HandleEast = HandleEast;
+        unit.Frame = Frame;
+        unit.Polyline = Polyline;
+        unit.Combobox = Combobox;
+        unit.PtrRight = PtrRight;
         unit.Text = Text;
         unit.GroupDuration = GroupDuration;
+        unit.Callout = Callout;
+        unit.Cloud = Cloud;
         unit.Rectangle = Rectangle;
+        unit.Database = Database;
+        unit.SimpleFree = SimpleFree;
         unit.Line = Line;
+        unit.Polygon = Polygon;
+        unit.PtrLeft = PtrLeft;
+        unit.GlyphIcon = GlyphIcon;
         Object.defineProperty(unit, 'html', {
             get: function () {
                 return html;

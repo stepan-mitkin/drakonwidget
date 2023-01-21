@@ -7,6 +7,13 @@
         widgets = createSimpleWidgets()
         widgets.init(tr)
         initDrakonWidget()
+        var currentVersion = drakon.getVersion()
+        var actualVersion = localStorage.getItem("drakon-widget-version")
+        if (actualVersion !== currentVersion) {
+            localStorage.clear()
+            localStorage.setItem("drakon-widget-version", currentVersion)
+        }
+
         initToolbar()
         loadDiagrams()
         loadThemes()
@@ -154,17 +161,6 @@
         localStorage.removeItem("current-zoom")
         resetThemes()
         location.reload()
-    }
-
-    function resetThemes() {
-        var themes = getThemes()
-        if (themes) {
-            for (var theme of themes) {
-                localStorage.removeItem(theme)
-            }
-            localStorage.removeItem("current-theme")
-            localStorage.removeItem("themes")
-        }
     }
 
     async function setThemeJson(evt) {
@@ -526,31 +522,17 @@
 
     function loadDiagrams() {
         var list = getDiagramList()
-        if (list) {
-            var expectedVersion = drakon.getVersion()
-            var actualVersion = localStorage.getItem("drakon-widget-version")
-            if (actualVersion !== expectedVersion) {
-                saveMissingExamplesInStorage()
-            }
-        } else {
+        if (!list) {
             saveExamplesInStorage()
         }
 
     }
 
-    function loadThemes() {
-        var expectedVersion = drakon.getVersion()
+    function loadThemes() {        
         var list = getThemes()
         if (!list) {
             saveThemesInStorage()
-        } else {
-            var actualVersion = localStorage.getItem("drakon-widget-version")
-            if (actualVersion !== expectedVersion) {
-                resetThemes()
-                saveThemesInStorage()
-            }
-        }
-        localStorage.setItem("drakon-widget-version", expectedVersion)
+        }        
     }
 
     function saveThemesInStorage() {

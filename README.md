@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 1.0.3
+Current version: 1.2.0
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -157,8 +157,10 @@ var config = {
 |font|Icon font|CSS font||14px Arial|
 |getClipboard|Gets the current clipboard value. See reference below.|function|||
 |headerFont|The font for the header icon.|CSS font||bold 18px Arial|
+|iconRadius|The radius of rounded icon angles.|integer||0|
 |insertionPadding|The width of side bars on Insertion icon|integer||10|
 |lineHeight|Line height for icons.|double||1.3|
+|lineRadius|The radius of rounded line angles.|integer||0|
 |maxHeight|The maximum icon height.|integer||600|
 |metre|The miminum distance between icons.|integer||20|
 |maxWidth|The maximum with of an icon.|integer||500|
@@ -497,7 +499,20 @@ Text strings that will be translated:
 - Edit content
 - Swap "Yes" and "No"
 - Add parameters
-- Insert branch with End
+- Insert Branch with End
+- Insert Branch
+- Insert Branch to the left
+- Insert Branch to the right
+- Insert Case
+- Insert Case to the left
+- Insert Case to the right
+- Add path
+- Add path to the left
+- Add path to the right
+- Add vertex
+- Add remove vertex
+- Send to back
+- Bring to front
 - Delete path
 - Edit upper text
 - Edit link
