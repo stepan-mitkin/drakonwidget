@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 1.2.0
+Current version: 1.2.1
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -660,6 +660,27 @@ function render(width, height, config)
 |height|integer|The height of the widget in px|
 |config|object|The configuration object. See the Configuration reference|
 
+
+### patchDiagramStyle
+
+Updates some fields of the diagram style
+
+```
+function patchDiagramStyle(style)
+```
+
+Arguments
+
+
+|Name|Data type|Description|
+|---|---|---|
+|style|object|The properties of new diagram style to update|
+
+Return value
+
+An array of strings. See __setDiagramStyle__.
+
+
 ### setContent
 
 Sets the content of an item.
@@ -828,6 +849,19 @@ Shows the paste sockets. Prepares the diagram for inserting items from the clipb
 ```
 function showPaste()
 ```
+
+### swapYesNo
+
+Swaps "Yes" and "No" exits of the Question icon.
+
+```
+function swapYesNo(id)
+```
+
+|Name|Data type|Description|
+|---|---|---|
+|itemId|text|The id of the Question item.|
+
 
 ### toggleSilhouette
 

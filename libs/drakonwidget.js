@@ -716,7 +716,6 @@ function createDrakonWidget() {
         unit.UndoEdit = UndoEdit;
         return unit;
     }
-
     function drakon_canvas() {
         var unit = {};
         var html, edit_tools, tracing;
@@ -5365,7 +5364,6 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_onContextMenu(self, evt) {
-            tracing.trace('DrakonCanvas.onContextMenu');
             evt.preventDefault();
             return false;
         }
@@ -8082,7 +8080,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.2.0';
+            return '1.2.1';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -10595,34 +10593,6 @@ function createDrakonWidget() {
                 case '18':
                     runInsertAction(widget, socket);
                     return;
-                default:
-                    return;
-                }
-            }
-        }
-        function swapYesNo(widget, prim) {
-            var change, node, _var2;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    node = getNode(widget.visuals, prim.id);
-                    change = {
-                        id: prim.id,
-                        fields: {},
-                        op: 'update'
-                    };
-                    if (node.flag1) {
-                        change.fields.flag1 = 0;
-                        __state = '_item2';
-                    } else {
-                        change.fields.flag1 = 1;
-                        __state = '_item2';
-                    }
-                    break;
-                case '_item2':
-                    _var2 = updateAndKeepSelection(widget, [change]);
-                    return _var2;
                 default:
                     return;
                 }
@@ -14922,7 +14892,7 @@ function createDrakonWidget() {
                     if (_var2 === 'question') {
                         _var3 = tr(widget, 'Swap "Yes" and "No"');
                         pushMenuItem('swap_yes_no', menu, _var3, undefined, function () {
-                            swapYesNo(widget, prim);
+                            widget.swapYesNo(prim.id);
                         });
                         __state = '16';
                     } else {
@@ -28395,6 +28365,36 @@ function createDrakonWidget() {
                 }
             }
         }
+        function DrakonCanvas_swapYesNo(self, id) {
+            var change, node, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    tracing.trace('swapYesNo', id);
+                    checkNotReadonly(self);
+                    node = getNode(self.visuals, id);
+                    change = {
+                        id: id,
+                        fields: {},
+                        op: 'update'
+                    };
+                    if (node.flag1) {
+                        change.fields.flag1 = 0;
+                        __state = '_item2';
+                    } else {
+                        change.fields.flag1 = 1;
+                        __state = '_item2';
+                    }
+                    break;
+                case '_item2':
+                    _var2 = updateAndKeepSelection(self, [change]);
+                    return _var2;
+                default:
+                    return;
+                }
+            }
+        }
         function DrakonCanvas_insertFree(self, type, evt) {
             var elementActions, item, edits, pos, _var2;
             var __state = '2';
@@ -30983,6 +30983,9 @@ function createDrakonWidget() {
             };
             self.redo = function () {
                 return DrakonCanvas_redo(self);
+            };
+            self.swapYesNo = function (id) {
+                return DrakonCanvas_swapYesNo(self, id);
             };
             self.insertFree = function (type, evt) {
                 return DrakonCanvas_insertFree(self, type, evt);
