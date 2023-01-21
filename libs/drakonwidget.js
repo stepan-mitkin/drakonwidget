@@ -985,18 +985,19 @@ function createDrakonWidget() {
             }
         }
         function buildDiagramModel(widget, diagram) {
-            var idNum, nextId, model, end, branch, _var3, _var2, _var4, itemId, item, _var5, _var6, _var7, _var8;
+            var idNum, nextId, model, end, branch, type, _var3, _var2, _var4, itemId, item, _var5, _var6, _var7, _var8;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     diagram.initial = [];
+                    type = diagram.type || 'drakon';
                     model = {
                         items: {},
                         doc: {},
                         branches: [],
                         edits: [],
-                        type: diagram.type || 'drakon'
+                        type: type
                     };
                     model.doc.access = diagram.access || 'write';
                     model.doc.name = diagram.name || '';
@@ -1042,7 +1043,7 @@ function createDrakonWidget() {
                     break;
                 case '16':
                     if (model.branches.length === 0) {
-                        if (diagram.type === 'drakon') {
+                        if (type === 'drakon') {
                             end = createNewItem(model, 'end');
                             branch = createNewItem(model, 'branch');
                             branch.branchId = 0;

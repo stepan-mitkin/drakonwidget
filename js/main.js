@@ -151,15 +151,7 @@
             return
         }
 
-        var list = getDiagramList()
-        for (var id of list) {
-            localStorage.removeItem(id)
-        }
-
-        localStorage.removeItem("diagram-list")
-        localStorage.removeItem("current-diagram")
-        localStorage.removeItem("current-zoom")
-        resetThemes()
+        localStorage.clear()
         location.reload()
     }
 
@@ -858,9 +850,6 @@
         config.canSelect = canSelect
         config.canvasIcons = false
         config.centerContent = false
-        config.yes = "Да"
-        config.no = "Нет"
-        config.end = "Конец"
         config.textFormat = "plain"
         return config
     }
