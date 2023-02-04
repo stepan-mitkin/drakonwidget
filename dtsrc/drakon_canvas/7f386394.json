@@ -1,1 +1,1 @@
-{"version":20180619,"tag":"","when_created":1661097632.0908,"parent_id":"1","items":[],"props":{"mformat":"MES_NONE","language":"LANG_S42"},"when_updated":1661097632.0908,"type":"module","updated_by":"stipan","name":"edit_tools","created_by":"stipan"}
+{"version":20180619,"tag":"","when_created":1661097632.0908,"parent_id":"1","items":[],"props":{"dependencies":"utils","mformat":"MES_NONE","language":"LANG_S42"},"when_updated":1661097632.0908,"type":"module","updated_by":"stipan","name":"edit_tools","created_by":"stipan"}

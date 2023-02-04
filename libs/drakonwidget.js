@@ -1,4 +1,757 @@
 function createDrakonWidget() {
+    function utils() {
+        var unit = {};
+        function hasValue(value) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (value === undefined) {
+                        __state = '8';
+                    } else {
+                        if (value === '') {
+                            __state = '8';
+                        } else {
+                            if (value === null) {
+                                __state = '8';
+                            } else {
+                                return true;
+                            }
+                        }
+                    }
+                    break;
+                case '8':
+                    return false;
+                default:
+                    return;
+                }
+            }
+        }
+        function debounce_create(action, delay) {
+            var tobj, msg;
+            var me = {
+                state: '2',
+                type: 'debounce'
+            };
+            function _main_debounce(__resolve, __reject) {
+                try {
+                    while (true) {
+                        switch (me.state) {
+                        case '2':
+                            me.state = '6';
+                            return;
+                        case '5':
+                            tobj = setTimeout(function () {
+                                me.onTimeout();
+                            }, delay);
+                            me.state = '11';
+                            return;
+                        case '12':
+                            clearTimeout(tobj);
+                            me.state = '5';
+                            break;
+                        case '13':
+                            action(msg);
+                            me.state = '2';
+                            break;
+                        default:
+                            return;
+                        }
+                    }
+                } catch (ex) {
+                    me.state = undefined;
+                    __reject(ex);
+                }
+            }
+            me.run = function () {
+                me.run = undefined;
+                return new Promise(function (__resolve, __reject) {
+                    me.onInput = function (_msg_) {
+                        msg = _msg_;
+                        switch (me.state) {
+                        case '6':
+                            me.state = '5';
+                            _main_debounce(__resolve, __reject);
+                            break;
+                        case '11':
+                            me.state = '12';
+                            _main_debounce(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.onTimeout = function () {
+                        switch (me.state) {
+                        case '11':
+                            me.state = '13';
+                            _main_debounce(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    _main_debounce(__resolve, __reject);
+                });
+            };
+            return me;
+        }
+        function debounce(action, delay) {
+            var __obj = debounce_create(action, delay);
+            return __obj.run();
+        }
+        function clone(src) {
+            var dst;
+            if (src) {
+                dst = {};
+                Object.assign(dst, src);
+                return dst;
+            } else {
+                return src;
+            }
+        }
+        function hexByteToString(value) {
+            var _var2, _var3;
+            _var3 = value.toString(16);
+            _var2 = ('00' + _var3).substr(-2);
+            return _var2;
+        }
+        function findBy(array, property, value) {
+            var _var2, _var3, item;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    array = array || [];
+                    _var2 = array;
+                    _var3 = 0;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (_var3 < _var2.length) {
+                        item = _var2[_var3];
+                        if (item[property] === value) {
+                            return item;
+                        } else {
+                            _var3++;
+                            __state = '6';
+                        }
+                    } else {
+                        return undefined;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function removeBy(array, property, value) {
+            var index;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    index = findIndex(array, property, value);
+                    if (index === -1) {
+                        __state = '1';
+                    } else {
+                        array.splice(index, 1);
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function deepCloneCore(visited, obj) {
+            var array, copy, _var2, _var3, _var4, item, _var6, _var5, _var7, key, value, _var8, _var9, _var10;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (obj === undefined) {
+                        __state = '3';
+                    } else {
+                        if (obj === null) {
+                            __state = '3';
+                        } else {
+                            _var2 = typeof obj;
+                            if (_var2 === 'number') {
+                                __state = '36';
+                            } else {
+                                if (_var2 === 'boolean') {
+                                    __state = '36';
+                                } else {
+                                    if (_var2 === 'string') {
+                                        __state = '36';
+                                    } else {
+                                        if (_var2 === 'bigint') {
+                                            __state = '36';
+                                        } else {
+                                            if (_var2 === 'function') {
+                                                __state = '36';
+                                            } else {
+                                                if (_var2 === 'symbol') {
+                                                    __state = '36';
+                                                } else {
+                                                    if (obj instanceof RegExp) {
+                                                        __state = '36';
+                                                    } else {
+                                                        if (obj instanceof Date) {
+                                                            __state = '36';
+                                                        } else {
+                                                            _var10 = visited.has(obj);
+                                                            if (_var10) {
+                                                                throw new Error('deepClone: cycle detected');
+                                                            } else {
+                                                                visited.add(obj);
+                                                                _var8 = Array.isArray(obj);
+                                                                if (_var8) {
+                                                                    array = [];
+                                                                    _var3 = obj;
+                                                                    _var4 = 0;
+                                                                    __state = '32';
+                                                                } else {
+                                                                    copy = {};
+                                                                    _var6 = obj;
+                                                                    _var5 = Object.keys(_var6);
+                                                                    _var7 = 0;
+                                                                    __state = '43';
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case '3':
+                    return undefined;
+                case '32':
+                    if (_var4 < _var3.length) {
+                        item = _var3[_var4];
+                        _var9 = deepCloneCore(visited, item);
+                        array.push(_var9);
+                        _var4++;
+                        __state = '32';
+                    } else {
+                        return array;
+                    }
+                    break;
+                case '36':
+                    return obj;
+                case '43':
+                    if (_var7 < _var5.length) {
+                        key = _var5[_var7];
+                        value = _var6[key];
+                        copy[key] = deepCloneCore(visited, value);
+                        _var7++;
+                        __state = '43';
+                    } else {
+                        return copy;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function comparerAsc(property, left, right) {
+            var leftValue, rightValue;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    leftValue = left[property];
+                    rightValue = right[property];
+                    if (typeof leftValue === 'string') {
+                        if (typeof rightValue === 'string') {
+                            leftValue = leftValue.toLowerCase();
+                            rightValue = rightValue.toLowerCase();
+                            __state = '4';
+                        } else {
+                            __state = '4';
+                        }
+                    } else {
+                        __state = '4';
+                    }
+                    break;
+                case '4':
+                    if (leftValue < rightValue) {
+                        return -1;
+                    } else {
+                        if (leftValue > rightValue) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                default:
+                    return;
+                }
+            }
+        }
+        function comparerDesc(property, left, right) {
+            var comp;
+            comp = comparerAsc(property, left, right);
+            return -1 * comp;
+        }
+        function remove(array, item) {
+            var index;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    index = array.indexOf(item);
+                    if (index === -1) {
+                        __state = '1';
+                    } else {
+                        array.splice(index, 1);
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function multiMapAdd(map, key, value) {
+            var bucket;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    bucket = map[key];
+                    if (bucket) {
+                        __state = '8';
+                    } else {
+                        bucket = [];
+                        map[key] = bucket;
+                        __state = '8';
+                    }
+                    break;
+                case '8':
+                    bucket.push(value);
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function addRange(from, to) {
+            var _var2, _var3, item;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (from) {
+                        _var2 = from;
+                        _var3 = 0;
+                        __state = '6';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                case '6':
+                    if (_var3 < _var2.length) {
+                        item = _var2[_var3];
+                        to.push(item);
+                        _var3++;
+                        __state = '6';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function subtract(from, what) {
+            var result, _var3, _var2, _var4, key, value;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    result = {};
+                    _var3 = from;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '6';
+                    break;
+                case '5':
+                    _var4++;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (_var4 < _var2.length) {
+                        key = _var2[_var4];
+                        value = _var3[key];
+                        if (key in what) {
+                            __state = '5';
+                        } else {
+                            result[key] = value;
+                            __state = '5';
+                        }
+                    } else {
+                        return result;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function getNowMs() {
+            var date, _var2;
+            date = new Date();
+            _var2 = date.getTime();
+            return _var2;
+        }
+        function subtractArrays(left, right) {
+            var _var2, _var3;
+            _var2 = left.filter(function (item) {
+                _var3 = right.indexOf(item);
+                return _var3 === -1;
+            });
+            return _var2;
+        }
+        function sortBy(array, property, direction) {
+            var sorter, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (array) {
+                        direction = direction || 'asc';
+                        direction = direction.toLowerCase();
+                        if (direction === 'asc') {
+                            sorter = comparerAsc;
+                            __state = '7';
+                        } else {
+                            sorter = comparerDesc;
+                            __state = '7';
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                case '7':
+                    array.sort(function (left, right) {
+                        _var2 = sorter(property, left, right);
+                        return _var2;
+                    });
+                    __state = '1';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function deepClone(obj) {
+            var visited, _var2;
+            visited = new Set();
+            _var2 = deepCloneCore(visited, obj);
+            return _var2;
+        }
+        function findIndex(array, property, value) {
+            var item, length, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    array = array || [];
+                    length = array.length;
+                    i = 0;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (i < length) {
+                        item = array[i];
+                        if (item[property] === value) {
+                            return i;
+                        } else {
+                            i++;
+                            __state = '6';
+                        }
+                    } else {
+                        return -1;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function random(min, max) {
+            var _var2;
+            _var2 = Math.random();
+            return _var2 * (max - min) + min;
+        }
+        function findFromEnd(text, needle, start) {
+            var i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    i = text.length - start - 1;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (i >= 0) {
+                        if (text[i] === needle) {
+                            return i;
+                        } else {
+                            i--;
+                            __state = '5';
+                        }
+                    } else {
+                        return -1;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function take(array, count) {
+            var _var2;
+            _var2 = array.slice(0, count);
+            return _var2;
+        }
+        function contains(array, element) {
+            var _var2;
+            _var2 = array.indexOf(element);
+            if (_var2 === -1) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        function forceDebounce_create(action, delay) {
+            var tobj, msg;
+            var me = {
+                state: '2',
+                type: 'forceDebounce'
+            };
+            function _main_forceDebounce(__resolve, __reject) {
+                try {
+                    while (true) {
+                        switch (me.state) {
+                        case '2':
+                            me.state = '14';
+                            return;
+                        case '5':
+                            tobj = setTimeout(function () {
+                                me.onTimeout();
+                            }, delay);
+                            me.state = '11';
+                            return;
+                        case '12':
+                            clearTimeout(tobj);
+                            me.state = '5';
+                            break;
+                        case '17':
+                            action(msg);
+                            me.state = '2';
+                            break;
+                        case '19':
+                            clearTimeout(tobj);
+                            me.state = '20';
+                            break;
+                        case '20':
+                            action(msg);
+                            me.state = '2';
+                            break;
+                        case '22':
+                            clearTimeout(tobj);
+                            me.state = '2';
+                            break;
+                        default:
+                            return;
+                        }
+                    }
+                } catch (ex) {
+                    me.state = undefined;
+                    __reject(ex);
+                }
+            }
+            me.run = function () {
+                me.run = undefined;
+                return new Promise(function (__resolve, __reject) {
+                    me.onInput = function (_msg_) {
+                        msg = _msg_;
+                        switch (me.state) {
+                        case '11':
+                            me.state = '12';
+                            _main_forceDebounce(__resolve, __reject);
+                            break;
+                        case '14':
+                            me.state = '5';
+                            _main_forceDebounce(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.force = function (_msg_) {
+                        msg = _msg_;
+                        switch (me.state) {
+                        case '11':
+                            me.state = '19';
+                            _main_forceDebounce(__resolve, __reject);
+                            break;
+                        case '14':
+                            me.state = '17';
+                            _main_forceDebounce(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.onTimeout = function () {
+                        switch (me.state) {
+                        case '11':
+                            me.state = '20';
+                            _main_forceDebounce(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.reset = function () {
+                        switch (me.state) {
+                        case '11':
+                            me.state = '22';
+                            _main_forceDebounce(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    _main_forceDebounce(__resolve, __reject);
+                });
+            };
+            return me;
+        }
+        function forceDebounce(action, delay) {
+            var __obj = forceDebounce_create(action, delay);
+            return __obj.run();
+        }
+        function isSubset(larger, smaller) {
+            var _var3, _var2, _var4, smallKey, _;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (larger) {
+                        _var3 = smaller;
+                        _var2 = Object.keys(_var3);
+                        _var4 = 0;
+                        __state = '7';
+                    } else {
+                        __state = '5';
+                    }
+                    break;
+                case '5':
+                    return false;
+                case '7':
+                    if (_var4 < _var2.length) {
+                        smallKey = _var2[_var4];
+                        _ = _var3[smallKey];
+                        if (smallKey in larger) {
+                            _var4++;
+                            __state = '7';
+                        } else {
+                            __state = '5';
+                        }
+                    } else {
+                        return true;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function objectValues(obj) {
+            var result, _var3, _var2, _var4, key, value;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    result = [];
+                    _var3 = obj;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (_var4 < _var2.length) {
+                        key = _var2[_var4];
+                        value = _var3[key];
+                        result.push(value);
+                        _var4++;
+                        __state = '6';
+                    } else {
+                        return result;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function last(array) {
+            var length;
+            length = array.length;
+            if (length === 0) {
+                return undefined;
+            } else {
+                return array[length - 1];
+            }
+        }
+        unit.hasValue = hasValue;
+        unit.debounce_create = debounce_create;
+        unit.debounce = debounce;
+        unit.clone = clone;
+        unit.hexByteToString = hexByteToString;
+        unit.findBy = findBy;
+        unit.removeBy = removeBy;
+        unit.remove = remove;
+        unit.multiMapAdd = multiMapAdd;
+        unit.addRange = addRange;
+        unit.subtract = subtract;
+        unit.getNowMs = getNowMs;
+        unit.subtractArrays = subtractArrays;
+        unit.sortBy = sortBy;
+        unit.deepClone = deepClone;
+        unit.findIndex = findIndex;
+        unit.random = random;
+        unit.findFromEnd = findFromEnd;
+        unit.take = take;
+        unit.contains = contains;
+        unit.forceDebounce_create = forceDebounce_create;
+        unit.forceDebounce = forceDebounce;
+        unit.isSubset = isSubset;
+        unit.objectValues = objectValues;
+        unit.last = last;
+        return unit;
+    }    
     function html_0_1() {
         var unit = {};
         unit.onError = function (error) {
@@ -290,9 +1043,7 @@ function createDrakonWidget() {
 
     function edit_tools() {
         var unit = {};
-        unit.onError = function (error) {
-            console.error(error);
-        };
+        var utils;
         function createUndoEdit(diagram, sender) {
             var self;
             self = UndoEdit();
@@ -317,36 +1068,36 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        if (change.id) {
-                            _var2 = change.op;
-                            if (_var2 === 'insert') {
-                                item = clone(change.fields);
-                                diagram.items[change.id] = item;
+                case '1':
+                    return;
+                case '2':
+                    if (change.id) {
+                        _var2 = change.op;
+                        if (_var2 === 'insert') {
+                            item = utils.clone(change.fields);
+                            diagram.items[change.id] = item;
+                            __state = '1';
+                        } else {
+                            if (_var2 === 'update') {
+                                item = diagram.items[change.id];
+                                Object.assign(item, change.fields);
                                 __state = '1';
                             } else {
-                                if (_var2 === 'update') {
-                                    item = diagram.items[change.id];
-                                    Object.assign(item, change.fields);
+                                if (_var2 === 'delete') {
+                                    delete diagram.items[change.id];
                                     __state = '1';
                                 } else {
-                                    if (_var2 === 'delete') {
-                                        delete diagram.items[change.id];
-                                        __state = '1';
-                                    } else {
-                                        throw new Error('Unexpected case value: ' + _var2);
-                                    }
+                                    throw new Error('Unexpected case value: ' + _var2);
                                 }
                             }
-                        } else {
-                            Object.assign(diagram, change.fields);
-                            __state = '1';
                         }
-                        break;
-                    default:
-                        return;
+                    } else {
+                        Object.assign(diagram, change.fields);
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -355,23 +1106,23 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        _var2 = edit.changes;
-                        _var3 = 0;
+                case '2':
+                    _var2 = edit.changes;
+                    _var3 = 0;
+                    __state = '13';
+                    break;
+                case '13':
+                    if (_var3 < _var2.length) {
+                        changes = _var2[_var3];
+                        applyChange(diagram, changes);
+                        _var3++;
                         __state = '13';
-                        break;
-                    case '13':
-                        if (_var3 < _var2.length) {
-                            changes = _var2[_var3];
-                            applyChange(diagram, changes);
-                            _var3++;
-                            __state = '13';
-                        } else {
-                            return;
-                        }
-                        break;
-                    default:
+                    } else {
                         return;
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -380,34 +1131,34 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        _var3 = changedFields;
-                        _var2 = Object.keys(_var3);
-                        _var4 = 0;
-                        __state = '5';
-                        break;
-                    case '5':
-                        if (_var4 < _var2.length) {
-                            name = _var2[_var4];
-                            value = _var3[name];
-                            if (name in obj) {
-                                oldValue = obj[name];
-                                __state = '7';
-                            } else {
-                                oldValue = '';
-                                __state = '7';
-                            }
+                case '2':
+                    _var3 = changedFields;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var4 < _var2.length) {
+                        name = _var2[_var4];
+                        value = _var3[name];
+                        if (name in obj) {
+                            oldValue = obj[name];
+                            __state = '7';
                         } else {
-                            return;
+                            oldValue = '';
+                            __state = '7';
                         }
-                        break;
-                    case '7':
-                        output[name] = oldValue;
-                        _var4++;
-                        __state = '5';
-                        break;
-                    default:
+                    } else {
                         return;
+                    }
+                    break;
+                case '7':
+                    output[name] = oldValue;
+                    _var4++;
+                    __state = '5';
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -424,56 +1175,56 @@ function createDrakonWidget() {
             var __state = '19';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        _var2 = change.op;
-                        if (_var2 === 'insert') {
+                case '2':
+                    _var2 = change.op;
+                    if (_var2 === 'insert') {
+                        undoChange = {
+                            id: change.id,
+                            op: 'delete'
+                        };
+                        __state = '17';
+                    } else {
+                        if (_var2 === 'update') {
                             undoChange = {
                                 id: change.id,
-                                op: 'delete'
+                                op: 'update',
+                                fields: {}
                             };
+                            item = diagram.items[change.id];
+                            getOldValues(item, change.fields, undoChange.fields);
                             __state = '17';
                         } else {
-                            if (_var2 === 'update') {
+                            if (_var2 === 'delete') {
+                                item = diagram.items[change.id];
+                                _var3 = utils.clone(item);
                                 undoChange = {
                                     id: change.id,
-                                    op: 'update',
-                                    fields: {}
+                                    op: 'insert',
+                                    fields: _var3
                                 };
-                                item = diagram.items[change.id];
-                                getOldValues(item, change.fields, undoChange.fields);
                                 __state = '17';
                             } else {
-                                if (_var2 === 'delete') {
-                                    item = diagram.items[change.id];
-                                    _var3 = clone(item);
-                                    undoChange = {
-                                        id: change.id,
-                                        op: 'insert',
-                                        fields: _var3
-                                    };
-                                    __state = '17';
-                                } else {
-                                    throw new Error('Unexpected case value: ' + _var2);
-                                }
+                                throw new Error('Unexpected case value: ' + _var2);
                             }
                         }
-                        break;
-                    case '17':
-                        return undoChange;
-                    case '18':
-                        undoChange = { fields: {} };
-                        getOldValues(diagram, change.fields, undoChange.fields);
-                        __state = '17';
-                        break;
-                    case '19':
-                        if (change.id) {
-                            __state = '2';
-                        } else {
-                            __state = '18';
-                        }
-                        break;
-                    default:
-                        return;
+                    }
+                    break;
+                case '17':
+                    return undoChange;
+                case '18':
+                    undoChange = { fields: {} };
+                    getOldValues(diagram, change.fields, undoChange.fields);
+                    __state = '17';
+                    break;
+                case '19':
+                    if (change.id) {
+                        __state = '2';
+                    } else {
+                        __state = '18';
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -482,55 +1233,55 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        diagram = obj.diagram;
-                        undo = createEditStep(diagram.id);
-                        redo = createEditStep(diagram.id);
-                        _var2 = changes;
-                        _var3 = 0;
-                        __state = '46';
-                        break;
-                    case '10':
-                        return edit;
-                    case '23':
-                        if (obj.currentUndo >= 0) {
-                            if (obj.currentUndo < obj.undo.length) {
-                                obj.currentUndo++;
-                                __state = '26';
-                            } else {
-                                __state = '26';
-                            }
+                case '2':
+                    diagram = obj.diagram;
+                    undo = createEditStep(diagram.id);
+                    redo = createEditStep(diagram.id);
+                    _var2 = changes;
+                    _var3 = 0;
+                    __state = '46';
+                    break;
+                case '10':
+                    return edit;
+                case '23':
+                    if (obj.currentUndo >= 0) {
+                        if (obj.currentUndo < obj.undo.length) {
+                            obj.currentUndo++;
+                            __state = '26';
                         } else {
-                            obj.undo = [];
-                            obj.currentUndo = 0;
-                            __state = '29';
+                            __state = '26';
                         }
-                        break;
-                    case '26':
-                        obj.undo = obj.undo.slice(0, obj.currentUndo);
+                    } else {
+                        obj.undo = [];
+                        obj.currentUndo = 0;
                         __state = '29';
-                        break;
-                    case '29':
-                        obj.undo.push(edit);
-                        __state = '10';
-                        break;
-                    case '46':
-                        if (_var3 < _var2.length) {
-                            change = _var2[_var3];
-                            addChangeToEdit(diagram, change, undo, redo);
-                            _var3++;
-                            __state = '46';
-                        } else {
-                            undo.changes.reverse();
-                            edit = {
-                                undo: undo,
-                                redo: redo
-                            };
-                            __state = '23';
-                        }
-                        break;
-                    default:
-                        return;
+                    }
+                    break;
+                case '26':
+                    obj.undo = obj.undo.slice(0, obj.currentUndo);
+                    __state = '29';
+                    break;
+                case '29':
+                    obj.undo.push(edit);
+                    __state = '10';
+                    break;
+                case '46':
+                    if (_var3 < _var2.length) {
+                        change = _var2[_var3];
+                        addChangeToEdit(diagram, change, undo, redo);
+                        _var3++;
+                        __state = '46';
+                    } else {
+                        undo.changes.reverse();
+                        edit = {
+                            undo: undo,
+                            redo: redo
+                        };
+                        __state = '23';
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -539,24 +1290,49 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        if (diagram.initial) {
-                            if (diagram.initial.length === 0) {
-                                __state = '7';
-                            } else {
-                                step = createEditStep(diagram.id);
-                                step.changes = diagram.initial;
-                                diagram.initial = undefined;
-                                return step;
-                            }
-                        } else {
+                case '2':
+                    if (diagram.initial) {
+                        if (diagram.initial.length === 0) {
                             __state = '7';
+                        } else {
+                            step = createEditStep(diagram.id);
+                            step.changes = diagram.initial;
+                            diagram.initial = undefined;
+                            return step;
                         }
-                        break;
-                    case '7':
-                        return undefined;
-                    default:
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '7':
+                    return undefined;
+                default:
+                    return;
+                }
+            }
+        }
+        function UndoEdit_save(self, changesToSave) {
+            var _var2, _var3, change;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var2 = changesToSave;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        change = _var2[_var3];
+                        sendEditToServer(self, change);
+                        _var3++;
+                        __state = '5';
+                    } else {
                         return;
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -565,38 +1341,38 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        action = {
-                            op: 'update',
-                            fields: {}
-                        };
-                        _var3 = changedFields;
-                        _var2 = Object.keys(_var3);
-                        _var4 = 0;
-                        __state = '6';
-                        break;
-                    case '5':
-                        _var4++;
-                        __state = '6';
-                        break;
-                    case '6':
-                        if (_var4 < _var2.length) {
-                            name = _var2[_var4];
-                            value = _var3[name];
-                            if (name === 'id') {
-                                __state = '5';
-                            } else {
-                                action.fields[name] = value;
-                                __state = '5';
-                            }
+                case '2':
+                    action = {
+                        op: 'update',
+                        fields: {}
+                    };
+                    _var3 = changedFields;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '6';
+                    break;
+                case '5':
+                    _var4++;
+                    __state = '6';
+                    break;
+                case '6':
+                    if (_var4 < _var2.length) {
+                        name = _var2[_var4];
+                        value = _var3[name];
+                        if (name === 'id') {
+                            __state = '5';
                         } else {
-                            edit = { changes: [action] };
-                            applyEdit(self.diagram, edit);
-                            return;
+                            action.fields[name] = value;
+                            __state = '5';
                         }
-                        break;
-                    default:
+                    } else {
+                        edit = { changes: [action] };
+                        applyEdit(self.diagram, edit);
                         return;
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -613,37 +1389,38 @@ function createDrakonWidget() {
             }
         }
         function UndoEdit_updateDocument(self, changes) {
-            var undoRecord, initial, _var2, _var3, change;
+            var undoRecord, initial, changesToSave, _var2, _var3, change;
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        initial = createInitialEdit(self.diagram);
-                        if (initial) {
-                            _var2 = initial.changes;
-                            _var3 = 0;
-                            __state = '18';
-                        } else {
-                            __state = '12';
-                        }
-                        break;
-                    case '12':
-                        undoRecord = createEdit(self, changes);
-                        sendEditToServer(self, undoRecord.redo);
-                        return;
-                    case '18':
-                        if (_var3 < _var2.length) {
-                            change = _var2[_var3];
-                            applyChange(self.diagram, change);
-                            _var3++;
-                            __state = '18';
-                        } else {
-                            sendEditToServer(self, initial);
-                            __state = '12';
-                        }
-                        break;
-                    default:
-                        return;
+                case '2':
+                    changesToSave = [];
+                    initial = createInitialEdit(self.diagram);
+                    if (initial) {
+                        _var2 = initial.changes;
+                        _var3 = 0;
+                        __state = '18';
+                    } else {
+                        __state = '12';
+                    }
+                    break;
+                case '12':
+                    undoRecord = createEdit(self, changes);
+                    changesToSave.push(undoRecord.redo);
+                    return changesToSave;
+                case '18':
+                    if (_var3 < _var2.length) {
+                        change = _var2[_var3];
+                        applyChange(self.diagram, change);
+                        _var3++;
+                        __state = '18';
+                    } else {
+                        changesToSave.push(initial);
+                        __state = '12';
+                    }
+                    break;
+                default:
+                    return;
                 }
             }
         }
@@ -652,52 +1429,33 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
-                    case '2':
-                        if (self.currentUndo >= 0) {
-                            if (self.currentUndo < self.undo.length) {
-                                edit = self.undo[self.currentUndo];
-                                self.currentUndo--;
-                                applyEdit(self.diagram, edit.undo);
-                                sendEditToServer(self, edit.undo);
-                                return edit.undo;
-                            } else {
-                                __state = '19';
-                            }
+                case '2':
+                    if (self.currentUndo >= 0) {
+                        if (self.currentUndo < self.undo.length) {
+                            edit = self.undo[self.currentUndo];
+                            self.currentUndo--;
+                            applyEdit(self.diagram, edit.undo);
+                            sendEditToServer(self, edit.undo);
+                            return edit.undo;
                         } else {
                             __state = '19';
                         }
-                        break;
-                    case '19':
-                        return undefined;
-                    default:
-                        return;
-                }
-            }
-        }
-        function clone(src) {
-            var dst;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                    case '1':
-                        return;
-                    case '2':
-                        if (src) {
-                            dst = {};
-                            Object.assign(dst, src);
-                            return dst;
-                        } else {
-                            src;
-                            __state = '1';
-                        }
-                        break;
-                    default:
-                        return;
+                    } else {
+                        __state = '19';
+                    }
+                    break;
+                case '19':
+                    return undefined;
+                default:
+                    return;
                 }
             }
         }
         function UndoEdit() {
             var self = {};
+            self.save = function (changesToSave) {
+                return UndoEdit_save(self, changesToSave);
+            };
             self.forcedChange = function (changedFields) {
                 return UndoEdit_forcedChange(self, changedFields);
             };
@@ -714,37 +1472,22 @@ function createDrakonWidget() {
         }
         unit.createUndoEdit = createUndoEdit;
         unit.UndoEdit = UndoEdit;
+        Object.defineProperty(unit, 'utils', {
+            get: function () {
+                return utils;
+            },
+            set: function (newValue) {
+                utils = newValue;
+            },
+            enumerable: true,
+            configurable: true
+        });
         return unit;
-    }
+    }    
+
     function drakon_canvas() {
         var unit = {};
-        var html, edit_tools, tracing;
-        function hasValue(value) {
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    if (value === undefined) {
-                        __state = '8';
-                    } else {
-                        if (value === '') {
-                            __state = '8';
-                        } else {
-                            if (value === null) {
-                                __state = '8';
-                            } else {
-                                return true;
-                            }
-                        }
-                    }
-                    break;
-                case '8':
-                    return false;
-                default:
-                    return;
-                }
-            }
-        }
+        var html, edit_tools, tracing, utils;
         function isLastPar(node) {
             if (node.two) {
                 return false;
@@ -1000,7 +1743,7 @@ function createDrakonWidget() {
                     };
                     model.doc.access = diagram.access || 'write';
                     model.doc.name = diagram.name || '';
-                    model.doc.keywords = clone(diagram.keywords || {});
+                    model.doc.keywords = utils.clone(diagram.keywords || {});
                     model.doc.params = diagram.params || '';
                     if (diagram.style) {
                         model.doc.style = JSON.parse(diagram.style);
@@ -1330,114 +2073,6 @@ function createDrakonWidget() {
             _var2 = html.createElement('div', properties, args);
             return _var2;
         }
-        function clone(src) {
-            var dst;
-            if (src) {
-                dst = {};
-                Object.assign(dst, src);
-                return dst;
-            } else {
-                return src;
-            }
-        }
-        function deepCloneCore(visited, obj) {
-            var array, copy, _var2, _var3, _var4, item, _var6, _var5, _var7, key, value, _var8, _var9, _var10;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    if (obj === undefined) {
-                        __state = '3';
-                    } else {
-                        if (obj === null) {
-                            __state = '3';
-                        } else {
-                            _var2 = typeof obj;
-                            if (_var2 === 'number') {
-                                __state = '36';
-                            } else {
-                                if (_var2 === 'boolean') {
-                                    __state = '36';
-                                } else {
-                                    if (_var2 === 'string') {
-                                        __state = '36';
-                                    } else {
-                                        if (_var2 === 'bigint') {
-                                            __state = '36';
-                                        } else {
-                                            if (_var2 === 'function') {
-                                                __state = '36';
-                                            } else {
-                                                if (_var2 === 'symbol') {
-                                                    __state = '36';
-                                                } else {
-                                                    if (obj instanceof RegExp) {
-                                                        __state = '36';
-                                                    } else {
-                                                        if (obj instanceof Date) {
-                                                            __state = '36';
-                                                        } else {
-                                                            _var10 = visited.has(obj);
-                                                            if (_var10) {
-                                                                throw new Error('deepClone: cycle detected');
-                                                            } else {
-                                                                visited.add(obj);
-                                                                _var8 = Array.isArray(obj);
-                                                                if (_var8) {
-                                                                    array = [];
-                                                                    _var3 = obj;
-                                                                    _var4 = 0;
-                                                                    __state = '32';
-                                                                } else {
-                                                                    copy = {};
-                                                                    _var6 = obj;
-                                                                    _var5 = Object.keys(_var6);
-                                                                    _var7 = 0;
-                                                                    __state = '43';
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case '3':
-                    return undefined;
-                case '32':
-                    if (_var4 < _var3.length) {
-                        item = _var3[_var4];
-                        _var9 = deepCloneCore(visited, item);
-                        array.push(_var9);
-                        _var4++;
-                        __state = '32';
-                    } else {
-                        return array;
-                    }
-                    break;
-                case '36':
-                    return obj;
-                case '43':
-                    if (_var7 < _var5.length) {
-                        key = _var5[_var7];
-                        value = _var6[key];
-                        copy[key] = deepCloneCore(visited, value);
-                        _var7++;
-                        __state = '43';
-                    } else {
-                        return copy;
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
         function lineFrom2Points(x1, y1, x2, y2) {
             var a, b, c, div;
             a = y1 - y2;
@@ -1477,12 +2112,6 @@ function createDrakonWidget() {
                 }
             }
         }
-        function hexByteToString(value) {
-            var _var2, _var3;
-            _var3 = value.toString(16);
-            _var2 = ('00' + _var3).substr(-2);
-            return _var2;
-        }
         function copyFieldsOrDefault(dst, src, fields, defaultValue) {
             var value, _var2, _var3, field, _var4;
             var __state = '2';
@@ -1497,7 +2126,7 @@ function createDrakonWidget() {
                     if (_var3 < _var2.length) {
                         field = _var2[_var3];
                         value = src[field];
-                        _var4 = hasValue(value);
+                        _var4 = utils.hasValue(value);
                         if (_var4) {
                             __state = '6';
                         } else {
@@ -1513,41 +2142,6 @@ function createDrakonWidget() {
                     _var3++;
                     __state = '5';
                     break;
-                default:
-                    return;
-                }
-            }
-        }
-        function comparerAsc(property, left, right) {
-            var leftValue, rightValue;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    leftValue = left[property];
-                    rightValue = right[property];
-                    if (typeof leftValue === 'string') {
-                        if (typeof rightValue === 'string') {
-                            leftValue = leftValue.toLowerCase();
-                            rightValue = rightValue.toLowerCase();
-                            __state = '4';
-                        } else {
-                            __state = '4';
-                        }
-                    } else {
-                        __state = '4';
-                    }
-                    break;
-                case '4':
-                    if (leftValue < rightValue) {
-                        return -1;
-                    } else {
-                        if (leftValue > rightValue) {
-                            return 1;
-                        } else {
-                            return 0;
-                        }
-                    }
                 default:
                     return;
                 }
@@ -1599,27 +2193,6 @@ function createDrakonWidget() {
             _var2 = createBox(left - margin, top - margin, width + margin2, height + margin2);
             return _var2;
         }
-        function remove(array, item) {
-            var index;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    index = array.indexOf(item);
-                    if (index === -1) {
-                        __state = '1';
-                    } else {
-                        array.splice(index, 1);
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
         function setNotNull(src, dst, name) {
             var __state = '2';
             while (true) {
@@ -1638,78 +2211,6 @@ function createDrakonWidget() {
                     return;
                 }
             }
-        }
-        function addRange(from, to) {
-            var _var2, _var3, item;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (from) {
-                        _var2 = from;
-                        _var3 = 0;
-                        __state = '6';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                case '6':
-                    if (_var3 < _var2.length) {
-                        item = _var2[_var3];
-                        to.push(item);
-                        _var3++;
-                        __state = '6';
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function subtract(from, what) {
-            var result, _var3, _var2, _var4, key, value;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    result = {};
-                    _var3 = from;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '6';
-                    break;
-                case '5':
-                    _var4++;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var4 < _var2.length) {
-                        key = _var2[_var4];
-                        value = _var3[key];
-                        if (key in what) {
-                            __state = '5';
-                        } else {
-                            result[key] = value;
-                            __state = '5';
-                        }
-                    } else {
-                        return result;
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function getNowMs() {
-            var date, _var2;
-            date = new Date();
-            _var2 = date.getTime();
-            return _var2;
         }
         function boxForHorizontalLine(left, top, right, margin) {
             var _var2, _var3;
@@ -1740,40 +2241,6 @@ function createDrakonWidget() {
                     } else {
                         return;
                     }
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function sortBy(array, property, direction) {
-            var sorter, _var2;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '1':
-                    return;
-                case '2':
-                    if (array) {
-                        direction = direction || 'asc';
-                        direction = direction.toLowerCase();
-                        if (direction === 'asc') {
-                            sorter = comparerAsc;
-                            __state = '7';
-                        } else {
-                            sorter = comparerDesc;
-                            __state = '7';
-                        }
-                    } else {
-                        __state = '1';
-                    }
-                    break;
-                case '7':
-                    array.sort(function (left, right) {
-                        _var2 = sorter(property, left, right);
-                        return _var2;
-                    });
-                    __state = '1';
                     break;
                 default:
                     return;
@@ -1815,73 +2282,6 @@ function createDrakonWidget() {
                 }
             }
         }
-        function comparerDesc(property, left, right) {
-            var comp;
-            comp = comparerAsc(property, left, right);
-            return -1 * comp;
-        }
-        function deepClone(obj) {
-            var visited, _var2;
-            visited = new Set();
-            _var2 = deepCloneCore(visited, obj);
-            return _var2;
-        }
-        function findIndex(array, property, value) {
-            var item, i;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    array = array || [];
-                    i = 0;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (i < array.length) {
-                        item = array[i];
-                        if (item[property] === value) {
-                            return i;
-                        } else {
-                            i++;
-                            __state = '6';
-                        }
-                    } else {
-                        return -1;
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
-        }
-        function random(min, max) {
-            var _var2;
-            _var2 = Math.random();
-            return _var2 * (max - min) + min;
-        }
-        function multiMapAdd(map, key, value) {
-            var bucket;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    bucket = map[key];
-                    if (bucket) {
-                        __state = '8';
-                    } else {
-                        bucket = [];
-                        map[key] = bucket;
-                        __state = '8';
-                    }
-                    break;
-                case '8':
-                    bucket.push(value);
-                    return;
-                default:
-                    return;
-                }
-            }
-        }
         function incrementDictionaryValue(dict, prop) {
             var __state = '2';
             while (true) {
@@ -1905,15 +2305,6 @@ function createDrakonWidget() {
         function distanceLineToPoint(line, x, y) {
             return (line.a * x + line.b * y + line.c) / line.div;
         }
-        function contains(array, element) {
-            var _var2;
-            _var2 = array.indexOf(element);
-            if (_var2 === -1) {
-                return false;
-            } else {
-                return true;
-            }
-        }
         function setTimeout(action, delay, notrace) {
             var _var2;
             _var2 = tracing.setTimeout(action, delay, notrace);
@@ -1933,42 +2324,6 @@ function createDrakonWidget() {
             ctx.lineWidth = lineWidth;
             ctx.strokeRect(left, top, size, size);
             return;
-        }
-        function isSubset(larger, smaller) {
-            var _var3, _var2, _var4, smallKey, _;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    if (larger) {
-                        _var3 = smaller;
-                        _var2 = Object.keys(_var3);
-                        _var4 = 0;
-                        __state = '7';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '5':
-                    return false;
-                case '7':
-                    if (_var4 < _var2.length) {
-                        smallKey = _var2[_var4];
-                        _ = _var3[smallKey];
-                        if (smallKey in larger) {
-                            _var4++;
-                            __state = '7';
-                        } else {
-                            __state = '5';
-                        }
-                    } else {
-                        return true;
-                    }
-                    break;
-                default:
-                    return;
-                }
-            }
         }
         function getCreateList(dict, key) {
             var list;
@@ -2017,34 +2372,6 @@ function createDrakonWidget() {
                     break;
                 case '8':
                     return false;
-                default:
-                    return;
-                }
-            }
-        }
-        function objectValues(obj) {
-            var result, _var3, _var2, _var4, key, value;
-            var __state = '2';
-            while (true) {
-                switch (__state) {
-                case '2':
-                    result = [];
-                    _var3 = obj;
-                    _var2 = Object.keys(_var3);
-                    _var4 = 0;
-                    __state = '6';
-                    break;
-                case '6':
-                    if (_var4 < _var2.length) {
-                        key = _var2[_var4];
-                        value = _var3[key];
-                        result.push(value);
-                        _var4++;
-                        __state = '6';
-                    } else {
-                        return result;
-                    }
-                    break;
                 default:
                     return;
                 }
@@ -2147,7 +2474,7 @@ function createDrakonWidget() {
                     if (_var3 < _var2.length) {
                         field = _var2[_var3];
                         value = src[field];
-                        _var4 = hasValue(value);
+                        _var4 = utils.hasValue(value);
                         if (_var4) {
                             dst[field] = value;
                             __state = '4';
@@ -2167,17 +2494,10 @@ function createDrakonWidget() {
             tracing.registerEvent(element, eventName, action);
             return;
         }
-        function last(array) {
-            if (array.length === 0) {
-                return undefined;
-            } else {
-                return array[array.length - 1];
-            }
-        }
         function removeFromMultiDict(dict, key, value) {
             var sameType;
             sameType = getCreateList(dict, key);
-            remove(sameType, value);
+            utils.remove(sameType, value);
             return;
         }
         function flowTextBlock(block, width) {
@@ -2575,7 +2895,7 @@ function createDrakonWidget() {
                     break;
                 case '46':
                     if (formats.both) {
-                        fontObj2 = clone(fontObj);
+                        fontObj2 = utils.clone(fontObj);
                         fontObj2.weight = 'bold';
                         fontObj2.style = 'italic';
                         font2 = cssFontToString(fontObj2);
@@ -2863,7 +3183,7 @@ function createDrakonWidget() {
         }
         function addFontVariant(fonts, fontObj, prop, value) {
             var fontObj2, font2;
-            fontObj2 = clone(fontObj);
+            fontObj2 = utils.clone(fontObj);
             fontObj2[prop] = value;
             font2 = cssFontToString(fontObj2);
             fonts[font2] = true;
@@ -3002,7 +3322,7 @@ function createDrakonWidget() {
                     if (_var4 < _var2.length) {
                         id = _var2[_var4];
                         item = _var3[id];
-                        copy = clone(item);
+                        copy = utils.clone(item);
                         delete copy.id;
                         diagram.items[id] = copy;
                         _var4++;
@@ -4192,12 +4512,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    _var8 = isSelected(widget, node.id);
-                    if (_var8) {
-                        return headNode;
-                    } else {
-                        __state = '7';
-                    }
+                    __state = '7';
                     break;
                 case '5':
                     included = [];
@@ -4234,11 +4549,16 @@ function createDrakonWidget() {
                                         } else {
                                             if (_var2 === 'junction') {
                                                 start = goLeft(node);
-                                                _var10 = addParBlockToSelection(widget, headNode, start);
-                                                return _var10;
-                                            } else {
-                                                _var9 = addOne(widget, headNode, node);
+                                                _var9 = addParBlockToSelection(widget, headNode, start);
                                                 return _var9;
+                                            } else {
+                                                _var10 = isSelected(widget, node.id);
+                                                if (_var10) {
+                                                    return headNode;
+                                                } else {
+                                                    _var8 = addOne(widget, headNode, node);
+                                                    return _var8;
+                                                }
                                             }
                                         }
                                     }
@@ -4427,7 +4747,7 @@ function createDrakonWidget() {
                             if (context.leak) {
                                 __state = '7';
                             } else {
-                                _var2 = objectValues(context.visited);
+                                _var2 = utils.objectValues(context.visited);
                                 return _var2;
                             }
                         } else {
@@ -4480,12 +4800,19 @@ function createDrakonWidget() {
                 switch (__state) {
                 case '2':
                     if (node.type === 'junction') {
-                        if (node.up) {
-                            if (node.up.role) {
-                                return true;
-                            } else {
-                                __state = '7';
-                            }
+                        __state = '5';
+                    } else {
+                        if (node.type === 'arrow-loop') {
+                            __state = '5';
+                        } else {
+                            __state = '7';
+                        }
+                    }
+                    break;
+                case '5':
+                    if (node.up) {
+                        if (node.up.role) {
+                            return true;
                         } else {
                             __state = '7';
                         }
@@ -5413,7 +5740,7 @@ function createDrakonWidget() {
                 case '2':
                     if (style) {
                         value = style[name];
-                        _var2 = hasValue(value);
+                        _var2 = utils.hasValue(value);
                         if (_var2) {
                             __state = '24';
                         } else {
@@ -5430,7 +5757,7 @@ function createDrakonWidget() {
                         forIcon = icons[type];
                         if (forIcon) {
                             value = forIcon[name];
-                            _var3 = hasValue(value);
+                            _var3 = utils.hasValue(value);
                             if (_var3) {
                                 __state = '24';
                             } else {
@@ -5445,12 +5772,12 @@ function createDrakonWidget() {
                     break;
                 case '21':
                     value = theme[name];
-                    _var4 = hasValue(value);
+                    _var4 = utils.hasValue(value);
                     if (_var4) {
                         __state = '24';
                     } else {
                         value = config[name];
-                        _var5 = hasValue(value);
+                        _var5 = utils.hasValue(value);
                         if (_var5) {
                             __state = '24';
                         } else {
@@ -5953,7 +6280,7 @@ function createDrakonWidget() {
         function getConfigValue(config, name, defaultValue) {
             var value, _var2;
             value = config[name];
-            _var2 = hasValue(value);
+            _var2 = utils.hasValue(value);
             if (_var2) {
                 return value;
             } else {
@@ -5991,7 +6318,7 @@ function createDrakonWidget() {
                 case '2':
                     if (node.style) {
                         value = node.style[name];
-                        _var2 = hasValue(value);
+                        _var2 = utils.hasValue(value);
                         if (_var2) {
                             return value;
                         } else {
@@ -8080,7 +8407,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.2.1';
+            return '1.2.3';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -8108,7 +8435,7 @@ function createDrakonWidget() {
             return;
         }
         function DrakonCanvas_setContent(self, itemId, content) {
-            var change, _var2, _var3, _var4;
+            var change, changesToSave, _var2, _var3, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -8149,7 +8476,8 @@ function createDrakonWidget() {
                         fields: { name: content },
                         op: 'update'
                     };
-                    self.edit.updateDocument([change]);
+                    changesToSave = self.edit.updateDocument([change]);
+                    self.edit.save(changesToSave);
                     return [];
                 case '_item7':
                     _var4 = updateAndKeepSelection(self, [change]);
@@ -8303,7 +8631,7 @@ function createDrakonWidget() {
                     if (_var3 < _var2.length) {
                         link = _var2[_var3];
                         src = getNodeByItem(visuals, link.source);
-                        _var4 = isSubset(src.loops, target.loops);
+                        _var4 = utils.isSubset(src.loops, target.loops);
                         if (_var4) {
                             __state = '4';
                         } else {
@@ -8521,7 +8849,7 @@ function createDrakonWidget() {
                                 __state = '4';
                             } else {
                                 socket = createSocketFromEdge(visuals, element, 'arrow', undefined);
-                                addRange(source.links, socket.links);
+                                utils.addRange(source.links, socket.links);
                                 __state = '4';
                             }
                         } else {
@@ -8557,7 +8885,7 @@ function createDrakonWidget() {
                                 __state = '1';
                             } else {
                                 visited[node.id] = true;
-                                _var4 = isSubset(node.loops, loops);
+                                _var4 = utils.isSubset(node.loops, loops);
                                 if (_var4) {
                                     context.finished = true;
                                     context.success = true;
@@ -8871,7 +9199,7 @@ function createDrakonWidget() {
                 case '9':
                     socket.arrow = source.arrow;
                     socket.style = style;
-                    addRange(source.links, socket.links);
+                    utils.addRange(source.links, socket.links);
                     __state = '1';
                     break;
                 default:
@@ -10349,7 +10677,7 @@ function createDrakonWidget() {
                     tracing.trace('mouseClick', pos);
                     doubleClickTime = 500;
                     visuals = widget.visuals;
-                    now = getNowMs();
+                    now = utils.getNowMs();
                     lastClick = widget.lastClick;
                     lastPrimId = widget.lastPrimId;
                     prim = findVisualItem(widget, pos);
@@ -10567,7 +10895,7 @@ function createDrakonWidget() {
                                 node: pathNode,
                                 links: []
                             };
-                            addRange(pathNode.up.links, socket.links);
+                            utils.addRange(pathNode.up.links, socket.links);
                             __state = '18';
                         }
                     } else {
@@ -11371,7 +11699,7 @@ function createDrakonWidget() {
                     if (_var10 < _var8.length) {
                         id = _var8[_var10];
                         node = _var9[id];
-                        sortBy(node.children, 'ordinal');
+                        utils.sortBy(node.children, 'ordinal');
                         _var10++;
                         __state = '14';
                     } else {
@@ -11434,20 +11762,24 @@ function createDrakonWidget() {
                 switch (__state) {
                 case '2':
                     parent = node.parent;
-                    ttype = getTType(parent);
-                    _var2 = ttype;
-                    if (_var2 === 'vertical') {
-                        return [node.id];
-                    } else {
-                        if (_var2 === 'horizontal') {
-                            __state = '_item7';
+                    if (parent) {
+                        ttype = getTType(parent);
+                        _var2 = ttype;
+                        if (_var2 === 'vertical') {
+                            return [node.id];
                         } else {
-                            if (_var2 === 'treeview') {
+                            if (_var2 === 'horizontal') {
                                 __state = '_item7';
                             } else {
-                                throw new Error('Unexpected case value: ' + _var2);
+                                if (_var2 === 'treeview') {
+                                    __state = '_item7';
+                                } else {
+                                    throw new Error('Unexpected case value: ' + _var2);
+                                }
                             }
                         }
+                    } else {
+                        return [];
                     }
                     break;
                 case '_item7':
@@ -12135,7 +12467,7 @@ function createDrakonWidget() {
                 case '5':
                     if (i < ids.length) {
                         id = ids[i];
-                        index = findIndex(edits, 'id', id);
+                        index = utils.findIndex(edits, 'id', id);
                         insert = edits[index];
                         insert.fields.ordinal = ordinal + i;
                         i++;
@@ -13988,7 +14320,7 @@ function createDrakonWidget() {
             radius = visuals.config.socketTouchRadius;
             socket = createSocket(visuals, node.x - visuals.config.metre, node.y, op, 'firstpar', radius);
             socket.node = node;
-            addRange(node.up.links, socket.links);
+            utils.addRange(node.up.links, socket.links);
             return;
         }
         function showInsertParAfterLast(visuals, node, op) {
@@ -14260,7 +14592,7 @@ function createDrakonWidget() {
             var edge;
             edge = socket.edge;
             socket.target = edge.finalTarget.itemId;
-            addRange(edge.links, socket.links);
+            utils.addRange(edge.links, socket.links);
             return;
         }
         function getVerticalStartPos(edge) {
@@ -14285,21 +14617,26 @@ function createDrakonWidget() {
                         if (node.type === 'arrow-loop') {
                             __state = '8';
                         } else {
-                            _var3 = isMindIcon(widget, node);
-                            if (_var3) {
-                                mindCandy(widget, node, ctx);
+                            if (node.type === 'header') {
+                                standardCandy(node, ctx, config);
                                 __state = '1';
                             } else {
-                                _var2 = shouldAlignWidth(visuals, node);
-                                if (_var2) {
-                                    if (visuals.config.allowResize) {
-                                        skewerResizeCandy(widget, node, ctx);
-                                        __state = '1';
+                                _var3 = isMindIcon(widget, node);
+                                if (_var3) {
+                                    mindCandy(widget, node, ctx);
+                                    __state = '1';
+                                } else {
+                                    _var2 = shouldAlignWidth(visuals, node);
+                                    if (_var2) {
+                                        if (visuals.config.allowResize) {
+                                            skewerResizeCandy(widget, node, ctx);
+                                            __state = '1';
+                                        } else {
+                                            __state = '10';
+                                        }
                                     } else {
                                         __state = '10';
                                     }
-                                } else {
-                                    __state = '10';
                                 }
                             }
                         }
@@ -14583,12 +14920,12 @@ function createDrakonWidget() {
         }
         function makeRandomColor() {
             var r, g, b, rs, rg, rb;
-            r = random(200, 256);
-            g = random(200, 256);
-            b = random(200, 256);
-            rs = hexByteToString(r);
-            rg = hexByteToString(g);
-            rb = hexByteToString(b);
+            r = utils.random(200, 256);
+            g = utils.random(200, 256);
+            b = utils.random(200, 256);
+            rs = utils.hexByteToString(r);
+            rg = utils.hexByteToString(g);
+            rb = utils.hexByteToString(b);
             return '#' + rs + rg + rb;
         }
         function getNextId(obj) {
@@ -15649,7 +15986,7 @@ function createDrakonWidget() {
                     } else {
                         if (visuals.end) {
                             oldLevel = visuals.end.level;
-                            remove(oldLevel.nodes, visuals.end);
+                            utils.remove(oldLevel.nodes, visuals.end);
                             newLevel = createLevel(visuals);
                             newLevel.coord = oldLevel.coord;
                             newLevel.nodes.push(visuals.end);
@@ -15853,7 +16190,7 @@ function createDrakonWidget() {
                 case '2':
                     metre = visuals.config.metre;
                     if (visuals.end) {
-                        _var4 = last(visuals.branches);
+                        _var4 = utils.last(visuals.branches);
                         lastBranch = getNode(visuals, _var4);
                         below = getDown(lastBranch);
                         distance = below.level.coord - lastBranch.level.coord - below.h - lastBranch.h - metre;
@@ -16013,7 +16350,7 @@ function createDrakonWidget() {
         }
         function lastCase(select) {
             var _var2;
-            _var2 = last(select.cases);
+            _var2 = utils.last(select.cases);
             return _var2;
         }
         function traceSkewer(visuals, node) {
@@ -16418,7 +16755,7 @@ function createDrakonWidget() {
         }
         function skewerTail(skewer) {
             var _var2;
-            _var2 = last(skewer.nodes);
+            _var2 = utils.last(skewer.nodes);
             return _var2;
         }
         function goLeft(node) {
@@ -16661,7 +16998,7 @@ function createDrakonWidget() {
             }
         }
         function initScrollPos(widget) {
-            var visuals, savedOrigin, left, top, scroll, zoom, wwidth, wheight, _var2, _var3;
+            var visuals, savedOrigin, left, top, scroll, zoom, wheight, wwidth, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -16675,23 +17012,15 @@ function createDrakonWidget() {
                         top = savedOrigin.y;
                         __state = '10';
                     } else {
-                        if (widget.model.type === 'free') {
-                            wwidth = widget.width / zoom;
-                            wheight = widget.height / zoom;
-                            if (wwidth > visuals.box.width) {
-                                _var2 = Math.floor((wwidth - visuals.box.width) / 2);
-                                left = visuals.box.left - _var2;
-                                visuals.box.left = left;
-                                visuals.box.width = visuals.box.right - left;
-                                __state = '28';
+                        if (widget.model.type === 'graf') {
+                            __state = '38';
+                        } else {
+                            if (widget.model.type === 'free') {
+                                __state = '38';
                             } else {
                                 left = visuals.box.left;
-                                __state = '28';
+                                __state = '22';
                             }
-                        } else {
-                            left = visuals.box.left;
-                            top = visuals.box.top;
-                            __state = '10';
                         }
                     }
                     break;
@@ -16702,16 +17031,35 @@ function createDrakonWidget() {
                     widget.scrollable.style.height = visuals.box.height * zoom + 'px';
                     copyScrollToScrollable(widget, scroll.x, scroll.y);
                     return;
-                case '28':
-                    if (wheight > visuals.box.height) {
-                        _var3 = Math.floor((wheight - visuals.box.height) / 2);
-                        top = visuals.box.top - _var3;
-                        visuals.box.top = top;
-                        visuals.box.height = visuals.box.bottom - top;
-                        __state = '10';
+                case '22':
+                    if (widget.model.type === 'free') {
+                        wheight = widget.height / zoom;
+                        if (wheight > visuals.box.height) {
+                            _var2 = Math.floor((wheight - visuals.box.height) / 3);
+                            top = visuals.box.top - _var2;
+                            visuals.box.top = top;
+                            visuals.box.height = visuals.box.bottom - top;
+                            __state = '10';
+                        } else {
+                            top = visuals.box.top;
+                            __state = '10';
+                        }
                     } else {
                         top = visuals.box.top;
                         __state = '10';
+                    }
+                    break;
+                case '38':
+                    wwidth = widget.width / zoom;
+                    if (wwidth > visuals.box.width) {
+                        _var3 = Math.floor((wwidth - visuals.box.width) / 2);
+                        left = visuals.box.left - _var3;
+                        visuals.box.left = left;
+                        visuals.box.width = visuals.box.right - left;
+                        __state = '22';
+                    } else {
+                        left = visuals.box.left;
+                        __state = '22';
                     }
                     break;
                 default:
@@ -16789,10 +17137,10 @@ function createDrakonWidget() {
                     }
                     break;
                 case '10':
-                    remove(head.sources, edge);
-                    remove(head.targets, edge);
-                    remove(tail.sources, edge);
-                    remove(tail.targets, edge);
+                    utils.remove(head.sources, edge);
+                    utils.remove(head.targets, edge);
+                    utils.remove(tail.sources, edge);
+                    utils.remove(tail.targets, edge);
                     edge.head = null;
                     edge.tail = null;
                     edge.source = null;
@@ -16912,8 +17260,8 @@ function createDrakonWidget() {
                                     __state = '12';
                                 } else {
                                     node.finalTarget = undefined;
-                                    remove(node.skewer.nodes, node);
-                                    remove(node.level.nodes, node);
+                                    utils.remove(node.skewer.nodes, node);
+                                    utils.remove(node.level.nodes, node);
                                     delete visuals.nodes[id];
                                     removeFromMultiDict(visuals.byType, node.type, node.id);
                                     __state = '1';
@@ -17433,7 +17781,7 @@ function createDrakonWidget() {
                 case '2':
                     _var2 = isArrowLoop(upper);
                     if (_var2) {
-                        _var3 = contains(upper.aprev, lower);
+                        _var3 = utils.contains(upper.aprev, lower);
                         if (_var3) {
                             return true;
                         } else {
@@ -19173,7 +19521,7 @@ function createDrakonWidget() {
                         visuals = context.visuals;
                         node2 = getNodeForItem(visuals, nextItemId);
                         if (node2.type == 'branch') {
-                            address = last(context.addresses);
+                            address = utils.last(context.addresses);
                             if (address) {
                                 if (address.branch.id == nextItemId) {
                                     __state = '17';
@@ -19388,10 +19736,11 @@ function createDrakonWidget() {
             }
         }
         function updateAndKeepSelection(widget, edits) {
-            var _var2;
-            widget.edit.updateDocument(edits);
-            _var2 = widget.redraw();
-            return _var2;
+            var fonts, changesToSave;
+            changesToSave = widget.edit.updateDocument(edits);
+            fonts = widget.redraw();
+            widget.edit.save(changesToSave);
+            return fonts;
         }
         function calculateBoxIter(node, box) {
             var left, top, right, bottom, _var2, _var3, _var4, _var5;
@@ -19966,7 +20315,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    config = deepClone(config);
+                    config = utils.deepClone(config);
                     diagramStyle = diagramStyle || {};
                     result = {};
                     Object.assign(result, config);
@@ -21256,7 +21605,7 @@ function createDrakonWidget() {
         function copyItem(widget, itemId) {
             var item, copy;
             item = widget.model.items[itemId];
-            copy = clone(item);
+            copy = utils.clone(item);
             delete copy.side;
             return copy;
         }
@@ -21483,7 +21832,7 @@ function createDrakonWidget() {
         function copyWholeItem(widget, itemId) {
             var item, copy;
             item = widget.model.items[itemId];
-            copy = clone(item);
+            copy = utils.clone(item);
             return copy;
         }
         function getBranchByName(visuals, name) {
@@ -22326,7 +22675,7 @@ function createDrakonWidget() {
                 case '8':
                     toDelete = {};
                     scanBranchItems(node, toDelete);
-                    remaining = subtract(widget.model.items, toDelete);
+                    remaining = utils.subtract(widget.model.items, toDelete);
                     redirectBranch(visuals, remaining, toDelete, next.itemId, edits);
                     ditch = function (itemId) {
                         deleteWithDur(widget, itemId, edits);
@@ -24600,7 +24949,7 @@ function createDrakonWidget() {
             }
         }
         function sortFreeIcons(visuals) {
-            sortBy(visuals.free, 'zIndex');
+            utils.sortBy(visuals.free, 'zIndex');
             return;
         }
         function bringToFront(widget, id) {
@@ -24622,7 +24971,7 @@ function createDrakonWidget() {
                 case '2':
                     edits = [];
                     free = widget.visuals.free;
-                    ordinal = findIndex(free, 'id', id);
+                    ordinal = utils.findIndex(free, 'id', id);
                     i = 0;
                     __state = '17';
                     break;
@@ -27902,11 +28251,11 @@ function createDrakonWidget() {
         }
         function addConnectionToVisuals(visuals, id, item) {
             var element;
-            element = clone(item);
+            element = utils.clone(item);
             element.id = id;
             parseStyle(item, element);
-            multiMapAdd(visuals.connections, element.begin, element);
-            multiMapAdd(visuals.connections, element.end, element);
+            utils.multiMapAdd(visuals.connections, element.begin, element);
+            utils.multiMapAdd(visuals.connections, element.end, element);
             visuals.connectionById[id] = element;
             return;
         }
@@ -28489,10 +28838,11 @@ function createDrakonWidget() {
             return fonts;
         }
         function doEdit(widget, edits) {
-            var _var2;
-            widget.edit.updateDocument(edits);
-            _var2 = rebuildSelection(widget, edits);
-            return _var2;
+            var changesToSave, fonts;
+            changesToSave = widget.edit.updateDocument(edits);
+            fonts = rebuildSelection(widget, edits);
+            widget.edit.save(changesToSave);
+            return fonts;
         }
         function deleteItem(edits, node) {
             var __state = '2';
@@ -28570,7 +28920,7 @@ function createDrakonWidget() {
             model = widget.model;
             targetId = existing.next[0].itemId;
             item = item || {};
-            fields = clone(item);
+            fields = utils.clone(item);
             fields.one = targetId;
             fields.type = 'case';
             fields.two = existing.itemId;
@@ -28662,7 +29012,7 @@ function createDrakonWidget() {
                     }
                     break;
                 case '34':
-                    sortBy(payload.items, 'zIndex');
+                    utils.sortBy(payload.items, 'zIndex');
                     currentZ = widget.visuals.free.length;
                     _var4 = payload.items;
                     _var5 = 0;
@@ -29082,7 +29432,7 @@ function createDrakonWidget() {
                     model = widget.model;
                     targetId = existing.next[0].itemId;
                     item = item || {};
-                    fields = clone(item);
+                    fields = utils.clone(item);
                     fields.one = targetId;
                     fields.type = 'case';
                     if (existing.next.length === 2) {
@@ -29342,7 +29692,7 @@ function createDrakonWidget() {
             var edits, caseId, model, fields;
             edits = [];
             model = widget.model;
-            fields = clone(item);
+            fields = utils.clone(item);
             caseId = createItem(model, edits, fields);
             updateItem(edits, existing.itemId, { side: caseId });
             return edits;
@@ -29398,7 +29748,7 @@ function createDrakonWidget() {
         function createInsert(item) {
             var fields, id;
             id = item.id;
-            fields = clone(item);
+            fields = utils.clone(item);
             delete fields.id;
             return {
                 id: id,
@@ -30769,7 +31119,7 @@ function createDrakonWidget() {
                                 __state = '5';
                             } else {
                                 tokens = splitHtmlTextNode(child.nodeValue, type);
-                                addRange(tokens, line);
+                                utils.addRange(tokens, line);
                                 __state = '5';
                             }
                         } else {
@@ -32222,8 +32572,18 @@ function createDrakonWidget() {
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(unit, 'utils', {
+            get: function () {
+                return utils;
+            },
+            set: function (newValue) {
+                utils = newValue;
+            },
+            enumerable: true,
+            configurable: true
+        });
         return unit;
-    }
+    }    
     var tracing = {
         trace: function (name, value) { console.log(name, value) },
         setTimeout: function (action, delay) { return window.setTimeout(action, delay) },
@@ -32232,8 +32592,11 @@ function createDrakonWidget() {
     var html = html_0_1()
     var edit = edit_tools()
     var drakon = drakon_canvas()
+    var utils_instance = utils()
+    edit.utils = utils_instance
+    drakon.utils = utils_instance
     drakon.html = html
-    drakon.edit_tools = edit
+    drakon.edit_tools = edit    
     drakon.tracing = tracing
     var widget = drakon.DrakonCanvas()
     widget.init()
