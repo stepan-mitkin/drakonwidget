@@ -1,1 +1,0 @@
-{"version":20180619,"tag":"827419046","when_created":1671274671.8294,"parent_id":"e66d983d","items":{"2":{"type":"branch","branchId":0,"one":"5","id":"2"},"1":{"type":"end","id":"1"},"5":{"type":"action","id":"5","one":"1","text":"return \"nwse-resize\""}},"props":[],"created_by":"stipan","type":"drakon","updated_by":"stipan","name":"getCursor","when_updated":1671274705.9344}

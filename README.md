@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 1.2.3
+Current version: 1.2.7
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -524,6 +524,7 @@ Text strings that will be translated:
 - Diagram format
 - Bring to front
 - Send to back
+- Change image
 
 Note that the words that appear on the diagram (Yes, No, End, Exit, Branch) are set
 in the config. See the Configuration reference.
@@ -604,8 +605,10 @@ This functions works only when __config.canvasIcons__ == __true__.
 
 
 ```
-function exportCanvas()
+function exportCanvas(zoom100)
 ```
+
+zoom100 the zoom level in percent multiplied by 100. 50% - 5000.
 
 ### exportJson
 
@@ -613,6 +616,38 @@ Builds and returns a string that contains a JSON representation of the diagram.
 
 ```
 function exportJson()
+```
+
+### getDiagramProperties
+
+Returns an object with the properties of the diagram.
+
+```
+function getDiagramProperties()
+```
+
+### getLoadedImages
+
+Returns a list of the images in the current diagram.
+
+```
+function getLoadedImages()
+```
+
+Returns an object where the keys are the diagram-unique ids of the images and the values are
+the images themselves in BASE64 encoding.
+
+Example:
+
+```
+{
+    "id1": {
+        "content": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP...."
+    },
+    "id2": {
+        "content": "data:image/gif;base64,R0lGODlhAQABAIBBBBBBBP...."
+    }    
+}
 ```
 
 
@@ -624,15 +659,39 @@ Returns the widget's version.
 function getVersion()
 ```
 
+### getZoom
+
+Returns the current zoom value in percent multiplied by 100. For example: 100% - 10000, 50% - 5000.
+
+```
+function getZoom()
+```
+
+## goHome
+
+Scrolls the diagram to show its left-top corner.
+
+```
+function goHome()
+```
+
+## onChange
+
+Call when a diagram should be modified from outside, for example renamed from the list of diagrams.
+
+```
+function onChange(change)
+```
 
 ### redo
 
-Performs the redo of the previously undone action.
+Performs the redo of the previously undone action. Returns a promise.
 
 ```
 function redo()
 ```
 
+Returns a promise.
 
 ### redraw
 
@@ -779,8 +838,16 @@ function setDiagram(diagramId, diagram, editSender)
 
 Return value
 
-An array of strings. Each element in the array is a CSS font declaration (for example ["bold 18px Arimo", "14px Arimo"]).
+A promise with an array of strings. Each element in the array is a CSS font declaration (for example ["bold 18px Arimo", "14px Arimo"]).
 The array contains all fonts that are used in the diagram.
+
+### setDiagramProperty
+
+Sets a property of the diagram: name, params, description.
+
+```
+function setDiagramProperty(name, value)
+```
 
 ### setZoom
 
@@ -800,12 +867,20 @@ function setZoom(zoomLevel)
 Shows the insertion sockets. Prepares the diagram for inserting new items.
 
 ```
-function showInsertionSockets(type)
+function showInsertionSockets(type, imageData)
 ```
 
 |Name|Data type|Description|
 |---|---|---|
 |type|text|The type of the item to insert.|
+|imageData|object|The image to assign to the object.|
+
+__imageData__ can be one of the two options:
+
+{ "id": "image-id-1"} - a reference to an image already existing in the diagram
+
+{"content: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP..."} - a new image to include in the diagram
+
 
 Item types that can be inserted:
 
@@ -828,6 +903,7 @@ Item types that can be inserted:
 - output
 - ctrlstart
 - ctrlend
+- drakon-image
 
 ### showItem
 
@@ -880,6 +956,8 @@ Performs the undo of the previous action.
 ```
 function redo()
 ```
+
+Returns a promise.
 
 ## Core object
 
