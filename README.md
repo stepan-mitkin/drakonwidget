@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 1.2.8
+Current version: 1.2.9
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -167,6 +167,7 @@ var config = {
 |minWidth|The miminum width of an icon.|integer||100|
 |no|The "No" label.|text||No|
 |onSelectionChanged|Runs when the currently selected items change.|function|||
+|onZoomChanged|Runs when the user has changed the zoom from the widget.|function|||
 |padding|Padding inside icons.|integer||10|
 |padding|Padding inside icons.|integer||10|
 |parallelWidth|The distance between the two horizontal lines (concurrent processes)|integer|5|
@@ -316,6 +317,18 @@ An array of __item__ objects. Can be empty.
 |style|object|The style of the icon|
 
 If there are no selected items on the diagram, the __item__ object is null.
+
+### onZoomChanged
+
+A callback that is called when the user has changed the zoom level from inside the widget,
+for example with Ctrl+Mouse wheel.
+
+```
+function onZoomChanged(newZoomValue)
+```
+|Name|Data type|Description|
+|---|---|---|
+|newZoomValue|integer|Percentage multiplied by 100. 100% == 10000, 150% == 15000|
 
 ### setClipboard
 

@@ -1488,6 +1488,63 @@ function createDrakonWidget() {
     function drakon_canvas() {
         var unit = {};
         var html, edit_tools, tracing, utils;
+        function onMouseWheel(widget, evt) {
+            var delta, x, zoom, visuals, y, levels;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    evt.preventDefault();
+                    zoom = widget.zoomFactor;
+                    visuals = widget.visuals;
+                    if (evt.ctrlKey) {
+                        levels = [
+                            3300,
+                            5000,
+                            6700,
+                            7500,
+                            9000,
+                            10000,
+                            11000,
+                            12000,
+                            15000,
+                            20000,
+                            25000,
+                            30000
+                        ];
+                        delta = evt.deltaY;
+                        if (delta > 0) {
+                            zoom = findValueBelow(levels, widget.zoom);
+                            __state = '19';
+                        } else {
+                            zoom = findValueAbove(levels, widget.zoom);
+                            __state = '19';
+                        }
+                    } else {
+                        delta = evt.deltaY / 2;
+                        if (evt.shiftKey) {
+                            x = visuals.scrollX + delta / zoom;
+                            setScrollFromMouseEvent(widget, x, visuals.scrollY);
+                            __state = '1';
+                        } else {
+                            y = visuals.scrollY + delta / zoom;
+                            setScrollFromMouseEvent(widget, visuals.scrollX, y);
+                            __state = '1';
+                        }
+                    }
+                    break;
+                case '19':
+                    widget.setZoom(zoom);
+                    visuals.config.onZoomChanged(zoom);
+                    __state = '1';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function isLastPar(node) {
             if (node.two) {
                 return false;
@@ -1525,6 +1582,7 @@ function createDrakonWidget() {
             _var2 = Math.random();
             self.styleTag = html.createStyle();
             self.myStyleId = Math.floor(_var2 * 100000);
+            self.userMemory = { headStyle: 'arrow' };
             self.zoom = 10000;
             self.zoomFactor = 1;
             initInsertFunctions(self);
@@ -1928,7 +1986,7 @@ function createDrakonWidget() {
                     }
                     break;
                 case '9':
-                    drawCircle(ctx, box.left + radius, box.top + radius, radius, 2, fill, border);
+                    drawEar(ctx, key, box, 2, fill, border);
                     _var4++;
                     __state = '6';
                     break;
@@ -3608,25 +3666,20 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_onMouseDown(self, evt) {
-            var _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '1':
                     return;
                 case '2':
-                    _var2 = isOnScrollbars(self, evt);
-                    if (_var2) {
+                    evt.target.setPointerCapture(evt.pointerId);
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    if (self.mouseEvents) {
+                        self.mouseEvents.mouseDown(evt);
                         __state = '1';
                     } else {
-                        evt.preventDefault();
-                        evt.stopPropagation();
-                        if (self.mouseEvents) {
-                            self.mouseEvents.mouseDown(evt);
-                            __state = '1';
-                        } else {
-                            __state = '1';
-                        }
+                        __state = '1';
                     }
                     break;
                 default:
@@ -4359,9 +4412,6 @@ function createDrakonWidget() {
                     scrollable = 'drakon-scrollable-container' + self.myStyleId;
                     self.scrollableContainer = div(scrollable);
                     html.add(container, self.scrollableContainer);
-                    self.scrollable = div('drakon-scrollable');
-                    html.add(self.scrollableContainer, self.scrollable);
-                    registerEvent(self.scrollableContainer, 'scroll', self.onScroll);
                     __state = '51';
                     break;
                 case '39':
@@ -4382,11 +4432,14 @@ function createDrakonWidget() {
                     }
                     break;
                 case '51':
-                    registerEvent(self.scrollableContainer, 'mousedown', self.onMouseDown);
-                    registerEvent(self.scrollableContainer, 'mousemove', self.onMouseMove);
-                    registerEvent(self.scrollableContainer, 'mouseup', self.onMouseUp);
-                    registerEvent(self.scrollableContainer, 'mouseleave', self.onMouseLeave);
+                    registerEvent(self.scrollableContainer, 'pointerdown', self.onMouseDown);
+                    registerEvent(self.scrollableContainer, 'pointermove', self.onMouseMove);
+                    registerEvent(self.scrollableContainer, 'pointerup', self.onMouseUp);
+                    registerEvent(self.scrollableContainer, 'pointerleave', self.onMouseLeave);
                     registerEvent(self.scrollableContainer, 'contextmenu', self.onContextMenu);
+                    registerEvent(self.scrollableContainer, 'wheel', function (evt) {
+                        onMouseWheel(self, evt);
+                    });
                     __state = '17';
                     break;
                 default:
@@ -4986,53 +5039,58 @@ function createDrakonWidget() {
             return;
         }
         function findVisualItem(widget, pos) {
-            var visuals, element, node, edge, handle, _var2, _var3, _var4, _var5, _var6;
+            var visuals, scroll, element, node, edge, handle, _var2, _var3, _var4, _var5, _var6;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     visuals = widget.visuals;
-                    handle = findHandle(visuals, pos);
-                    if (handle) {
-                        return handle;
+                    scroll = hitScrollBar(visuals, pos);
+                    if (scroll) {
+                        return scroll;
                     } else {
-                        _var5 = hitNugget(visuals, pos);
-                        if (_var5) {
-                            return { elType: 'nugget' };
+                        handle = findHandle(visuals, pos);
+                        if (handle) {
+                            return handle;
                         } else {
-                            element = findFree(widget, pos);
-                            if (element) {
-                                if (element.type === 'connection') {
-                                    _var4 = connectionToVisualItem(widget, element);
-                                    return _var4;
-                                } else {
-                                    _var2 = freeToVisualItem(widget, element);
-                                    return _var2;
-                                }
+                            _var5 = hitNugget(visuals, pos);
+                            if (_var5) {
+                                return { elType: 'nugget' };
                             } else {
-                                node = findNode(visuals, pos);
-                                if (node) {
-                                    _var6 = isDownStub(node);
-                                    if (_var6) {
-                                        edge = node.up;
-                                        __state = '52';
+                                element = findFree(widget, pos);
+                                if (element) {
+                                    if (element.type === 'connection') {
+                                        _var4 = connectionToVisualItem(widget, element);
+                                        return _var4;
                                     } else {
-                                        _var3 = nodeToVisualItem(widget, node);
-                                        return _var3;
+                                        _var2 = freeToVisualItem(widget, element);
+                                        return _var2;
                                     }
                                 } else {
-                                    edge = findEdge(visuals, pos);
-                                    if (edge) {
-                                        __state = '52';
+                                    node = findNode(visuals, pos);
+                                    if (node) {
+                                        _var6 = isDownStub(node);
+                                        if (_var6) {
+                                            edge = node.up;
+                                            __state = '78';
+                                        } else {
+                                            _var3 = nodeToVisualItem(widget, node);
+                                            return _var3;
+                                        }
                                     } else {
-                                        return undefined;
+                                        edge = findEdge(visuals, pos);
+                                        if (edge) {
+                                            __state = '78';
+                                        } else {
+                                            return undefined;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                     break;
-                case '52':
+                case '78':
                     return {
                         id: edge.id,
                         primId: edge.id,
@@ -5967,12 +6025,20 @@ function createDrakonWidget() {
                 case '2':
                     tracing.trace('DrakonCanvas.setStyle', ids);
                     if (style) {
-                        styleStr = JSON.stringify(style);
-                        __state = '6';
+                        if ('headStyle' in style) {
+                            self.userMemory.headStyle = style.headStyle;
+                            __state = '3';
+                        } else {
+                            __state = '3';
+                        }
                     } else {
                         styleStr = '';
                         __state = '6';
                     }
+                    break;
+                case '3':
+                    styleStr = JSON.stringify(style);
+                    __state = '6';
                     break;
                 case '6':
                     edits = [];
@@ -8765,7 +8831,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_setZoom(self, zoom) {
-            var _var2;
+            var clientX, clientY, scrollX, oldZoom, distX, distY, distX2, distY2, scrollY, oldScrollX, oldScrollY, hover, _var2, _var3, _var4;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -8775,8 +8841,23 @@ function createDrakonWidget() {
                     tracing.trace('DrakonCanvas.setZoom', zoom);
                     _var2 = Math.min(40000, zoom);
                     self.zoom = Math.max(2500, _var2);
+                    oldZoom = self.zoomFactor;
                     self.zoomFactor = self.zoom / 10000;
                     if (self.edit) {
+                        oldScrollX = self.visuals.scrollX;
+                        oldScrollY = self.visuals.scrollY;
+                        hover = getHoverPos(self);
+                        clientX = hover.x;
+                        clientY = hover.y;
+                        distX = clientX / oldZoom;
+                        distY = clientY / oldZoom;
+                        distX2 = clientX / self.zoomFactor;
+                        distY2 = clientY / self.zoomFactor;
+                        _var3 = Math.round(distX - distX2);
+                        scrollX = oldScrollX + _var3;
+                        _var4 = Math.round(distY - distY2);
+                        scrollY = oldScrollY + _var4;
+                        setScroll(self, scrollX, scrollY);
                         self.visuals.config.zoom = self.zoomFactor;
                         initScrollPos(self);
                         paint(self);
@@ -8880,7 +8961,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.2.8';
+            return '1.2.9';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -9008,7 +9089,6 @@ function createDrakonWidget() {
                     break;
                 case '21':
                     scroll = setScroll(self, scrollX, scrollY);
-                    copyScrollToScrollable(self, scroll.x, scroll.y);
                     selectPrim(self, itemId);
                     paint(self);
                     __state = '11';
@@ -9060,7 +9140,7 @@ function createDrakonWidget() {
                         __state = '1';
                     } else {
                         visuals.highlight = primId;
-                        paint(widget);
+                        paintLater(widget);
                         __state = '1';
                     }
                     break;
@@ -10153,6 +10233,7 @@ function createDrakonWidget() {
                 case '1':
                     return;
                 case '2':
+                    evt.target.setPointerCapture(evt.pointerId);
                     if (self.mouseEvents) {
                         self.mouseEvents.mouseUp(evt);
                         __state = '1';
@@ -10330,10 +10411,54 @@ function createDrakonWidget() {
             createHandle(widget.visuals, handle, ctx);
             return;
         }
+        function getHoverPos(widget) {
+            var clientX, clientY, rect;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (widget.visuals.mouseX) {
+                        if (widget.visuals.mouseY) {
+                            rect = widget.scrollableContainer.getBoundingClientRect();
+                            clientX = widget.visuals.mouseX - rect.left;
+                            clientY = widget.visuals.mouseY - rect.top;
+                            __state = '5';
+                        } else {
+                            __state = '8';
+                        }
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                case '5':
+                    return {
+                        x: clientX,
+                        y: clientY
+                    };
+                case '8':
+                    clientX = widget.width / 2;
+                    clientY = widget.height / 2;
+                    __state = '5';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function clearMouseHover(widget) {
+            widget.visuals.mouseX = undefined;
+            widget.visuals.mouseY = undefined;
+            return;
+        }
+        function trackMouseHover(widget, evt) {
+            widget.visuals.mouseX = evt.clientX;
+            widget.visuals.mouseY = evt.clientY;
+            return;
+        }
         function FrameDrag_onDrag(self, evt) {
             updateSelectionFrame(self.widget, self.startX, self.startY, evt);
             blockSelect(self.widget);
-            paint(self.widget);
+            paintLater(self.widget);
             return;
         }
         function FrameDrag_complete(self) {
@@ -10342,7 +10467,7 @@ function createDrakonWidget() {
             return;
         }
         function NoSelectBehavior_create(widget) {
-            var scroller, evt;
+            var scroll, pos, dragTarget, scroller, evt;
             var me = {
                 state: '2',
                 type: 'NoSelectBehavior'
@@ -10357,13 +10482,37 @@ function createDrakonWidget() {
                         case '6':
                             me.state = '11';
                             return;
-                        case '21':
-                            scroller = createMouseScroll(widget, evt);
-                            me.state = '6';
-                            break;
                         case '22':
                             onMouseScroll(scroller, widget, evt);
                             me.state = '6';
+                            break;
+                        case '24':
+                            pos = toDiagram(widget, evt);
+                            scroll = hitScrollBar(widget.visuals, pos);
+                            if (scroll) {
+                                if (scroll.elType === 'hscroll') {
+                                    dragTarget = createHScrollDrag(widget, evt, scroll);
+                                    me.state = '30';
+                                } else {
+                                    dragTarget = createVScrollDrag(widget, evt, scroll);
+                                    me.state = '30';
+                                }
+                            } else {
+                                scroller = createMouseScroll(widget, evt);
+                                me.state = '6';
+                            }
+                            break;
+                        case '30':
+                            me.state = '31';
+                            return;
+                        case '35':
+                            dragTarget.onDrag(evt);
+                            me.state = '30';
+                            break;
+                        case '37':
+                            tracing.trace('drag complete');
+                            dragTarget.complete();
+                            me.state = '2';
                             break;
                         default:
                             return;
@@ -10384,6 +10533,10 @@ function createDrakonWidget() {
                             me.state = '22';
                             _main_NoSelectBehavior(__resolve, __reject);
                             break;
+                        case '31':
+                            me.state = '35';
+                            _main_NoSelectBehavior(__resolve, __reject);
+                            break;
                         default:
                             return;
                         }
@@ -10393,6 +10546,10 @@ function createDrakonWidget() {
                         switch (me.state) {
                         case '11':
                             me.state = '2';
+                            _main_NoSelectBehavior(__resolve, __reject);
+                            break;
+                        case '31':
+                            me.state = '37';
                             _main_NoSelectBehavior(__resolve, __reject);
                             break;
                         default:
@@ -10406,6 +10563,10 @@ function createDrakonWidget() {
                             me.state = '2';
                             _main_NoSelectBehavior(__resolve, __reject);
                             break;
+                        case '31':
+                            me.state = '37';
+                            _main_NoSelectBehavior(__resolve, __reject);
+                            break;
                         default:
                             return;
                         }
@@ -10414,7 +10575,7 @@ function createDrakonWidget() {
                         evt = _evt_;
                         switch (me.state) {
                         case '16':
-                            me.state = '21';
+                            me.state = '24';
                             _main_NoSelectBehavior(__resolve, __reject);
                             break;
                         default:
@@ -10500,7 +10661,7 @@ function createDrakonWidget() {
                     self.handle.x = x;
                     self.handle.y = y;
                     self.handle.dragTo(x, y);
-                    paint(self.widget);
+                    paintLater(self.widget);
                     __state = '1';
                     break;
                 default:
@@ -10550,35 +10711,6 @@ function createDrakonWidget() {
                                 }
                             }
                             break;
-                        case '64':
-                            pos = toDiagram(widget, evt);
-                            currentSocket = findSocket(widget.visuals, pos.x, pos.y);
-                            if (currentSocket) {
-                                prim = { primId: 'socket-' + currentSocket };
-                                updateHighlight(widget, prim);
-                                setCursor(evt.target, 'pointer');
-                                me.state = '2';
-                            } else {
-                                ear = hitEars(widget.visuals, pos);
-                                if (ear) {
-                                    prim = { primId: ear };
-                                    updateHighlight(widget, prim);
-                                    setCursor(evt.target, 'grab');
-                                    me.state = '2';
-                                } else {
-                                    prim = findVisualItem(widget, pos);
-                                    updateHighlight(widget, prim);
-                                    if (prim) {
-                                        cursor = getCursorForItem(widget, prim, pos, evt);
-                                        setCursor(evt.target, cursor);
-                                        me.state = '2';
-                                    } else {
-                                        setCursor(evt.target, 'default');
-                                        me.state = '2';
-                                    }
-                                }
-                            }
-                            break;
                         case '72':
                             me.state = '73';
                             return;
@@ -10589,7 +10721,7 @@ function createDrakonWidget() {
                                 me.state = '72';
                             } else {
                                 widget.visuals.onSocket = false;
-                                paint(widget);
+                                paintLater(widget);
                                 me.state = '81';
                             }
                             break;
@@ -10605,7 +10737,7 @@ function createDrakonWidget() {
                             currentSocket = findSocket(widget.visuals, pos.x, pos.y);
                             if (currentSocket === widget.visuals.currentSocket) {
                                 widget.visuals.onSocket = true;
-                                paint(widget);
+                                paintLater(widget);
                                 me.state = '72';
                             } else {
                                 me.state = '81';
@@ -10630,7 +10762,12 @@ function createDrakonWidget() {
                             dragTarget = chooseDragTarget(widget, evt);
                             me.state = '39';
                             break;
-                        case '_item2':
+                        case '118':
+                            setCursor(evt.target, 'default');
+                            me.state = '2';
+                            break;
+                        case '132':
+                            clearMouseHover(widget);
                             _var2 = evt.button;
                             if (_var2 === 0) {
                                 startX = evt.clientX;
@@ -10664,6 +10801,40 @@ function createDrakonWidget() {
                                 }
                             }
                             break;
+                        case '133':
+                            trackMouseHover(widget, evt);
+                            pos = toDiagram(widget, evt);
+                            currentSocket = findSocket(widget.visuals, pos.x, pos.y);
+                            if (currentSocket) {
+                                prim = { primId: 'socket-' + currentSocket };
+                                updateHighlight(widget, prim);
+                                setCursor(evt.target, 'pointer');
+                                me.state = '2';
+                            } else {
+                                ear = hitEars(widget.visuals, pos);
+                                if (ear) {
+                                    prim = { primId: ear };
+                                    updateHighlight(widget, prim);
+                                    setCursor(evt.target, 'grab');
+                                    me.state = '2';
+                                } else {
+                                    prim = findVisualItem(widget, pos);
+                                    updateHighlight(widget, prim);
+                                    if (prim) {
+                                        cursor = getCursorForItem(widget, prim, pos, evt);
+                                        setCursor(evt.target, cursor);
+                                        me.state = '2';
+                                    } else {
+                                        me.state = '118';
+                                    }
+                                }
+                            }
+                            break;
+                        case '134':
+                            clearMouseHover(widget);
+                            updateHighlight(widget, undefined);
+                            me.state = '118';
+                            break;
                         default:
                             return;
                         }
@@ -10692,7 +10863,7 @@ function createDrakonWidget() {
                             _main_SelectBehavior(__resolve, __reject);
                             break;
                         case '59':
-                            me.state = '64';
+                            me.state = '133';
                             _main_SelectBehavior(__resolve, __reject);
                             break;
                         case '73':
@@ -10749,6 +10920,10 @@ function createDrakonWidget() {
                             me.state = '115';
                             _main_SelectBehavior(__resolve, __reject);
                             break;
+                        case '59':
+                            me.state = '134';
+                            _main_SelectBehavior(__resolve, __reject);
+                            break;
                         case '73':
                             me.state = '80';
                             _main_SelectBehavior(__resolve, __reject);
@@ -10765,7 +10940,7 @@ function createDrakonWidget() {
                         evt = _evt_;
                         switch (me.state) {
                         case '59':
-                            me.state = '_item2';
+                            me.state = '132';
                             _main_SelectBehavior(__resolve, __reject);
                             break;
                         default:
@@ -10832,6 +11007,18 @@ function createDrakonWidget() {
                 }
             }
         }
+        function HScrollDrag_onDrag(self, evt) {
+            var x, y, deltaX, deltaY, zoom;
+            deltaX = (self.startX - evt.clientX) * self.barToBox;
+            deltaY = 0;
+            zoom = self.widget.zoomFactor;
+            x = self.startScrollX - deltaX / zoom;
+            y = self.startScrollY - deltaY / zoom;
+            setScrollFromMouseEvent(self.widget, x, y);
+            return;
+        }
+        function HScrollDrag_complete(self) {
+        }
         function createMouseScroll(widget, evt) {
             return {
                 startX: evt.clientX,
@@ -10839,6 +11026,95 @@ function createDrakonWidget() {
                 startScrollX: widget.visuals.scrollX,
                 startScrollY: widget.visuals.scrollY
             };
+        }
+        function createVScrollDrag(widget, evt, scroll) {
+            var obj;
+            obj = VScrollDrag();
+            obj.barToBox = scroll.barToBox;
+            obj.widget = widget;
+            obj.startX = evt.clientX;
+            obj.startY = evt.clientY;
+            obj.startScrollX = widget.visuals.scrollX;
+            obj.startScrollY = widget.visuals.scrollY;
+            return obj;
+        }
+        function VScrollDrag_onDrag(self, evt) {
+            var x, y, zoom, deltaX, deltaY;
+            deltaX = 0;
+            deltaY = (self.startY - evt.clientY) * self.barToBox;
+            zoom = self.widget.zoomFactor;
+            x = self.startScrollX - deltaX / zoom;
+            y = self.startScrollY - deltaY / zoom;
+            setScrollFromMouseEvent(self.widget, x, y);
+            return;
+        }
+        function VScrollDrag_complete(self) {
+        }
+        function findValueBelow(array, value) {
+            var current, i;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    i = array.length - 1;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (i >= 0) {
+                        current = array[i];
+                        if (current < value) {
+                            return current;
+                        } else {
+                            i--;
+                            __state = '5';
+                        }
+                    } else {
+                        return value;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function findValueAbove(array, value) {
+            var _var2, _var3, current;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var2 = array;
+                    _var3 = 0;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var3 < _var2.length) {
+                        current = _var2[_var3];
+                        if (current > value) {
+                            return current;
+                        } else {
+                            _var3++;
+                            __state = '5';
+                        }
+                    } else {
+                        return value;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function createHScrollDrag(widget, evt, scroll) {
+            var obj;
+            obj = HScrollDrag();
+            obj.barToBox = scroll.barToBox;
+            obj.widget = widget;
+            obj.startX = evt.clientX;
+            obj.startY = evt.clientY;
+            obj.startScrollX = widget.visuals.scrollX;
+            obj.startScrollY = widget.visuals.scrollY;
+            return obj;
         }
         function onMouseScroll(scroller, widget, evt) {
             var x, y, deltaX, deltaY, zoom;
@@ -10957,7 +11233,7 @@ function createDrakonWidget() {
                     }
                     break;
                 case '31':
-                    paint(self.widget);
+                    paintLater(self.widget);
                     __state = '28';
                     break;
                 case '33':
@@ -10994,57 +11270,68 @@ function createDrakonWidget() {
             }
         }
         function chooseDragTarget(widget, evt) {
-            var pos, visuals, ear, element, mover, selected, handle, _var2, _var3, _var4, _var5;
+            var scroll, pos, visuals, ear, element, mover, selected, handle, _var2, _var3, _var4, _var5, _var6, _var7;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
-                    _var2 = isReadonly(widget);
-                    if (_var2) {
-                        __state = '_item3';
-                    } else {
-                        visuals = widget.visuals;
-                        pos = toDiagram(widget, evt);
-                        ear = hitEars(widget.visuals, pos);
-                        if (ear) {
-                            visuals.ears.start(ear, evt);
-                            return visuals.ears;
+                    visuals = widget.visuals;
+                    pos = toDiagram(widget, evt);
+                    scroll = hitScrollBar(visuals, pos);
+                    if (scroll) {
+                        if (scroll.elType === 'hscroll') {
+                            _var6 = createHScrollDrag(widget, evt, scroll);
+                            return _var6;
                         } else {
-                            handle = findHandle(visuals, pos);
-                            if (handle) {
-                                mover = createHandleDrag(widget, handle, evt);
-                                __state = '52';
+                            _var7 = createVScrollDrag(widget, evt, scroll);
+                            return _var7;
+                        }
+                    } else {
+                        _var2 = isReadonly(widget);
+                        if (_var2) {
+                            __state = '_item3';
+                        } else {
+                            ear = hitEars(widget.visuals, pos);
+                            if (ear) {
+                                visuals.ears.start(ear, evt);
+                                return visuals.ears;
                             } else {
-                                _var5 = hitNugget(visuals, pos);
-                                if (_var5) {
-                                    selected = getSelectedFree(widget);
-                                    mover = createFreeMover(widget, selected, evt);
-                                    __state = '52';
+                                handle = findHandle(visuals, pos);
+                                if (handle) {
+                                    mover = createHandleDrag(widget, handle, evt);
+                                    __state = '77';
                                 } else {
-                                    element = findFree(widget, pos);
-                                    if (element) {
-                                        if (element.type === 'connection') {
-                                            __state = '_item3';
-                                        } else {
-                                            _var4 = isSelected(widget, element.id);
-                                            if (_var4) {
-                                                selected = getSelectedFree(widget);
-                                                mover = createFreeMover(widget, selected, evt);
-                                                __state = '52';
-                                            } else {
-                                                mover = createFreeMover(widget, [element], evt);
-                                                __state = '52';
-                                            }
-                                        }
+                                    _var5 = hitNugget(visuals, pos);
+                                    if (_var5) {
+                                        selected = getSelectedFree(widget);
+                                        mover = createFreeMover(widget, selected, evt);
+                                        __state = '77';
                                     } else {
-                                        __state = '_item3';
+                                        element = findFree(widget, pos);
+                                        if (element) {
+                                            if (element.type === 'connection') {
+                                                __state = '_item3';
+                                            } else {
+                                                _var4 = isSelected(widget, element.id);
+                                                if (_var4) {
+                                                    selected = getSelectedFree(widget);
+                                                    mover = createFreeMover(widget, selected, evt);
+                                                    __state = '77';
+                                                } else {
+                                                    mover = createFreeMover(widget, [element], evt);
+                                                    __state = '77';
+                                                }
+                                            }
+                                        } else {
+                                            __state = '_item3';
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                     break;
-                case '52':
+                case '77':
                     visuals.ears = undefined;
                     return mover;
                 case '_item3':
@@ -11110,7 +11397,7 @@ function createDrakonWidget() {
         function DrakonCanvas_goHome(self) {
             tracing.trace('DrakonCanvas.goHome');
             delete self.origins[self.diagramId];
-            calculateDiagramBox(self.visuals);
+            self.box = calculateDiagramBoxForEdit(self.visuals);
             initScrollPos(self);
             paint(self);
             return;
@@ -11302,7 +11589,7 @@ function createDrakonWidget() {
                                     __state = '65';
                                 }
                             } else {
-                                __state = '65';
+                                __state = '32';
                             }
                         }
                     } else {
@@ -14100,6 +14387,14 @@ function createDrakonWidget() {
         function yes() {
             return 'Yes';
         }
+        function calculateScrollableHeight(widget) {
+            var boxHeight, visuals, zoom, _var2;
+            visuals = widget.visuals;
+            zoom = widget.zoomFactor;
+            boxHeight = visuals.box.height * zoom;
+            _var2 = Math.max(boxHeight, widget.height);
+            return _var2;
+        }
         function primToClient(widget, prim) {
             var pos, zoom;
             prim.diagramLeft = prim.left;
@@ -15495,6 +15790,43 @@ function createDrakonWidget() {
                 y: y
             };
         }
+        function getDefaultScrollLeft(widget) {
+            var wwidth, left, visuals, zoom, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    zoom = widget.zoomFactor;
+                    if (widget.model.type === 'graf') {
+                        __state = '5';
+                    } else {
+                        if (widget.model.type === 'free') {
+                            __state = '5';
+                        } else {
+                            left = visuals.box.left;
+                            __state = '3';
+                        }
+                    }
+                    break;
+                case '3':
+                    return left;
+                case '5':
+                    wwidth = widget.width / zoom;
+                    if (wwidth > visuals.box.width) {
+                        _var2 = Math.floor((wwidth - visuals.box.width) / 2);
+                        left = visuals.box.left - _var2;
+                        __state = '3';
+                    } else {
+                        left = visuals.box.left;
+                        __state = '3';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function putLoopsOnCases(visuals, select) {
             var _var2, _var3, caseIcon;
             var __state = '2';
@@ -16041,6 +16373,208 @@ function createDrakonWidget() {
                 }
             }
         }
+        function drawVerticalScrollbar(widget, context) {
+            var visuals, ctx, config, cleft, ctop, zoom, cwidth, cradius, id, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    id = 'vscroll';
+                    visuals = widget.visuals;
+                    ctx = visuals.ctx;
+                    config = visuals.config;
+                    zoom = widget.zoomFactor;
+                    clearShadow(ctx);
+                    cleft = (widget.width - (context.barWidth + context.margin)) / zoom + visuals.scrollX;
+                    ctop = context.scrollTop + visuals.scrollY;
+                    cwidth = context.barWidth / zoom;
+                    cradius = cwidth / 2;
+                    if (visuals.highlight === id) {
+                        ctx.fillStyle = config.theme.scrollBarHover;
+                        __state = '3';
+                    } else {
+                        ctx.fillStyle = config.theme.scrollBar;
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    roundedRect(ctx, cleft, ctop, cwidth, context.scrollHeight, cradius);
+                    ctx.fill();
+                    _var2 = createBox(cleft - context.margin, ctop, cwidth + context.margin * 2, context.scrollHeight);
+                    visuals.verticalScrollBar = {
+                        elType: id,
+                        primId: id,
+                        barToBox: context.barToBox,
+                        box: _var2
+                    };
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function drawScrollbars(widget) {
+            var wheight, wwidth, visuals, box, zoom, margin, width, context;
+            var __state = '14';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    wheight = widget.height / zoom;
+                    if (wheight >= box.height) {
+                        __state = '9';
+                    } else {
+                        context = {
+                            boxTop: box.top,
+                            boxHeight: box.height,
+                            boxBottom: box.bottom,
+                            zoom: zoom,
+                            widgetSizeD: wheight,
+                            widgetSize: widget.height,
+                            margin: margin,
+                            barWidth: width,
+                            scroll: visuals.scrollY
+                        };
+                        calculateScrollPos(context);
+                        drawVerticalScrollbar(widget, context);
+                        __state = '9';
+                    }
+                    break;
+                case '8':
+                    return;
+                case '9':
+                    wwidth = widget.width / zoom;
+                    if (wwidth >= box.width) {
+                        __state = '8';
+                    } else {
+                        context = {
+                            boxTop: box.left,
+                            boxHeight: box.width,
+                            boxBottom: box.right,
+                            zoom: zoom,
+                            widgetSizeD: wwidth,
+                            widgetSize: widget.width,
+                            margin: margin,
+                            barWidth: width,
+                            scroll: visuals.scrollX
+                        };
+                        calculateScrollPos(context);
+                        drawHorizontalScrollbar(widget, context);
+                        __state = '8';
+                    }
+                    break;
+                case '14':
+                    visuals = widget.visuals;
+                    box = visuals.box;
+                    zoom = widget.zoomFactor;
+                    margin = 5;
+                    width = 10;
+                    visuals.verticalScrollBar = undefined;
+                    visuals.horizontalScrollBar = undefined;
+                    if (widget.height > 30) {
+                        if (widget.width > 30) {
+                            __state = '2';
+                        } else {
+                            __state = '8';
+                        }
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function drawHorizontalScrollbar(widget, context) {
+            var visuals, ctx, config, ctop, cleft, zoom, cheight, cradius, id, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    id = 'hscroll';
+                    visuals = widget.visuals;
+                    ctx = visuals.ctx;
+                    config = visuals.config;
+                    zoom = widget.zoomFactor;
+                    clearShadow(ctx);
+                    ctop = (widget.height - (context.barWidth + context.margin)) / zoom + visuals.scrollY;
+                    cleft = context.scrollTop + visuals.scrollX;
+                    cheight = context.barWidth / zoom;
+                    cradius = cheight / 2;
+                    if (visuals.highlight === id) {
+                        ctx.fillStyle = config.theme.scrollBarHover;
+                        __state = '3';
+                    } else {
+                        ctx.fillStyle = config.theme.scrollBar;
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    roundedRect(ctx, cleft, ctop, context.scrollHeight, cheight, cradius);
+                    ctx.fill();
+                    _var2 = createBox(cleft, ctop - context.margin, context.scrollHeight, cheight + context.margin * 2);
+                    visuals.horizontalScrollBar = {
+                        elType: id,
+                        primId: id,
+                        barToBox: context.barToBox,
+                        box: _var2
+                    };
+                    return;
+                default:
+                    return;
+                }
+            }
+        }
+        function hitScrollBar(visuals, pos) {
+            var _var2, _var3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (visuals.verticalScrollBar) {
+                        _var2 = hitBox(visuals.verticalScrollBar.box, pos.x, pos.y);
+                        if (_var2) {
+                            return visuals.verticalScrollBar;
+                        } else {
+                            __state = '7';
+                        }
+                    } else {
+                        __state = '7';
+                    }
+                    break;
+                case '7':
+                    if (visuals.horizontalScrollBar) {
+                        _var3 = hitBox(visuals.horizontalScrollBar.box, pos.x, pos.y);
+                        if (_var3) {
+                            return visuals.horizontalScrollBar;
+                        } else {
+                            __state = '10';
+                        }
+                    } else {
+                        __state = '10';
+                    }
+                    break;
+                case '10':
+                    return undefined;
+                default:
+                    return;
+                }
+            }
+        }
+        function calculateScrollPos(context) {
+            var ratio, minScroll, maxScroll, top, bottom, height, barFreeSpace;
+            minScroll = context.boxTop;
+            maxScroll = context.boxBottom - context.widgetSizeD;
+            ratio = (context.scroll - minScroll) / (maxScroll - minScroll);
+            top = context.margin / context.zoom;
+            bottom = (context.widgetSize - context.barWidth - context.margin * 3) / context.zoom;
+            height = bottom - top;
+            context.scrollHeight = height * context.widgetSizeD / context.boxHeight;
+            barFreeSpace = height - context.scrollHeight;
+            context.scrollTop = top + ratio * barFreeSpace;
+            context.barToBox = (context.boxHeight - context.widgetSizeD) / barFreeSpace;
+            return;
+        }
         function copyTheme(userTheme, config) {
             var theme;
             var __state = '2';
@@ -16255,12 +16789,36 @@ function createDrakonWidget() {
             }
         }
         function copyScrollToScrollable(widget, scrollX, scrollY) {
-            var visuals, zoom;
-            visuals = widget.visuals;
-            zoom = widget.zoomFactor;
-            widget.scrollableContainer.scrollLeft = (scrollX - visuals.box.left) * zoom;
-            widget.scrollableContainer.scrollTop = (scrollY - visuals.box.top) * zoom;
-            return;
+            var visuals, scroll, zoom, scrollLeft, scrollTop, oldLeft, oldTop;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    scroll = widget.scrollableContainer;
+                    zoom = widget.zoomFactor;
+                    scrollLeft = (scrollX - visuals.box.left) * zoom;
+                    scrollTop = (scrollY - visuals.box.top) * zoom;
+                    oldLeft = scroll.scrollLeft;
+                    oldTop = scroll.scrollTop;
+                    scroll.scrollLeft = scrollLeft;
+                    scroll.scrollTop = scrollTop;
+                    if (scroll.scrollLeft === oldLeft) {
+                        if (scroll.scrollTop === oldTop) {
+                            return false;
+                        } else {
+                            __state = '26';
+                        }
+                    } else {
+                        __state = '26';
+                    }
+                    break;
+                case '26':
+                    return true;
+                default:
+                    return;
+                }
+            }
         }
         function forType(visuals, type, action) {
             var nodes, node, _var2, _var3, nodeId;
@@ -17581,7 +18139,9 @@ function createDrakonWidget() {
                         'centerContent': false,
                         'buildIconCore': buildIconCore,
                         'getClipboard': getClipboard,
-                        'setClipboard': setClipboard
+                        'setClipboard': setClipboard,
+                        'onZoomChanged': function () {
+                        }
                     };
                     Object.assign(config, userConfig);
                     __state = '12';
@@ -17603,6 +18163,14 @@ function createDrakonWidget() {
         function connectLoops(visuals) {
             forType(visuals, 'loopend', findLoopStart);
             return;
+        }
+        function calculateScrollableWidth(widget) {
+            var boxWidth, visuals, zoom, _var2;
+            visuals = widget.visuals;
+            zoom = widget.zoomFactor;
+            boxWidth = visuals.box.width * zoom;
+            _var2 = Math.max(boxWidth, widget.width);
+            return _var2;
         }
         function paint(widget) {
             var width, height, visuals, config, scale, ctx, factor, zoom, translate, tx, ty;
@@ -17632,6 +18200,7 @@ function createDrakonWidget() {
                     ctx = widget.canvas.getContext('2d');
                     visuals.ctx = ctx;
                     paintCore(widget, factor, zoom, -visuals.scrollX, -visuals.scrollY, width, height);
+                    drawScrollbars(widget);
                     return;
                 default:
                     return;
@@ -17639,7 +18208,7 @@ function createDrakonWidget() {
             }
         }
         function initScrollPos(widget) {
-            var visuals, savedOrigin, left, top, scroll, zoom, wheight, wwidth, _var2, _var3;
+            var visuals, savedOrigin, left, top, scroll, zoom, width, height;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -17648,61 +18217,20 @@ function createDrakonWidget() {
                     zoom = widget.zoomFactor;
                     savedOrigin = widget.origins[widget.diagramId];
                     if (savedOrigin) {
-                        extendVisualsBox(visuals, savedOrigin);
                         left = savedOrigin.x;
                         top = savedOrigin.y;
                         __state = '10';
                     } else {
-                        if (widget.model.type === 'graf') {
-                            __state = '38';
-                        } else {
-                            if (widget.model.type === 'free') {
-                                __state = '38';
-                            } else {
-                                left = visuals.box.left;
-                                __state = '22';
-                            }
-                        }
+                        left = getDefaultScrollLeft(widget);
+                        top = getDefaultScrollTop(widget);
+                        __state = '10';
                     }
                     break;
                 case '10':
                     scroll = setScroll(widget, left, top);
-                    zoom = widget.zoomFactor;
-                    widget.scrollable.style.width = visuals.box.width * zoom + 'px';
-                    widget.scrollable.style.height = visuals.box.height * zoom + 'px';
-                    copyScrollToScrollable(widget, scroll.x, scroll.y);
+                    width = calculateScrollableWidth(widget);
+                    height = calculateScrollableHeight(widget);
                     return;
-                case '22':
-                    if (widget.model.type === 'free') {
-                        wheight = widget.height / zoom;
-                        if (wheight > visuals.box.height) {
-                            _var2 = Math.floor((wheight - visuals.box.height) / 3);
-                            top = visuals.box.top - _var2;
-                            visuals.box.top = top;
-                            visuals.box.height = visuals.box.bottom - top;
-                            __state = '10';
-                        } else {
-                            top = visuals.box.top;
-                            __state = '10';
-                        }
-                    } else {
-                        top = visuals.box.top;
-                        __state = '10';
-                    }
-                    break;
-                case '38':
-                    wwidth = widget.width / zoom;
-                    if (wwidth > visuals.box.width) {
-                        _var3 = Math.floor((wwidth - visuals.box.width) / 2);
-                        left = visuals.box.left - _var3;
-                        visuals.box.left = left;
-                        visuals.box.width = visuals.box.right - left;
-                        __state = '22';
-                    } else {
-                        left = visuals.box.left;
-                        __state = '22';
-                    }
-                    break;
                 default:
                     return;
                 }
@@ -20579,32 +21107,18 @@ function createDrakonWidget() {
                     }
                     break;
                 case '17':
-                    if (visuals.type === 'drakon') {
-                        padding = metre;
-                        __state = '19';
-                    } else {
-                        padding = metre * 2;
-                        __state = '19';
-                    }
-                    break;
-                case '18':
-                    _var5 = visuals.free;
-                    _var6 = 0;
-                    __state = '21';
-                    break;
-                case '19':
+                    padding = metre;
                     box.left -= padding;
                     box.top -= padding;
                     box.right += padding;
                     box.bottom += padding;
                     box.width = box.right - box.left;
                     box.height = box.bottom - box.top;
-                    if (visuals.type === 'free') {
-                        box.top -= 30;
-                        __state = '33';
-                    } else {
-                        __state = '33';
-                    }
+                    return box;
+                case '18':
+                    _var5 = visuals.free;
+                    _var6 = 0;
+                    __state = '21';
                     break;
                 case '21':
                     if (_var6 < _var5.length) {
@@ -20616,8 +21130,6 @@ function createDrakonWidget() {
                         __state = '40';
                     }
                     break;
-                case '33':
-                    return box;
                 case '34':
                     if (box.left === Number.MAX_SAFE_INTEGER) {
                         box.left = 0;
@@ -21010,8 +21522,8 @@ function createDrakonWidget() {
         function no() {
             return 'No';
         }
-        function sanitizeScroll(widget, x, y) {
-            var visuals, box, x2, y2, zoom, x3, y3, wwidth, wheight, _var2, _var3;
+        function sanitizeScroll(widget, scrollX, scrollY) {
+            var visuals, box, zoom, wwidth, wheight, minScrollX, maxScrollX, minScrollY, maxScrollY, _var2, _var3;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -21020,35 +21532,67 @@ function createDrakonWidget() {
                     box = visuals.box;
                     zoom = widget.zoomFactor;
                     wwidth = widget.width / zoom;
-                    if (box.right < wwidth + x) {
-                        box.right = wwidth + x;
-                        box.width = box.right - box.left;
-                        __state = '4';
+                    if (wwidth >= box.width) {
+                        minScrollX = -wwidth + box.right;
+                        maxScrollX = box.left;
+                        __state = '31';
                     } else {
-                        __state = '4';
+                        minScrollX = box.left;
+                        maxScrollX = box.right - wwidth;
+                        __state = '31';
                     }
                     break;
-                case '4':
-                    x2 = Math.min(box.right - wwidth, x);
-                    x3 = Math.max(box.left, x2);
-                    wheight = widget.height / zoom;
-                    if (box.bottom < wheight + y) {
-                        box.bottom = wheight + y;
-                        box.height = box.bottom - box.top;
-                        __state = '5';
-                    } else {
-                        __state = '5';
-                    }
-                    break;
-                case '5':
-                    y2 = Math.min(box.bottom - wheight, y);
-                    y3 = Math.max(box.top, y2);
-                    _var2 = Math.round(x3);
-                    _var3 = Math.round(y3);
+                case '17':
+                    _var2 = Math.round(scrollX);
+                    _var3 = Math.round(scrollY);
                     return {
                         x: _var2,
                         y: _var3
                     };
+                case '18':
+                    wheight = widget.height / zoom;
+                    if (wheight >= box.height) {
+                        minScrollY = -wheight + box.bottom;
+                        maxScrollY = box.top;
+                        __state = '40';
+                    } else {
+                        minScrollY = box.top;
+                        maxScrollY = box.bottom - wheight;
+                        __state = '40';
+                    }
+                    break;
+                case '31':
+                    if (scrollX < minScrollX) {
+                        scrollX = minScrollX;
+                        __state = '33';
+                    } else {
+                        __state = '33';
+                    }
+                    break;
+                case '33':
+                    if (scrollX > maxScrollX) {
+                        scrollX = maxScrollX;
+                        __state = '18';
+                    } else {
+                        __state = '18';
+                    }
+                    break;
+                case '40':
+                    if (scrollY < minScrollY) {
+                        scrollY = minScrollY;
+                        __state = '42';
+                    } else {
+                        __state = '42';
+                    }
+                    break;
+                case '42':
+                    if (scrollY > maxScrollY) {
+                        scrollY = maxScrollY;
+                        __state = '17';
+                    } else {
+                        __state = '17';
+                    }
+                    break;
                 default:
                     return;
                 }
@@ -21080,7 +21624,7 @@ function createDrakonWidget() {
                 case '4':
                     buildBoxes(widget, visuals);
                     forType(visuals, 'address', putCycleMark);
-                    visuals.box = calculateDiagramBox(visuals);
+                    visuals.box = calculateDiagramBoxForEdit(visuals);
                     return visuals;
                 case '5':
                     _var7 = visuals.branches;
@@ -22361,6 +22905,11 @@ function createDrakonWidget() {
             });
             return;
         }
+        function calculateDiagramBoxForEdit(visuals) {
+            var box;
+            box = calculateDiagramBox(visuals);
+            return box;
+        }
         function buildGrafHeader(visuals, model) {
             var header, root, headerContent;
             var __state = '2';
@@ -23224,6 +23773,36 @@ function createDrakonWidget() {
             edits = action(widget, socket);
             _var2 = doEdit(widget, edits);
             return _var2;
+        }
+        function getDefaultScrollTop(widget) {
+            var visuals, zoom, top, wheight, _var2;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    visuals = widget.visuals;
+                    zoom = widget.zoomFactor;
+                    if (widget.model.type === 'free') {
+                        wheight = widget.height / zoom;
+                        if (wheight > visuals.box.height) {
+                            _var2 = Math.floor((wheight - visuals.box.height) / 3);
+                            top = visuals.box.top - _var2;
+                            __state = '3';
+                        } else {
+                            top = visuals.box.top;
+                            __state = '3';
+                        }
+                    } else {
+                        top = visuals.box.top;
+                        __state = '3';
+                    }
+                    break;
+                case '3':
+                    return top;
+                default:
+                    return;
+                }
+            }
         }
         function connectBranch(visuals, branch, upper, lower) {
             var ceil, branchLower, floor, _var2, _var3, address;
@@ -24128,7 +24707,8 @@ function createDrakonWidget() {
         function setScrollFromMouseEvent(widget, x, y) {
             var norm;
             norm = sanitizeScroll(widget, x, y);
-            copyScrollToScrollable(widget, norm.x, norm.y);
+            setScroll(widget, norm.x, norm.y);
+            paintLater(widget);
             return;
         }
         function nextBox(box, left, top, right, bottom) {
@@ -24178,6 +24758,12 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function paintLater(widget) {
+            requestAnimationFrame(function () {
+                paint(widget);
+            });
+            return;
         }
         function multilineSharp(ctx, coords, color, width) {
             var x, y, first, point, i;
@@ -24469,7 +25055,7 @@ function createDrakonWidget() {
                             box.left = left;
                             box.top = top;
                             recalculateEarsVisuals(widget, evt, me);
-                            paint(widget);
+                            paintLater(widget);
                             me.state = '5';
                             break;
                         case '43':
@@ -24536,6 +25122,53 @@ function createDrakonWidget() {
         function Ears(widget, element) {
             var __obj = Ears_create(widget, element);
             return __obj.run();
+        }
+        function drawEar(ctx, key, box, lineWidth, fill, border) {
+            var centerX, centerY, _var2;
+            var __state = '12';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    clearShadow(ctx);
+                    ctx.fillStyle = fill;
+                    ctx.strokeStyle = border;
+                    earArrowPath(ctx, box.left, box.top, box.width, box.height);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.restore();
+                    __state = '11';
+                    break;
+                case '10':
+                    return;
+                case '11':
+                    __state = '10';
+                    break;
+                case '12':
+                    centerX = box.left + box.width / 2;
+                    centerY = box.top + box.height / 2;
+                    ctx.save();
+                    _var2 = key;
+                    if (_var2 === 'left') {
+                        rotateAround(ctx, centerX, centerY, -Math.PI / 2);
+                        __state = '2';
+                    } else {
+                        if (_var2 === 'right') {
+                            rotateAround(ctx, centerX, centerY, Math.PI / 2);
+                            __state = '2';
+                        } else {
+                            if (_var2 === 'down') {
+                                rotateAround(ctx, centerX, centerY, Math.PI);
+                                __state = '2';
+                            } else {
+                                __state = '2';
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function setupEarBoxes(ears, element, radius) {
             var x, y, right, bottom;
@@ -24640,6 +25273,12 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function rotateAround(ctx, cx, cy, angle) {
+            ctx.translate(cx, cy);
+            ctx.rotate(angle);
+            ctx.translate(-cx, -cy);
+            return;
         }
         function createGlyphIcon(widget, type, render) {
             var obj;
@@ -28360,6 +28999,44 @@ function createDrakonWidget() {
             line2(ctx, x0, y0, x1, y, x0, y1);
             return;
         }
+        function earArrowPath(ctx, left, top, width, height) {
+            var x1, x2, x3, x4, x5, horIndent, arrowThickness, arrowHeight, y1, y2, y3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    arrowThickness = 0.3;
+                    arrowHeight = 0.6;
+                    horIndent = width * (1 - arrowThickness) / 2;
+                    x1 = left;
+                    x2 = left + horIndent;
+                    x3 = left + width / 2;
+                    x4 = left + width - horIndent;
+                    x5 = left + width;
+                    y1 = top;
+                    y2 = top + height * arrowHeight;
+                    y3 = top + height;
+                    __state = '8';
+                    break;
+                case '7':
+                    return;
+                case '8':
+                    ctx.beginPath();
+                    ctx.moveTo(x3, y1);
+                    ctx.lineTo(x5, y2);
+                    ctx.lineTo(x4, y2);
+                    ctx.lineTo(x4, y3);
+                    ctx.lineTo(x2, y3);
+                    ctx.lineTo(x2, y2);
+                    ctx.lineTo(x1, y2);
+                    ctx.closePath();
+                    __state = '7';
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function cloudPath(ctx, left, top, width, height) {
             var r1, bottom, w2, leftX, rightX, midY, x0, y0, x1, y1, x2, y2, x3, y3, rleft, rright, scale, h, w, x, y, clx, cly, clbegin, clend, crx, cry, crbegin, crend;
             h = height / 2;
@@ -29344,12 +30021,15 @@ function createDrakonWidget() {
             return _var2;
         }
         function createConnection(widget, begin, end, role) {
-            var item, edits, _var2;
+            var item, edits, style, styleStr, _var2;
+            style = { headStyle: widget.userMemory.headStyle };
+            styleStr = JSON.stringify(style);
             item = {
                 type: 'connection',
                 begin: begin,
                 end: end,
-                role: role
+                role: role,
+                style: styleStr
             };
             edits = [];
             insertFreeItem(widget, edits, item);
@@ -30128,15 +30808,6 @@ function createDrakonWidget() {
         function DrakonCanvas_insertFree(self, type, evt, imageData) {
             var __obj = DrakonCanvas_insertFree_create(self, type, evt, imageData);
             return __obj.run();
-        }
-        function DrakonCanvas_onScroll(self, evt) {
-            var originX, originY, zoom;
-            zoom = self.zoomFactor;
-            originX = self.scrollableContainer.scrollLeft / zoom + self.visuals.box.left;
-            originY = self.scrollableContainer.scrollTop / zoom + self.visuals.box.top;
-            setScroll(self, originX, originY);
-            paint(self);
-            return;
         }
         function DrakonCanvas_arrowDown(self) {
             var first, nodes, node;
@@ -32899,9 +33570,6 @@ function createDrakonWidget() {
             self.insertFree_create = function (type, evt, imageData) {
                 return DrakonCanvas_insertFree_create(self, type, evt, imageData);
             };
-            self.onScroll = function (evt) {
-                return DrakonCanvas_onScroll(self, evt);
-            };
             self.arrowDown = function () {
                 return DrakonCanvas_arrowDown(self);
             };
@@ -33064,6 +33732,26 @@ function createDrakonWidget() {
             };
             self.onDrag = function (evt) {
                 return HandleDrag_onDrag(self, evt);
+            };
+            return self;
+        }
+        function HScrollDrag() {
+            var self = {};
+            self.onDrag = function (evt) {
+                return HScrollDrag_onDrag(self, evt);
+            };
+            self.complete = function () {
+                return HScrollDrag_complete(self);
+            };
+            return self;
+        }
+        function VScrollDrag() {
+            var self = {};
+            self.onDrag = function (evt) {
+                return VScrollDrag_onDrag(self, evt);
+            };
+            self.complete = function () {
+                return VScrollDrag_complete(self);
             };
             return self;
         }
@@ -34115,6 +34803,8 @@ function createDrakonWidget() {
         unit.LeftDrakonResizeHandle = LeftDrakonResizeHandle;
         unit.FrameDrag = FrameDrag;
         unit.HandleDrag = HandleDrag;
+        unit.HScrollDrag = HScrollDrag;
+        unit.VScrollDrag = VScrollDrag;
         unit.FreeMover = FreeMover;
         unit.LeftMindResizeHandle = LeftMindResizeHandle;
         unit.RightMindResizeHandle = RightMindResizeHandle;
