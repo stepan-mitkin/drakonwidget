@@ -2679,16 +2679,6 @@ function createDrakonWidget() {
                 }
             }
         }
-        function boxForHorizontalLine(left, top, right, margin) {
-            var _var2, _var3;
-            if (left <= right) {
-                _var2 = createBoxWithMargin(left, top, right - left, 0, margin);
-                return _var2;
-            } else {
-                _var3 = createBoxWithMargin(right, top, left - right, 0, margin);
-                return _var3;
-            }
-        }
         function copyFields(dst, src, fields) {
             var _var2, _var3, field;
             var __state = '2';
@@ -2705,6 +2695,54 @@ function createDrakonWidget() {
                         dst[field] = src[field];
                         _var3++;
                         __state = '5';
+                    } else {
+                        return;
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function boxForHorizontalLine(left, top, right, margin) {
+            var _var2, _var3;
+            if (left <= right) {
+                _var2 = createBoxWithMargin(left, top, right - left, 0, margin);
+                return _var2;
+            } else {
+                _var3 = createBoxWithMargin(right, top, left - right, 0, margin);
+                return _var3;
+            }
+        }
+        function copyNotNull(dst, src) {
+            var _var3, _var2, _var4, key, value;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    _var3 = src;
+                    _var2 = Object.keys(_var3);
+                    _var4 = 0;
+                    __state = '5';
+                    break;
+                case '4':
+                    _var4++;
+                    __state = '5';
+                    break;
+                case '5':
+                    if (_var4 < _var2.length) {
+                        key = _var2[_var4];
+                        value = _var3[key];
+                        if (value === undefined) {
+                            __state = '4';
+                        } else {
+                            if (value === null) {
+                                __state = '4';
+                            } else {
+                                dst[key] = value;
+                                __state = '4';
+                            }
+                        }
                     } else {
                         return;
                     }
@@ -9268,7 +9306,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.3.0';
+            return '1.3.1';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -18449,7 +18487,7 @@ function createDrakonWidget() {
                         'onZoomChanged': function () {
                         }
                     };
-                    Object.assign(config, userConfig);
+                    copyNotNull(config, userConfig);
                     __state = '12';
                     break;
                 case '11':
