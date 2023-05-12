@@ -1756,6 +1756,7 @@ function createDrakonWidget() {
         });
         return unit;
     }
+
     function drakon_canvas() {
         var unit = {};
         var html, edit_tools, tracing, utils;
@@ -9306,7 +9307,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.3.1';
+            return '1.3.2';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -12359,7 +12360,7 @@ function createDrakonWidget() {
                     if (_var2) {
                         h2 = getSecondaryHeightCore(widget.visuals, node);
                         if (h2) {
-                            if (pos.y < prim.top + h2) {
+                            if (pos.y < prim.y - prim.h + h2) {
                                 return true;
                             } else {
                                 __state = '10';
@@ -16964,7 +16965,8 @@ function createDrakonWidget() {
                         'ctrlend',
                         'pause',
                         'timer',
-                        'group-duration'
+                        'group-duration',
+                        'callout'
                     ], { iconBack: '#fffdbd' });
                     setIconDefaultProps(theme.icons, ['header'], { font: config.headerFont });
                     setIconDefaultProps(theme.icons, ['branch'], { font: config.branchFont });
@@ -35234,6 +35236,7 @@ function createDrakonWidget() {
         });
         return unit;
     }
+
     var tracing = {
         trace: function (name, value) { console.log(name, value) },
         setTimeout: function (action, delay) { return window.setTimeout(action, delay) },
