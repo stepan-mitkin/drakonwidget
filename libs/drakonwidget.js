@@ -9307,7 +9307,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.3.2';
+            return '1.3.3';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -11015,7 +11015,7 @@ function createDrakonWidget() {
             }
         }
         function SelectBehavior_create(widget) {
-            var startX, startY, pos, deltaX, deltaY, currentSocket, scroller, dragTarget, prim, cursor, ear, _var2, evt, _var3, _var4, _var5;
+            var startX, startY, pos, deltaX, deltaY, currentSocket, scroller, dragTarget, prim, cursor, ear, _var2, evt, _var3, _var4;
             var me = {
                 state: '2',
                 type: 'SelectBehavior'
@@ -11138,10 +11138,7 @@ function createDrakonWidget() {
                                         handleRightClick(widget, pos, evt);
                                         me.state = '2';
                                     } else {
-                                        _var5 = new Error('Unexpected case value: ' + _var2);
-                                        me.state = undefined;
-                                        __reject(_var5);
-                                        return;
+                                        me.state = '2';
                                     }
                                 }
                             }
