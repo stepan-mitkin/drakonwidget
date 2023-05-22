@@ -9307,7 +9307,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.3.3';
+            return '1.3.4';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -21015,11 +21015,26 @@ function createDrakonWidget() {
         }
         function getEffectiveItemId(visuals, node) {
             var _var2;
-            if (node.itemId) {
-                return node.itemId;
-            } else {
-                _var2 = firstBranchNode(visuals);
-                return _var2.itemId;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (node.itemId) {
+                        if (node.itemId === 'header') {
+                            __state = '_item2';
+                        } else {
+                            return node.itemId;
+                        }
+                    } else {
+                        __state = '_item2';
+                    }
+                    break;
+                case '_item2':
+                    _var2 = firstBranchNode(visuals);
+                    return _var2.itemId;
+                default:
+                    return;
+                }
             }
         }
         function linkNodeToChildren(context, itemId) {

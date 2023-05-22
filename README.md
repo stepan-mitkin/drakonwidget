@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 1.3.3
+Current version: 1.3.4
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -11,7 +11,7 @@ https://stepan-mitkin.github.io/drakonwidget/
 
 ## Download
 
-DrakonWidget is a plain JavaScript file with no dependencies.
+DrakonWidget is a plain JavaScript file with no dependencies. You can use DrakonWidget with any framework of without one.
 
 [drakonwidget.js](https://stepan-mitkin.github.io/drakonwidget/libs/drakonwidget.js)
 
