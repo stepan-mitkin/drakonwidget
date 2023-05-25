@@ -8100,6 +8100,7 @@ function createDrakonWidget() {
                     break;
                 case '18':
                     ctx.setLineDash(segments);
+                    ctx.lineCap = 'round';
                     return;
                 default:
                     return;
@@ -9307,7 +9308,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.3.4';
+            return '1.3.5';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -14573,7 +14574,6 @@ function createDrakonWidget() {
                 case '2':
                     visuals = widget.visuals;
                     config = visuals.config;
-                    ctx.lineCap = 'butt';
                     x1 = getX(edge.head);
                     y1 = getY(edge.head);
                     x2 = getX(edge.tail);
@@ -14922,6 +14922,7 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
+                    ctx.lineCap = 'round';
                     ctx.strokeStyle = color;
                     ctx.lineWidth = width;
                     if (width % 2 === 0) {
@@ -35248,7 +35249,7 @@ function createDrakonWidget() {
         });
         return unit;
     }
-
+    
     var tracing = {
         trace: function (name, value) { console.log(name, value) },
         setTimeout: function (action, delay) { return window.setTimeout(action, delay) },
