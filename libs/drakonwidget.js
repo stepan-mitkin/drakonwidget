@@ -1921,6 +1921,32 @@ function createDrakonWidget() {
                 }
             }
         }
+        function wantedMove(x1, y1, x2, y2) {
+            var maxDelta, _var2, _var3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    maxDelta = 4;
+                    _var2 = Math.abs(x1 - x2);
+                    if (_var2 > maxDelta) {
+                        __state = '5';
+                    } else {
+                        _var3 = Math.abs(y1 - y2);
+                        if (_var3 > maxDelta) {
+                            __state = '5';
+                        } else {
+                            return false;
+                        }
+                    }
+                    break;
+                case '5':
+                    return true;
+                default:
+                    return;
+                }
+            }
+        }
         function Database_flow(self, visuals, element) {
             var options, _var2;
             options = {};
@@ -2179,17 +2205,19 @@ function createDrakonWidget() {
                     stopMachine(widget, 'mouseEvents');
                     if (widget.config.canSelect) {
                         widget.mouseEvents = SelectBehavior_create(widget);
-                        __state = '46';
+                        __state = '56';
                     } else {
                         widget.mouseEvents = NoSelectBehavior_create(widget);
-                        __state = '46';
+                        __state = '56';
                     }
                     break;
                 case '39':
                     widget.model = model;
                     __state = '37';
                     break;
-                case '46':
+                case '56':
+                    widget.touchEvents = TouchBehavior_create(widget);
+                    widget.touchEvents.run();
                     widget.mouseEvents.run();
                     __state = '4';
                     break;
@@ -3982,14 +4010,18 @@ function createDrakonWidget() {
                 case '1':
                     return;
                 case '2':
-                    evt.target.setPointerCapture(evt.pointerId);
-                    evt.preventDefault();
-                    evt.stopPropagation();
-                    if (self.mouseEvents) {
-                        self.mouseEvents.mouseDown(evt);
+                    if (evt.pointerType === 'touch') {
                         __state = '1';
                     } else {
-                        __state = '1';
+                        evt.target.setPointerCapture(evt.pointerId);
+                        evt.preventDefault();
+                        evt.stopPropagation();
+                        if (self.mouseEvents) {
+                            self.mouseEvents.mouseDown(evt);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
                     }
                     break;
                 default:
@@ -4750,7 +4782,33 @@ function createDrakonWidget() {
                     registerEvent(self.scrollableContainer, 'wheel', function (evt) {
                         onMouseWheel(self, evt);
                     });
-                    __state = '17';
+                    __state = '65';
+                    break;
+                case '65':
+                    registerEvent(self.scrollableContainer, 'touchstart', self.onTouchStart);
+                    registerEvent(self.scrollableContainer, 'touchmove', self.onTouchMove);
+                    registerEvent(self.scrollableContainer, 'touchcancel', self.onTouchEnd);
+                    registerEvent(self.scrollableContainer, 'touchend', self.onTouchEnd);
+                    __state = '70';
+                    break;
+                case '70':
+                    if (self.config.showLog) {
+                        unit.logDiv = div('full-screen', {
+                            'position': 'fixed',
+                            'width': '100vw',
+                            'heigh': '100vh',
+                            'left': '0px',
+                            'top': '0px',
+                            background: 'rgba(255, 200, 0, 0.5)',
+                            'pointer-events': 'none',
+                            'z-index': 5000
+                        });
+                        unit.debugLog = [];
+                        html.add(container, unit.logDiv);
+                        __state = '17';
+                    } else {
+                        __state = '17';
+                    }
                     break;
                 default:
                     return;
@@ -6476,6 +6534,11 @@ function createDrakonWidget() {
         function DrakonCanvas_onContextMenu(self, evt) {
             evt.preventDefault();
             return false;
+        }
+        function DrakonCanvas_isReadonly(self) {
+            var _var2;
+            _var2 = isReadonly(self);
+            return _var2;
         }
         function centerContent(visuals, node) {
             var left, top, _var2;
@@ -9177,6 +9240,27 @@ function createDrakonWidget() {
                 }
             }
         }
+        function DrakonCanvas_onTouchEnd(self, evt) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    if (self.touchEvents) {
+                        self.touchEvents.touchEnd(evt);
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function DrakonCanvas_setZoom(self, zoom) {
             var clientX, clientY, scrollX, oldZoom, distX, distY, distX2, distY2, scrollY, oldScrollX, oldScrollY, hover, _var2, _var3, _var4;
             var __state = '2';
@@ -9207,7 +9291,7 @@ function createDrakonWidget() {
                         setScroll(self, scrollX, scrollY);
                         self.visuals.config.zoom = self.zoomFactor;
                         initScrollPos(self);
-                        paint(self);
+                        paintLater(self);
                         __state = '1';
                     } else {
                         __state = '1';
@@ -9259,11 +9343,15 @@ function createDrakonWidget() {
                 case '1':
                     return;
                 case '2':
-                    if (self.mouseEvents) {
-                        self.mouseEvents.mouseMove(evt);
+                    if (evt.pointerType === 'touch') {
                         __state = '1';
                     } else {
-                        __state = '1';
+                        if (self.mouseEvents) {
+                            self.mouseEvents.mouseMove(evt);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
                     }
                     break;
                 default:
@@ -9308,7 +9396,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.3.5';
+            return '1.3.7';
         }
         function DrakonCanvas_exportCanvas(self, zoom100) {
             var width, height, visuals, config, ctx, factor, canvas, zoom, box;
@@ -10579,12 +10667,16 @@ function createDrakonWidget() {
                 case '1':
                     return;
                 case '2':
-                    evt.target.setPointerCapture(evt.pointerId);
-                    if (self.mouseEvents) {
-                        self.mouseEvents.mouseUp(evt);
+                    if (evt.pointerType === 'touch') {
                         __state = '1';
                     } else {
-                        __state = '1';
+                        evt.target.setPointerCapture(evt.pointerId);
+                        if (self.mouseEvents) {
+                            self.mouseEvents.mouseUp(evt);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
                     }
                     break;
                 default:
@@ -10947,6 +11039,23 @@ function createDrakonWidget() {
                 return _var2;
             }
         }
+        function makeMouseEventFromTouch(evt, index) {
+            var x, y, _var2;
+            x = evt.touches[index].clientX;
+            y = evt.touches[index].clientY;
+            console.log(x, y);
+            _var2 = buildMouseEvent(x, y, 0, evt.target);
+            return _var2;
+        }
+        function buildMouseEvent(clientX, clientY, button, target) {
+            return {
+                source: 'touch',
+                clientX: clientX,
+                clientY: clientY,
+                target: target,
+                button: button
+            };
+        }
         function HandleDrag_complete(self) {
             self.handle.complete();
             return;
@@ -11016,7 +11125,7 @@ function createDrakonWidget() {
             }
         }
         function SelectBehavior_create(widget) {
-            var startX, startY, pos, deltaX, deltaY, currentSocket, scroller, dragTarget, prim, cursor, ear, _var2, evt, _var3, _var4;
+            var startX, startY, pos, deltaX, deltaY, currentSocket, scroller, dragTarget, prim, cursor, ear, _var2, evt, _var3, _var4, _var5;
             var me = {
                 state: '2',
                 type: 'SelectBehavior'
@@ -11037,10 +11146,24 @@ function createDrakonWidget() {
                         case '39':
                             me.state = '40';
                             return;
-                        case '46':
-                            pos = toDiagram(widget, evt);
+                        case '45':
                             mouseClick(widget, pos, evt);
                             me.state = '2';
+                            break;
+                        case '46':
+                            pos = toDiagram(widget, evt);
+                            if (evt.source === 'touch') {
+                                _var5 = widget.config.hasPopup();
+                                if (_var5) {
+                                    widget.config.removePopups();
+                                    me.state = '45';
+                                } else {
+                                    handleRightClick(widget, pos, evt);
+                                    me.state = '2';
+                                }
+                            } else {
+                                me.state = '45';
+                            }
                             break;
                         case '47':
                             deltaX = evt.clientX - startX;
@@ -11469,6 +11592,236 @@ function createDrakonWidget() {
             setScrollFromMouseEvent(widget, x, y);
             return;
         }
+        function TouchBehavior_create(widget) {
+            var timer, startX, startY, startX2, startY2, x, y, prim, pos, evt, evt2, scroller, zoomer, dir, _var2, _var3, _var4, _var5, _var6, _var7, _var8, _var9;
+            var me = {
+                state: '2',
+                type: 'TouchBehavior'
+            };
+            function _main_TouchBehavior(__resolve, __reject) {
+                try {
+                    while (true) {
+                        switch (me.state) {
+                        case '2':
+                            me.state = '10';
+                            return;
+                        case '16':
+                            me.state = '20';
+                            return;
+                        case '17':
+                            startX = evt.touches[0].clientX;
+                            startY = evt.touches[0].clientY;
+                            evt2 = buildMouseEvent(startX, startY, 0, evt.target);
+                            scroller = createMouseScroll(widget, evt2);
+                            x = startX;
+                            y = startY;
+                            if (evt.touches.length >= 2) {
+                                startX2 = evt.touches[1].clientX;
+                                startY2 = evt.touches[1].clientY;
+                                me.state = '19';
+                            } else {
+                                timer = setTimeout(me.decideOneTimeout, 500);
+                                me.state = '16';
+                            }
+                            break;
+                        case '19':
+                            me.state = '75';
+                            return;
+                        case '25':
+                            clearTimeout(timer);
+                            startX2 = evt.touches[1].clientX;
+                            startY2 = evt.touches[1].clientY;
+                            me.state = '19';
+                            break;
+                        case '26':
+                            me.state = '27';
+                            return;
+                        case '37':
+                            clearTimeout(timer);
+                            widget.config.removePopups();
+                            _var7 = buildMouseEvent(startX, startY, 0, evt.target);
+                            widget.mouseEvents.mouseDown(_var7);
+                            _var4 = buildMouseEvent(startX, startY, 0, evt.target);
+                            widget.mouseEvents.mouseUp(_var4);
+                            me.state = '2';
+                            break;
+                        case '52':
+                            x = evt.touches[0].clientX;
+                            y = evt.touches[0].clientY;
+                            _var9 = wantedMove(startX, startY, x, y);
+                            if (_var9) {
+                                clearTimeout(timer);
+                                _var6 = buildMouseEvent(startX, startY, 0, evt.target);
+                                widget.mouseEvents.mouseDown(_var6);
+                                _var3 = makeMouseEventFromTouch(evt, 0);
+                                widget.mouseEvents.mouseMove(_var3);
+                                me.state = '26';
+                            } else {
+                                me.state = '16';
+                            }
+                            break;
+                        case '53':
+                            x = evt.touches[0].clientX;
+                            y = evt.touches[0].clientY;
+                            _var8 = makeMouseEventFromTouch(evt, 0);
+                            widget.mouseEvents.mouseMove(_var8);
+                            me.state = '26';
+                            break;
+                        case '60':
+                            evt = buildMouseEvent(startX, startY, 0, undefined);
+                            pos = toDiagram(widget, evt);
+                            prim = findVisualItem(widget, pos);
+                            if (prim) {
+                                ensureSelectedOne(widget, prim);
+                                doubleClick(widget, prim, pos, evt);
+                                me.state = '66';
+                            } else {
+                                deselectAll(widget);
+                                me.state = '66';
+                            }
+                            break;
+                        case '66':
+                            paint(widget);
+                            me.state = '2';
+                            break;
+                        case '83':
+                            me.state = '85';
+                            return;
+                        case '84':
+                            me.state = '88';
+                            return;
+                        case '95':
+                            evt2 = makeMouseEventFromTouch(evt, 0);
+                            onMouseScroll(scroller, widget, evt2);
+                            me.state = '84';
+                            break;
+                        case '103':
+                            onTouchZoom(zoomer, widget, evt);
+                            me.state = '83';
+                            break;
+                        case '105':
+                            dir = isZoom(startX, startY, startX2, startY2, evt);
+                            _var2 = dir;
+                            if (_var2 === 'zoom') {
+                                zoomer = createZoomer(widget, startX, startY, startX2, startY2);
+                                me.state = '83';
+                            } else {
+                                if (_var2 === 'scroll') {
+                                    me.state = '84';
+                                } else {
+                                    me.state = '19';
+                                }
+                            }
+                            break;
+                        case '110':
+                            onTouchZoomEnd(widget);
+                            me.state = '2';
+                            break;
+                        case '_item7':
+                            _var5 = buildMouseEvent(x, y, 0, evt.target);
+                            widget.mouseEvents.mouseUp(_var5);
+                            me.state = '2';
+                            break;
+                        default:
+                            return;
+                        }
+                    }
+                } catch (ex) {
+                    me.state = undefined;
+                    __reject(ex);
+                }
+            }
+            me.run = function () {
+                me.run = undefined;
+                return new Promise(function (__resolve, __reject) {
+                    me.touchStart = function (_evt_) {
+                        evt = _evt_;
+                        switch (me.state) {
+                        case '10':
+                            me.state = '17';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '20':
+                            me.state = '25';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.decideOneTimeout = function () {
+                        switch (me.state) {
+                        case '20':
+                            me.state = '60';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.touchMove = function (_evt_) {
+                        evt = _evt_;
+                        switch (me.state) {
+                        case '20':
+                            me.state = '52';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '27':
+                            me.state = '53';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '75':
+                            me.state = '105';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '85':
+                            me.state = '103';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '88':
+                            me.state = '95';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    me.touchEnd = function (_evt_) {
+                        evt = _evt_;
+                        switch (me.state) {
+                        case '20':
+                            me.state = '37';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '27':
+                            me.state = '_item7';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '75':
+                            me.state = '2';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '85':
+                            me.state = '110';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        case '88':
+                            me.state = '2';
+                            _main_TouchBehavior(__resolve, __reject);
+                            break;
+                        default:
+                            return;
+                        }
+                    };
+                    _main_TouchBehavior(__resolve, __reject);
+                });
+            };
+            return me;
+        }
+        function TouchBehavior(widget) {
+            var __obj = TouchBehavior_create(widget);
+            return __obj.run();
+        }
         function createHandleDrag(widget, handle, evt) {
             var obj;
             obj = HandleDrag();
@@ -11685,6 +12038,105 @@ function createDrakonWidget() {
                 }
             }
         }
+        function isZoom(startX1, startY1, startX2, startY2, evt) {
+            var delta, x1, y1, x2, y2, dist1, dist2, cx1, cy1, cx2, cy2, dDist, dx1, dx2, dy1, dy2, minDelta, _var2, _var3, _var4, _var5;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    minDelta = 3;
+                    x1 = evt.touches[0].clientX;
+                    y1 = evt.touches[0].clientY;
+                    x2 = evt.touches[1].clientX;
+                    y2 = evt.touches[1].clientY;
+                    dx1 = x1 - startX1;
+                    dx2 = x2 - startX2;
+                    dy1 = y1 - startY1;
+                    dy2 = y2 - startY2;
+                    delta = 0;
+                    _var2 = Math.abs(startX1 - x1);
+                    delta = Math.max(delta, _var2);
+                    _var3 = Math.abs(startX2 - x2);
+                    delta = Math.max(delta, _var3);
+                    _var4 = Math.abs(startY1 - y1);
+                    delta = Math.max(delta, _var4);
+                    _var5 = Math.abs(startY2 - y2);
+                    delta = Math.max(delta, _var5);
+                    __state = '11';
+                    break;
+                case '11':
+                    cx1 = startX2 - startX1;
+                    cy1 = startY2 - startY1;
+                    cx2 = x2 - x1;
+                    cy2 = y2 - y1;
+                    dist1 = Math.sqrt(cx1 * cx1 + cy1 * cy1);
+                    dist2 = Math.sqrt(cx2 * cx2 + cy2 * cy2);
+                    dDist = Math.abs(dist2 - dist1);
+                    __state = '32';
+                    break;
+                case '32':
+                    if (delta > dDist) {
+                        if (delta > minDelta) {
+                            return 'scroll';
+                        } else {
+                            __state = '36';
+                        }
+                    } else {
+                        __state = '36';
+                    }
+                    break;
+                case '36':
+                    if (dDist > delta) {
+                        if (dDist > minDelta) {
+                            return 'zoom';
+                        } else {
+                            __state = '37';
+                        }
+                    } else {
+                        __state = '37';
+                    }
+                    break;
+                case '37':
+                    return undefined;
+                default:
+                    return;
+                }
+            }
+        }
+        function createZoomer(widget, startX1, startY1, startX2, startY2) {
+            var cx, cy, startDist, kx, ky;
+            cx = Math.round((startX1 + startX2) / 2);
+            cy = Math.round((startY1 + startY2) / 2);
+            kx = startX2 - startX1;
+            ky = startY2 - startY1;
+            startDist = Math.sqrt(kx * kx + ky * ky);
+            return {
+                cx: cx,
+                cy: cy,
+                startDist: startDist,
+                startZoom: widget.zoom
+            };
+        }
+        function onTouchZoom(zoomer, widget, evt) {
+            var zoom, dist, kx, ky, startX1, startY1, startX2, startY2;
+            startX1 = evt.touches[0].clientX;
+            startY1 = evt.touches[0].clientY;
+            startX2 = evt.touches[1].clientX;
+            startY2 = evt.touches[1].clientY;
+            kx = startX2 - startX1;
+            ky = startY2 - startY1;
+            dist = Math.sqrt(kx * kx + ky * ky);
+            zoom = Math.round(dist / zoomer.startDist * zoomer.startZoom);
+            widget.visuals.mouseX = zoomer.cx;
+            widget.visuals.mouseY = zoomer.cy;
+            widget.setZoom(zoom);
+            widget.visuals.config.onZoomChanged(zoom);
+            return;
+        }
+        function onTouchZoomEnd(widget) {
+            widget.visuals.config.onZoomChanged(widget.zoom);
+            return;
+        }
         function DrakonCanvas_showPaste(self) {
             var clipboard, _var2, _var3;
             var __state = '2';
@@ -11871,7 +12323,7 @@ function createDrakonWidget() {
             return;
         }
         function mouseClick(widget, pos, evt) {
-            var now, lastClick, diff, doubleClickTime, visuals, lastPrimId, prim, primId, _var2, _var3, _var4;
+            var now, lastClick, diff, doubleClickTime, visuals, lastPrimId, prim, primId, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
@@ -11923,8 +12375,8 @@ function createDrakonWidget() {
                             __state = '26';
                         } else {
                             if (prim.id) {
-                                _var3 = isSelected(widget, prim.id);
-                                if (_var3) {
+                                _var2 = isSelected(widget, prim.id);
+                                if (_var2) {
                                     __state = '65';
                                 } else {
                                     selectPrim(widget, prim.id);
@@ -11945,36 +12397,8 @@ function createDrakonWidget() {
                     __state = '26';
                     break;
                 case '42':
-                    tracing.trace('double click', prim);
-                    if (prim) {
-                        _var2 = prim.elType;
-                        if (_var2 === 'node') {
-                            evt.stopPropagation();
-                            evt.preventDefault();
-                            _var4 = clickedOnTop(widget, prim, pos);
-                            if (_var4) {
-                                startEditSecondary(widget, prim);
-                                __state = '26';
-                            } else {
-                                startEditContent(widget, prim);
-                                __state = '26';
-                            }
-                        } else {
-                            if (_var2 === 'free') {
-                                startEditContent(widget, prim);
-                                __state = '26';
-                            } else {
-                                if (_var2 === 'handle') {
-                                    doubleClickHandle(widget, prim);
-                                    __state = '26';
-                                } else {
-                                    __state = '26';
-                                }
-                            }
-                        }
-                    } else {
-                        __state = '26';
-                    }
+                    doubleClick(widget, prim, pos, evt);
+                    __state = '26';
                     break;
                 case '65':
                     onItemClick(widget, prim, pos, evt);
@@ -12002,6 +12426,57 @@ function createDrakonWidget() {
                         __state = '1';
                     } else {
                         console.error('startChangeImage is missing in config');
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
+        function doubleClick(widget, prim, pos, evt) {
+            var _var2, _var3;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    tracing.trace('double click', prim);
+                    if (prim) {
+                        _var2 = prim.elType;
+                        if (_var2 === 'node') {
+                            if (evt.stopPropagation) {
+                                evt.stopPropagation();
+                                evt.preventDefault();
+                                __state = '_item6';
+                            } else {
+                                __state = '_item6';
+                            }
+                        } else {
+                            if (_var2 === 'free') {
+                                startEditContent(widget, prim);
+                                __state = '1';
+                            } else {
+                                if (_var2 === 'handle') {
+                                    doubleClickHandle(widget, prim);
+                                    __state = '1';
+                                } else {
+                                    __state = '1';
+                                }
+                            }
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                case '_item6':
+                    _var3 = clickedOnTop(widget, prim, pos);
+                    if (_var3) {
+                        startEditSecondary(widget, prim);
+                        __state = '1';
+                    } else {
+                        startEditContent(widget, prim);
                         __state = '1';
                     }
                     break;
@@ -14370,11 +14845,15 @@ function createDrakonWidget() {
                 case '1':
                     return;
                 case '2':
-                    if (self.mouseEvents) {
-                        self.mouseEvents.mouseLeave(evt);
+                    if (evt.pointerType === 'touch') {
                         __state = '1';
                     } else {
-                        __state = '1';
+                        if (self.mouseEvents) {
+                            self.mouseEvents.mouseLeave(evt);
+                            __state = '1';
+                        } else {
+                            __state = '1';
+                        }
                     }
                     break;
                 default:
@@ -14425,6 +14904,14 @@ function createDrakonWidget() {
                 case '2':
                     tracing.trace('handleRightClick', pos);
                     prim = findVisualItem(widget, pos);
+                    if (prim) {
+                        __state = '114';
+                    } else {
+                        deselectAll(widget);
+                        __state = '114';
+                    }
+                    break;
+                case '114':
                     menu = buildContextMenuForPrim(widget, prim, evt);
                     paint(widget);
                     __state = '117';
@@ -16997,7 +17484,7 @@ function createDrakonWidget() {
                             } else {
                                 if (node.type == 'junction') {
                                     if (node.subtype === 'parbegin') {
-                                        _var5 = ensureSelectedOne(widget, prim.id);
+                                        _var5 = ensureSelectedOne(widget, prim);
                                         if (_var5) {
                                             menu = buildBeginParMenu(widget, node);
                                             __state = '116';
@@ -17010,7 +17497,7 @@ function createDrakonWidget() {
                                         __state = '116';
                                     }
                                 } else {
-                                    _var4 = ensureSelectedOne(widget, prim.id);
+                                    _var4 = ensureSelectedOne(widget, prim);
                                     if (_var4) {
                                         _var9 = isMind(widget);
                                         if (_var9) {
@@ -17036,7 +17523,7 @@ function createDrakonWidget() {
                                     __state = '116';
                                 } else {
                                     if (_var3 === 'down') {
-                                        selectPrim(widget, prim.id);
+                                        ensureSelectedOne(widget, prim);
                                         menu = buildDownEdgeMenu(widget, edge);
                                         __state = '116';
                                     } else {
@@ -17055,6 +17542,7 @@ function createDrakonWidget() {
                                                     menu = buildSelectCeilEdgeMenu(widget, edge);
                                                     __state = '116';
                                                 } else {
+                                                    ensureSelectedOne(widget, prim);
                                                     menu = [];
                                                     __state = '116';
                                                 }
@@ -18481,9 +18969,15 @@ function createDrakonWidget() {
                         'textFormat': 'plain',
                         'allowResize': true,
                         'centerContent': false,
+                        'showLog': false,
                         'buildIconCore': buildIconCore,
                         'getClipboard': getClipboard,
                         'setClipboard': setClipboard,
+                        'hasPopup': function () {
+                            return false;
+                        },
+                        'removePopups': function () {
+                        },
                         'onZoomChanged': function () {
                         }
                     };
@@ -20661,12 +21155,13 @@ function createDrakonWidget() {
             ctx.fillRect(node.x - size / 2, node.y - size / 2, size, size);
             return;
         }
-        function ensureSelectedOne(widget, primId) {
-            var nodes, _var2;
+        function ensureSelectedOne(widget, prim) {
+            var nodes, primId, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
+                    primId = prim.id;
                     _var2 = isSelected(widget, primId);
                     if (_var2) {
                         nodes = getNodesFromSelection(widget);
@@ -20677,6 +21172,7 @@ function createDrakonWidget() {
                         }
                     } else {
                         selectPrim(widget, primId);
+                        showLianaSockets(widget, prim);
                         __state = '3';
                     }
                     break;
@@ -22763,7 +23259,8 @@ function createDrakonWidget() {
             var noStyle;
             noStyle = {
                 junction: true,
-                'arrow-loop': true
+                'arrow-loop': true,
+                'address': true
             };
             if (node.type in noStyle) {
                 return false;
@@ -23260,6 +23757,48 @@ function createDrakonWidget() {
             var box;
             box = calculateDiagramBox(visuals);
             return box;
+        }
+        function debugLog(text) {
+            var element, _var2, _var3, line;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    if (unit.debugLog) {
+                        unit.debugLog.push(text);
+                        if (unit.debugLog.length > 20) {
+                            unit.debugLog.shift();
+                            __state = '7';
+                        } else {
+                            __state = '7';
+                        }
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                case '7':
+                    html.clear(unit.logDiv);
+                    _var2 = unit.debugLog;
+                    _var3 = 0;
+                    __state = '9';
+                    break;
+                case '9':
+                    if (_var3 < _var2.length) {
+                        line = _var2[_var3];
+                        element = div({ text: line });
+                        html.add(unit.logDiv, element);
+                        _var3++;
+                        __state = '9';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function buildGrafHeader(visuals, model) {
             var header, root, headerContent;
@@ -31201,6 +31740,27 @@ function createDrakonWidget() {
                 }
             }
         }
+        function DrakonCanvas_onTouchStart(self, evt) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    if (self.touchEvents) {
+                        self.touchEvents.touchStart(evt);
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
+        }
         function DrakonCanvas_getDiagramProperties(self) {
             var result;
             result = { type: self.model.type };
@@ -31218,6 +31778,27 @@ function createDrakonWidget() {
             fonts = buildVisualsForEdit(self);
             paint(self);
             return fonts;
+        }
+        function DrakonCanvas_onTouchMove(self, evt) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '1':
+                    return;
+                case '2':
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    if (self.touchEvents) {
+                        self.touchEvents.touchMove(evt);
+                        __state = '1';
+                    } else {
+                        __state = '1';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function doEdit(widget, edits) {
             var changesToSave, before, after, fonts;
@@ -33855,6 +34436,12 @@ function createDrakonWidget() {
             self.undo_create = function () {
                 return DrakonCanvas_undo_create(self);
             };
+            self.isReadonly = function () {
+                return DrakonCanvas_isReadonly(self);
+            };
+            self.onTouchEnd = function (evt) {
+                return DrakonCanvas_onTouchEnd(self, evt);
+            };
             self.setZoom = function (zoom) {
                 return DrakonCanvas_setZoom(self, zoom);
             };
@@ -33942,11 +34529,17 @@ function createDrakonWidget() {
             self.arrowDown = function () {
                 return DrakonCanvas_arrowDown(self);
             };
+            self.onTouchStart = function (evt) {
+                return DrakonCanvas_onTouchStart(self, evt);
+            };
             self.getDiagramProperties = function () {
                 return DrakonCanvas_getDiagramProperties(self);
             };
             self.redraw = function () {
                 return DrakonCanvas_redraw(self);
+            };
+            self.onTouchMove = function (evt) {
+                return DrakonCanvas_onTouchMove(self, evt);
             };
             self.setImage = function (itemId, imageData) {
                 return DrakonCanvas_setImage(self, itemId, imageData);
