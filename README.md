@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 1.3.7
+Current version: 1.3.9
 
 A JavaScript widget for viewing and editing drakon flowcharts
 
@@ -152,6 +152,7 @@ var config = {
 |centerContent|__true__ means the content is horizontally centered in icons (different from textAlign). Supported only when __canvasIcons__==__true__|boolean||false|
 |commentPadding|The width of the grey border on Comment icon|integer||10|
 |drawZones|Technical visualization for lianas.|boolean||false|
+|editorWatermark|When true, watermark is rendered both on exported diagrams and on canvas.|boolean||false|
 |end|The text label for the End icon.|text||End|
 |exit|The text label for the last silhouette branch.|text||Exit|
 |font|Icon font|CSS font||14px Arial|
@@ -187,6 +188,7 @@ var config = {
 |touchRadius|The touch radius for junctions|integer||5|
 |translate|The text translation function.|function|||
 |triangleHeight|The height of the triangle part of Branch, Address, and Case.|integer||20|
+|watermark|An optional text to show on exported diagrams.|text|||
 |yes|The "Yes" label.|text||Yes|
 
 ## Theme reference
