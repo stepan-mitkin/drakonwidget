@@ -2,7 +2,9 @@
 
 Current version: 1.4.4
 
-A JavaScript widget for viewing and editing drakon flowcharts
+DrakonWidget is a JavaScript widget for viewing and editing drakon flowcharts.
+
+[DrakonHub for Desktop](https://github.com/stepan-mitkin/drakonhub_desktop) is based on DrakonWidget.
 
 ## Online demo:
 
