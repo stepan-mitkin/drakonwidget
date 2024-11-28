@@ -1027,7 +1027,8 @@ function createDrakonWidget() {
         unit.last = last;
         unit.FilenameChecker = FilenameChecker;
         return unit;
-    }    function html_0_1() {
+    }
+    function html_0_1() {
         var unit = {};
         function addClass() {
             var style, name, body, content, lines, i, _var2;
@@ -2212,24 +2213,8 @@ function createDrakonWidget() {
                     nextId = 0;
                     __state = '5';
                     break;
-                case '37':
-                    stopMachine(widget, 'mouseEvents');
-                    if (widget.config.canSelect) {
-                        widget.mouseEvents = SelectBehavior_create(widget);
-                        __state = '56';
-                    } else {
-                        widget.mouseEvents = NoSelectBehavior_create(widget);
-                        __state = '56';
-                    }
-                    break;
                 case '39':
                     widget.model = model;
-                    __state = '37';
-                    break;
-                case '56':
-                    widget.touchEvents = TouchBehavior_create(widget);
-                    widget.touchEvents.run();
-                    widget.mouseEvents.run();
                     __state = '4';
                     break;
                 default:
@@ -2335,7 +2320,12 @@ function createDrakonWidget() {
             var socket, visuals;
             visuals = widget.visuals;
             socket = visuals.sockets[visuals.currentSocket - 1];
-            tracing.trace('runCurrentSocket', socket.op + ' ' + socket.target);
+            tracing.trace('runCurrentSocket', [
+                socket.id,
+                socket.op,
+                socket.type,
+                socket.target
+            ]);
             runInsertAction(widget, socket);
             return;
         }
@@ -4711,7 +4701,6 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    tracing.trace('DrakonCanvas.render');
                     container = div({
                         display: 'inline-block',
                         position: 'relative',
@@ -6433,7 +6422,10 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    tracing.trace('DrakonCanvas.setStyle', ids);
+                    tracing.trace('DrakonCanvas.setStyle', [
+                        ids,
+                        style
+                    ]);
                     if (style) {
                         if ('headStyle' in style) {
                             self.userMemory.headStyle = style.headStyle;
@@ -6507,7 +6499,7 @@ function createDrakonWidget() {
                 }
             }
         }
-        function exportCore(widget, box, zoom, ctx) {
+        function exportCore(widget, box, zoom, ctx, watermark) {
             var width, height, visuals, config, factor;
             var __state = '2';
             while (true) {
@@ -6521,9 +6513,9 @@ function createDrakonWidget() {
                     height = (box.bottom - box.top) * zoom;
                     visuals.ctx = ctx;
                     paintCore(widget, factor, zoom, -box.left, -box.top, width, height);
-                    if (config.watermark) {
+                    if (watermark) {
                         if (ctx.resetTransform) {
-                            drawWatermark(widget, ctx, config.watermark, factor, zoom, width, height);
+                            drawWatermark(widget, ctx, watermark, factor, zoom, width, height);
                             __state = '22';
                         } else {
                             __state = '22';
@@ -9314,6 +9306,7 @@ function createDrakonWidget() {
                     oldZoom = self.zoomFactor;
                     self.zoomFactor = self.zoom / 10000;
                     if (self.edit) {
+                        updateExpandedBox(self, self.visuals);
                         oldScrollX = self.visuals.scrollX;
                         oldScrollY = self.visuals.scrollY;
                         hover = getHoverPos(self);
@@ -9343,7 +9336,10 @@ function createDrakonWidget() {
         }
         function DrakonCanvas_setSecondary(self, itemId, secondary) {
             var change, _var2;
-            tracing.trace('DrakonCanvas.setSecondary', itemId);
+            tracing.trace('DrakonCanvas.setSecondary', [
+                itemId,
+                secondary
+            ]);
             checkNotReadonly(self);
             change = {
                 id: itemId,
@@ -9436,9 +9432,9 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_getVersion(self) {
-            return '1.4.4';
+            return '1.4.7';
         }
-        function DrakonCanvas_exportCanvas(self, zoom100) {
+        function DrakonCanvas_exportCanvas(self, zoom100, watermark) {
             var width, height, visuals, config, ctx, canvas, zoom, box;
             tracing.trace('DrakonCanvas.exportCanvas', zoom100);
             zoom = zoom100 / 10000;
@@ -9452,7 +9448,7 @@ function createDrakonWidget() {
                 height: height
             });
             ctx = canvas.getContext('2d');
-            exportCore(self, box, zoom, ctx);
+            exportCore(self, box, zoom, ctx, watermark);
             return canvas;
         }
         function DrakonCanvas_getDiagramBox(self) {
@@ -9471,7 +9467,10 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    tracing.trace('DrakonCanvas.setContent', itemId);
+                    tracing.trace('DrakonCanvas.setContent', [
+                        itemId,
+                        content
+                    ]);
                     checkNotReadonly(self);
                     _var2 = itemId;
                     if (_var2 === 'header') {
@@ -9633,7 +9632,7 @@ function createDrakonWidget() {
             }
         }
         function DrakonCanvas_setDiagram_create(self, diagramId, diagram, sender) {
-            var _var2;
+            var fonts;
             var me = {
                 state: '49',
                 type: 'DrakonCanvas_setDiagram'
@@ -9643,7 +9642,7 @@ function createDrakonWidget() {
                     while (true) {
                         switch (me.state) {
                         case '49':
-                            tracing.trace('setDiagram', diagramId);
+                            stopMachine(self, 'mouseEvents');
                             self.edit = edit_tools.createUndoEdit(diagram, sender);
                             me.state = '53';
                             loadImages(self).then(function () {
@@ -9656,9 +9655,10 @@ function createDrakonWidget() {
                         case '53':
                             self.diagramId = diagramId;
                             resetSelection(self);
-                            _var2 = self.redraw();
+                            fonts = self.redraw();
+                            createEventBehavior(self);
                             me.state = undefined;
-                            __resolve(_var2);
+                            __resolve(fonts);
                             return;
                         default:
                             return;
@@ -12266,14 +12266,17 @@ function createDrakonWidget() {
         function DrakonCanvas_goHome(self) {
             tracing.trace('DrakonCanvas.goHome');
             delete self.origins[self.diagramId];
-            self.box = calculateDiagramBoxForEdit(self.visuals);
+            calculateDiagramBoxForEdit(self, self.visuals);
             initScrollPos(self);
             paint(self);
             return;
         }
         function DrakonCanvas_setLink(self, itemId, link) {
             var change;
-            tracing.trace('DrakonCanvas.setLink', itemId);
+            tracing.trace('DrakonCanvas.setLink', [
+                itemId,
+                link
+            ]);
             checkNotReadonly(self);
             change = {
                 id: itemId,
@@ -12327,6 +12330,7 @@ function createDrakonWidget() {
                             delayed = function () {
                                 callback(prim, ro);
                             };
+                            tracing.trace('DrakonCanvas.startEditContent, will edit', prim);
                             setTimeout(delayed, 1);
                             __state = '1';
                         } else {
@@ -12402,7 +12406,6 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    tracing.trace('mouseClick', pos);
                     doubleClickTime = 500;
                     visuals = widget.visuals;
                     now = utils.getNowMs();
@@ -12412,28 +12415,11 @@ function createDrakonWidget() {
                     if (prim) {
                         widget.lastPrimId = prim.id;
                         primId = prim.id;
-                        __state = '19';
+                        __state = '86';
                     } else {
                         widget.lastPrimId = undefined;
                         primId = undefined;
-                        __state = '19';
-                    }
-                    break;
-                case '19':
-                    if (lastClick) {
-                        diff = now - lastClick;
-                        if (diff <= doubleClickTime) {
-                            if (primId === lastPrimId) {
-                                widget.lastClick = undefined;
-                                __state = '42';
-                            } else {
-                                __state = '24';
-                            }
-                        } else {
-                            __state = '24';
-                        }
-                    } else {
-                        __state = '24';
+                        __state = '86';
                     }
                     break;
                 case '24':
@@ -12443,7 +12429,6 @@ function createDrakonWidget() {
                 case '26':
                     return;
                 case '27':
-                    tracing.trace('single click', prim);
                     if (prim) {
                         if (prim.elType === 'handle') {
                             __state = '26';
@@ -12477,6 +12462,27 @@ function createDrakonWidget() {
                 case '65':
                     onItemClick(widget, prim, pos, evt);
                     __state = '32';
+                    break;
+                case '86':
+                    tracing.trace('mouseClick', [
+                        pos,
+                        prim
+                    ]);
+                    if (lastClick) {
+                        diff = now - lastClick;
+                        if (diff <= doubleClickTime) {
+                            if (primId === lastPrimId) {
+                                widget.lastClick = undefined;
+                                __state = '42';
+                            } else {
+                                __state = '24';
+                            }
+                        } else {
+                            __state = '24';
+                        }
+                    } else {
+                        __state = '24';
+                    }
                     break;
                 default:
                     return;
@@ -14976,8 +14982,11 @@ function createDrakonWidget() {
             while (true) {
                 switch (__state) {
                 case '2':
-                    tracing.trace('handleRightClick', pos);
                     prim = findVisualItem(widget, pos);
+                    tracing.trace('handleRightClick', [
+                        pos,
+                        prim
+                    ]);
                     if (prim) {
                         __state = '114';
                     } else {
@@ -16775,12 +16784,13 @@ function createDrakonWidget() {
             };
         }
         function getDefaultScrollLeft(widget) {
-            var wwidth, left, visuals, zoom, _var2;
+            var wwidth, left, visuals, zoom, box, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     visuals = widget.visuals;
+                    box = visuals.smallBox;
                     zoom = widget.zoomFactor;
                     if (widget.model.type === 'graf') {
                         __state = '5';
@@ -16788,7 +16798,7 @@ function createDrakonWidget() {
                         if (widget.model.type === 'free') {
                             __state = '5';
                         } else {
-                            left = visuals.box.left;
+                            left = box.left;
                             __state = '3';
                         }
                     }
@@ -16797,12 +16807,12 @@ function createDrakonWidget() {
                     return left;
                 case '5':
                     wwidth = widget.width / zoom;
-                    if (wwidth > visuals.box.width) {
-                        _var2 = Math.floor((wwidth - visuals.box.width) / 2);
-                        left = visuals.box.left - _var2;
+                    if (wwidth > box.width) {
+                        _var2 = Math.floor((wwidth - box.width) / 2);
+                        left = box.left - _var2;
                         __state = '3';
                     } else {
-                        left = visuals.box.left;
+                        left = box.left;
                         __state = '3';
                     }
                     break;
@@ -17375,19 +17385,25 @@ function createDrakonWidget() {
             var __state = '2';
             while (true) {
                 switch (__state) {
+                case '1':
+                    return;
                 case '2':
-                    tracing.trace('onSelectionChanged', prims);
-                    if (widget.config.onSelectionChanged) {
-                        widget.config.onSelectionChanged(prims);
-                        __state = '9';
+                    if (widget.visuals) {
+                        if (widget.config.onSelectionChanged) {
+                            widget.config.onSelectionChanged(prims);
+                            __state = '9';
+                        } else {
+                            __state = '9';
+                        }
                     } else {
-                        __state = '9';
+                        __state = '1';
                     }
                     break;
                 case '9':
                     createResetEars(widget);
                     createMindSockets(widget);
-                    return;
+                    __state = '1';
+                    break;
                 default:
                     return;
                 }
@@ -17434,12 +17450,11 @@ function createDrakonWidget() {
             }
         }
         function drawScrollbars(widget) {
-            var wheight, wwidth, visuals, box, zoom, margin, width, context;
+            var visuals, zoom, margin, width, context, wheight, wwidth, box;
             var __state = '14';
             while (true) {
                 switch (__state) {
                 case '2':
-                    wheight = widget.height / zoom;
                     if (wheight >= box.height) {
                         __state = '9';
                     } else {
@@ -17462,7 +17477,6 @@ function createDrakonWidget() {
                 case '8':
                     return;
                 case '9':
-                    wwidth = widget.width / zoom;
                     if (wwidth >= box.width) {
                         __state = '8';
                     } else {
@@ -17484,7 +17498,6 @@ function createDrakonWidget() {
                     break;
                 case '14':
                     visuals = widget.visuals;
-                    box = visuals.box;
                     zoom = widget.zoomFactor;
                     margin = 5;
                     width = 10;
@@ -17492,13 +17505,19 @@ function createDrakonWidget() {
                     visuals.horizontalScrollBar = undefined;
                     if (widget.height > 30) {
                         if (widget.width > 30) {
-                            __state = '2';
+                            __state = '45';
                         } else {
                             __state = '8';
                         }
                     } else {
                         __state = '8';
                     }
+                    break;
+                case '45':
+                    wheight = widget.height / zoom;
+                    wwidth = widget.width / zoom;
+                    box = visuals.box;
+                    __state = '2';
                     break;
                 default:
                     return;
@@ -17594,6 +17613,47 @@ function createDrakonWidget() {
             context.scrollTop = top + ratio * barFreeSpace;
             context.barToBox = (context.boxHeight - context.widgetSizeD) / barFreeSpace;
             return;
+        }
+        function addFreedomToBox(box, widgetWidth, widgetHeight) {
+            var result, hor, ver;
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    result = {};
+                    hor = Math.floor(widgetWidth / 2);
+                    ver = Math.floor(widgetHeight / 2);
+                    if (box.width > hor) {
+                        result.left = box.left - hor;
+                        result.right = box.right + hor;
+                        result.width = box.width + hor * 2;
+                        __state = '9';
+                    } else {
+                        result.left = box.left;
+                        result.right = box.right;
+                        result.width = box.width;
+                        __state = '9';
+                    }
+                    break;
+                case '6':
+                    return result;
+                case '9':
+                    if (box.height > ver) {
+                        result.top = box.top - ver;
+                        result.bottom = box.bottom + ver;
+                        result.height = box.height + ver * 2;
+                        __state = '6';
+                    } else {
+                        result.top = box.top;
+                        result.bottom = box.bottom;
+                        result.height = box.height;
+                        __state = '6';
+                    }
+                    break;
+                default:
+                    return;
+                }
+            }
         }
         function copyTheme(userTheme, config) {
             var theme;
@@ -18806,11 +18866,12 @@ function createDrakonWidget() {
             return _var2;
         }
         function setSameWidth(visuals, skewer) {
-            var width, leftWidth, margin, dur, _var2, _var3, node, _var4, _var5, _var6;
+            var width, leftWidth, margin, dur, config, _var2, _var3, node, _var4, _var5, _var6;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
+                    config = visuals.config;
                     width = 0;
                     leftWidth = 0;
                     margin = 0;
@@ -18840,6 +18901,7 @@ function createDrakonWidget() {
                             __state = '19';
                         }
                     } else {
+                        width = config.maxWidth / 2;
                         __state = '5';
                     }
                     break;
@@ -22115,6 +22177,14 @@ function createDrakonWidget() {
                 }
             }
         }
+        function updateExpandedBox(widget, visuals) {
+            var wheight, wwidth, zoom;
+            zoom = widget.zoomFactor;
+            wheight = widget.height / zoom;
+            wwidth = widget.width / zoom;
+            visuals.box = addFreedomToBox(visuals.smallBox, wwidth, wheight);
+            return;
+        }
         function bakeSubtreeCoords(node, parentX, parentY) {
             var subtreeX, subtreeY, _var2, _var3, child;
             var __state = '2';
@@ -22703,7 +22773,7 @@ function createDrakonWidget() {
                 case '4':
                     buildBoxes(widget, visuals);
                     forType(visuals, 'address', putCycleMark);
-                    visuals.box = calculateDiagramBoxForEdit(visuals);
+                    calculateDiagramBoxForEdit(widget, visuals);
                     return visuals;
                 case '5':
                     _var7 = visuals.branches;
@@ -24028,10 +24098,10 @@ function createDrakonWidget() {
             });
             return;
         }
-        function calculateDiagramBoxForEdit(visuals) {
-            var box;
-            box = calculateDiagramBox(visuals);
-            return box;
+        function calculateDiagramBoxForEdit(widget, visuals) {
+            visuals.smallBox = calculateDiagramBox(visuals);
+            updateExpandedBox(widget, visuals);
+            return;
         }
         function debugLog(text) {
             var element, _var2, _var3, line;
@@ -24946,25 +25016,26 @@ function createDrakonWidget() {
             return _var2;
         }
         function getDefaultScrollTop(widget) {
-            var visuals, zoom, top, wheight, _var2;
+            var visuals, zoom, top, wheight, box, _var2;
             var __state = '2';
             while (true) {
                 switch (__state) {
                 case '2':
                     visuals = widget.visuals;
+                    box = visuals.smallBox;
                     zoom = widget.zoomFactor;
                     if (widget.model.type === 'free') {
                         wheight = widget.height / zoom;
-                        if (wheight > visuals.box.height) {
-                            _var2 = Math.floor((wheight - visuals.box.height) / 3);
-                            top = visuals.box.top - _var2;
+                        if (wheight > box.height) {
+                            _var2 = Math.floor((wheight - box.height) / 3);
+                            top = box.top - _var2;
                             __state = '3';
                         } else {
-                            top = visuals.box.top;
+                            top = box.top;
                             __state = '3';
                         }
                     } else {
-                        top = visuals.box.top;
+                        top = box.top;
                         __state = '3';
                     }
                     break;
@@ -25017,6 +25088,30 @@ function createDrakonWidget() {
                         __state = '4';
                     }
                     break;
+                default:
+                    return;
+                }
+            }
+        }
+        function createEventBehavior(widget) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    stopMachine(widget, 'mouseEvents');
+                    if (widget.config.canSelect) {
+                        widget.mouseEvents = SelectBehavior_create(widget);
+                        __state = '9';
+                    } else {
+                        widget.mouseEvents = NoSelectBehavior_create(widget);
+                        __state = '9';
+                    }
+                    break;
+                case '9':
+                    widget.touchEvents = TouchBehavior_create(widget);
+                    widget.touchEvents.run();
+                    widget.mouseEvents.run();
+                    return;
                 default:
                     return;
                 }
@@ -26187,7 +26282,7 @@ function createDrakonWidget() {
             }
         }
         function Ears_create(widget, element) {
-            var startX, startY, startBoxLeft, startBoxTop, box, dx, dy, left, top, config, role, evt, ear;
+            var startX, startY, startBoxLeft, startBoxTop, box, dx, dy, left, top, config, role, zoom, evt, ear;
             var me = {
                 state: '16',
                 type: 'Ears'
@@ -26212,6 +26307,7 @@ function createDrakonWidget() {
                             me.state = '10';
                             return;
                         case '16':
+                            zoom = widget.zoomFactor;
                             config = widget.visuals.config;
                             me.element = element;
                             setupEarBoxes(me, element, config.socketTouchRadius);
@@ -26220,8 +26316,8 @@ function createDrakonWidget() {
                         case '32':
                             dx = snapUp(config, evt.clientX - startX);
                             dy = snapUp(config, evt.clientY - startY);
-                            left = startBoxLeft + dx;
-                            top = startBoxTop + dy;
+                            left = startBoxLeft + dx / zoom;
+                            top = startBoxTop + dy / zoom;
                             if (left === box.left) {
                                 if (top === box.top) {
                                     me.state = '5';
@@ -32290,7 +32386,6 @@ function createDrakonWidget() {
         }
         function DrakonCanvas_redraw(self) {
             var fonts;
-            tracing.trace('DrakonCanvas.redraw');
             buildDiagramModel(self, self.edit.diagram);
             fonts = buildVisualsForEdit(self);
             paint(self);
@@ -32318,7 +32413,9 @@ function createDrakonWidget() {
             }
         }
         function doEdit(widget, edits) {
-            var changesToSave, before, after, fonts;
+            var changesToSave, before, after, fonts, _var2;
+            _var2 = stripEdits(edits);
+            tracing.trace('DrakonCanvas.doEdit', _var2);
             deleteOrphanImages(widget, edits);
             before = utils.deepClone(widget.selection);
             after = buildSelectionFromEdits(widget, edits);
@@ -32618,6 +32715,35 @@ function createDrakonWidget() {
                 tail = text.substring(first, text.length);
                 _var2 = parseInt(tail);
                 return _var2;
+            }
+        }
+        function stripEdit(edit) {
+            var __state = '2';
+            while (true) {
+                switch (__state) {
+                case '2':
+                    if (edit.fields) {
+                        if (edit.fields.type === 'image') {
+                            return {
+                                fields: {
+                                    type: 'image',
+                                    content: '...'
+                                },
+                                id: edit.id,
+                                op: edit.op
+                            };
+                        } else {
+                            __state = '8';
+                        }
+                    } else {
+                        __state = '8';
+                    }
+                    break;
+                case '8':
+                    return edit;
+                default:
+                    return;
+                }
             }
         }
         function moveBranchIdsLeft(visuals, branchId) {
@@ -32934,7 +33060,9 @@ function createDrakonWidget() {
             return edits;
         }
         function doEditNoRender(widget, edits) {
-            var changesToSave, before, after;
+            var changesToSave, before, after, _var2;
+            _var2 = stripEdits(edits);
+            tracing.trace('DrakonCanvas.doEditNoRender', _var2);
             before = utils.deepClone(widget.selection);
             after = utils.deepClone(widget.selection);
             changesToSave = widget.edit.updateDocument(edits, before, after);
@@ -33020,7 +33148,9 @@ function createDrakonWidget() {
             }
         }
         function updateAndKeepSelection(widget, edits) {
-            var fonts, changesToSave, before, after;
+            var fonts, changesToSave, before, after, _var2;
+            _var2 = stripEdits(edits);
+            tracing.trace('DrakonCanvas.updateAndKeepSelection', _var2);
             deleteOrphanImages(widget, edits);
             before = utils.deepClone(widget.selection);
             after = utils.deepClone(widget.selection);
@@ -33134,6 +33264,11 @@ function createDrakonWidget() {
                     return;
                 }
             }
+        }
+        function stripEdits(edits) {
+            var _var2;
+            _var2 = edits.map(stripEdit);
+            return _var2;
         }
         function popFromSkewer(widget, node, edits) {
             var dstId, edgeUp;
@@ -34988,8 +35123,8 @@ function createDrakonWidget() {
             self.getVersion = function () {
                 return DrakonCanvas_getVersion(self);
             };
-            self.exportCanvas = function (zoom100) {
-                return DrakonCanvas_exportCanvas(self, zoom100);
+            self.exportCanvas = function (zoom100, watermark) {
+                return DrakonCanvas_exportCanvas(self, zoom100, watermark);
             };
             self.getDiagramBox = function () {
                 return DrakonCanvas_getDiagramBox(self);
@@ -36375,8 +36510,8 @@ function createDrakonWidget() {
             configurable: true
         });
         return unit;
-    }
-    
+    }    
+
     var tracing = {
         trace: function (name, value) { console.log(name, value) },
         setTimeout: function (action, delay) { return window.setTimeout(action, delay) },
