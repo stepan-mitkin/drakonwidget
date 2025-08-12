@@ -166,7 +166,7 @@ var config = {
 |lineRadius|The radius of rounded line angles.|integer||0|
 |maxHeight|The maximum icon height.|integer||600|
 |metre|The miminum distance between icons.|integer||20|
-|maxWidth|The maximum with of an icon.|integer||500|
+|maxWidth|The maximum width of an icon.|integer||500|
 |minWidth|The miminum width of an icon.|integer||100|
 |no|The "No" label.|text||No|
 |onSelectionChanged|Runs when the currently selected items change.|function|||
