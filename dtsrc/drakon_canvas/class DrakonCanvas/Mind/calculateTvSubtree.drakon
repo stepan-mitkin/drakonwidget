@@ -1,0 +1,102 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "4",
+      "type": "branch",
+      "content": "Start pos"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "6",
+      "two": "5",
+      "content": "node.parent"
+    },
+    "5": {
+      "type": "action",
+      "one": "7",
+      "content": "left = 0"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "left = config.metre * 2"
+    },
+    "7": {
+      "type": "action",
+      "one": "11",
+      "content": "top = node.h * 2 + config.metre"
+    },
+    "10": {
+      "branchId": 3,
+      "one": "20",
+      "type": "branch",
+      "content": "Adjust box"
+    },
+    "11": {
+      "branchId": 2,
+      "one": "17",
+      "type": "branch",
+      "content": "Go through children"
+    },
+    "13": {
+      "one": "10",
+      "type": "loopend",
+      "two": ""
+    },
+    "14": {
+      "one": "15",
+      "type": "loopbegin",
+      "two": "",
+      "content": "child; node.children"
+    },
+    "15": {
+      "type": "action",
+      "one": "21",
+      "content": "right = Math.max(\n    right,\n    left + child.subtreeBox.width\n)"
+    },
+    "17": {
+      "type": "action",
+      "one": "14",
+      "content": "right = node.subtreeBox.width"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "node.subtreeBox.width = right"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "node.subtreeBox.height = top - config.metre"
+    },
+    "20": {
+      "type": "action",
+      "one": "18",
+      "content": "node.x = node.w\nnode.y = node.h"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "child.subtreeBox.left = left\nchild.subtreeBox.top = top"
+    },
+    "22": {
+      "type": "action",
+      "one": "13",
+      "content": "top += (\n    child.subtreeBox.height + config.metre\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "config\nnode",
+  "type": "drakon"
+}

@@ -1,0 +1,122 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "7",
+      "type": "branch",
+      "content": "Item"
+    },
+    "4": {
+      "one": "16",
+      "type": "case",
+      "two": "",
+      "content": "\"delete\""
+    },
+    "5": {
+      "one": "9",
+      "type": "case",
+      "two": "4",
+      "content": "\"update\""
+    },
+    "6": {
+      "one": "8",
+      "type": "case",
+      "two": "5",
+      "content": "\"insert\""
+    },
+    "7": {
+      "one": "6",
+      "type": "select",
+      "two": "",
+      "content": "change.op"
+    },
+    "8": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "undoChange = {\n    id: change.id,\n    op: \"delete\"\n}"
+    },
+    "9": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "undoChange = {\n    id: change.id,\n    op: \"update\",\n    fields: {}\n}"
+    },
+    "14": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "item = diagram.items[change.id]"
+    },
+    "15": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "undoChange = {\n    id: change.id,\n    op: \"insert\",\n    fields: utils.clone(item)\n}"
+    },
+    "16": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "item = diagram.items[change.id]"
+    },
+    "17": {
+      "branchId": 4,
+      "one": "21",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "18": {
+      "branchId": 3,
+      "one": "28",
+      "type": "branch",
+      "content": "Diagram"
+    },
+    "19": {
+      "branchId": 1,
+      "one": "20",
+      "type": "branch",
+      "content": "Item or diagram?"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "one": "2",
+      "two": "18",
+      "content": "change.id"
+    },
+    "21": {
+      "type": "action",
+      "one": "1",
+      "content": "return undoChange"
+    },
+    "26": {
+      "type": "action",
+      "one": "17",
+      "content": "getOldValues(\n    item,\n    change.fields,\n    undoChange.fields\n)"
+    },
+    "27": {
+      "type": "action",
+      "one": "17",
+      "content": "getOldValues(\n    diagram,\n    change.fields,\n    undoChange.fields\n)"
+    },
+    "28": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "undoChange = {fields: {}}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "diagram\nchange",
+  "type": "drakon"
+}

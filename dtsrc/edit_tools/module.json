@@ -1,0 +1,6 @@
+{
+    "dependencies": "utils",
+    "language": "JS2604",
+    "format": "unit",
+    "outputFile": "../../static/js/edit_tools.js"
+}

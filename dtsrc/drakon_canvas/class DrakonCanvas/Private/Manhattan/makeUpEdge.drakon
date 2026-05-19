@@ -1,0 +1,56 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "finalTarget.upEdge = edge"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "edge = createEdge(\n    visuals,\n    head,\n    tail,\n    true\n)"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "edge.finalTarget = finalTarget\nedge.source = tail\nedge.target = head"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "tail.targets.push(edge)"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "head.sources.push(edge)"
+    },
+    "8": {
+      "type": "action",
+      "one": "3",
+      "content": "edge.role = \"up\""
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "return edge"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nhead\ntail\nfinalTarget",
+  "type": "drakon"
+}

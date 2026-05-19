@@ -1,0 +1,88 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "12",
+      "type": "branch"
+    },
+    "6": {
+      "type": "action",
+      "one": "13",
+      "content": "visuals = widget.visuals\nconfig = visuals.config"
+    },
+    "12": {
+      "type": "action",
+      "one": "6",
+      "content": "big = 4000"
+    },
+    "13": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "start = LineStart()"
+    },
+    "14": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    start\n)"
+    },
+    "15": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, start, ctx)"
+    },
+    "16": {
+      "one": "23",
+      "type": "action",
+      "two": "",
+      "content": "start.x = element.left\nstart.y = element.top\nstart.right = element.left + element.x2\nstart.bottom = element.top + element.y2"
+    },
+    "18": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "end = LineEnd()"
+    },
+    "19": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    end\n)"
+    },
+    "20": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, end, ctx)"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "end.x = element.left + element.x2\nend.y = element.top + element.y2"
+    },
+    "22": {
+      "type": "action",
+      "one": "20",
+      "content": "end.primId = \"lineend-\" + element.id"
+    },
+    "23": {
+      "type": "action",
+      "one": "15",
+      "content": "start.primId = \"linestart-\" + element.id"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\nctx",
+  "type": "drakon"
+}

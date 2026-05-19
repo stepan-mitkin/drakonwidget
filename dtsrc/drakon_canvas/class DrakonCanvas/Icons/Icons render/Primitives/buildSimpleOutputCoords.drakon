@@ -1,0 +1,33 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "7",
+      "type": "branch"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "y = top + height / 2\nright = left + width\nbottom = top + height\nx1 = right - padding"
+    },
+    "8": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return [\n    {x: left, y: top},\n    {x: x1, y: top},\n    {x: right, y: y},\n    {x: x1, y: bottom},\n    {x: left, y: bottom}\n]"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "left\ntop\nwidth\nheight\npadding",
+  "type": "drakon"
+}

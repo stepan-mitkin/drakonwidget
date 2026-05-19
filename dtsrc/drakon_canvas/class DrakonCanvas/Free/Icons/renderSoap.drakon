@@ -1,0 +1,33 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "11",
+      "type": "branch"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "centerContentFree(visuals, element, ctx)"
+    },
+    "11": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "renderFreeIconShapeComplex(\n    ctx,\n    visuals,\n    element,\n    buildBeginEndPath,\n    undefined\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

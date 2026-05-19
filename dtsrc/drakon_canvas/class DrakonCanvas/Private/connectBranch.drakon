@@ -1,0 +1,111 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Top"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "branch.topNode = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "11",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "10",
+      "type": "branch",
+      "content": "Technical edge"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "13",
+      "type": "branch",
+      "content": "Bottom"
+    },
+    "7": {
+      "type": "action",
+      "one": "19",
+      "content": "ceil = createEdge(\n    visuals,\n    upper,\n    branch.topNode,\n    false\n)"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "6",
+      "content": "branch.addresses.length === 0"
+    },
+    "9": {
+      "type": "action",
+      "one": "8",
+      "content": "createEdge(\n    visuals,\n    branch.topNode,\n    branch,\n    true\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "6",
+      "content": "createEdge(\n    visuals,\n    lower,\n    visuals.end,\n    false\n)"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "branch.bottomNode = lower"
+    },
+    "12": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "13": {
+      "type": "loopbegin",
+      "one": "14",
+      "content": "address; branch.addresses"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "branchLower = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "floor = createEdge(\n    visuals,\n    lower,\n    branchLower,\n    false\n)"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "floor.role = \"floor\""
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "createEdge(\n    visuals,\n    address,\n    branchLower,\n    true\n)"
+    },
+    "18": {
+      "type": "action",
+      "one": "12",
+      "content": "lower = branchLower"
+    },
+    "19": {
+      "type": "action",
+      "one": "9",
+      "content": "ceil.role = \"ceil\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nbranch\nupper\nlower",
+  "type": "drakon"
+}

@@ -1,0 +1,88 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "8"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "handle.box = boxFromPoint(\n    handle.x,\n    handle.y,\n    touch,\n    touch\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "touch = config.socketTouchRadius"
+    },
+    "5": {
+      "type": "action",
+      "one": "12",
+      "content": "fill = config.theme.handleFill\nborder = config.theme.candyBorder\nsize = 10\nlineWidth = 2"
+    },
+    "6": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "centerSquare(\n    ctx,\n    handle.x,\n    handle.y,\n    size,\n    fill,\n    border,\n    lineWidth\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "visuals.handles.push(handle)"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "config = visuals.config"
+    },
+    "9": {
+      "type": "action",
+      "one": "5",
+      "content": "handle.elType = \"handle\""
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "one": "6",
+      "two": "11",
+      "content": "handle.color"
+    },
+    "11": {
+      "type": "action",
+      "one": "6",
+      "content": "fill = handle.color"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "two": "13",
+      "one": "10",
+      "content": "visuals.highlight"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "one": "10",
+      "two": "14",
+      "content": "visuals.highlight === handle.primId"
+    },
+    "14": {
+      "type": "action",
+      "one": "10",
+      "content": "border = config.theme.highlight"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nhandle\nctx",
+  "type": "drakon"
+}

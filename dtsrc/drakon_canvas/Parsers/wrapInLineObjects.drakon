@@ -1,0 +1,45 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "output = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return output"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "line; lines"
+    },
+    "7": {
+      "type": "action",
+      "one": "5",
+      "content": "output.push({tokens: line})"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "lines",
+  "type": "drakon"
+}

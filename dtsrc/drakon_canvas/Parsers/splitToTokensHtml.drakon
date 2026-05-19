@@ -1,0 +1,161 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "7",
+      "type": "branch",
+      "content": "Parse DOM"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "lines = []"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "parser = new DOMParser()"
+    },
+    "6": {
+      "type": "action",
+      "one": "8",
+      "content": "doc = parser.parseFromString(\n    html,\n    \"text/html\"\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "3",
+      "content": "html = html || \"\""
+    },
+    "8": {
+      "type": "action",
+      "one": "25",
+      "content": "body = doc.documentElement.childNodes[1]"
+    },
+    "9": {
+      "branchId": 4,
+      "one": "11",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "10": {
+      "branchId": 3,
+      "one": "13",
+      "type": "branch",
+      "content": "Scan DOM nodes"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return lines"
+    },
+    "12": {
+      "type": "loopend",
+      "one": "9"
+    },
+    "13": {
+      "type": "loopbegin",
+      "one": "14",
+      "content": "node; body.childNodes"
+    },
+    "14": {
+      "type": "action",
+      "one": "19",
+      "content": "name = getNodeName(node)"
+    },
+    "16": {
+      "type": "case",
+      "one": "22"
+    },
+    "17": {
+      "one": "21",
+      "type": "case",
+      "two": "23",
+      "content": "\"ol\""
+    },
+    "18": {
+      "one": "20",
+      "type": "case",
+      "two": "17",
+      "content": "\"ul\""
+    },
+    "19": {
+      "type": "select",
+      "one": "18",
+      "content": "name"
+    },
+    "20": {
+      "type": "action",
+      "one": "12",
+      "content": "processUnordered(node.childNodes, lines)"
+    },
+    "21": {
+      "type": "action",
+      "one": "12",
+      "content": "processOrdered(node.childNodes, lines)"
+    },
+    "22": {
+      "type": "action",
+      "one": "12",
+      "content": "processParagraph(node, lines)"
+    },
+    "23": {
+      "one": "12",
+      "type": "case",
+      "two": "24",
+      "content": "\"script\""
+    },
+    "24": {
+      "one": "12",
+      "type": "case",
+      "two": "16",
+      "content": "\"#text\""
+    },
+    "25": {
+      "branchId": 2,
+      "one": "26",
+      "type": "branch",
+      "content": "Plain text?"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "two": "10",
+      "one": "28",
+      "content": "body.childNodes.length === 1"
+    },
+    "27": {
+      "type": "action",
+      "one": "29",
+      "content": "name = getNodeName(firstNode)"
+    },
+    "28": {
+      "type": "action",
+      "one": "27",
+      "content": "firstNode = body.childNodes[0]"
+    },
+    "29": {
+      "flag1": 1,
+      "type": "question",
+      "one": "30",
+      "two": "10",
+      "content": "name === \"#text\""
+    },
+    "30": {
+      "type": "action",
+      "one": "9",
+      "content": "lines = wrapInLineObjects(\n    splitToTokens(firstNode.nodeValue)\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "html",
+  "type": "drakon"
+}

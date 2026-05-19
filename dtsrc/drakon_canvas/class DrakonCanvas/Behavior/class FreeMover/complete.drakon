@@ -1,0 +1,63 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "15"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "updateAndKeepSelection(\n    self.widget,\n    changes\n)"
+    },
+    "9": {
+      "type": "loopbegin",
+      "one": "11",
+      "content": "coord; self.coords"
+    },
+    "10": {
+      "type": "loopend",
+      "one": "5"
+    },
+    "11": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "change = {\n    id: coord.element.id,\n    fields: {},\n    op: \"update\"\n}"
+    },
+    "15": {
+      "type": "action",
+      "one": "9",
+      "content": "changes = []"
+    },
+    "16": {
+      "type": "action",
+      "one": "10",
+      "content": "changes.push(change)"
+    },
+    "17": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "change.fields.left = coord.element.left\nchange.fields.top = coord.element.top"
+    },
+    "18": {
+      "flag1": 0,
+      "type": "question",
+      "two": "19",
+      "one": "17",
+      "content": "coord.xy"
+    },
+    "19": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "change.fields.x = coord.element.x\nchange.fields.y = coord.element.y"
+    }
+  },
+  "type": "drakon"
+}

@@ -1,0 +1,84 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "12"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "8",
+      "content": "callback"
+    },
+    "6": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "callback = widget.config.startEditStyle"
+    },
+    "7": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "console.error(\n    \"startEditStyle is missing in config\"\n)"
+    },
+    "8": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "delayed = function () {\n    callback(\n        ids,\n        oldStyle,\n        x,\n        y,\n        accepted\n    )\n}"
+    },
+    "10": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "setTimeout(delayed, 1)"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "prims = getSelectedPrims(widget)"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "1",
+      "content": "prims.length"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "ids = prims.map(\n    function (prim) {\n        return prim.id\n    }\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "17",
+      "content": "oldStyle = buildStyleFromPrims(\n    widget.visuals,\n    prims\n)"
+    },
+    "16": {
+      "type": "action",
+      "one": "14",
+      "content": "x = prims[0].left + prims[0].width\ny = prims[0].top"
+    },
+    "17": {
+      "type": "action",
+      "one": "6",
+      "content": "accepted = getAcceptedStyleProps(\n    widget,\n    prims\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

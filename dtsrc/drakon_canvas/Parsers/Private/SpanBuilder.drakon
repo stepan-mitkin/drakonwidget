@@ -1,0 +1,339 @@
+{
+    "items": {
+        "2": {
+            "branchId": 2,
+            "one": "12",
+            "type": "branch",
+            "content": "New line"
+        },
+        "5": {
+            "branchId": 3,
+            "one": "30",
+            "type": "branch",
+            "content": "Idle"
+        },
+        "6": {
+            "branchId": 4,
+            "one": "39",
+            "type": "branch",
+            "content": "Space"
+        },
+        "7": {
+            "branchId": 5,
+            "one": "49",
+            "type": "branch",
+            "content": "Token"
+        },
+        "12": {
+            "type": "select",
+            "one": "17",
+            "content": "receive"
+        },
+        "15": {
+            "one": "2",
+            "type": "case",
+            "two": "16",
+            "content": "white()"
+        },
+        "16": {
+            "one": "2",
+            "type": "case",
+            "two": "24",
+            "content": "line()"
+        },
+        "17": {
+            "one": "21",
+            "type": "case",
+            "two": "15",
+            "content": "next(ch)"
+        },
+        "18": {
+            "branchId": 1,
+            "one": "19",
+            "type": "branch",
+            "content": "Init"
+        },
+        "19": {
+            "type": "action",
+            "one": "20",
+            "content": "current = {text: \"\", type: \"\"}"
+        },
+        "20": {
+            "type": "action",
+            "one": "2",
+            "content": "type = \"\"\nline = {tokens: []}\nme.lines = []"
+        },
+        "21": {
+            "flag1": 0,
+            "type": "question",
+            "two": "22",
+            "one": "23",
+            "content": "ch === \"-\""
+        },
+        "22": {
+            "type": "action",
+            "one": "7",
+            "content": "current.text += \"•\""
+        },
+        "23": {
+            "type": "action",
+            "one": "7",
+            "content": "current.text += ch"
+        },
+        "24": {
+            "one": "26",
+            "type": "case",
+            "two": "25",
+            "content": "em()"
+        },
+        "25": {
+            "one": "27",
+            "type": "case",
+            "two": null,
+            "content": "strong()"
+        },
+        "26": {
+            "type": "action",
+            "one": "7",
+            "content": "type = \"em\"\ncurrent = endToken(current, line, type)"
+        },
+        "27": {
+            "type": "action",
+            "one": "7",
+            "content": "type = \"strong\"\ncurrent = endToken(current, line, type)"
+        },
+        "30": {
+            "type": "select",
+            "one": "31",
+            "content": "receive"
+        },
+        "31": {
+            "one": "36",
+            "type": "case",
+            "two": "32",
+            "content": "next(ch)"
+        },
+        "32": {
+            "one": "6",
+            "type": "case",
+            "two": "33",
+            "content": "white()"
+        },
+        "33": {
+            "one": "73",
+            "type": "case",
+            "two": "65",
+            "content": "line()"
+        },
+        "34": {
+            "one": "60",
+            "type": "case",
+            "two": "35",
+            "content": "em()"
+        },
+        "35": {
+            "one": "38",
+            "type": "case",
+            "two": null,
+            "content": "strong()"
+        },
+        "36": {
+            "type": "action",
+            "one": "7",
+            "content": "current.text += ch"
+        },
+        "38": {
+            "type": "action",
+            "one": "7",
+            "content": "type = \"strong\"\ncurrent = endToken(current, line, type)"
+        },
+        "39": {
+            "type": "select",
+            "one": "40",
+            "content": "receive"
+        },
+        "40": {
+            "one": "80",
+            "type": "case",
+            "two": "41",
+            "content": "next(ch)"
+        },
+        "41": {
+            "one": "6",
+            "type": "case",
+            "two": "42",
+            "content": "white()"
+        },
+        "42": {
+            "one": "78",
+            "type": "case",
+            "two": "71",
+            "content": "line()"
+        },
+        "43": {
+            "one": "81",
+            "type": "case",
+            "two": "44",
+            "content": "em()"
+        },
+        "44": {
+            "one": "82",
+            "type": "case",
+            "two": null,
+            "content": "strong()"
+        },
+        "46": {
+            "type": "action",
+            "one": "7",
+            "content": "current.text += ch"
+        },
+        "48": {
+            "type": "action",
+            "one": "7",
+            "content": "type = \"strong\"\ncurrent = endToken(current, line, type)"
+        },
+        "49": {
+            "type": "select",
+            "one": "50",
+            "content": "receive"
+        },
+        "50": {
+            "one": "55",
+            "type": "case",
+            "two": "51",
+            "content": "next(ch)"
+        },
+        "51": {
+            "one": "56",
+            "type": "case",
+            "two": "52",
+            "content": "white()"
+        },
+        "52": {
+            "one": "57",
+            "type": "case",
+            "two": "63",
+            "content": "line()"
+        },
+        "53": {
+            "one": "62",
+            "type": "case",
+            "two": "54",
+            "content": "em()"
+        },
+        "54": {
+            "one": "59",
+            "type": "case",
+            "two": null,
+            "content": "strong()"
+        },
+        "55": {
+            "type": "action",
+            "one": "7",
+            "content": "current.text += ch"
+        },
+        "56": {
+            "type": "action",
+            "one": "6",
+            "content": "current = endToken(current, line, type)"
+        },
+        "57": {
+            "type": "action",
+            "one": "79",
+            "content": "current = endToken(current, line, type)"
+        },
+        "59": {
+            "type": "action",
+            "one": "7",
+            "content": "type = \"strong\"\ncurrent = endToken(current, line, type)"
+        },
+        "60": {
+            "type": "action",
+            "one": "7",
+            "content": "type = \"em\"\ncurrent = endToken(current, line, type)"
+        },
+        "61": {
+            "type": "action",
+            "one": "7",
+            "content": "type = \"em\"\ncurrent = endToken(current, line, type)"
+        },
+        "62": {
+            "type": "action",
+            "one": "7",
+            "content": "type = \"em\"\ncurrent = endToken(current, line, type)"
+        },
+        "63": {
+            "one": "75",
+            "type": "case",
+            "two": "53",
+            "content": "end()"
+        },
+        "65": {
+            "one": "66",
+            "type": "case",
+            "two": "34",
+            "content": "end()"
+        },
+        "66": {
+            "type": "action",
+            "one": "5",
+            "content": "type = \"\"\ncurrent = endToken(current, line, type)"
+        },
+        "71": {
+            "one": "72",
+            "type": "case",
+            "two": "43",
+            "content": "end()"
+        },
+        "72": {
+            "type": "action",
+            "one": "5",
+            "content": "type = \"\"\ncurrent = endToken(current, line, type)"
+        },
+        "73": {
+            "type": "action",
+            "one": "2",
+            "content": "type = \"\"\nline = endLine(line, me.lines)"
+        },
+        "75": {
+            "type": "action",
+            "one": "5",
+            "content": "type = \"\"\ncurrent = endToken(current, line, type)"
+        },
+        "78": {
+            "type": "action",
+            "one": "2",
+            "content": "type = \"\"\nline = endLine(line, me.lines)"
+        },
+        "79": {
+            "type": "action",
+            "one": "2",
+            "content": "type = \"\"\nline = endLine(line, me.lines)"
+        },
+        "80": {
+            "type": "action",
+            "one": "46",
+            "content": "pushSpace(line)"
+        },
+        "81": {
+            "type": "action",
+            "one": "61",
+            "content": "pushSpace(line)"
+        },
+        "82": {
+            "type": "action",
+            "one": "48",
+            "content": "pushSpace(line)"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "type": "drakon",
+    "params": ""
+}

@@ -1,0 +1,75 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "10"
+        },
+        "6": {
+            "flag1": 0,
+            "type": "question",
+            "two": "8",
+            "one": "7",
+            "content": "elements.length === 0"
+        },
+        "7": {
+            "type": "action",
+            "one": "1",
+            "content": "deleteFree(widget, elements)"
+        },
+        "8": {
+            "one": "11",
+            "type": "action",
+            "two": "",
+            "content": "nodes = getNodesFromSelection(widget)"
+        },
+        "9": {
+            "one": "1",
+            "type": "action",
+            "two": "",
+            "content": "deleteSelectionCore(widget, nodes)"
+        },
+        "10": {
+            "type": "action",
+            "one": "6",
+            "content": "elements = getSelectedFree(widget)"
+        },
+        "11": {
+            "flag1": 0,
+            "type": "question",
+            "one": "9",
+            "two": "13",
+            "content": "nodes.length === 0"
+        },
+        "12": {
+            "type": "action",
+            "one": "1",
+            "content": "deleteConnection(widget, connection.id)"
+        },
+        "13": {
+            "one": "14",
+            "type": "action",
+            "two": "",
+            "content": "connection = getSelectedConnection(\n    widget\n)"
+        },
+        "14": {
+            "flag1": 1,
+            "type": "question",
+            "two": "1",
+            "one": "12",
+            "content": "connection"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "widget",
+    "type": "drakon"
+}

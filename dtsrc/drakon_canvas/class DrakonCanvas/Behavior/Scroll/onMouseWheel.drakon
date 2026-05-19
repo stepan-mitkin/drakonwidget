@@ -1,0 +1,112 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "20"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "one": "7",
+      "two": "14",
+      "content": "evt.ctrlKey"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "one": "9",
+      "two": "13",
+      "content": "evt.shiftKey"
+    },
+    "7": {
+      "type": "action",
+      "one": "5",
+      "content": "delta = evt.deltaY / 2"
+    },
+    "8": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "setScrollFromMouseEvent(\n    widget,\n    x,\n    visuals.scrollY\n)"
+    },
+    "9": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "x = visuals.scrollX + delta / zoom"
+    },
+    "11": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "zoom = widget.zoomFactor\nvisuals = widget.visuals"
+    },
+    "12": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "setScrollFromMouseEvent(\n    widget,\n    visuals.scrollX,\n    y\n)"
+    },
+    "13": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "y = visuals.scrollY + delta / zoom"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "levels = [\n    3300,\n    5000,\n    6700,\n    7500,\n    9000,\n    10000,\n    11000,\n    12000,\n    15000,\n    20000,\n    25000,\n    30000\n]"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "delta = evt.deltaY"
+    },
+    "16": {
+      "flag1": 1,
+      "type": "question",
+      "one": "17",
+      "two": "18",
+      "content": "delta > 0"
+    },
+    "17": {
+      "type": "action",
+      "one": "19",
+      "content": "zoom = findValueBelow(\n    levels,\n    widget.zoom\n)"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "zoom = findValueAbove(\n    levels,\n    widget.zoom\n)"
+    },
+    "19": {
+      "type": "action",
+      "one": "22",
+      "content": "widget.setZoom(zoom)"
+    },
+    "20": {
+      "type": "action",
+      "one": "11",
+      "content": "evt.preventDefault()"
+    },
+    "22": {
+      "type": "action",
+      "one": "1",
+      "content": "visuals.config.onZoomChanged(zoom)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nevt",
+  "type": "drakon"
+}

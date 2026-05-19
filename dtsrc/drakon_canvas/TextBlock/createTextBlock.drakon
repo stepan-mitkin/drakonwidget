@@ -1,0 +1,195 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 1,
+            "one": "5",
+            "type": "branch",
+            "content": "Lex"
+        },
+        "5": {
+            "flag1": 0,
+            "type": "question",
+            "one": "36",
+            "two": "6",
+            "content": "options.singleLine"
+        },
+        "6": {
+            "type": "action",
+            "one": "7",
+            "content": "line = splitLineToTokens(text, \"\")"
+        },
+        "7": {
+            "type": "action",
+            "one": "13",
+            "content": "lines = wrapInLineObjects([line])"
+        },
+        "9": {
+            "type": "action",
+            "one": "13",
+            "content": "lines = wrapInLineObjects(\n    splitToTokens(text)\n)"
+        },
+        "12": {
+            "branchId": 4,
+            "one": "32",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "13": {
+            "branchId": 2,
+            "one": "16",
+            "type": "branch",
+            "content": "Set font"
+        },
+        "14": {
+            "branchId": 3,
+            "one": "20",
+            "type": "branch",
+            "content": "Branch1"
+        },
+        "15": {
+            "one": "17",
+            "type": "action",
+            "two": "",
+            "content": "setFontToTokens(lines, options.font, fontCache)"
+        },
+        "16": {
+            "one": "15",
+            "type": "action",
+            "two": "",
+            "content": "fontCache = initFontCache()"
+        },
+        "17": {
+            "one": "18",
+            "type": "action",
+            "two": "",
+            "content": "fontObj = parseCssFont(\n    options.font,\n    fontCache,\n    true\n)"
+        },
+        "18": {
+            "type": "action",
+            "one": "14",
+            "content": "block = {\n    width: 0,\n    options: options,\n    text: text,\n    lineHeight: options.lineHeight * fontObj\n    .size,\n    fontSize: fontObj.size,\n    lines: lines\n}"
+        },
+        "19": {
+            "type": "loopend",
+            "one": "12"
+        },
+        "20": {
+            "type": "loopbegin",
+            "one": "23",
+            "content": "line; lines"
+        },
+        "22": {
+            "type": "loopend",
+            "one": "31"
+        },
+        "23": {
+            "type": "loopbegin",
+            "one": "26",
+            "content": "token; line.tokens"
+        },
+        "24": {
+            "type": "action",
+            "one": "22",
+            "content": "token.width = size.width"
+        },
+        "25": {
+            "type": "action",
+            "one": "24",
+            "content": "size = ctx.measureText(token.text)"
+        },
+        "26": {
+            "type": "action",
+            "one": "39",
+            "content": "ctx.font = token.font"
+        },
+        "27": {
+            "flag1": 0,
+            "type": "question",
+            "two": "41",
+            "one": "25",
+            "content": "token.type === \"space\""
+        },
+        "29": {
+            "type": "action",
+            "one": "1",
+            "content": "return block"
+        },
+        "31": {
+            "type": "action",
+            "one": "19",
+            "content": "block.width = Math.max(\n    calcLineWidth(line.tokens),\n    block.width\n)"
+        },
+        "32": {
+            "type": "action",
+            "one": "29",
+            "content": "block.width += (\n    options.paddingLeft + options.paddingRight\n)"
+        },
+        "33": {
+            "type": "case",
+            "one": "9"
+        },
+        "34": {
+            "one": "37",
+            "type": "case",
+            "two": "33",
+            "content": "\"markdown\""
+        },
+        "35": {
+            "one": "38",
+            "type": "case",
+            "two": "34",
+            "content": "\"html\""
+        },
+        "36": {
+            "type": "select",
+            "one": "35",
+            "content": "options.textFormat"
+        },
+        "37": {
+            "type": "action",
+            "one": "13",
+            "content": "lines = splitToTokensMarkdown(text)"
+        },
+        "38": {
+            "type": "action",
+            "one": "13",
+            "content": "lines = splitToTokensHtml(text)"
+        },
+        "39": {
+            "flag1": 1,
+            "type": "question",
+            "two": "27",
+            "one": "40",
+            "content": "token.font"
+        },
+        "40": {
+            "type": "action",
+            "one": "27",
+            "content": "fonts[token.font] = true"
+        },
+        "41": {
+            "type": "question",
+            "one": "25",
+            "two": "42",
+            "flag1": 1,
+            "content": "token.text"
+        },
+        "42": {
+            "type": "action",
+            "one": "24",
+            "content": "size = ctx.measureText(\" \")"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": true,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "ctx\ntext\noptions\nfonts",
+    "type": "drakon"
+}

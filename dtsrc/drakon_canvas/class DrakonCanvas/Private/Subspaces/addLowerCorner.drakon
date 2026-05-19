@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "targetId = node.finalTarget.itemId"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "existing = sub.outer[targetId]"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "addNodeSubRecord(sub.outer, node)"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "5",
+      "two": "7",
+      "content": "existing"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "10",
+      "one": "5",
+      "content": "existing.type === \"edge\""
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "5",
+      "content": "oldNode.down"
+    },
+    "10": {
+      "type": "action",
+      "one": "9",
+      "content": "oldNode = existing.element"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "sub\nnode",
+  "type": "drakon"
+}

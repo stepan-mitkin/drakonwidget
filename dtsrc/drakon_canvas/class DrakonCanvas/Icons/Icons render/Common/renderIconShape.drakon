@@ -1,0 +1,50 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "8",
+      "type": "branch",
+      "content": "Fill"
+    },
+    "8": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "line = setFillStroke(visuals, node, ctx)"
+    },
+    "21": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "22": {
+      "branchId": 2,
+      "one": "42",
+      "type": "branch",
+      "content": "Border"
+    },
+    "41": {
+      "type": "action",
+      "one": "22",
+      "content": "renderIconShapeFill(\n    ctx,\n    visuals,\n    buildCoords,\n    left,\n    top,\n    width,\n    height,\n    aux\n)"
+    },
+    "42": {
+      "type": "action",
+      "one": "21",
+      "content": "renderIconShapeBorder(\n    ctx,\n    visuals,\n    buildCoords,\n    line,\n    left,\n    top,\n    width,\n    height,\n    aux\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nvisuals\nnode\nbuildCoords\nleft\ntop\nwidth\nheight\naux",
+  "type": "drakon"
+}

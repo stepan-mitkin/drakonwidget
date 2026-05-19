@@ -1,0 +1,51 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "18"
+    },
+    "17": {
+      "flag1": 1,
+      "type": "question",
+      "one": "20",
+      "two": "19",
+      "content": "callback"
+    },
+    "18": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "callback = widget.config.startChangeImage"
+    },
+    "19": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "console.error(\n    \"startChangeImage is missing in config\"\n)"
+    },
+    "20": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "delayed = function () {\n    callback(prim)\n}"
+    },
+    "22": {
+      "type": "action",
+      "one": "1",
+      "content": "setTimeout(delayed, 1)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nprim",
+  "type": "drakon"
+}

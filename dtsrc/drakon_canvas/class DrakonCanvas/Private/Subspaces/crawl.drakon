@@ -1,0 +1,84 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "10",
+      "type": "branch",
+      "content": "Traverse"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "edge = startEdge"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "13",
+      "type": "branch",
+      "content": "Postponed subspaces"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "5",
+      "two": "9",
+      "content": "edge"
+    },
+    "7": {
+      "type": "action",
+      "one": "11",
+      "content": "crawler.onEdge(edge, step)"
+    },
+    "8": {
+      "type": "action",
+      "one": "7",
+      "content": "edge[crawler.side] = crawler.sub"
+    },
+    "9": {
+      "type": "arrow-loop",
+      "one": "8"
+    },
+    "10": {
+      "type": "action",
+      "one": "3",
+      "content": "step = {}"
+    },
+    "11": {
+      "type": "action",
+      "one": "6",
+      "content": "edge = step.next"
+    },
+    "12": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "13": {
+      "type": "loopbegin",
+      "one": "14",
+      "content": "node; crawler.plan"
+    },
+    "14": {
+      "type": "action",
+      "one": "12",
+      "content": "createQSubspace(crawler, node)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "crawler\nstartEdge",
+  "type": "drakon"
+}

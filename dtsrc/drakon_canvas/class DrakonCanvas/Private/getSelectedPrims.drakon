@@ -1,0 +1,117 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "14"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "prims = []"
+    },
+    "6": {
+      "one": "19",
+      "type": "loopend",
+      "two": ""
+    },
+    "7": {
+      "one": "23",
+      "type": "loopbegin",
+      "two": "",
+      "content": "id, elType; widget.selection.prims"
+    },
+    "9": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "node = getNode(visuals, id)"
+    },
+    "12": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "prims.push(prim)"
+    },
+    "13": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "element = getFree(visuals, id)"
+    },
+    "14": {
+      "type": "action",
+      "one": "3",
+      "content": "visuals = widget.visuals"
+    },
+    "17": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "prim = freeToVisualItem(widget, element)"
+    },
+    "18": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "prim = nodeToVisualItem(widget, node)"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return prims"
+    },
+    "20": {
+      "one": "25",
+      "type": "case",
+      "two": "24",
+      "content": "\"connection\""
+    },
+    "21": {
+      "one": "13",
+      "type": "case",
+      "two": "20",
+      "content": "\"free\""
+    },
+    "22": {
+      "one": "9",
+      "type": "case",
+      "two": "21",
+      "content": "\"node\""
+    },
+    "23": {
+      "type": "select",
+      "one": "22",
+      "content": "elType"
+    },
+    "24": {
+      "type": "case",
+      "two": null,
+      "one": "6"
+    },
+    "25": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "connection = getConnection(visuals, id)"
+    },
+    "26": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "prim = connectionToVisualItem(\n    widget,\n    connection\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

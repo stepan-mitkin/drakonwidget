@@ -1,0 +1,45 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "items = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return items"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "one": "10",
+      "two": "4",
+      "content": "self.element.coords.length === 3"
+    },
+    "8": {
+      "type": "action",
+      "one": "5",
+      "content": "pushMenuItem(\n    \"add_vertex\",\n    items,\n    tr(self.widget, \"Add vertex\"),\n    undefined,\n    function () {\n        self.addVertex(\n            self.widget,\n            self.element.id,\n            self.ordinal\n        )\n    }\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "4",
+      "content": "pushMenuItem(\n    \"remove_vertex\",\n    items,\n    tr(self.widget, \"Remove vertex\"),\n    self.widget.visuals.config.imagePath\n    + \"delete.png\",\n    function () {\n        removeVertex(\n            self.widget,\n            self.element.id,\n            self.ordinal\n        )\n    }\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "9",
+      "content": "items.push({type: \"separator\"})"
+    }
+  },
+  "type": "drakon"
+}

@@ -1,0 +1,74 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "10",
+      "type": "branch",
+      "content": "Draw element"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "elementActions = widget.freeIcons[\n    element.type\n]"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "one": "9",
+      "two": "6",
+      "content": "elementActions"
+    },
+    "6": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "console.error(\n    \"drawFreeIcon: callback not found for element of type: \"\n    + element.type\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "12",
+      "content": "elementActions.render(\n    widget.visuals,\n    element,\n    ctx\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "4",
+      "content": "ctx.setLineDash([])"
+    },
+    "11": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "12": {
+      "branchId": 3,
+      "one": "11",
+      "type": "branch",
+      "content": "Ветка2"
+    },
+    "13": {
+      "branchId": 1,
+      "one": "21",
+      "type": "branch",
+      "content": "Draw connections"
+    },
+    "21": {
+      "type": "action",
+      "one": "2",
+      "content": "performOnConnections(\n    widget.visuals,\n    element.id,\n    visited,\n    function (connection) {\n        drawConnection(\n            widget,\n            connection,\n            ctx\n        )\n    }\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\nctx\nvisited",
+  "type": "drakon"
+}

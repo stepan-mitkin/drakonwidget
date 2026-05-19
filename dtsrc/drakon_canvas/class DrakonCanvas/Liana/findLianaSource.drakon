@@ -1,0 +1,345 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "type": "case",
+      "one": "61"
+    },
+    "5": {
+      "one": "37",
+      "type": "case",
+      "two": "4",
+      "content": "\"edge\""
+    },
+    "6": {
+      "one": "8",
+      "type": "case",
+      "two": "5",
+      "content": "\"node\""
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "prim.elType"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "node = getNode(visuals, prim.id)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "two": "12",
+      "one": "10",
+      "content": "node.arrow"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "return node.arrow"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return node.left"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "24",
+      "two": "14",
+      "content": "node.type === \"junction\""
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "return node.down"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "two": "16",
+      "one": "20",
+      "content": "isSimpleItem(node)"
+    },
+    "16": {
+      "flag1": 0,
+      "type": "question",
+      "one": "59",
+      "two": "17",
+      "content": "node.type === \"address\""
+    },
+    "17": {
+      "flag1": 1,
+      "type": "question",
+      "two": "19",
+      "one": "59",
+      "content": "node.skewer.main"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return node.up"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "one": "21",
+      "two": "59",
+      "content": "node.down"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "beneath = getDown(node)"
+    },
+    "22": {
+      "flag1": 1,
+      "type": "question",
+      "two": "59",
+      "one": "23",
+      "content": "beneath.type === \"junction\""
+    },
+    "23": {
+      "flag1": 0,
+      "type": "question",
+      "two": "59",
+      "one": "13",
+      "content": "isRightT(beneath)"
+    },
+    "24": {
+      "flag1": 0,
+      "type": "question",
+      "two": "21",
+      "one": "25",
+      "content": "isLeftDown(node)"
+    },
+    "25": {
+      "flag1": 0,
+      "type": "question",
+      "one": "29",
+      "two": "26",
+      "content": "isRightUp(node)"
+    },
+    "26": {
+      "flag1": 0,
+      "type": "question",
+      "two": "58",
+      "one": "28",
+      "content": "node.right.role === \"floor\""
+    },
+    "28": {
+      "type": "action",
+      "one": "1",
+      "content": "return node.up"
+    },
+    "29": {
+      "flag1": 0,
+      "type": "question",
+      "two": "34",
+      "one": "30",
+      "content": "isCaseJun(node)"
+    },
+    "30": {
+      "flag1": 0,
+      "type": "question",
+      "two": "34",
+      "one": "31",
+      "content": "isBranchJun(node)"
+    },
+    "31": {
+      "flag1": 0,
+      "type": "question",
+      "two": "34",
+      "one": "32",
+      "content": "isAddressJun(node)"
+    },
+    "32": {
+      "flag1": 1,
+      "type": "question",
+      "one": "33",
+      "two": "34",
+      "content": "node.left"
+    },
+    "33": {
+      "flag1": 1,
+      "type": "question",
+      "one": "35",
+      "two": "34",
+      "content": "node.up"
+    },
+    "34": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "35": {
+      "flag1": 1,
+      "type": "question",
+      "two": "36",
+      "one": "11",
+      "content": "node.down"
+    },
+    "36": {
+      "type": "action",
+      "one": "1",
+      "content": "return node.up"
+    },
+    "37": {
+      "type": "action",
+      "one": "39",
+      "content": "edge = getEdge(visuals, prim.id)"
+    },
+    "38": {
+      "type": "action",
+      "one": "1",
+      "content": "return edge.arrow"
+    },
+    "39": {
+      "flag1": 1,
+      "type": "question",
+      "two": "41",
+      "one": "38",
+      "content": "edge.arrow"
+    },
+    "40": {
+      "type": "action",
+      "one": "1",
+      "content": "return edge"
+    },
+    "41": {
+      "flag1": 1,
+      "type": "question",
+      "one": "42",
+      "two": "61",
+      "content": "edge.role"
+    },
+    "42": {
+      "flag1": 0,
+      "type": "question",
+      "two": "61",
+      "one": "43",
+      "content": "edge.role === \"floor\""
+    },
+    "43": {
+      "flag1": 0,
+      "type": "question",
+      "two": "61",
+      "one": "44",
+      "content": "edge.role === \"rarrow\""
+    },
+    "44": {
+      "flag1": 0,
+      "type": "question",
+      "one": "45",
+      "two": "49",
+      "content": "edge.vertical"
+    },
+    "45": {
+      "flag1": 0,
+      "type": "question",
+      "two": "52",
+      "one": "46",
+      "content": "isLeftUp(edge.tail)"
+    },
+    "46": {
+      "flag1": 0,
+      "type": "question",
+      "two": "53",
+      "one": "47",
+      "content": "isRightUp(edge.head)"
+    },
+    "47": {
+      "flag1": 1,
+      "type": "question",
+      "one": "40",
+      "two": "55",
+      "content": "edge.head.type == \"junction\""
+    },
+    "48": {
+      "type": "action",
+      "one": "1",
+      "content": "return edge"
+    },
+    "49": {
+      "flag1": 1,
+      "type": "question",
+      "two": "61",
+      "one": "50",
+      "content": "edge.tail.type === \"junction\""
+    },
+    "50": {
+      "flag1": 0,
+      "type": "question",
+      "two": "61",
+      "one": "48",
+      "content": "isRightT(edge.tail)"
+    },
+    "52": {
+      "type": "action",
+      "one": "1",
+      "content": "return edge.tail.up"
+    },
+    "53": {
+      "type": "action",
+      "one": "1",
+      "content": "return edge.head.up"
+    },
+    "54": {
+      "type": "action",
+      "one": "1",
+      "content": "return edge"
+    },
+    "55": {
+      "flag1": 1,
+      "type": "question",
+      "two": "60",
+      "one": "56",
+      "content": "edge.head.type === \"question\""
+    },
+    "56": {
+      "flag1": 1,
+      "type": "question",
+      "one": "54",
+      "two": "60",
+      "content": "edge.tail.up"
+    },
+    "58": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "59": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "60": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "61": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nprim",
+  "type": "drakon"
+}

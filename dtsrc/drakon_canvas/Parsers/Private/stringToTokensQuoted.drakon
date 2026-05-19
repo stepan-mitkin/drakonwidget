@@ -1,0 +1,182 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return tokens"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "32"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "i = 0; i < text.length; i++"
+    },
+    "6": {
+      "type": "action",
+      "one": "9",
+      "content": "tokens = []"
+    },
+    "7": {
+      "type": "action",
+      "one": "6",
+      "content": "text = text || \"\""
+    },
+    "8": {
+      "type": "action",
+      "one": "17",
+      "content": "ch = text[i]"
+    },
+    "9": {
+      "type": "action",
+      "one": "11",
+      "content": "whitespace = {}\nwhitespace[\" \"] = true\nwhitespace[\"\\t\"] = true\nwhitespace[\"\\r\"] = true\nwhitespace[\"\\n\"] = true"
+    },
+    "11": {
+      "type": "action",
+      "one": "13",
+      "content": "quote = {}\nquote[\"\\\"\"] = true\nquote[\"\\'\"] = true"
+    },
+    "13": {
+      "type": "action",
+      "one": "5",
+      "content": "state = \"idle\"\nbuffer = \"\""
+    },
+    "14": {
+      "type": "case",
+      "one": "28",
+      "content": "\"quoted\""
+    },
+    "15": {
+      "one": "23",
+      "type": "case",
+      "two": "14",
+      "content": "\"token\""
+    },
+    "16": {
+      "one": "18",
+      "type": "case",
+      "two": "15",
+      "content": "\"idle\""
+    },
+    "17": {
+      "type": "select",
+      "one": "16",
+      "content": "state"
+    },
+    "18": {
+      "flag1": 1,
+      "type": "question",
+      "two": "19",
+      "one": "4",
+      "content": "whitespace[ch]"
+    },
+    "19": {
+      "flag1": 1,
+      "type": "question",
+      "two": "22",
+      "one": "34",
+      "content": "quote[ch]"
+    },
+    "20": {
+      "type": "action",
+      "one": "4",
+      "content": "state = \"token\""
+    },
+    "21": {
+      "type": "action",
+      "one": "4",
+      "content": "state = \"quoted\""
+    },
+    "22": {
+      "type": "action",
+      "one": "20",
+      "content": "buffer += ch"
+    },
+    "23": {
+      "flag1": 1,
+      "type": "question",
+      "two": "27",
+      "one": "26",
+      "content": "whitespace[ch]"
+    },
+    "25": {
+      "type": "action",
+      "one": "4",
+      "content": "state = \"idle\""
+    },
+    "26": {
+      "type": "action",
+      "one": "25",
+      "content": "tokens.push(buffer)\nbuffer = \"\""
+    },
+    "27": {
+      "type": "action",
+      "one": "4",
+      "content": "buffer += ch"
+    },
+    "28": {
+      "flag1": 1,
+      "type": "question",
+      "one": "35",
+      "two": "31",
+      "content": "quote[ch]"
+    },
+    "29": {
+      "type": "action",
+      "one": "30",
+      "content": "tokens.push(buffer)\nbuffer = \"\""
+    },
+    "30": {
+      "type": "action",
+      "one": "4",
+      "content": "state = \"idle\""
+    },
+    "31": {
+      "type": "action",
+      "one": "4",
+      "content": "buffer += ch"
+    },
+    "32": {
+      "flag1": 0,
+      "type": "question",
+      "one": "3",
+      "two": "33",
+      "content": "buffer"
+    },
+    "33": {
+      "type": "action",
+      "one": "3",
+      "content": "tokens.push(buffer)"
+    },
+    "34": {
+      "type": "action",
+      "one": "21",
+      "content": "buffer += ch"
+    },
+    "35": {
+      "type": "action",
+      "one": "29",
+      "content": "buffer += ch"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "text",
+  "type": "drakon"
+}

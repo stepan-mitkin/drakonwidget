@@ -1,0 +1,40 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "5": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "model.items[item.id] = item"
+    },
+    "10": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "model.branches.push(item.id)"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "10",
+      "content": "item.type === \"branch\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "model\nitem",
+  "type": "drakon"
+}

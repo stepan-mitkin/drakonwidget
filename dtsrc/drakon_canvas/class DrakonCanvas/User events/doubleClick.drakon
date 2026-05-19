@@ -1,0 +1,106 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "17"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "13",
+      "content": "prim"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "startEditContent(widget, prim)"
+    },
+    "6": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "evt.stopPropagation()\nevt.preventDefault()"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "5",
+      "content": "clickedOnTop(widget, prim, pos)"
+    },
+    "8": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "startEditSecondary(widget, prim)"
+    },
+    "9": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "startEditContent(widget, prim)"
+    },
+    "10": {
+      "one": "14",
+      "type": "case",
+      "two": "15",
+      "content": "\"handle\""
+    },
+    "11": {
+      "one": "9",
+      "type": "case",
+      "two": "10",
+      "content": "\"free\""
+    },
+    "12": {
+      "one": "18",
+      "type": "case",
+      "two": "11",
+      "content": "\"node\""
+    },
+    "13": {
+      "one": "12",
+      "type": "select",
+      "two": "",
+      "content": "prim.elType"
+    },
+    "14": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "doubleClickHandle(widget, prim)"
+    },
+    "15": {
+      "type": "case",
+      "one": "1",
+      "two": ""
+    },
+    "17": {
+      "type": "action",
+      "one": "4",
+      "content": "tracing.trace(\"double click\", prim)"
+    },
+    "18": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "6",
+      "content": "evt.stopPropagation"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nprim\npos\nevt",
+  "type": "drakon"
+}

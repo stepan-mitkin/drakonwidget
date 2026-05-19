@@ -1,0 +1,36 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "block = {\n    start: startId,\n    items: items,\n    images: images\n}"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return type"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "saveCopyInClipboard(widget, type, block)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nstartId\nitems\nimages\ntype",
+  "type": "drakon"
+}

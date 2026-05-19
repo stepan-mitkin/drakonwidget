@@ -1,0 +1,153 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "13",
+      "type": "branch",
+      "content": "Move to the right"
+    },
+    "3": {
+      "type": "action",
+      "one": "10",
+      "content": "items = block.items\nstart = block.start\ntargets = block.targets"
+    },
+    "5": {
+      "branchId": 5,
+      "one": "9",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "6": {
+      "branchId": 4,
+      "one": "27",
+      "type": "branch",
+      "content": "Insert items"
+    },
+    "7": {
+      "branchId": 3,
+      "one": "18",
+      "type": "branch",
+      "content": "Replace ids"
+    },
+    "8": {
+      "branchId": 2,
+      "one": "15",
+      "type": "branch",
+      "content": "Set branch id"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "branchId = getSocketBranchId(socket)"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "targetId = getBranchItemId(\n    widget.visuals,\n    branchId\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "8",
+      "content": "edits = moveBranchIdsRight(\n    visuals,\n    branchId\n)"
+    },
+    "13": {
+      "type": "action",
+      "one": "3",
+      "content": "visuals = widget.visuals"
+    },
+    "14": {
+      "type": "loopend",
+      "one": "7"
+    },
+    "15": {
+      "type": "loopbegin",
+      "one": "16",
+      "content": "item; items"
+    },
+    "16": {
+      "flag1": 0,
+      "type": "question",
+      "two": "17",
+      "one": "14",
+      "content": "item.id === start"
+    },
+    "17": {
+      "type": "action",
+      "one": "7",
+      "content": "item.branchId = branchId"
+    },
+    "18": {
+      "type": "action",
+      "one": "20",
+      "content": "oldToNew = generateNewIds(widget, items)"
+    },
+    "19": {
+      "type": "loopend",
+      "one": "26"
+    },
+    "20": {
+      "type": "loopbegin",
+      "one": "21",
+      "content": "oldId, name; targets"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "branch = getBranchByName(visuals, name)"
+    },
+    "22": {
+      "flag1": 1,
+      "type": "question",
+      "one": "23",
+      "two": "24",
+      "content": "branch"
+    },
+    "23": {
+      "type": "action",
+      "one": "25",
+      "content": "newId = branch.itemId"
+    },
+    "24": {
+      "type": "action",
+      "one": "25",
+      "content": "newId = targetId"
+    },
+    "25": {
+      "type": "action",
+      "one": "19",
+      "content": "oldToNew[oldId] = newId"
+    },
+    "26": {
+      "type": "action",
+      "one": "6",
+      "content": "replaceTargets(items, oldToNew)"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "create = function (item) {\n    createPastedItem(edits, item)\n}"
+    },
+    "28": {
+      "type": "action",
+      "one": "5",
+      "content": "items.forEach(create)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nsocket\nblock",
+  "type": "drakon"
+}

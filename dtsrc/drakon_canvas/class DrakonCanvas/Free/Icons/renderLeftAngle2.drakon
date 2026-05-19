@@ -1,0 +1,53 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "ctx.lineWidth = getLineWidth(\n    visuals,\n    element\n)"
+    },
+    "5": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "ctx.strokeStyle = getLineColor(\n    visuals,\n    element\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "10",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "leftAngle(ctx, x + dx, y, w, h)"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "leftAngle(ctx, x - dx, y, w, h)"
+    },
+    "10": {
+      "type": "action",
+      "one": "8",
+      "content": "dx = w / 3"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

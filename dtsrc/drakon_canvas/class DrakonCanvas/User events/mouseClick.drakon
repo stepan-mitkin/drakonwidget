@@ -1,0 +1,182 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "23",
+      "type": "branch",
+      "content": "Is it double-click?"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "two": "22",
+      "one": "24",
+      "content": "lastClick"
+    },
+    "20": {
+      "type": "action",
+      "one": "53",
+      "content": "now = utils.getNowMs()\nlastClick = widget.lastClick"
+    },
+    "21": {
+      "flag1": 0,
+      "type": "question",
+      "two": "54",
+      "one": "24",
+      "content": "diff <= doubleClickTime"
+    },
+    "22": {
+      "type": "action",
+      "one": "21",
+      "content": "diff = now - lastClick"
+    },
+    "23": {
+      "type": "action",
+      "one": "47",
+      "content": "doubleClickTime = 500"
+    },
+    "24": {
+      "type": "action",
+      "one": "27",
+      "content": "widget.lastClick = now"
+    },
+    "26": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "27": {
+      "branchId": 2,
+      "one": "29",
+      "type": "branch",
+      "content": "Single click"
+    },
+    "29": {
+      "flag1": 0,
+      "type": "question",
+      "two": "84",
+      "one": "31",
+      "content": "prim"
+    },
+    "31": {
+      "one": "32",
+      "type": "action",
+      "two": "",
+      "content": "deselectAll(widget)"
+    },
+    "32": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "paint(widget)"
+    },
+    "34": {
+      "flag1": 1,
+      "type": "question",
+      "one": "36",
+      "two": "32",
+      "content": "prim.id"
+    },
+    "36": {
+      "flag1": 0,
+      "type": "question",
+      "one": "38",
+      "two": "65",
+      "content": "isSelected(widget, prim.id)"
+    },
+    "38": {
+      "one": "39",
+      "type": "action",
+      "two": "",
+      "content": "selectPrim(widget, prim.id)"
+    },
+    "39": {
+      "one": "65",
+      "type": "action",
+      "two": "",
+      "content": "showLianaSockets(widget, prim)"
+    },
+    "42": {
+      "branchId": 3,
+      "one": "85",
+      "type": "branch",
+      "content": "Double click"
+    },
+    "47": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals"
+    },
+    "53": {
+      "one": "58",
+      "type": "action",
+      "two": "",
+      "content": "lastPrimId = widget.lastPrimId\nprim = findVisualItem(widget, pos)"
+    },
+    "54": {
+      "flag1": 0,
+      "type": "question",
+      "one": "24",
+      "two": "61",
+      "content": "primId === lastPrimId"
+    },
+    "58": {
+      "flag1": 0,
+      "type": "question",
+      "one": "68",
+      "two": "69",
+      "content": "prim"
+    },
+    "61": {
+      "type": "action",
+      "one": "42",
+      "content": "widget.lastClick = undefined"
+    },
+    "65": {
+      "type": "action",
+      "one": "32",
+      "content": "onItemClick(widget, prim, pos, evt)"
+    },
+    "68": {
+      "type": "action",
+      "one": "86",
+      "content": "widget.lastPrimId = undefined\nprimId = undefined"
+    },
+    "69": {
+      "type": "action",
+      "one": "86",
+      "content": "widget.lastPrimId = prim.id\nprimId = prim.id"
+    },
+    "84": {
+      "flag1": 0,
+      "type": "question",
+      "two": "26",
+      "one": "34",
+      "content": "prim.elType === \"handle\""
+    },
+    "85": {
+      "type": "action",
+      "one": "26",
+      "content": "doubleClick(widget, prim, pos, evt)"
+    },
+    "86": {
+      "type": "action",
+      "one": "19",
+      "content": "tracing.trace(\"mouseClick\", [pos, prim])"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\npos\nevt",
+  "type": "drakon"
+}

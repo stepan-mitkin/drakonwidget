@@ -1,0 +1,60 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "style = arguments [0]\nname = arguments [1]"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "7"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "10",
+      "content": "i = 2; i < arguments .length; i++"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "body = lines.map(addSemi).join(\"\\n\")"
+    },
+    "8": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "content = \"\\n\" + name + \" {\\n\" + body + \"\\n}\\n\""
+    },
+    "9": {
+      "type": "action",
+      "one": "5",
+      "content": "lines = []"
+    },
+    "10": {
+      "type": "action",
+      "one": "4",
+      "content": "lines.push(arguments [i])"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "style.innerHTML += content"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "function": true,
+    "async": false,
+    "export": true
+  },
+  "type": "drakon"
+}

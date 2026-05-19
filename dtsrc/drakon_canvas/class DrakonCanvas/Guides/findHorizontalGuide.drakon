@@ -1,0 +1,108 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 1,
+            "one": "7",
+            "type": "branch",
+            "content": "Scan free items"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "16"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "6",
+            "content": "element; widget.visuals.free"
+        },
+        "6": {
+            "flag1": 0,
+            "type": "question",
+            "two": "4",
+            "one": "21",
+            "content": "element.id === id"
+        },
+        "7": {
+            "type": "action",
+            "one": "5",
+            "content": "left = box.left\nright = box.right\nfound = false"
+        },
+        "11": {
+            "flag1": 1,
+            "type": "question",
+            "one": "13",
+            "two": "12",
+            "content": "ebox.top === y"
+        },
+        "12": {
+            "flag1": 1,
+            "type": "question",
+            "two": "4",
+            "one": "13",
+            "content": "ebox.bottom === y"
+        },
+        "13": {
+            "type": "action",
+            "one": "17",
+            "content": "left = Math.min(left, ebox.left)\nright = Math.max(right, ebox.right)"
+        },
+        "15": {
+            "branchId": 3,
+            "one": "1",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "16": {
+            "branchId": 2,
+            "one": "19",
+            "type": "branch",
+            "content": "Create guide"
+        },
+        "17": {
+            "type": "action",
+            "one": "4",
+            "content": "found = true"
+        },
+        "18": {
+            "type": "action",
+            "one": "20",
+            "content": "guide = {\n    x1: left,\n    y1: y,\n    x2: right,\n    y2: y\n}"
+        },
+        "19": {
+            "flag1": 1,
+            "type": "question",
+            "two": "15",
+            "one": "18",
+            "content": "found"
+        },
+        "20": {
+            "type": "action",
+            "one": "15",
+            "content": "widget.visuals.guides.push(guide)"
+        },
+        "21": {
+            "flag1": 1,
+            "type": "question",
+            "one": "22",
+            "two": "4",
+            "content": "canGuideNode(widget, element)"
+        },
+        "22": {
+            "type": "action",
+            "one": "11",
+            "content": "ebox = getGuideBox(element)"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "widget\nid\nbox\ny",
+    "type": "drakon"
+}

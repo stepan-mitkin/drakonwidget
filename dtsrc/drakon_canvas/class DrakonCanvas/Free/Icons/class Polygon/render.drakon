@@ -1,0 +1,37 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "19",
+      "type": "branch"
+    },
+    "14": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "centerContentFree(visuals, element, ctx)"
+    },
+    "18": {
+      "type": "action",
+      "one": "14",
+      "content": "renderFreeIconShape(\n    ctx,\n    visuals,\n    element,\n    buildCoords\n)"
+    },
+    "19": {
+      "type": "action",
+      "one": "18",
+      "content": "buildCoords = function (left, top) {\n    return polygonCoords(\n        left,\n        top,\n        element.coords\n    )\n}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

@@ -1,0 +1,83 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return menu"
+    },
+    "4": {
+      "type": "action",
+      "one": "9",
+      "content": "menu = []"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "pushMenuItem(\n    \"paste_mind\",\n    menu,\n    tr(widget, \"Paste\"),\n    undefined,\n    function () {\n        pasteIntoMindEdge(\n            widget,\n            edge,\n            clipboard.content\n        )\n    }\n)"
+    },
+    "7": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "menu.push({type: \"separator\"})"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "3",
+      "one": "12",
+      "content": "isReadonlyImpl(widget)"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "clipboard = getClipboardClone(widget)"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "one": "14",
+      "two": "15",
+      "content": "clipboard"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "one": "6",
+      "two": "15",
+      "content": "clipboard.type === \"mind\""
+    },
+    "15": {
+      "type": "action",
+      "one": "21",
+      "content": "pushMenuItem(\n    \"insert_idea\",\n    menu,\n    tr(widget, \"Idea\"),\n    widget.visuals.config.imagePath + \"rectangle.png\",\n    function () {\n        insertIntoMindEdge(\n            widget,\n            edge,\n            \"idea\"\n        )\n    }\n)"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "pushMenuItem(\n    \"insert_ridea\",\n    menu,\n    tr(widget, \"Idea - rounded\"),\n    widget.visuals.config.imagePath + \"rounded.png\",\n    function () {\n        insertIntoMindEdge(\n            widget,\n            edge,\n            \"ridea\"\n        )\n    }\n)"
+    },
+    "22": {
+      "type": "action",
+      "one": "3",
+      "content": "pushMenuItem(\n    \"insert_conclusion\",\n    menu,\n    tr(widget, \"Conclusion\"),\n    widget.visuals.config.imagePath + \"comment.png\",\n    function () {\n        insertIntoMindEdge(\n            widget,\n            edge,\n            \"conclusion\"\n        )\n    }\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nedge",
+  "type": "drakon"
+}

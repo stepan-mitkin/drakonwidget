@@ -1,0 +1,37 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "16",
+      "type": "branch"
+    },
+    "16": {
+      "type": "action",
+      "one": "46",
+      "content": "edits = []"
+    },
+    "46": {
+      "type": "action",
+      "one": "47",
+      "content": "deleteItemCore(edits, id)"
+    },
+    "47": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return doEdit(widget, edits)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nid",
+  "type": "drakon"
+}

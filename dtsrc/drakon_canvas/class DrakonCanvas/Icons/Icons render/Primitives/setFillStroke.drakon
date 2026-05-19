@@ -1,0 +1,139 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "45",
+      "type": "branch",
+      "content": "Width, stroke, fill"
+    },
+    "3": {
+      "type": "action",
+      "one": "51",
+      "content": "ctx.strokeStyle = getThemeValue(\n    config,\n    node,\n    \"iconBorder\"\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "47",
+      "content": "theme = config.theme"
+    },
+    "11": {
+      "type": "action",
+      "one": "15",
+      "content": "ctx.fillStyle = getThemeValue(\n    config,\n    node,\n    \"iconBack\"\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "35",
+      "content": "ctx.lineWidth = lineWidth"
+    },
+    "16": {
+      "branchId": 4,
+      "one": "18",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "17": {
+      "branchId": 3,
+      "one": "44",
+      "type": "branch",
+      "content": "Dash"
+    },
+    "18": {
+      "type": "action",
+      "one": "1",
+      "content": "return lineWidth"
+    },
+    "35": {
+      "branchId": 2,
+      "one": "38",
+      "type": "branch",
+      "content": "Shadow"
+    },
+    "36": {
+      "flag1": 1,
+      "type": "question",
+      "one": "39",
+      "two": "43",
+      "content": "shadowColor"
+    },
+    "38": {
+      "one": "36",
+      "type": "action",
+      "two": "",
+      "content": "shadowColor = getThemeValue(\n    config,\n    node,\n    \"shadowColor\"\n)"
+    },
+    "39": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "ctx.shadowColor = shadowColor"
+    },
+    "40": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "ctx.shadowBlur = getThemeValue(\n    config,\n    node,\n    \"shadowBlur\"\n) * config.zoom"
+    },
+    "41": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "ctx.shadowOffsetX = getThemeValue(\n    config,\n    node,\n    \"shadowOffsetX\"\n) * config.zoom"
+    },
+    "42": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "ctx.shadowOffsetY = getThemeValue(\n    config,\n    node,\n    \"shadowOffsetY\"\n) * config.zoom"
+    },
+    "43": {
+      "type": "action",
+      "one": "17",
+      "content": "ctx.shadowColor = \"rgba(0, 0, 0, 0)\"\nctx.shadowBlur = 0"
+    },
+    "44": {
+      "type": "action",
+      "one": "16",
+      "content": "setLineDashFromStyle(\n    config,\n    node,\n    lineWidth,\n    \"borderStyle\",\n    ctx\n)"
+    },
+    "45": {
+      "type": "action",
+      "one": "9",
+      "content": "config = visuals.config"
+    },
+    "47": {
+      "flag1": 0,
+      "type": "question",
+      "two": "48",
+      "one": "3",
+      "content": "visuals.highlight === node.id"
+    },
+    "48": {
+      "type": "action",
+      "one": "50",
+      "content": "ctx.strokeStyle = theme.highlight"
+    },
+    "50": {
+      "type": "action",
+      "one": "11",
+      "content": "lineWidth = 2"
+    },
+    "51": {
+      "type": "action",
+      "one": "11",
+      "content": "lineWidth = getThemeValue(\n    config,\n    node,\n    \"borderWidth\"\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

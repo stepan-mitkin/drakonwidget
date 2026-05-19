@@ -1,0 +1,84 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "ctx.save()\nctx.translate(x, y)\nctx.rotate(angle)"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.restore()"
+    },
+    "5": {
+      "type": "case",
+      "one": "4"
+    },
+    "6": {
+      "one": "12",
+      "type": "case",
+      "two": "9",
+      "content": "\"sarrow\""
+    },
+    "7": {
+      "one": "11",
+      "type": "case",
+      "two": "6",
+      "content": "\"arrow\""
+    },
+    "8": {
+      "type": "select",
+      "one": "7",
+      "content": "style"
+    },
+    "9": {
+      "one": "13",
+      "type": "case",
+      "two": "10",
+      "content": "\"warrow\""
+    },
+    "10": {
+      "one": "14",
+      "type": "case",
+      "two": "5",
+      "content": "\"paw\""
+    },
+    "11": {
+      "type": "action",
+      "one": "4",
+      "content": "drawArrowCap(ctx, color, width)"
+    },
+    "12": {
+      "type": "action",
+      "one": "4",
+      "content": "drawSArrowCap(ctx, color, width)"
+    },
+    "13": {
+      "type": "action",
+      "one": "4",
+      "content": "drawWArrow(ctx, color, fillColor, width)"
+    },
+    "14": {
+      "type": "action",
+      "one": "4",
+      "content": "drawPaw(ctx, color, width)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nstyle\nx\ny\nangle\ncolor\nfillColor\nwidth",
+  "type": "drakon"
+}

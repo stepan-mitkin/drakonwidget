@@ -1,0 +1,58 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "10"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "addHtmltoDom(text, textDiv, fonts, font)"
+    },
+    "5": {
+      "type": "case",
+      "one": "9"
+    },
+    "6": {
+      "one": "1",
+      "type": "case",
+      "two": "5",
+      "content": "\"markdown\""
+    },
+    "7": {
+      "one": "3",
+      "type": "case",
+      "two": "6",
+      "content": "\"html\""
+    },
+    "8": {
+      "type": "select",
+      "one": "7",
+      "content": "textFormat"
+    },
+    "9": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "splitToParagraphs(textDiv, text)"
+    },
+    "10": {
+      "type": "action",
+      "one": "8",
+      "content": "textFormat = options.textFormat || config\n.textFormat"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "options\nconfig\ntextDiv\ntext\nfonts\nfont",
+  "type": "drakon"
+}

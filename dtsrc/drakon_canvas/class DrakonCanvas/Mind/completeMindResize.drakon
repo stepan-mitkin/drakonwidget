@@ -1,0 +1,56 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "ids = getHorSiblings(handle.element)"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "edits = []"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "8"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "id; ids"
+    },
+    "7": {
+      "type": "action",
+      "one": "5",
+      "content": "updateItem(edits, id, {w: w})"
+    },
+    "8": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "updateAndKeepSelection(\n    handle.widget,\n    edits\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "4",
+      "content": "w = snapUp(\n    handle.widget.visuals.config,\n    handle.element.w\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "handle",
+  "type": "drakon"
+}

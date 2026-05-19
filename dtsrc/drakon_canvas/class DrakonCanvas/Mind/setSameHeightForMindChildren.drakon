@@ -1,0 +1,67 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "6": {
+      "branchId": 1,
+      "one": "7",
+      "type": "branch",
+      "content": "Find max height"
+    },
+    "7": {
+      "type": "action",
+      "one": "9",
+      "content": "height = 0"
+    },
+    "8": {
+      "type": "loopend",
+      "one": "11"
+    },
+    "9": {
+      "type": "loopbegin",
+      "one": "10",
+      "content": "node; parent.children"
+    },
+    "10": {
+      "type": "action",
+      "one": "8",
+      "content": "height = Math.max(height, node.h)"
+    },
+    "11": {
+      "branchId": 2,
+      "one": "14",
+      "type": "branch",
+      "content": "Set height"
+    },
+    "13": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "14": {
+      "type": "loopbegin",
+      "one": "15",
+      "content": "node; parent.children"
+    },
+    "15": {
+      "type": "action",
+      "one": "13",
+      "content": "node.h = height"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "parent",
+  "type": "drakon"
+}

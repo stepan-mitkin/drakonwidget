@@ -1,0 +1,147 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Arrow itself"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "arrow = loop.right"
+    },
+    "4": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "13",
+      "type": "branch",
+      "content": "Up"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "17",
+      "type": "branch",
+      "content": "Right"
+    },
+    "7": {
+      "branchId": 4,
+      "one": "22",
+      "type": "branch",
+      "content": "Down"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "top = arrow.tail"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "upEdge = top.down"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "top.arrow = upEdge"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "arrow.arrow = upEdge\narrow.finalTarget = upEdge.finalTarget"
+    },
+    "12": {
+      "type": "action",
+      "one": "5",
+      "content": "arrow.links = upEdge.links"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "upEdge.arrow = upEdge"
+    },
+    "14": {
+      "type": "action",
+      "one": "16",
+      "content": "bottom = upEdge.tail"
+    },
+    "15": {
+      "type": "action",
+      "one": "6",
+      "content": "bottom.arrow = upEdge"
+    },
+    "16": {
+      "flag1": 1,
+      "type": "question",
+      "one": "15",
+      "two": "4",
+      "content": "isLeftUp(bottom)"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "rightEdge = bottom.left"
+    },
+    "18": {
+      "type": "action",
+      "one": "21",
+      "content": "leftBottom = rightEdge.head"
+    },
+    "19": {
+      "flag1": 1,
+      "type": "question",
+      "one": "20",
+      "two": "4",
+      "content": "isRightUp(leftBottom)"
+    },
+    "20": {
+      "type": "action",
+      "one": "7",
+      "content": "leftBottom.arrow = upEdge"
+    },
+    "21": {
+      "type": "action",
+      "one": "19",
+      "content": "rightEdge.arrow = upEdge"
+    },
+    "22": {
+      "type": "action",
+      "one": "23",
+      "content": "downEdge = leftBottom.up\nstart = downEdge.head"
+    },
+    "23": {
+      "type": "action",
+      "one": "25",
+      "content": "downEdge.arrow = upEdge"
+    },
+    "24": {
+      "type": "action",
+      "one": "4",
+      "content": "start.arrow = upEdge"
+    },
+    "25": {
+      "flag1": 0,
+      "type": "question",
+      "one": "24",
+      "two": "4",
+      "content": "start.type === \"junction\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nloop",
+  "type": "drakon"
+}

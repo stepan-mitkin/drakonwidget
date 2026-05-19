@@ -1,0 +1,48 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "link = findLink(links, low, high)"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "link.distance = Math.max(\n    link.distance,\n    distance\n)"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "4",
+      "content": "link"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "link = {\n    low: low,\n    high: high,\n    distance: 0\n}"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "addLink(links, link)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "links\nlow\nhigh\ndistance",
+  "type": "drakon"
+}

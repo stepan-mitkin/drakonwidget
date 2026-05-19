@@ -1,0 +1,149 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "34",
+      "type": "branch",
+      "content": "Is active? Node or edge?"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "two": "49",
+      "one": "12",
+      "content": "visuals.currentSocket === socket.id"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "28",
+      "two": "49",
+      "content": "visuals.onSocket"
+    },
+    "15": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "16": {
+      "branchId": 2,
+      "one": "25",
+      "type": "branch",
+      "content": "Active"
+    },
+    "25": {
+      "type": "action",
+      "one": "15",
+      "content": "drawPointSocket(\n    ctx,\n    socket.x,\n    socket.y,\n    fill,\n    border,\n    config\n)"
+    },
+    "28": {
+      "type": "action",
+      "one": "30",
+      "content": "fill = config.socketBorder\nborder = config.socketBody"
+    },
+    "29": {
+      "type": "action",
+      "one": "30",
+      "content": "fill = config.socketBody\nborder = config.socketBorder"
+    },
+    "30": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "33",
+      "content": "socket.node"
+    },
+    "31": {
+      "branchId": 3,
+      "one": "36",
+      "type": "branch",
+      "content": "Vertical"
+    },
+    "32": {
+      "branchId": 4,
+      "one": "39",
+      "type": "branch",
+      "content": "Horizontal"
+    },
+    "33": {
+      "flag1": 1,
+      "type": "question",
+      "two": "32",
+      "one": "31",
+      "content": "socket.edge.vertical"
+    },
+    "34": {
+      "type": "action",
+      "one": "6",
+      "content": "radius = config.socketRadius"
+    },
+    "36": {
+      "flag1": 0,
+      "type": "question",
+      "one": "37",
+      "two": "38",
+      "content": "socket.startPos === undefined"
+    },
+    "37": {
+      "type": "action",
+      "one": "15",
+      "content": "drawVerticalSocket(\n    ctx,\n    socket.x,\n    socket.startPos,\n    socket.endPos,\n    fill,\n    border,\n    config\n)"
+    },
+    "38": {
+      "type": "action",
+      "one": "15",
+      "content": "drawPointSocket(\n    ctx,\n    socket.x,\n    socket.y,\n    fill,\n    border,\n    config\n)"
+    },
+    "39": {
+      "flag1": 0,
+      "type": "question",
+      "one": "40",
+      "two": "41",
+      "content": "socket.startPos === undefined"
+    },
+    "40": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "drawHorizontalSocket(\n    ctx,\n    socket.startPos,\n    socket.endPos,\n    socket.y,\n    fill,\n    border,\n    config\n)"
+    },
+    "41": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "drawPointSocket(\n    ctx,\n    socket.x,\n    socket.y,\n    fill,\n    border,\n    config\n)"
+    },
+    "47": {
+      "flag1": 0,
+      "type": "question",
+      "two": "48",
+      "one": "29",
+      "content": "visuals.highlight === primId"
+    },
+    "48": {
+      "one": "30",
+      "type": "action",
+      "two": "",
+      "content": "fill = config.socketBody\nborder = config.theme.highlight"
+    },
+    "49": {
+      "one": "47",
+      "type": "action",
+      "two": "",
+      "content": "primId = \"socket-\" + socket.id"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nsocket\nctx\nconfig",
+  "type": "drakon"
+}

@@ -1,0 +1,51 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return top"
+    },
+    "4": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "ctx.textBaseline = \"bottom\""
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "6",
+      "content": "visuals.svg"
+    },
+    "6": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "ctx.textBaseline = \"alphabetic\""
+    },
+    "8": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return top - Math.floor(fontSize * 0.3)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nctx\nfontSize\ntop",
+  "type": "drakon"
+}

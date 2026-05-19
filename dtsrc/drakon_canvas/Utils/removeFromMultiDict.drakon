@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "sameType = getCreateList(dict, key)"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "utils.remove(sameType, value)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "dict\nkey\nvalue",
+  "type": "drakon"
+}

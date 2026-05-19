@@ -1,0 +1,135 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "11"
+        },
+        "4": {
+            "type": "loopbegin",
+            "one": "6",
+            "content": "child; node.childNodes"
+        },
+        "5": {
+            "type": "loopend",
+            "one": "1"
+        },
+        "6": {
+            "type": "action",
+            "one": "10",
+            "content": "name = getNodeName(child)"
+        },
+        "7": {
+            "one": "20",
+            "type": "case",
+            "two": "22",
+            "content": "\"em\""
+        },
+        "8": {
+            "one": "19",
+            "type": "case",
+            "two": "7",
+            "content": "\"strong\""
+        },
+        "9": {
+            "one": "18",
+            "type": "case",
+            "two": "8",
+            "content": "\"#text\""
+        },
+        "10": {
+            "type": "select",
+            "one": "9",
+            "content": "name"
+        },
+        "11": {
+            "flag1": 1,
+            "type": "question",
+            "one": "13",
+            "two": "12",
+            "content": "strong"
+        },
+        "12": {
+            "flag1": 1,
+            "type": "question",
+            "one": "16",
+            "two": "17",
+            "content": "em"
+        },
+        "13": {
+            "flag1": 1,
+            "type": "question",
+            "two": "15",
+            "one": "14",
+            "content": "em"
+        },
+        "14": {
+            "type": "action",
+            "one": "4",
+            "content": "type = \"sem\""
+        },
+        "15": {
+            "type": "action",
+            "one": "4",
+            "content": "type = \"strong\""
+        },
+        "16": {
+            "type": "action",
+            "one": "4",
+            "content": "type = \"em\""
+        },
+        "17": {
+            "type": "action",
+            "one": "4",
+            "content": "type = \"normal\""
+        },
+        "18": {
+            "type": "action",
+            "one": "21",
+            "content": "tokens = splitHtmlTextNode(\n    child.nodeValue,\n    type\n)"
+        },
+        "19": {
+            "type": "action",
+            "one": "5",
+            "content": "addNodeToLine(child, line, true, em)"
+        },
+        "20": {
+            "type": "action",
+            "one": "5",
+            "content": "addNodeToLine(child, line, strong, true)"
+        },
+        "21": {
+            "type": "action",
+            "one": "5",
+            "content": "utils.addRange(tokens, line)"
+        },
+        "22": {
+            "one": "5",
+            "type": "case",
+            "two": "23",
+            "content": "\"script\""
+        },
+        "23": {
+            "type": "case",
+            "one": "24",
+            "two": null
+        },
+        "24": {
+            "type": "action",
+            "one": "5",
+            "content": "addNodeToLine(child, line, strong, em)"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "node\nline\nstrong\nem",
+    "type": "drakon"
+}

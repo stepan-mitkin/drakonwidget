@@ -1,0 +1,48 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "3",
+      "two": "5",
+      "content": "node.itemId === branches[last]"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "branches = widget.visuals.branches"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "last = branches.length - 1"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

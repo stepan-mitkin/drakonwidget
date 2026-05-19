@@ -1,0 +1,137 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "4",
+      "type": "branch",
+      "content": "Inner box"
+    },
+    "4": {
+      "type": "action",
+      "one": "16",
+      "content": "element.innerBox = boxFromPoint(\n    element.x,\n    element.y,\n    element.w,\n    element.h\n)"
+    },
+    "15": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "16": {
+      "branchId": 2,
+      "one": "17",
+      "type": "branch",
+      "content": "Outer box"
+    },
+    "17": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "topY = element.y + element.hiY\nbottomY = element.y + element.loY"
+    },
+    "18": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "topX = element.x + element.hiX\nbottomX = element.x + element.loX"
+    },
+    "19": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "innerRight = element.innerBox.left + element\n.innerBox.width"
+    },
+    "20": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "left = Math.min(\n    topX,\n    Math.min(\n        bottomX,\n        element.innerBox.left\n    )\n)"
+    },
+    "21": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "right = Math.max(\n    topX,\n    Math.max(bottomX, innerRight)\n)"
+    },
+    "22": {
+      "one": "23",
+      "type": "action",
+      "two": "",
+      "content": "margin = config.socketTouchRadius"
+    },
+    "23": {
+      "one": "24",
+      "type": "action",
+      "two": "",
+      "content": "width = right - left\nheight = bottomY - topY"
+    },
+    "24": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "element.box = createBoxWithMargin(\n    left,\n    topY,\n    width,\n    height,\n    margin\n)"
+    },
+    "25": {
+      "branchId": 3,
+      "one": "26",
+      "type": "branch",
+      "content": "Lines"
+    },
+    "26": {
+      "type": "action",
+      "one": "27",
+      "content": "element.subboxes = []"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "element.subboxes.push(\n    boxForVerticalLine(\n        element.x,\n        topY,\n        element.y,\n        margin\n    )\n)"
+    },
+    "28": {
+      "type": "action",
+      "one": "29",
+      "content": "element.subboxes.push(\n    boxForVerticalLine(\n        element.x,\n        element.y,\n        bottomY,\n        margin\n    )\n)"
+    },
+    "29": {
+      "flag1": 0,
+      "type": "question",
+      "two": "32",
+      "one": "30",
+      "content": "element.flag1"
+    },
+    "30": {
+      "type": "action",
+      "one": "31",
+      "content": "element.subboxes.push(\n    boxForHorizontalLine(\n        element.x,\n        topY,\n        element.x + element.hiX,\n        margin\n    )\n)"
+    },
+    "31": {
+      "type": "action",
+      "one": "15",
+      "content": "element.subboxes.push(\n    boxForHorizontalLine(\n        element.x,\n        bottomY,\n        element.x + element.loX,\n        margin\n    )\n)"
+    },
+    "32": {
+      "one": "33",
+      "type": "action",
+      "two": "",
+      "content": "element.subboxes.push(\n    boxForHorizontalLine(\n        element.x + element.hiX,\n        topY,\n        element.x,\n        margin\n    )\n)"
+    },
+    "33": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "element.subboxes.push(\n    boxForHorizontalLine(\n        element.x + element.loX,\n        bottomY,\n        element.x,\n        margin\n    )\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "element\nconfig",
+  "type": "drakon"
+}

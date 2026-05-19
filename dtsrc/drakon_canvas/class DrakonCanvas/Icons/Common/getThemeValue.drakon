@@ -1,0 +1,26 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "26"
+    },
+    "26": {
+      "type": "action",
+      "one": "1",
+      "content": "return getThemeValueCore(\n    config,\n    node.type,\n    node.style,\n    name\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "config\nnode\nname",
+  "type": "drakon"
+}

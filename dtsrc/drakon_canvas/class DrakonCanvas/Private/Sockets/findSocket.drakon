@@ -1,0 +1,47 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "5"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return undefined"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "3"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "6",
+            "content": "socket; visuals.sockets"
+        },
+        "6": {
+            "flag1": 0,
+            "type": "question",
+            "two": "7",
+            "one": "4",
+            "content": "hitBox(socket.box, x, y)"
+        },
+        "7": {
+            "type": "action",
+            "one": "4",
+            "content": "return socket.id"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "visuals\nx\ny",
+    "type": "drakon"
+}

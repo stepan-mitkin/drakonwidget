@@ -1,0 +1,33 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return buildMouseEvent(\n    x,\n    y,\n    0,\n    evt.target\n)"
+    },
+    "5": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "x = evt.touches[index].clientX\ny = evt.touches[index].clientY"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "evt\nindex",
+  "type": "drakon"
+}

@@ -1,0 +1,147 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 2,
+            "one": "39",
+            "type": "branch",
+            "content": "Find back plane"
+        },
+        "19": {
+            "branchId": 4,
+            "one": "1",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "20": {
+            "branchId": 3,
+            "one": "23",
+            "type": "branch",
+            "content": "Scan back plane"
+        },
+        "21": {
+            "one": "19",
+            "type": "action",
+            "two": "",
+            "content": "return undefined"
+        },
+        "22": {
+            "one": "21",
+            "type": "loopend",
+            "two": ""
+        },
+        "23": {
+            "one": "26",
+            "type": "loopbegin",
+            "two": "",
+            "content": "i = start; i >= 0; i--"
+        },
+        "24": {
+            "one": "22",
+            "type": "action",
+            "two": "",
+            "content": "return found"
+        },
+        "25": {
+            "flag1": 0,
+            "type": "question",
+            "two": "24",
+            "one": "22",
+            "content": "found"
+        },
+        "26": {
+            "one": "27",
+            "type": "action",
+            "two": "",
+            "content": "element = free[i]"
+        },
+        "27": {
+            "one": "25",
+            "type": "action",
+            "two": "",
+            "content": "found = hitFreeOrConnection(\n    widget,\n    element,\n    pos,\n    visited\n)"
+        },
+        "29": {
+            "one": "31",
+            "type": "loopbegin",
+            "two": "",
+            "content": "i = free.length - 1; i >= 0; i--"
+        },
+        "30": {
+            "one": "40",
+            "type": "loopend",
+            "two": ""
+        },
+        "31": {
+            "one": "32",
+            "type": "action",
+            "two": "",
+            "content": "element = free[i]"
+        },
+        "32": {
+            "flag1": 0,
+            "type": "question",
+            "two": "33",
+            "one": "30",
+            "content": "element.zIndex < 0"
+        },
+        "33": {
+            "type": "action",
+            "one": "40",
+            "content": "start = i"
+        },
+        "34": {
+            "one": "19",
+            "type": "action",
+            "two": "",
+            "content": "return undefined"
+        },
+        "35": {
+            "branchId": 1,
+            "one": "37",
+            "type": "branch",
+            "content": "Init"
+        },
+        "36": {
+            "one": "38",
+            "type": "action",
+            "two": "",
+            "content": "free = visuals.free"
+        },
+        "37": {
+            "one": "36",
+            "type": "action",
+            "two": "",
+            "content": "visuals = widget.visuals"
+        },
+        "38": {
+            "one": "2",
+            "type": "action",
+            "two": "",
+            "content": "visited = {}"
+        },
+        "39": {
+            "type": "action",
+            "one": "29",
+            "content": "start = undefined "
+        },
+        "40": {
+            "type": "question",
+            "one": "34",
+            "two": "20",
+            "flag1": 1,
+            "content": "start === undefined "
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "widget\npos",
+    "type": "drakon"
+}

@@ -1,0 +1,64 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "16"
+    },
+    "8": {
+      "type": "action",
+      "one": "11",
+      "content": "fonts = widget.redraw()"
+    },
+    "9": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "changesToSave = widget.edit.updateDocument(\n    edits,\n    before,\n    after\n)"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "widget.edit.save(changesToSave)"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "return fonts"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "deleteOrphanImages(widget, edits)"
+    },
+    "14": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "before = utils.deepClone(\n    widget.selection\n)"
+    },
+    "15": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "after = utils.deepClone(widget.selection)"
+    },
+    "16": {
+      "type": "action",
+      "one": "13",
+      "content": "tracing.trace(\n    \"DrakonCanvas.updateAndKeepSelection\",\n    stripEdits(edits)\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nedits",
+  "type": "drakon"
+}

@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "4",
+      "type": "branch"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.beginPath()\nctx.moveTo(x2, y4)\nctx.lineTo(x2, y3)\nctx.lineTo(x0, y3)\nctx.lineTo(x1, y1)\nctx.lineTo(x0, y0)\nctx.lineTo(x3, y0)\nctx.lineTo(x3, y2)\nctx.lineTo(x4, y2)\nctx.lineTo(x4, y4)\nctx.closePath()"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "x0 = x - w\nx1 = x0 + padding\nx2 = x1 + padding\nx4 = x + w\nx3 = x4 - padding\ny0 = y - h\ny4 = y + h\ny3 = y0 + h2 + padding / 2\ny1 = (y0 + y3) / 2\ny2 = y0 + h2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nx\ny\nw\nh\npadding\nh2",
+  "type": "drakon"
+}

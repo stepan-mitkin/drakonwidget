@@ -1,0 +1,168 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Horizontal"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "visuals = widget.visuals\nbox = visuals.box"
+    },
+    "8": {
+      "type": "action",
+      "one": "11",
+      "content": "zoom = widget.zoomFactor"
+    },
+    "11": {
+      "type": "action",
+      "one": "26",
+      "content": "wwidth = widget.width / zoom"
+    },
+    "17": {
+      "branchId": 3,
+      "one": "19",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "18": {
+      "branchId": 2,
+      "one": "23",
+      "type": "branch",
+      "content": "Vertical"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return {\n    x: Math.round(scrollX),\n    y: Math.round(scrollY)\n}"
+    },
+    "23": {
+      "one": "36",
+      "type": "action",
+      "two": "",
+      "content": "wheight = widget.height / zoom"
+    },
+    "25": {
+      "type": "action",
+      "one": "29",
+      "content": "minScrollX = -wwidth + box.right"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "one": "25",
+      "two": "28",
+      "content": "wwidth >= box.width"
+    },
+    "28": {
+      "type": "action",
+      "one": "30",
+      "content": "minScrollX = box.left"
+    },
+    "29": {
+      "type": "action",
+      "one": "31",
+      "content": "maxScrollX = box.left"
+    },
+    "30": {
+      "type": "action",
+      "one": "31",
+      "content": "maxScrollX = box.right - wwidth"
+    },
+    "31": {
+      "flag1": 0,
+      "type": "question",
+      "one": "33",
+      "two": "32",
+      "content": "scrollX < minScrollX"
+    },
+    "32": {
+      "type": "action",
+      "one": "33",
+      "content": "scrollX = minScrollX"
+    },
+    "33": {
+      "flag1": 0,
+      "type": "question",
+      "one": "18",
+      "two": "34",
+      "content": "scrollX > maxScrollX"
+    },
+    "34": {
+      "type": "action",
+      "one": "18",
+      "content": "scrollX = maxScrollX"
+    },
+    "35": {
+      "one": "38",
+      "type": "action",
+      "two": "",
+      "content": "minScrollY = -wheight + box.bottom"
+    },
+    "36": {
+      "flag1": 1,
+      "type": "question",
+      "one": "35",
+      "two": "37",
+      "content": "wheight >= box.height"
+    },
+    "37": {
+      "one": "39",
+      "type": "action",
+      "two": "",
+      "content": "minScrollY = box.top"
+    },
+    "38": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "maxScrollY = box.top"
+    },
+    "39": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "maxScrollY = box.bottom - wheight"
+    },
+    "40": {
+      "flag1": 0,
+      "type": "question",
+      "one": "42",
+      "two": "41",
+      "content": "scrollY < minScrollY"
+    },
+    "41": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "scrollY = minScrollY"
+    },
+    "42": {
+      "flag1": 0,
+      "type": "question",
+      "one": "17",
+      "two": "43",
+      "content": "scrollY > maxScrollY"
+    },
+    "43": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "scrollY = maxScrollY"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nscrollX\nscrollY",
+  "type": "drakon"
+}

@@ -1,0 +1,99 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "35",
+      "type": "branch",
+      "content": "Branch1"
+    },
+    "25": {
+      "type": "action",
+      "one": "31",
+      "content": "edge = createEdge(\n    visuals,\n    left,\n    right,\n    false\n)"
+    },
+    "26": {
+      "type": "action",
+      "one": "30",
+      "content": "left = firstPar"
+    },
+    "27": {
+      "type": "action",
+      "one": "36",
+      "content": "right = left.next[1]"
+    },
+    "28": {
+      "flag1": 0,
+      "type": "question",
+      "one": "34",
+      "two": "30",
+      "content": "left.two"
+    },
+    "30": {
+      "type": "arrow-loop",
+      "one": "27"
+    },
+    "31": {
+      "type": "action",
+      "one": "32",
+      "content": "edge.role = \"parceiling\""
+    },
+    "32": {
+      "type": "action",
+      "one": "28",
+      "content": "left = right"
+    },
+    "33": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "34": {
+      "branchId": 2,
+      "one": "39",
+      "type": "branch",
+      "content": "Branch2"
+    },
+    "35": {
+      "type": "action",
+      "one": "26",
+      "content": "firstPar.paths = [firstPar]"
+    },
+    "36": {
+      "type": "action",
+      "one": "25",
+      "content": "firstPar.paths.push(right)"
+    },
+    "38": {
+      "type": "loopend",
+      "one": "33"
+    },
+    "39": {
+      "type": "loopbegin",
+      "one": "41",
+      "content": "i = firstPar.paths.length - 1; i >= 0; i--"
+    },
+    "40": {
+      "type": "action",
+      "one": "38",
+      "content": "planStep(stack, path, down)"
+    },
+    "41": {
+      "type": "action",
+      "one": "40",
+      "content": "path = firstPar.paths[i]\ndown = path.next[0]"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nstack\nfirstPar",
+  "type": "drakon"
+}

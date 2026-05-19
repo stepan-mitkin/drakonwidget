@@ -1,0 +1,124 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Create my own box"
+    },
+    "3": {
+      "type": "action",
+      "one": "20",
+      "content": "subtreeBox = createBox(\n    0,\n    0,\n    node.w * 2,\n    node.h * 2\n)"
+    },
+    "9": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "10": {
+      "branchId": 3,
+      "one": "31",
+      "type": "branch",
+      "content": "Arrange myself and children"
+    },
+    "11": {
+      "branchId": 2,
+      "one": "13",
+      "type": "branch",
+      "content": "Create childrens boxes"
+    },
+    "12": {
+      "type": "loopend",
+      "one": "10"
+    },
+    "13": {
+      "type": "loopbegin",
+      "one": "19",
+      "content": "child; node.children"
+    },
+    "19": {
+      "type": "action",
+      "one": "12",
+      "content": "calculateSubtreeBox(config, child)"
+    },
+    "20": {
+      "type": "action",
+      "one": "32",
+      "content": "node.subtreeBox = subtreeBox"
+    },
+    "24": {
+      "one": "30",
+      "type": "case",
+      "two": "",
+      "content": "\"treeview\""
+    },
+    "25": {
+      "one": "29",
+      "type": "case",
+      "two": "24",
+      "content": "\"horizontal\""
+    },
+    "26": {
+      "one": "28",
+      "type": "case",
+      "two": "25",
+      "content": "\"vertical\""
+    },
+    "27": {
+      "one": "26",
+      "type": "select",
+      "two": "",
+      "content": "ttype"
+    },
+    "28": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "calculateVerticalSubtree(config, node)"
+    },
+    "29": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "calculateHorizontalSubtree(config, node)"
+    },
+    "30": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "calculateTvSubtree(config, node)"
+    },
+    "31": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "ttype = getTType(node)"
+    },
+    "32": {
+      "flag1": 0,
+      "type": "question",
+      "one": "11",
+      "two": "33",
+      "content": "node.children.length === 0"
+    },
+    "33": {
+      "type": "action",
+      "one": "9",
+      "content": "node.x = node.w\nnode.y = node.h"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "config\nnode",
+  "type": "drakon"
+}

@@ -1,0 +1,117 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "31",
+      "type": "branch",
+      "content": "Branch1"
+    },
+    "30": {
+      "type": "action",
+      "one": "33",
+      "content": "ctx.drawImage(\n    image.imageObj,\n    left,\n    top,\n    width,\n    imageHeight\n)"
+    },
+    "31": {
+      "type": "action",
+      "one": "45",
+      "content": "image = visuals.images[node.image]"
+    },
+    "32": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "33": {
+      "branchId": 3,
+      "one": "38",
+      "type": "branch",
+      "content": "Text content"
+    },
+    "34": {
+      "branchId": 1,
+      "one": "37",
+      "type": "branch",
+      "content": "Fill"
+    },
+    "35": {
+      "one": "36",
+      "type": "action",
+      "two": "",
+      "content": "line = setFillStroke(visuals, node, ctx)"
+    },
+    "36": {
+      "type": "action",
+      "one": "2",
+      "content": "renderIconShapeFill(\n    ctx,\n    visuals,\n    buildRectCoords,\n    left,\n    top,\n    width,\n    height,\n    undefined\n)"
+    },
+    "37": {
+      "type": "action",
+      "one": "35",
+      "content": "left = node.x - node.w\ntop = node.y - node.h\nwidth = node.w * 2\nheight = node.h * 2\nbottom = top + height"
+    },
+    "38": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "textLeft = Math.floor(node.x - node.w) +\n1"
+    },
+    "40": {
+      "one": "48",
+      "type": "action",
+      "two": "",
+      "content": "renderContentCore(\n    visuals,\n    node,\n    textLeft,\n    textTop\n)"
+    },
+    "41": {
+      "type": "action",
+      "one": "40",
+      "content": "textTop = Math.ceil(\n    middle - node.flowBlock.height / 2\n)"
+    },
+    "42": {
+      "type": "action",
+      "one": "41",
+      "content": "middle = (imageHeight + top + bottom) / 2"
+    },
+    "45": {
+      "one": "46",
+      "type": "action",
+      "two": "",
+      "content": "imageHeight = node.extraHeight"
+    },
+    "46": {
+      "flag1": 1,
+      "type": "question",
+      "two": "47",
+      "one": "30",
+      "content": "node.flowBlock"
+    },
+    "47": {
+      "type": "action",
+      "one": "48",
+      "content": "ctx.drawImage(\n    image.imageObj,\n    left,\n    Math.round(node.y - imageHeight / 2),\n    width,\n    imageHeight\n)"
+    },
+    "48": {
+      "branchId": 4,
+      "one": "49",
+      "type": "branch",
+      "content": "Border"
+    },
+    "49": {
+      "type": "action",
+      "one": "32",
+      "content": "renderIconShapeBorder(\n    ctx,\n    visuals,\n    buildRectCoords,\n    line,\n    left,\n    top,\n    width,\n    height,\n    undefined\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

@@ -1,0 +1,79 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "6",
+      "one": "8",
+      "content": "box2.left > right1"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "right1 = box1.left + box1.width"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "one": "9",
+      "two": "6",
+      "content": "box2.top > bottom1"
+    },
+    "8": {
+      "type": "action",
+      "one": "7",
+      "content": "bottom1 = box1.top + box1.height"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "right2 = box2.left + box2.width"
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "one": "11",
+      "two": "6",
+      "content": "box1.left > right2"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "bottom2 = box2.top + box2.height"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "3",
+      "two": "6",
+      "content": "box1.top > bottom2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "box1\nbox2",
+  "type": "drakon"
+}

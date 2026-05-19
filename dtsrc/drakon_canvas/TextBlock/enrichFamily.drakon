@@ -1,0 +1,57 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "type": "case",
+      "one": "8"
+    },
+    "5": {
+      "one": "9",
+      "type": "case",
+      "two": "4",
+      "content": "\"Tinos\""
+    },
+    "6": {
+      "one": "10",
+      "type": "case",
+      "two": "5",
+      "content": "\"Arimo\""
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "fontFamily"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "return fontFamily"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "return \"Tinos, Times New Roman, Times\""
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "return \"Arimo, Arial\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "fontFamily",
+  "type": "drakon"
+}

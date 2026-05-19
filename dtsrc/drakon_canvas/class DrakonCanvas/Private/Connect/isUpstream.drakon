@@ -1,0 +1,36 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "context = {\n    found: false,\n    visited: {},\n    nodes: visuals.nodes\n}"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return context.found"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "isUpstreamStep(lower, upper, context)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nlower\nupper",
+  "type": "drakon"
+}

@@ -1,0 +1,157 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "31",
+      "type": "branch",
+      "content": "Image"
+    },
+    "30": {
+      "type": "action",
+      "one": "33",
+      "content": "ctx.drawImage(\n    image.imageObj,\n    left,\n    top,\n    width,\n    imageHeight\n)"
+    },
+    "31": {
+      "type": "action",
+      "one": "50",
+      "content": "image = visuals.images[element.image]"
+    },
+    "32": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "33": {
+      "branchId": 3,
+      "one": "38",
+      "type": "branch",
+      "content": "Text content"
+    },
+    "34": {
+      "branchId": 1,
+      "one": "37",
+      "type": "branch",
+      "content": "Fill"
+    },
+    "35": {
+      "one": "54",
+      "type": "action",
+      "two": "",
+      "content": "line = setFillStroke(visuals, element, ctx)"
+    },
+    "36": {
+      "type": "action",
+      "one": "2",
+      "content": "renderIconShapeFill(\n    ctx,\n    visuals,\n    buildRectCoords,\n    left,\n    top,\n    width,\n    height,\n    undefined\n)"
+    },
+    "37": {
+      "type": "action",
+      "one": "51",
+      "content": "left = element.left\ntop = element.top\nwidth = element.width\nheight = element.height\nbottom = top + height"
+    },
+    "38": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "textLeft = left + 1"
+    },
+    "40": {
+      "one": "48",
+      "type": "action",
+      "two": "",
+      "content": "renderContentCore(\n    visuals,\n    element,\n    textLeft,\n    textTop\n)"
+    },
+    "41": {
+      "type": "action",
+      "one": "40",
+      "content": "textTop = Math.ceil(\n    middle - element.flowBlock.height / 2\n)"
+    },
+    "42": {
+      "type": "action",
+      "one": "41",
+      "content": "middle = (imageHeight + top + bottom) / 2"
+    },
+    "46": {
+      "flag1": 1,
+      "type": "question",
+      "one": "52",
+      "two": "47",
+      "content": "element.flowBlock"
+    },
+    "47": {
+      "type": "action",
+      "one": "48",
+      "content": "ctx.drawImage(\n    image.imageObj,\n    left,\n    Math.round(cy - imageHeight / 2),\n    width,\n    imageHeight\n)"
+    },
+    "48": {
+      "branchId": 4,
+      "one": "55",
+      "type": "branch",
+      "content": "Border"
+    },
+    "49": {
+      "type": "action",
+      "one": "32",
+      "content": "renderIconShapeBorder(\n    ctx,\n    visuals,\n    buildRectCoords,\n    line,\n    left,\n    top,\n    width,\n    height,\n    undefined\n)"
+    },
+    "50": {
+      "one": "46",
+      "type": "action",
+      "two": "",
+      "content": "imageHeight = getImageHeight(\n    image,\n    width\n)"
+    },
+    "51": {
+      "type": "action",
+      "one": "53",
+      "content": "cy = Math.round(top + height / 2)"
+    },
+    "52": {
+      "flag1": 0,
+      "type": "question",
+      "one": "30",
+      "two": "47",
+      "content": "element.flowBlock.lines.length === 0"
+    },
+    "53": {
+      "flag1": 1,
+      "type": "question",
+      "two": "2",
+      "one": "35",
+      "content": "element.style"
+    },
+    "54": {
+      "flag1": 1,
+      "type": "question",
+      "two": "2",
+      "one": "36",
+      "content": "element.style.iconBack"
+    },
+    "55": {
+      "flag1": 1,
+      "type": "question",
+      "two": "32",
+      "one": "56",
+      "content": "element.style"
+    },
+    "56": {
+      "flag1": 1,
+      "type": "question",
+      "one": "49",
+      "two": "32",
+      "content": "element.style.iconBorder"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

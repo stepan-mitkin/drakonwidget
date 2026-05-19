@@ -1,0 +1,74 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "updated = true"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "8",
+      "one": "6",
+      "content": "prev.one === id"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "updated = false\nfields = {}"
+    },
+    "6": {
+      "type": "action",
+      "one": "3",
+      "content": "fields.one = targetId"
+    },
+    "7": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "updated = true"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "two": "10",
+      "one": "9",
+      "content": "prev.two === id"
+    },
+    "9": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "fields.two = targetId"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "11",
+      "content": "updated"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "updateItem(edits, prev.id, fields)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "edits\nid\nprev\ntargetId",
+  "type": "drakon"
+}

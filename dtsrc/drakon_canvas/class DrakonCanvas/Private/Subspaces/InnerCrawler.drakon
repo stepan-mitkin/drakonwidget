@@ -1,0 +1,254 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 2,
+            "one": "13",
+            "type": "branch",
+            "content": "down"
+        },
+        "3": {
+            "type": "action",
+            "one": "14",
+            "content": "tail = edge.tail"
+        },
+        "4": {
+            "branchId": 5,
+            "one": "1",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "5": {
+            "branchId": 3,
+            "one": "42",
+            "type": "branch",
+            "content": "left"
+        },
+        "6": {
+            "branchId": 1,
+            "one": "7",
+            "type": "branch",
+            "content": "Init"
+        },
+        "7": {
+            "type": "action",
+            "one": "8",
+            "content": "me.sub = sub\nme.visuals = visuals"
+        },
+        "8": {
+            "type": "action",
+            "one": "11",
+            "content": "me.side = \"inner\"\nme.plan = []"
+        },
+        "9": {
+            "one": "12",
+            "type": "case",
+            "two": null,
+            "content": "right()"
+        },
+        "10": {
+            "one": "2",
+            "type": "case",
+            "two": "9",
+            "content": "down()"
+        },
+        "11": {
+            "type": "select",
+            "one": "10",
+            "content": "receive"
+        },
+        "12": {
+            "branchId": 4,
+            "one": "43",
+            "type": "branch",
+            "content": "right"
+        },
+        "13": {
+            "type": "sinput",
+            "one": "3",
+            "content": "onEdge(edge, output)"
+        },
+        "14": {
+            "flag1": 1,
+            "type": "question",
+            "one": "23",
+            "two": "15",
+            "content": "tail.down"
+        },
+        "15": {
+            "flag1": 0,
+            "type": "question",
+            "two": "17",
+            "one": "35",
+            "content": "tail.left"
+        },
+        "16": {
+            "flag1": 0,
+            "type": "question",
+            "one": "18",
+            "two": "37",
+            "content": "left.type === \"question\""
+        },
+        "17": {
+            "type": "action",
+            "one": "16",
+            "content": "left = getLeft(tail)"
+        },
+        "18": {
+            "flag1": 0,
+            "type": "question",
+            "one": "33",
+            "two": "36",
+            "content": "edge.role === \"up\""
+        },
+        "23": {
+            "type": "action",
+            "one": "53",
+            "content": "addInnerEdgeToSub(sub, edge)"
+        },
+        "24": {
+            "flag1": 0,
+            "type": "question",
+            "two": "29",
+            "one": "25",
+            "content": "tail.type === \"select\""
+        },
+        "25": {
+            "flag1": 0,
+            "type": "question",
+            "one": "26",
+            "two": "52",
+            "content": "tail.type === \"address\""
+        },
+        "26": {
+            "flag1": 0,
+            "type": "question",
+            "two": "51",
+            "one": "27",
+            "content": "tail.left"
+        },
+        "27": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = tail.down"
+        },
+        "29": {
+            "type": "action",
+            "one": "30",
+            "content": "caseNode = getDown(getDown(tail))"
+        },
+        "30": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = caseNode.down"
+        },
+        "33": {
+            "type": "action",
+            "one": "5",
+            "content": "output.next = tail.left"
+        },
+        "34": {
+            "type": "action",
+            "one": "4",
+            "content": "output.next = undefined"
+        },
+        "35": {
+            "type": "action",
+            "one": "34",
+            "content": "addInnerEdgeToSub(sub, edge)"
+        },
+        "36": {
+            "type": "action",
+            "one": "33",
+            "content": "addInnerEdgeToSub(sub, edge)"
+        },
+        "37": {
+            "type": "action",
+            "one": "38",
+            "content": "addInnerEdgeToSub(sub, edge)"
+        },
+        "38": {
+            "type": "action",
+            "one": "4",
+            "content": "output.next = undefined"
+        },
+        "40": {
+            "type": "action",
+            "one": "41",
+            "content": "addInnerEdgeToSub(sub, edge)"
+        },
+        "41": {
+            "type": "action",
+            "one": "4",
+            "content": "output.next = undefined"
+        },
+        "42": {
+            "type": "sinput",
+            "one": "40",
+            "content": "onEdge(edge, output)"
+        },
+        "43": {
+            "type": "sinput",
+            "one": "44",
+            "content": "onEdge(edge, output)"
+        },
+        "44": {
+            "type": "action",
+            "one": "45",
+            "content": "tail = edge.tail"
+        },
+        "45": {
+            "flag1": 1,
+            "type": "question",
+            "one": "46",
+            "two": "47",
+            "content": "tail.right"
+        },
+        "46": {
+            "type": "action",
+            "one": "12",
+            "content": "output.next = tail.right"
+        },
+        "47": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = tail.down"
+        },
+        "51": {
+            "flag1": 1,
+            "type": "question",
+            "two": "52",
+            "one": "27",
+            "content": "tail.left.role === \"duration\""
+        },
+        "52": {
+            "type": "action",
+            "one": "4",
+            "content": "output.next = undefined"
+        },
+        "53": {
+            "flag1": 0,
+            "type": "question",
+            "one": "24",
+            "two": "54",
+            "content": "tail.subtype === \"parbegin\""
+        },
+        "54": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = skipParBlock(tail)"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "visuals\nsub",
+    "type": "drakon"
+}

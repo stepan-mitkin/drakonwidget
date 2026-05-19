@@ -1,0 +1,214 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "7",
+      "type": "branch",
+      "content": "Already selected?"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 3,
+      "one": "19",
+      "type": "branch",
+      "content": "Scan subgraph"
+    },
+    "7": {
+      "branchId": 2,
+      "one": "13",
+      "type": "branch",
+      "content": "Choose node type"
+    },
+    "10": {
+      "type": "case",
+      "one": "41"
+    },
+    "11": {
+      "one": "30",
+      "type": "case",
+      "two": "17",
+      "content": "\"case\""
+    },
+    "12": {
+      "one": "29",
+      "type": "case",
+      "two": "11",
+      "content": "\"select\""
+    },
+    "13": {
+      "type": "select",
+      "one": "12",
+      "content": "node.type"
+    },
+    "14": {
+      "one": "34",
+      "type": "case",
+      "two": "38",
+      "content": "\"question\""
+    },
+    "15": {
+      "one": "33",
+      "type": "case",
+      "two": "14",
+      "content": "\"arrow-loop\""
+    },
+    "16": {
+      "one": "32",
+      "type": "case",
+      "two": "15",
+      "content": "\"loopend\""
+    },
+    "17": {
+      "one": "31",
+      "type": "case",
+      "two": "16",
+      "content": "\"loopbegin\""
+    },
+    "18": {
+      "type": "action",
+      "one": "4",
+      "content": "return addOne(widget, headNode, node)"
+    },
+    "19": {
+      "type": "action",
+      "one": "21",
+      "content": "included = []"
+    },
+    "20": {
+      "type": "loopend",
+      "one": "24"
+    },
+    "21": {
+      "type": "loopbegin",
+      "one": "23",
+      "content": "id, info; context.nodes"
+    },
+    "22": {
+      "type": "action",
+      "one": "20",
+      "content": "included.push(info.node)"
+    },
+    "23": {
+      "flag1": 1,
+      "type": "question",
+      "two": "20",
+      "one": "22",
+      "content": "info.include"
+    },
+    "24": {
+      "type": "action",
+      "one": "26",
+      "content": "result = headNode"
+    },
+    "25": {
+      "type": "loopend",
+      "one": "28"
+    },
+    "26": {
+      "type": "loopbegin",
+      "one": "27",
+      "content": "inode; included"
+    },
+    "27": {
+      "type": "action",
+      "one": "25",
+      "content": "result = addOne(widget, result, inode)"
+    },
+    "28": {
+      "type": "action",
+      "one": "4",
+      "content": "return result"
+    },
+    "29": {
+      "type": "action",
+      "one": "35",
+      "content": "start = node"
+    },
+    "30": {
+      "type": "action",
+      "one": "35",
+      "content": "start = node.select"
+    },
+    "31": {
+      "type": "action",
+      "one": "35",
+      "content": "start = node"
+    },
+    "32": {
+      "type": "action",
+      "one": "35",
+      "content": "start = node.loopStart"
+    },
+    "33": {
+      "type": "action",
+      "one": "35",
+      "content": "start = node"
+    },
+    "34": {
+      "type": "action",
+      "one": "35",
+      "content": "start = node"
+    },
+    "35": {
+      "type": "action",
+      "one": "36",
+      "content": "context = {\n    paths: 0,\n    nodes: {},\n    arrows: 0,\n    loops: {}\n}"
+    },
+    "36": {
+      "type": "action",
+      "one": "37",
+      "content": "info = getNodeInfo(context, start)"
+    },
+    "37": {
+      "type": "action",
+      "one": "5",
+      "content": "selectClusterStepNext(\n    widget,\n    context,\n    info\n)"
+    },
+    "38": {
+      "one": "39",
+      "type": "case",
+      "two": "10",
+      "content": "\"junction\""
+    },
+    "39": {
+      "type": "action",
+      "one": "40",
+      "content": "start = goLeft(node)"
+    },
+    "40": {
+      "type": "action",
+      "one": "4",
+      "content": "return addParBlockToSelection(\n    widget,\n    headNode,\n    start\n)"
+    },
+    "41": {
+      "flag1": 0,
+      "type": "question",
+      "two": "42",
+      "one": "18",
+      "content": "isSelected(widget, node.id)"
+    },
+    "42": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "return headNode"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nheadNode\nnode",
+  "type": "drakon"
+}

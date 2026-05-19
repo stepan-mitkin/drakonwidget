@@ -1,0 +1,58 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "3": {
+      "type": "action",
+      "one": "11",
+      "content": "self.origins = {}"
+    },
+    "4": {
+      "type": "action",
+      "one": "8",
+      "content": "initInsertFunctions(self)"
+    },
+    "6": {
+      "type": "action",
+      "one": "12",
+      "content": "self.styleTag = html.createStyle()\nself.myStyleId = Math.floor(\n    Math.random() * 100000\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "self.zoom = 10000\nself.zoomFactor = 1"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "initFreeFunctions(self)"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "tracing.trace(\"DrakonCanvas.init\")"
+    },
+    "10": {
+      "type": "action",
+      "one": "3",
+      "content": "unit.noSmooth = {\n    floor: true,\n    parceiling: true,\n    ceil: true,\n    \"case\": true,\n    parent: true\n}"
+    },
+    "11": {
+      "type": "action",
+      "one": "6",
+      "content": "self.mindIcons = {\n    idea: true,\n    ridea: true,\n    conclusion: true,\n    header: true,\n    \"graf-image\": true\n}"
+    },
+    "12": {
+      "type": "action",
+      "one": "7",
+      "content": "self.userMemory = {headStyle: \"arrow\"}"
+    }
+  },
+  "type": "drakon"
+}

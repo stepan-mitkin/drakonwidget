@@ -1,0 +1,56 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "old = ctx.fillStyle"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "ctx.fillStyle = color"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "hexColor = ctx.fillStyle"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "ctx.fillStyle = old"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "red = parseHex(hexColor, 1)\ngreen = parseHex(hexColor, 3)\nblue = parseHex(hexColor, 5)"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "average = (red + green + blue) / 3"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "return average < 127"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\ncolor",
+  "type": "drakon"
+}

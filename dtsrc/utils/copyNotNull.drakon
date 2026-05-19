@@ -1,0 +1,54 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "field; fields"
+    },
+    "6": {
+      "type": "action",
+      "one": "4",
+      "content": "dst[field] = value"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "value = src[field]"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "9",
+      "content": "value === undefined"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "6",
+      "content": "value === null"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "dst\nsrc\nfields",
+  "type": "drakon"
+}

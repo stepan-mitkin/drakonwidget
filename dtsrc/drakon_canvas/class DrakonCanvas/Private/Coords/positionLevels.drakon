@@ -1,0 +1,182 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "33",
+      "type": "branch",
+      "content": "Find relative distances"
+    },
+    "4": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "18",
+      "type": "branch",
+      "content": "Set absolute Y coordinates"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "19",
+      "type": "branch",
+      "content": "Inverse Y coordinates"
+    },
+    "7": {
+      "branchId": 4,
+      "one": "27",
+      "type": "branch",
+      "content": "Align up cases"
+    },
+    "8": {
+      "type": "loopend",
+      "one": "5"
+    },
+    "9": {
+      "type": "loopbegin",
+      "one": "10",
+      "content": "id, node; visuals.nodes"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "two": "8",
+      "one": "11",
+      "content": "node.down"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "down = getDown(node)\nleftHeight = getLeftHeight(node)"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "13",
+      "two": "14",
+      "content": "leftHeight === 0"
+    },
+    "13": {
+      "type": "action",
+      "one": "15",
+      "content": "h = node.h"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "h = leftHeight"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "distance = h + down.h + metre"
+    },
+    "16": {
+      "type": "action",
+      "one": "8",
+      "content": "linkLevels(\n    visuals,\n    down.level,\n    node.level,\n    distance\n)"
+    },
+    "17": {
+      "type": "action",
+      "one": "6",
+      "content": "calculateSkewerPos(\n    visuals.levels,\n    visuals.levelLinks,\n    lowest,\n    0\n)"
+    },
+    "18": {
+      "type": "action",
+      "one": "17",
+      "content": "lowest = getLowestLevel(visuals)"
+    },
+    "19": {
+      "type": "action",
+      "one": "21",
+      "content": "max = 0"
+    },
+    "20": {
+      "type": "loopend",
+      "one": "23"
+    },
+    "21": {
+      "type": "loopbegin",
+      "one": "24",
+      "content": "id, level; visuals.levels"
+    },
+    "22": {
+      "type": "loopend",
+      "one": "7"
+    },
+    "23": {
+      "type": "loopbegin",
+      "one": "25",
+      "content": "id, level; visuals.levels"
+    },
+    "24": {
+      "type": "action",
+      "one": "20",
+      "content": "max = Math.max(max, level.coord)"
+    },
+    "25": {
+      "type": "action",
+      "one": "22",
+      "content": "level.coord = max - level.coord"
+    },
+    "26": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "27": {
+      "type": "loopbegin",
+      "one": "28",
+      "content": "id, node; visuals.nodes"
+    },
+    "28": {
+      "flag1": 1,
+      "type": "question",
+      "one": "31",
+      "two": "29",
+      "content": "node.type === \"case\""
+    },
+    "29": {
+      "flag1": 1,
+      "type": "question",
+      "two": "26",
+      "one": "30",
+      "content": "node.type === \"branch\""
+    },
+    "30": {
+      "flag1": 1,
+      "type": "question",
+      "two": "26",
+      "one": "31",
+      "content": "node.up"
+    },
+    "31": {
+      "type": "action",
+      "one": "32",
+      "content": "jun = getUp(node)"
+    },
+    "32": {
+      "type": "action",
+      "one": "26",
+      "content": "node.level.coord = jun.level.coord + metre\n+ node.h"
+    },
+    "33": {
+      "type": "action",
+      "one": "9",
+      "content": "metre = visuals.config.metre"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

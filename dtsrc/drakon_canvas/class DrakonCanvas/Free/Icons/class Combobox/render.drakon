@@ -1,0 +1,80 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "24",
+      "type": "branch"
+    },
+    "16": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "centerContentFree(visuals, element, ctx)"
+    },
+    "17": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "renderFreeIconShape(\n    ctx,\n    visuals,\n    element,\n    buildRectCoords,\n    undefined\n)"
+    },
+    "18": {
+      "type": "action",
+      "one": "27",
+      "content": "xp = w * 0.5\nyp = h * 0.6\nx0 = x - w + xp\nx1 = x + w - xp\ny0 = y - h + yp\ny1 = y + h - yp"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "w = Math.round(\n    getComboButtonWidth(element) / 2\n)"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "h = element.height / 2"
+    },
+    "22": {
+      "type": "action",
+      "one": "18",
+      "content": "x = element.left + element.width - w\ny = element.top + h"
+    },
+    "23": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = getThemeValue(\n    config,\n    element,\n    \"iconBorder\"\n)"
+    },
+    "24": {
+      "type": "action",
+      "one": "17",
+      "content": "config = visuals.config"
+    },
+    "25": {
+      "type": "action",
+      "one": "26",
+      "content": "triPath(ctx, x0, y0, x1, y0, x, y1)"
+    },
+    "26": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.fill()"
+    },
+    "27": {
+      "one": "23",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

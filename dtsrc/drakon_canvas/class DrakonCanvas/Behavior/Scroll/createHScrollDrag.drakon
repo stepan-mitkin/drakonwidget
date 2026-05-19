@@ -1,0 +1,41 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "obj = HScrollDrag()"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "obj.startX = evt.clientX\nobj.startY = evt.clientY\nobj.startScrollX = widget.visuals.scrollX\nobj.startScrollY = widget.visuals.scrollY"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return obj"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "obj.barToBox = scroll.barToBox\nobj.widget = widget"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nevt\nscroll",
+  "type": "drakon"
+}

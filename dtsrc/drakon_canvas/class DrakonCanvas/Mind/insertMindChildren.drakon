@@ -1,0 +1,92 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "5",
+      "type": "branch",
+      "content": "Set ordinals for inserted items"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "11"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "i = 0; i < ids.length; i++"
+    },
+    "6": {
+      "type": "action",
+      "one": "9",
+      "content": "insert = edits[index]"
+    },
+    "7": {
+      "type": "action",
+      "one": "6",
+      "content": "index = utils.findIndex(edits, \"id\", id)"
+    },
+    "8": {
+      "type": "action",
+      "one": "7",
+      "content": "id = ids[i]"
+    },
+    "9": {
+      "type": "action",
+      "one": "4",
+      "content": "insert.fields.ordinal = ordinal + i"
+    },
+    "10": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "11": {
+      "branchId": 2,
+      "one": "16",
+      "type": "branch",
+      "content": "Shift up existing"
+    },
+    "12": {
+      "type": "loopend",
+      "one": "10"
+    },
+    "13": {
+      "type": "loopbegin",
+      "one": "15",
+      "content": "i = ordinal; i < parent.children.length; i++"
+    },
+    "14": {
+      "type": "action",
+      "one": "17",
+      "content": "updateItem(\n    edits,\n    sibling.id,\n    {ordinal: exOrdinal}\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "14",
+      "content": "sibling = parent.children[i]"
+    },
+    "16": {
+      "type": "action",
+      "one": "13",
+      "content": "exOrdinal = ordinal + ids.length"
+    },
+    "17": {
+      "type": "action",
+      "one": "12",
+      "content": "exOrdinal++"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "edits\nparent\nids\nordinal",
+  "type": "drakon"
+}

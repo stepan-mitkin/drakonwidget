@@ -1,0 +1,38 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return {\n    x: widgetX,\n    y: widgetY\n}"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "rect = element.getBoundingClientRect()"
+    },
+    "5": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "widgetX = x - rect.left\nwidgetY = y - rect.top"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "element\nx\ny",
+  "type": "drakon"
+}

@@ -1,0 +1,87 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "14",
+      "type": "branch",
+      "content": "Calculate distance"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "lastBranch = getNode(\n    visuals,\n    utils.last(visuals.branches)\n)"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "10",
+      "type": "branch",
+      "content": "Move up"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "3",
+      "content": "visuals.end"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "5",
+      "content": "distance > 0"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "below = getDown(lastBranch)"
+    },
+    "9": {
+      "type": "action",
+      "one": "7",
+      "content": "distance = below.level.coord - lastBranch\n.level.coord - below.h - lastBranch.h - metre"
+    },
+    "10": {
+      "type": "action",
+      "one": "12",
+      "content": "levels = collectLevels(\n    visuals,\n    lastBranch\n)"
+    },
+    "11": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "12": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "level; levels"
+    },
+    "13": {
+      "type": "action",
+      "one": "11",
+      "content": "level.coord -= distance"
+    },
+    "14": {
+      "type": "action",
+      "one": "6",
+      "content": "metre = visuals.config.metre"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

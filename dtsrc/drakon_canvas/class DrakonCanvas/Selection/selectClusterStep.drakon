@@ -1,0 +1,115 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "1",
+      "two": "5",
+      "content": "node.type === \"end\""
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "1",
+      "content": "node.type === \"address\""
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "nodeInfo = getNodeInfo(context, node)"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "one": "8",
+      "two": "16",
+      "content": "isBackLink(src, node)"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "prev = nodeInfo.node.prev.length"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "14",
+      "one": "10",
+      "content": "prev === 1"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "nodeInfo.remaining--"
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "one": "1",
+      "two": "12",
+      "content": "nodeInfo.remaining === 0"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "joins = prev - 1\ncontext.paths -= joins"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "two": "14",
+      "one": "1",
+      "content": "clusterComplete(context)"
+    },
+    "14": {
+      "type": "action",
+      "one": "1",
+      "content": "selectClusterStepNext(\n    widget,\n    context,\n    nodeInfo\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "17",
+      "content": "nodeInfo.aremaining--"
+    },
+    "16": {
+      "type": "action",
+      "one": "15",
+      "content": "aprev = nodeInfo.node.aprev.length"
+    },
+    "17": {
+      "flag1": 0,
+      "type": "question",
+      "one": "1",
+      "two": "18",
+      "content": "nodeInfo.aremaining === 0"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "context.paths -= aprev"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "selectClusterStepBack(\n    widget,\n    context,\n    nodeInfo\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\ncontext\nsrc\nnode",
+  "type": "drakon"
+}

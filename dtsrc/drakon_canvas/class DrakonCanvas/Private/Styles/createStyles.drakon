@@ -1,0 +1,96 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "12"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    scrollable,\n    \"display: inline-block\",\n    \"position:absolute\",\n    \"left:0px\",\n    \"top:0px\",\n    \"width:100%\",\n    \"height:100%\",\n    \"overflow: auto\"\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "html.addClassToStyle(widget.styleTag, \n    \".drakon-scrollable\",\n    \"display: inline-block\",\n    \"position:absolute\",\n    \"left:0px\",\n    \"top:0px\",\n    \"pointer-events: none\"\n)"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    scrollable + \"::-webkit-scrollbar\",\n    \"width:10px\",\n    \"height:10px\"\n)"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    scrollable + \"::-webkit-scrollbar-track\",\n    \"display: none\"\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    scrollable + \"::-webkit-scrollbar-thumb\",\n    \"background: \" + config.theme.scrollBar,\n    \"border-radius:5px\"\n)"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    scrollable + \"::-webkit-scrollbar-thumb:hover\",\n    \"background: \" + config.theme.scrollBarHover\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "17",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    scrollable + \"::-webkit-scrollbar-corner\",\n    \"display:none\"\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "html.clear(widget.styleTag)"
+    },
+    "11": {
+      "type": "action",
+      "one": "3",
+      "content": "scrollable = \".drakon-scrollable-container\"\n+ widget.myStyleId"
+    },
+    "12": {
+      "type": "action",
+      "one": "10",
+      "content": "config = widget.config"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    \".drakon-icon-content\",\n    \"white-space: normal\"\n)"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    \".drakon-icon-content ul\",\n    \"list-style-type: disc\",\n    \"margin-left:17px\"\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    \".drakon-icon-content em\",\n    \"font-style: italic\"\n)"
+    },
+    "16": {
+      "type": "action",
+      "one": "1",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    \".drakon-icon-content strong\",\n    \"font-weight: bold\"\n)"
+    },
+    "17": {
+      "type": "action",
+      "one": "13",
+      "content": "html.addClassToStyle(\n    widget.styleTag,\n    \".drakon-icon-content ol\",\n    \"list-style-type: decimal\",\n    \"margin-left:15px\"\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

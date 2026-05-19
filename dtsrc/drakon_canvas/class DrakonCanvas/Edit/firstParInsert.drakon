@@ -1,0 +1,63 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "13"
+    },
+    "8": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "edits = []"
+    },
+    "9": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return edits"
+    },
+    "13": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "model = widget.model"
+    },
+    "15": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "endparId = getParTarget(socket.node)"
+    },
+    "16": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "item = {\n    type: \"parbegin\",\n    one: endparId,\n    two: socket.node.itemId\n}"
+    },
+    "17": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "newId = createItem(model, edits, item)"
+    },
+    "18": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "redirectUpperItems(\n    edits,\n    socket.links,\n    newId\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nsocket",
+  "type": "drakon"
+}

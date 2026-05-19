@@ -1,0 +1,45 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "nodes = getCreateList(\n    visuals.byType,\n    type\n)"
+    },
+    "7": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "8": {
+      "type": "loopbegin",
+      "one": "10",
+      "content": "nodeId; nodes"
+    },
+    "9": {
+      "type": "action",
+      "one": "7",
+      "content": "action(visuals, node)"
+    },
+    "10": {
+      "type": "action",
+      "one": "9",
+      "content": "node = visuals.nodes[nodeId]"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\ntype\naction",
+  "type": "drakon"
+}

@@ -1,0 +1,48 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "cx = Math.round((startX1 + startX2) / 2)"
+    },
+    "4": {
+      "type": "action",
+      "one": "8",
+      "content": "cy = Math.round((startY1 + startY2) / 2)"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return {\n    cx: cx,\n    cy: cy,\n    startDist: startDist,\n    startZoom: widget.zoom\n}"
+    },
+    "7": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "startDist = Math.sqrt(\n    kx * kx + ky * ky\n)"
+    },
+    "8": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "kx = startX2 - startX1\nky = startY2 - startY1"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nstartX1\nstartY1\nstartX2\nstartY2",
+  "type": "drakon"
+}

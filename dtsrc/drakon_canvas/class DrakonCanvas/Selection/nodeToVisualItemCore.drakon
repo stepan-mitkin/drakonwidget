@@ -1,0 +1,65 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "type": "action",
+      "one": "7",
+      "content": "prim = {\n    id: node.id,\n    primId: node.id,\n    type: node.type,\n    elType: elType,\n    content: node.content || \"\",\n    secondary: node.secondary || \"\",\n    link: node.link || \"\",\n    style: node.style || \"\"\n}"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return prim"
+    },
+    "7": {
+      "type": "action",
+      "one": "9",
+      "content": "setNotNull(node, prim, \"x\")\nsetNotNull(node, prim, \"y\")\nsetNotNull(node, prim, \"w\")\nsetNotNull(node, prim, \"h\")\nsetNotNull(node, prim, \"flag1\")\nsetNotNull(node, prim, \"branchId\")\nsetNotNull(node, prim, \"one\")\nsetNotNull(node, prim, \"two\")\nsetNotNull(node, prim, \"side\")\nsetNotNull(node, prim, \"margin\")\nsetNotNull(node, prim, \"begin\")\nsetNotNull(node, prim, \"end\")\nsetNotNull(node, prim, \"parent\")\nsetNotNull(node, prim, \"ordinal\")\nsetNotNull(node, prim, \"treeType\")\nsetNotNull(node, prim, \"collapsed\")\nsetNotNull(node, prim, \"image\")\nsetNotNull(node, prim, \"aux2\")"
+    },
+    "8": {
+      "type": "action",
+      "one": "6",
+      "content": "primToClient(widget, prim)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "two": "12",
+      "one": "11",
+      "content": "node.innerBox"
+    },
+    "11": {
+      "type": "action",
+      "one": "8",
+      "content": "Object.assign(prim, node.innerBox)"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "two": "8",
+      "one": "13",
+      "content": "node.box"
+    },
+    "13": {
+      "type": "action",
+      "one": "8",
+      "content": "Object.assign(prim, node.box)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode\nelType",
+  "type": "drakon"
+}

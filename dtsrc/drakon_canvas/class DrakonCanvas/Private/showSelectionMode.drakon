@@ -1,0 +1,43 @@
+{
+    "keywords": {
+        "function": true
+    },
+    "params": "widget\nmenu",
+    "type": "drakon",
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "4"
+        },
+        "4": {
+            "type": "question",
+            "one": "1",
+            "two": "7",
+            "flag1": 1,
+            "content": "gconfig.defaultSelectionMode"
+        },
+        "7": {
+            "type": "question",
+            "one": "8",
+            "two": "9",
+            "flag1": 0,
+            "content": "widget.selectionMode"
+        },
+        "8": {
+            "type": "action",
+            "one": "1",
+            "two": "",
+            "content": "pushMenuItem(\n    \"selection_mode\",\n    menu,\n    tr(widget, \"Selection mode\"),\n    widget.visuals.config.imagePath + \"select-mode.png\",\n    function () {\n        enterSelectionMode(widget)\n    }\n)"
+        },
+        "9": {
+            "type": "action",
+            "one": "1",
+            "two": "",
+            "content": "pushMenuItem(\n    \"exit_selection_mode\",\n    menu,\n    tr(widget, \"Exit selection mode\"),\n    undefined,\n    function () {\n        exitSelectionMode(widget)\n    }\n)"
+        }
+    }
+}

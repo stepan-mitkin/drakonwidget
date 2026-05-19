@@ -1,0 +1,539 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "48",
+      "type": "branch",
+      "content": "Which tree type?"
+    },
+    "4": {
+      "branchId": 7,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 3,
+      "one": "22",
+      "type": "branch",
+      "content": "Vertical"
+    },
+    "6": {
+      "one": "7",
+      "type": "select",
+      "two": "",
+      "content": "ttype"
+    },
+    "7": {
+      "one": "49",
+      "type": "case",
+      "two": "8",
+      "content": "\"vertical\""
+    },
+    "8": {
+      "one": "102",
+      "type": "case",
+      "two": "9",
+      "content": "\"horizontal\""
+    },
+    "9": {
+      "one": "12",
+      "type": "case",
+      "two": "",
+      "content": "\"treeview\""
+    },
+    "10": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "ttype = getTType(node)"
+    },
+    "11": {
+      "branchId": 5,
+      "one": "82",
+      "type": "branch",
+      "content": "Horizontal"
+    },
+    "12": {
+      "branchId": 6,
+      "one": "105",
+      "type": "branch",
+      "content": "Tree view"
+    },
+    "16": {
+      "type": "loopend",
+      "one": "125"
+    },
+    "17": {
+      "type": "loopbegin",
+      "one": "50",
+      "content": "child; node.children"
+    },
+    "18": {
+      "type": "action",
+      "one": "20",
+      "content": "childJun = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "19": {
+      "type": "action",
+      "one": "23",
+      "content": "createEdge(\n    visuals,\n    childJun,\n    child,\n    true\n)"
+    },
+    "20": {
+      "type": "action",
+      "one": "19",
+      "content": "childJun.x = child.x\nchildJun.y = node.y + node.h + config.metre"
+    },
+    "21": {
+      "type": "action",
+      "one": "10",
+      "content": "config = visuals.config"
+    },
+    "22": {
+      "type": "action",
+      "one": "17",
+      "content": "prev = undefined\nconnector = undefined"
+    },
+    "23": {
+      "flag1": 1,
+      "type": "question",
+      "one": "124",
+      "two": "135",
+      "content": "prev"
+    },
+    "24": {
+      "type": "action",
+      "one": "16",
+      "content": "prev = childJun"
+    },
+    "26": {
+      "flag1": 0,
+      "type": "question",
+      "one": "29",
+      "two": "27",
+      "content": "Math.abs(childJun.x - node.x) <= 5"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "node.x = childJun.x"
+    },
+    "28": {
+      "type": "action",
+      "one": "44",
+      "content": "connector = childJun"
+    },
+    "29": {
+      "flag1": 0,
+      "type": "question",
+      "one": "36",
+      "two": "44",
+      "content": "connector"
+    },
+    "36": {
+      "flag1": 1,
+      "type": "question",
+      "two": "44",
+      "one": "37",
+      "content": "prev.x < node.x"
+    },
+    "37": {
+      "flag1": 1,
+      "type": "question",
+      "two": "38",
+      "one": "40",
+      "content": "child.x > node.x"
+    },
+    "38": {
+      "flag1": 1,
+      "type": "question",
+      "two": "44",
+      "one": "39",
+      "content": "child.x === node.x"
+    },
+    "39": {
+      "one": "44",
+      "type": "action",
+      "two": "",
+      "content": "connector = childJun"
+    },
+    "40": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "connector = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "41": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "connector.x = node.x\nconnector.y = childJun.y"
+    },
+    "42": {
+      "type": "action",
+      "one": "43",
+      "content": "createMindEdge(\n    visuals,\n    prev,\n    connector,\n    false,\n    child\n)"
+    },
+    "43": {
+      "type": "action",
+      "one": "24",
+      "content": "createMindEdge(\n    visuals,\n    connector,\n    childJun,\n    false,\n    child\n)"
+    },
+    "44": {
+      "type": "action",
+      "one": "24",
+      "content": "createMindEdge(\n    visuals,\n    prev,\n    childJun,\n    false,\n    child\n)"
+    },
+    "46": {
+      "type": "action",
+      "one": "4",
+      "content": "createEdge(\n    visuals,\n    node,\n    connector,\n    true\n)"
+    },
+    "47": {
+      "branchId": 2,
+      "one": "132",
+      "type": "branch",
+      "content": "Vertical - simple"
+    },
+    "48": {
+      "flag1": 0,
+      "type": "question",
+      "one": "21",
+      "two": "4",
+      "content": "node.children.length === 0"
+    },
+    "49": {
+      "flag1": 1,
+      "type": "question",
+      "one": "47",
+      "two": "5",
+      "content": "node.children.length === 1"
+    },
+    "50": {
+      "type": "action",
+      "one": "18",
+      "content": "createMindEdges(visuals, child)"
+    },
+    "51": {
+      "branchId": 4,
+      "one": "129",
+      "type": "branch",
+      "content": "Horizontal - simple"
+    },
+    "77": {
+      "one": "126",
+      "type": "loopend",
+      "two": ""
+    },
+    "78": {
+      "one": "101",
+      "type": "loopbegin",
+      "two": "",
+      "content": "child; node.children"
+    },
+    "79": {
+      "one": "81",
+      "type": "action",
+      "two": "",
+      "content": "childJun = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "80": {
+      "one": "83",
+      "type": "action",
+      "two": "",
+      "content": "createEdge(\n    visuals,\n    childJun,\n    child,\n    false\n)"
+    },
+    "81": {
+      "one": "80",
+      "type": "action",
+      "two": "",
+      "content": "childJun.y = child.y\nchildJun.x = node.x + node.w + config.metre"
+    },
+    "82": {
+      "one": "78",
+      "type": "action",
+      "two": "",
+      "content": "prev = undefined\nconnector = undefined"
+    },
+    "83": {
+      "flag1": 1,
+      "type": "question",
+      "two": "133",
+      "one": "127",
+      "content": "prev"
+    },
+    "84": {
+      "one": "77",
+      "type": "action",
+      "two": "",
+      "content": "prev = childJun"
+    },
+    "89": {
+      "flag1": 0,
+      "type": "question",
+      "one": "90",
+      "two": "98",
+      "content": "connector"
+    },
+    "90": {
+      "flag1": 1,
+      "type": "question",
+      "one": "91",
+      "two": "98",
+      "content": "prev.y < node.y"
+    },
+    "91": {
+      "flag1": 1,
+      "type": "question",
+      "one": "94",
+      "two": "92",
+      "content": "child.y > node.y"
+    },
+    "92": {
+      "flag1": 1,
+      "type": "question",
+      "one": "93",
+      "two": "98",
+      "content": "child.y === node.y"
+    },
+    "93": {
+      "one": "98",
+      "type": "action",
+      "two": "",
+      "content": "connector = childJun"
+    },
+    "94": {
+      "one": "95",
+      "type": "action",
+      "two": "",
+      "content": "connector = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "95": {
+      "one": "96",
+      "type": "action",
+      "two": "",
+      "content": "connector.x = childJun.x\nconnector.y = node.y"
+    },
+    "96": {
+      "one": "97",
+      "type": "action",
+      "two": "",
+      "content": "createMindEdge(\n    visuals,\n    prev,\n    connector,\n    true,\n    child\n)"
+    },
+    "97": {
+      "one": "84",
+      "type": "action",
+      "two": "",
+      "content": "createMindEdge(\n    visuals,\n    connector,\n    childJun,\n    true,\n    child\n)"
+    },
+    "98": {
+      "one": "84",
+      "type": "action",
+      "two": "",
+      "content": "createMindEdge(\n    visuals,\n    prev,\n    childJun,\n    true,\n    child\n)"
+    },
+    "100": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "createEdge(\n    visuals,\n    node,\n    connector,\n    false\n)"
+    },
+    "101": {
+      "one": "79",
+      "type": "action",
+      "two": "",
+      "content": "createMindEdges(visuals, child)"
+    },
+    "102": {
+      "flag1": 1,
+      "type": "question",
+      "two": "11",
+      "one": "51",
+      "content": "node.children.length === 1"
+    },
+    "104": {
+      "type": "action",
+      "one": "128",
+      "content": "createEdge(visuals, node, child, false)"
+    },
+    "105": {
+      "one": "108",
+      "type": "action",
+      "two": "",
+      "content": "rootJun = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "108": {
+      "flag1": 1,
+      "type": "question",
+      "two": "109",
+      "one": "111",
+      "content": "node.parent"
+    },
+    "109": {
+      "type": "action",
+      "one": "110",
+      "content": "rootJun.x = node.x - node.w - config.metre\nrootJun.y = node.y"
+    },
+    "110": {
+      "one": "120",
+      "type": "action",
+      "two": "",
+      "content": "createEdge(visuals, rootJun, node, false)"
+    },
+    "111": {
+      "type": "action",
+      "one": "112",
+      "content": "rootJun.x = node.x - node.w + config.metre\nrootJun.y = node.y + node.h"
+    },
+    "112": {
+      "one": "120",
+      "type": "action",
+      "two": "",
+      "content": "rootJun.role = \"root\"\nrootJun.sharp = true"
+    },
+    "113": {
+      "one": "118",
+      "type": "loopbegin",
+      "two": "",
+      "content": "child; node.children"
+    },
+    "114": {
+      "one": "123",
+      "type": "loopend",
+      "two": ""
+    },
+    "115": {
+      "one": "117",
+      "type": "action",
+      "two": "",
+      "content": "childJun = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "116": {
+      "one": "119",
+      "type": "action",
+      "two": "",
+      "content": "createEdge(\n    visuals,\n    childJun,\n    child,\n    false\n)"
+    },
+    "117": {
+      "one": "116",
+      "type": "action",
+      "two": "",
+      "content": "childJun.y = child.y\nchildJun.x = prev.x\nchildJun.sharp = true"
+    },
+    "118": {
+      "one": "115",
+      "type": "action",
+      "two": "",
+      "content": "createMindEdges(visuals, child)"
+    },
+    "119": {
+      "one": "121",
+      "type": "action",
+      "two": "",
+      "content": "createMindEdge(\n    visuals,\n    prev,\n    childJun,\n    true,\n    child\n)"
+    },
+    "120": {
+      "type": "action",
+      "one": "113",
+      "content": "prev = rootJun"
+    },
+    "121": {
+      "one": "114",
+      "type": "action",
+      "two": "",
+      "content": "prev = childJun"
+    },
+    "123": {
+      "type": "action",
+      "one": "4",
+      "content": "prev.sharp = false"
+    },
+    "124": {
+      "type": "action",
+      "one": "26",
+      "content": "childJun.sharp = true"
+    },
+    "125": {
+      "type": "action",
+      "one": "46",
+      "content": "prev.sharp = false\nconnector.sharp = true"
+    },
+    "126": {
+      "type": "action",
+      "one": "100",
+      "content": "prev.sharp = false\nconnector.sharp = true"
+    },
+    "127": {
+      "type": "action",
+      "one": "89",
+      "content": "childJun.sharp = true"
+    },
+    "128": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "createMindEdges(visuals, child)"
+    },
+    "129": {
+      "type": "action",
+      "one": "104",
+      "content": "child = node.children[0]"
+    },
+    "130": {
+      "one": "131",
+      "type": "action",
+      "two": "",
+      "content": "createEdge(visuals, node, child, true)"
+    },
+    "131": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "createMindEdges(visuals, child)"
+    },
+    "132": {
+      "one": "130",
+      "type": "action",
+      "two": "",
+      "content": "child = node.children[0]"
+    },
+    "133": {
+      "flag1": 1,
+      "type": "question",
+      "two": "84",
+      "one": "134",
+      "content": "child.y === node.y"
+    },
+    "134": {
+      "one": "84",
+      "type": "action",
+      "two": "",
+      "content": "connector = childJun"
+    },
+    "135": {
+      "flag1": 1,
+      "type": "question",
+      "two": "24",
+      "one": "136",
+      "content": "child.x === node.x"
+    },
+    "136": {
+      "one": "24",
+      "type": "action",
+      "two": "",
+      "content": "connector = childJun"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode",
+  "type": "drakon"
+}

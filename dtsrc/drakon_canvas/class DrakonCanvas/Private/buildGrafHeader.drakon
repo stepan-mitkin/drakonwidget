@@ -1,0 +1,61 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "19"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "header = createNode(\n    visuals,\n    undefined,\n    \"header\",\n    headerContent,\n    \"root\"\n)"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "flowIcon(visuals, visuals.header)"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "root = model.items[\"root\"]"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "9",
+      "content": "root"
+    },
+    "9": {
+      "type": "action",
+      "one": "11",
+      "content": "header = nodeFromItem(visuals, root)"
+    },
+    "11": {
+      "type": "action",
+      "one": "5",
+      "content": "header.content = headerContent"
+    },
+    "19": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "headerContent = model.doc.name"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nmodel",
+  "type": "drakon"
+}

@@ -1,0 +1,38 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "17"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    },
+    "17": {
+      "flag1": 0,
+      "type": "question",
+      "two": "18",
+      "one": "3",
+      "content": "ch in self.bad"
+    },
+    "18": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ch",
+  "type": "drakon"
+}

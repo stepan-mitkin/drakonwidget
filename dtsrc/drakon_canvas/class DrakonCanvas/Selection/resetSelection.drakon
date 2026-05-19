@@ -1,0 +1,50 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "5",
+      "content": "oldSelection"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "6",
+      "content": "Object.keys(oldSelection.prims) === 0"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "onSelectionChanged(widget, [])"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "oldSelection = widget.selection"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "resetSelectionCore(widget)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

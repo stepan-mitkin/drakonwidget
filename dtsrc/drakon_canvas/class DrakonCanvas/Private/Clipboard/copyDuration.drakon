@@ -1,0 +1,37 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "12"
+    },
+    "4": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "copy = copyItem(\n    widget,\n    node.itemId,\n    images\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyItemsToClipboard(\n    widget,\n    node.itemId,\n    [copy],\n    images,\n    \"duration\"\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "4",
+      "content": "images = {}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

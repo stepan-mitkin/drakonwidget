@@ -1,0 +1,249 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "4": {
+      "branchId": 9,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 3,
+      "one": "47",
+      "type": "branch",
+      "content": "Secondary"
+    },
+    "22": {
+      "branchId": 1,
+      "one": "45",
+      "type": "branch",
+      "content": "Padding"
+    },
+    "24": {
+      "branchId": 2,
+      "one": "36",
+      "type": "branch",
+      "content": "Other values"
+    },
+    "25": {
+      "type": "action",
+      "one": "26",
+      "content": "topLeft = padding + getConfigValue(\n    options,\n    \"topLeft\",\n    0\n)"
+    },
+    "26": {
+      "type": "action",
+      "one": "27",
+      "content": "topRight = padding + getConfigValue(\n    options,\n    \"topRight\",\n    0\n)"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "bottomLeft = padding + getConfigValue(\n    options,\n    \"bottomLeft\",\n    0\n)"
+    },
+    "28": {
+      "type": "action",
+      "one": "24",
+      "content": "bottomRight = padding + getConfigValue(\n    options,\n    \"bottomRight\",\n    0\n)"
+    },
+    "36": {
+      "type": "action",
+      "one": "82",
+      "content": "font = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"font\"\n)"
+    },
+    "37": {
+      "type": "action",
+      "one": "38",
+      "content": "textAlign = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"textAlign\"\n)"
+    },
+    "38": {
+      "type": "action",
+      "one": "39",
+      "content": "maxWidth = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"maxWidth\"\n)"
+    },
+    "39": {
+      "type": "action",
+      "one": "44",
+      "content": "minWidth = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"minWidth\"\n)"
+    },
+    "41": {
+      "type": "action",
+      "one": "37",
+      "content": "color = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"color\"\n)"
+    },
+    "44": {
+      "type": "action",
+      "one": "63",
+      "content": "lineHeight = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"lineHeight\"\n)"
+    },
+    "45": {
+      "one": "64",
+      "type": "action",
+      "two": "",
+      "content": "config = visuals.config"
+    },
+    "46": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "padding = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"padding\",\n    0\n)"
+    },
+    "47": {
+      "one": "79",
+      "type": "action",
+      "two": "",
+      "content": "topDiv = div(\n    \"drakon-icon-content\",\n    {\n        \"padding-left\": topLeft + \"px\",\n        \"padding-top\": padding + \"px\",\n        \"padding-right\": topRight + \"px\",\n        \"padding-bottom\": padding + \"px\",\n        \"text-align\": textAlign,\n        font: font,\n        color: color,\n        \"min-width\": minWidth + \"px\",\n        \"max-width\": maxWidth + \"px\",\n        \"line-height\": lineHeight,\n        \"user-select\": \"none\"\n    }\n)"
+    },
+    "49": {
+      "type": "action",
+      "one": "50",
+      "content": "node.topDiv = topDiv"
+    },
+    "50": {
+      "branchId": 4,
+      "one": "51",
+      "type": "branch",
+      "content": "Main"
+    },
+    "51": {
+      "one": "81",
+      "type": "action",
+      "two": "",
+      "content": "bottomDiv = div(\n    \"drakon-icon-content\",\n    {\n        \"padding-left\": bottomLeft + \"px\",\n        \"padding-top\": padding + \"px\",\n        \"padding-right\": bottomRight + \"px\",\n        \"padding-bottom\": padding + \"px\",\n        \"text-align\": textAlign,\n        font: font,\n        color: color,\n        \"min-width\": minWidth + \"px\",\n        \"max-width\": maxWidth + \"px\",\n        \"line-height\": lineHeight,\n        \"user-select\": \"none\"\n    }\n)"
+    },
+    "57": {
+      "branchId": 6,
+      "one": "67",
+      "type": "branch",
+      "content": "Secondary canvas"
+    },
+    "58": {
+      "branchId": 7,
+      "one": "70",
+      "type": "branch",
+      "content": "Main canvas"
+    },
+    "59": {
+      "branchId": 5,
+      "one": "60",
+      "type": "branch",
+      "content": "Together"
+    },
+    "60": {
+      "one": "62",
+      "type": "action",
+      "two": "",
+      "content": "mainDiv = div()\nhtml.add(mainDiv, topDiv)\nhtml.add(mainDiv, bottomDiv)"
+    },
+    "61": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "return addDivToDiagram(visuals, mainDiv)"
+    },
+    "62": {
+      "one": "61",
+      "type": "action",
+      "two": "",
+      "content": "node.contentDiv = mainDiv"
+    },
+    "63": {
+      "flag1": 0,
+      "type": "question",
+      "one": "5",
+      "two": "57",
+      "content": "visuals.config.canvasIcons"
+    },
+    "64": {
+      "type": "action",
+      "one": "46",
+      "content": "text = node.content || \"\"\nsecondary = node.secondary || \"\""
+    },
+    "65": {
+      "one": "58",
+      "type": "action",
+      "two": "",
+      "content": "node.topFlowBlock = measureFlow(\n    node.topTextBlock,\n    minWidth,\n    maxWidth\n)"
+    },
+    "66": {
+      "one": "65",
+      "type": "action",
+      "two": "",
+      "content": "node.topTextBlock = createTextBlock(\n    visuals.ctx,\n    secondary,\n    options2,\n    visuals.fonts\n)"
+    },
+    "67": {
+      "one": "66",
+      "type": "action",
+      "two": "",
+      "content": "options2 = {\n    paddingLeft: topLeft,\n    paddingTop: padding,\n    paddingRight: topRight,\n    paddingBottom: padding,\n    minWidth: minWidth,\n    font: font,\n    color: color,\n    lineHeight: lineHeight,\n    textAlign: textAlign,\n    centerContent: config.centerContent,\n    textFormat: config.textFormat\n}"
+    },
+    "68": {
+      "one": "74",
+      "type": "action",
+      "two": "",
+      "content": "node.bottomFlowBlock = measureFlow(\n    node.bottomTextBlock,\n    minWidth,\n    maxWidth\n)"
+    },
+    "69": {
+      "one": "68",
+      "type": "action",
+      "two": "",
+      "content": "node.bottomTextBlock = createTextBlock(\n    visuals.ctx,\n    text,\n    options,\n    visuals.fonts\n)"
+    },
+    "70": {
+      "one": "69",
+      "type": "action",
+      "two": "",
+      "content": "options = {\n    paddingLeft: bottomLeft,\n    paddingTop: padding,\n    paddingRight: bottomRight,\n    paddingBottom: padding,\n    minWidth: minWidth,\n    font: font,\n    color: color,\n    lineHeight: lineHeight,\n    textAlign: textAlign,\n    centerContent: config.centerContent,\n    textFormat: config.textFormat\n}"
+    },
+    "74": {
+      "branchId": 8,
+      "one": "75",
+      "type": "branch",
+      "content": "Together canvas"
+    },
+    "75": {
+      "one": "76",
+      "type": "action",
+      "two": "",
+      "content": "width = Math.max(\n    node.topFlowBlock.width,\n    node.topFlowBlock.width\n)"
+    },
+    "76": {
+      "one": "77",
+      "type": "action",
+      "two": "",
+      "content": "height = node.topFlowBlock.height + node.bottomFlowBlock\n.height"
+    },
+    "77": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "return {\n    width: width,\n    height: height\n}"
+    },
+    "79": {
+      "type": "action",
+      "one": "49",
+      "content": "addTextToDiv(\n    options,\n    config,\n    topDiv,\n    secondary,\n    visuals.fonts,\n    font\n)"
+    },
+    "81": {
+      "one": "59",
+      "type": "action",
+      "two": "",
+      "content": "addTextToDiv(\n    options,\n    config,\n    bottomDiv,\n    text,\n    visuals.fonts,\n    font\n)"
+    },
+    "82": {
+      "type": "action",
+      "one": "41",
+      "content": "visuals.fonts[font] = true"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\noptions",
+  "type": "drakon"
+}

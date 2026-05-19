@@ -1,0 +1,57 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "widget.images = images2"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "3"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "6",
+      "content": "id, image; widget.images"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "9",
+      "two": "8",
+      "content": "image.refCount === 0"
+    },
+    "7": {
+      "type": "action",
+      "one": "5",
+      "content": "images2 = {}"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "deleteItemCore(edits, id)"
+    },
+    "9": {
+      "type": "action",
+      "one": "4",
+      "content": "images2[id] = image"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nedits",
+  "type": "drakon"
+}

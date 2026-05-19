@@ -1,0 +1,56 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "47"
+    },
+    "32": {
+      "type": "action",
+      "one": "48",
+      "content": "config = visuals.config"
+    },
+    "45": {
+      "type": "action",
+      "one": "51",
+      "content": "circlePath(ctx, x, y, r)"
+    },
+    "46": {
+      "type": "action",
+      "one": "50",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "47": {
+      "type": "action",
+      "one": "32",
+      "content": "renderRadioFalse(visuals, element, ctx)"
+    },
+    "48": {
+      "type": "action",
+      "one": "46",
+      "content": "ctx.fillStyle = getThemeValue(\n    config,\n    element,\n    \"iconBorder\"\n)"
+    },
+    "50": {
+      "type": "action",
+      "one": "45",
+      "content": "r = w / 3"
+    },
+    "51": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.fill()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

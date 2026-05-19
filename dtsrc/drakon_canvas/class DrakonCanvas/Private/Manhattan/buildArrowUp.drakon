@@ -1,0 +1,51 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "top = createJunction(visuals, loop.id)"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "arrow = createEdge(\n    visuals,\n    loop,\n    top,\n    false\n)"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "arrow.role = \"arrow\""
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "next1 = loop.next[0]"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "makeDownEdge(visuals, loop, next1, next1)"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "return next1"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nloop",
+  "type": "drakon"
+}

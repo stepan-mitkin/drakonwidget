@@ -1,0 +1,334 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "87",
+      "type": "branch",
+      "content": "Clear canvas"
+    },
+    "4": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = config.theme.background\nctx.fillRect(\n    0,\n    0,\n    width * factor,\n    height * factor\n)"
+    },
+    "7": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "ctx.strokeStyle = \"yellow\"\nctx.lineWidth = 4"
+    },
+    "10": {
+      "branchId": 12,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "11": {
+      "branchId": 5,
+      "one": "84",
+      "type": "branch",
+      "content": "Edges"
+    },
+    "13": {
+      "branchId": 2,
+      "one": "33",
+      "type": "branch",
+      "content": "Dummy image"
+    },
+    "14": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "ctx.beginPath()\nctx.moveTo(padding, padding)\nctx.lineTo(\n    width * zoom - padding,\n    height * zoom - padding\n)\nctx.stroke()"
+    },
+    "15": {
+      "one": "54",
+      "type": "action",
+      "two": "",
+      "content": "ctx.beginPath()\nctx.moveTo(\n    width * zoom - padding,\n    padding\n)\nctx.lineTo(\n    padding,\n    height * zoom - padding\n)\nctx.stroke()"
+    },
+    "16": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "padding = 20"
+    },
+    "17": {
+      "type": "loopend",
+      "one": "39"
+    },
+    "18": {
+      "type": "loopbegin",
+      "one": "19",
+      "content": "id, edge; visuals.edges"
+    },
+    "19": {
+      "type": "action",
+      "one": "17",
+      "content": "drawEdge(widget, edge, ctx)"
+    },
+    "21": {
+      "branchId": 6,
+      "one": "23",
+      "type": "branch",
+      "content": "Nodes"
+    },
+    "22": {
+      "type": "loopend",
+      "one": "85"
+    },
+    "23": {
+      "type": "loopbegin",
+      "one": "24",
+      "content": "id, node; visuals.nodes"
+    },
+    "24": {
+      "flag1": 1,
+      "type": "question",
+      "one": "25",
+      "two": "22",
+      "content": "isDrawableNode(node)"
+    },
+    "25": {
+      "type": "action",
+      "one": "22",
+      "content": "drawIcon(visuals, node, ctx)"
+    },
+    "31": {
+      "type": "action",
+      "one": "4",
+      "content": "ctx.resetTransform()"
+    },
+    "33": {
+      "flag1": 1,
+      "type": "question",
+      "two": "54",
+      "one": "16",
+      "content": "widget.visuals.config.drawCross"
+    },
+    "34": {
+      "branchId": 9,
+      "one": "46",
+      "type": "branch",
+      "content": "Selection frame"
+    },
+    "38": {
+      "one": "21",
+      "type": "loopend",
+      "two": ""
+    },
+    "39": {
+      "one": "41",
+      "type": "loopbegin",
+      "two": "",
+      "content": "id, type; widget.selection.prims"
+    },
+    "40": {
+      "one": "38",
+      "type": "action",
+      "two": "",
+      "content": "drawEdgeCandy(visuals, id, ctx, config)"
+    },
+    "41": {
+      "flag1": 1,
+      "type": "question",
+      "one": "40",
+      "two": "38",
+      "content": "type === \"edge\""
+    },
+    "42": {
+      "one": "68",
+      "type": "loopend",
+      "two": ""
+    },
+    "43": {
+      "one": "45",
+      "type": "loopbegin",
+      "two": "",
+      "content": "id, type; widget.selection.prims"
+    },
+    "44": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "drawNodeCandy(widget, id, ctx, config)"
+    },
+    "45": {
+      "flag1": 1,
+      "type": "question",
+      "one": "44",
+      "two": "42",
+      "content": "type === \"node\""
+    },
+    "46": {
+      "flag1": 1,
+      "type": "question",
+      "two": "90",
+      "one": "47",
+      "content": "visuals.selectionFrame"
+    },
+    "47": {
+      "type": "action",
+      "one": "49",
+      "content": "ctx.strokeStyle = visuals.config.theme.lines\nctx.lineWidth = 2"
+    },
+    "49": {
+      "type": "action",
+      "one": "90",
+      "content": "ctx.strokeRect(\n    visuals.selectionFrame.left,\n    visuals.selectionFrame.top,\n    visuals.selectionFrame.width,\n    visuals.selectionFrame.height\n)"
+    },
+    "50": {
+      "branchId": 8,
+      "one": "52",
+      "type": "branch",
+      "content": "Sockets"
+    },
+    "51": {
+      "type": "loopend",
+      "one": "34"
+    },
+    "52": {
+      "type": "loopbegin",
+      "one": "53",
+      "content": "socket; visuals.sockets"
+    },
+    "53": {
+      "type": "action",
+      "one": "51",
+      "content": "drawSocket(visuals, socket, ctx, config)"
+    },
+    "54": {
+      "branchId": 3,
+      "one": "58",
+      "type": "branch",
+      "content": "Zones"
+    },
+    "55": {
+      "flag1": 1,
+      "type": "question",
+      "two": "100",
+      "one": "56",
+      "content": "widget.visuals.config.drawZones"
+    },
+    "56": {
+      "type": "action",
+      "one": "100",
+      "content": "drawSubspaces(widget.visuals, ctx)"
+    },
+    "58": {
+      "type": "action",
+      "one": "61",
+      "content": "ctx.scale(factor * zoom, factor * zoom)"
+    },
+    "61": {
+      "type": "action",
+      "one": "55",
+      "content": "ctx.translate(translateX, translateY)"
+    },
+    "68": {
+      "branchId": 7,
+      "one": "99",
+      "type": "branch",
+      "content": "Free"
+    },
+    "84": {
+      "type": "action",
+      "one": "18",
+      "content": "ctx.setLineDash([])"
+    },
+    "85": {
+      "type": "action",
+      "one": "43",
+      "content": "ctx.setLineDash([])"
+    },
+    "87": {
+      "type": "action",
+      "one": "88",
+      "content": "visuals = widget.visuals\nconfig = visuals.config"
+    },
+    "88": {
+      "type": "action",
+      "one": "103",
+      "content": "ctx = visuals.ctx"
+    },
+    "90": {
+      "branchId": 10,
+      "one": "91",
+      "type": "branch",
+      "content": "Guides"
+    },
+    "91": {
+      "flag1": 1,
+      "type": "question",
+      "one": "96",
+      "two": "102",
+      "content": "visuals.guides.length > 0"
+    },
+    "92": {
+      "type": "action",
+      "one": "102",
+      "content": "visuals.guides = []"
+    },
+    "95": {
+      "type": "loopend",
+      "one": "92"
+    },
+    "96": {
+      "type": "loopbegin",
+      "one": "97",
+      "content": "guide; visuals.guides"
+    },
+    "97": {
+      "type": "action",
+      "one": "95",
+      "content": "line(\n    ctx,\n    guide.x1,\n    guide.y1,\n    guide.x2,\n    guide.y2,\n    visuals.config.theme.guides,\n    1\n)"
+    },
+    "98": {
+      "type": "action",
+      "one": "50",
+      "content": "drawFreeNuggetAndHandles(widget, ctx)"
+    },
+    "99": {
+      "type": "action",
+      "one": "98",
+      "content": "drawFrontPlane(widget, ctx)"
+    },
+    "100": {
+      "branchId": 4,
+      "one": "101",
+      "type": "branch",
+      "content": "Free back plane"
+    },
+    "101": {
+      "type": "action",
+      "one": "11",
+      "content": "drawBackPlane(widget, ctx)"
+    },
+    "102": {
+      "branchId": 11,
+      "one": "10",
+      "type": "branch",
+      "content": "Watermark"
+    },
+    "103": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "31",
+      "content": "ctx.resetTransform"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nfactor\nzoom\ntranslateX\ntranslateY\nwidth\nheight",
+  "type": "drakon"
+}

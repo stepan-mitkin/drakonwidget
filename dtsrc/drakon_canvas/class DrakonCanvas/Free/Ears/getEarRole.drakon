@@ -1,0 +1,52 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return \"vertical\""
+    },
+    "4": {
+      "type": "case",
+      "one": "8"
+    },
+    "5": {
+      "one": "3",
+      "type": "case",
+      "two": "4",
+      "content": "\"down\""
+    },
+    "6": {
+      "one": "3",
+      "type": "case",
+      "two": "5",
+      "content": "\"up\""
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "ears.selected"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "return \"horizontal\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ears",
+  "type": "drakon"
+}

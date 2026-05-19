@@ -1,0 +1,47 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "7"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return undefined"
+        },
+        "6": {
+            "type": "loopend",
+            "one": "3"
+        },
+        "7": {
+            "type": "loopbegin",
+            "one": "8",
+            "content": "handle; visuals.handles"
+        },
+        "8": {
+            "flag1": 0,
+            "type": "question",
+            "one": "6",
+            "two": "9",
+            "content": "hitBox(handle.box, pos.x, pos.y)"
+        },
+        "9": {
+            "type": "action",
+            "one": "6",
+            "content": "return handle"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "visuals\npos",
+    "type": "drakon"
+}

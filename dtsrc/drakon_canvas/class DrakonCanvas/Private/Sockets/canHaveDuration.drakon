@@ -1,0 +1,107 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    },
+    "4": {
+      "type": "case",
+      "one": "8"
+    },
+    "5": {
+      "one": "13",
+      "type": "case",
+      "two": "12",
+      "content": "\"question\""
+    },
+    "6": {
+      "one": "13",
+      "type": "case",
+      "two": "5",
+      "content": "\"action\""
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "node.type"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "9": {
+      "one": "13",
+      "type": "case",
+      "two": "10",
+      "content": "\"insertion\""
+    },
+    "10": {
+      "one": "13",
+      "type": "case",
+      "two": "11",
+      "content": "\"simpleinput\""
+    },
+    "11": {
+      "one": "13",
+      "type": "case",
+      "two": "14",
+      "content": "\"simpleoutput\""
+    },
+    "12": {
+      "one": "13",
+      "type": "case",
+      "two": "9",
+      "content": "\"select\""
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "one": "3",
+      "two": "8",
+      "content": "node.side"
+    },
+    "14": {
+      "one": "13",
+      "type": "case",
+      "two": "15",
+      "content": "\"input\""
+    },
+    "15": {
+      "one": "13",
+      "type": "case",
+      "two": "16",
+      "content": "\"output\""
+    },
+    "16": {
+      "one": "13",
+      "type": "case",
+      "two": "17",
+      "content": "\"shelf\""
+    },
+    "17": {
+      "one": "13",
+      "type": "case",
+      "two": "4",
+      "content": "\"process\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node",
+  "type": "drakon"
+}

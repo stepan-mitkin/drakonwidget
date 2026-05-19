@@ -1,0 +1,36 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "width = Math.min(\n    maxWidth,\n    textBlock.width\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return flowTextBlock(textBlock, width)"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "width = Math.max(minWidth, width)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "textBlock\nminWidth\nmaxWidth",
+  "type": "drakon"
+}

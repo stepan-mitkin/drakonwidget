@@ -1,0 +1,48 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "dst = {}"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "3",
+      "content": "src"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return src"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return dst"
+    },
+    "7": {
+      "type": "action",
+      "one": "6",
+      "content": "Object.assign(dst, src)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "src",
+  "type": "drakon"
+}

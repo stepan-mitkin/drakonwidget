@@ -1,0 +1,127 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "7",
+      "type": "branch",
+      "content": "Rectangle"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "ctx.fillRect(x, y, size, size)"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "ctx.fillStyle = \"#90ff90\""
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "ctx.strokeStyle = \"black\"\nctx.lineWidth = 2"
+    },
+    "6": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.strokeRect(x, y, size, size)"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "size = 30"
+    },
+    "9": {
+      "branchId": 6,
+      "one": "11",
+      "type": "branch",
+      "content": "Build box"
+    },
+    "10": {
+      "branchId": 2,
+      "one": "12",
+      "type": "branch",
+      "content": "Left arrow"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return createBox(x, y, size, size)"
+    },
+    "12": {
+      "type": "action",
+      "one": "15",
+      "content": "padding = 4\nasize = 5"
+    },
+    "14": {
+      "type": "action",
+      "one": "16",
+      "content": "fillTrigangle(\n    ctx,\n    left,\n    midY,\n    right,\n    top,\n    right,\n    bottom,\n    \"black\"\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "14",
+      "content": "left = x + padding\nmidY = y + size / 2\nright = left + asize\ntop = midY - asize\nbottom = midY + asize"
+    },
+    "16": {
+      "branchId": 3,
+      "one": "17",
+      "type": "branch",
+      "content": "Right arrow"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "right = x + size - padding\nleft = right - asize"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "fillTrigangle(\n    ctx,\n    left,\n    top,\n    right,\n    midY,\n    left,\n    bottom,\n    \"black\"\n)"
+    },
+    "19": {
+      "branchId": 4,
+      "one": "20",
+      "type": "branch",
+      "content": "Up arrow"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "midX = x + size / 2\nleft = midX - asize\nright = midX + asize\ntop = y + padding\nbottom = top + asize"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "fillTrigangle(\n    ctx,\n    left,\n    bottom,\n    midX,\n    top,\n    right,\n    bottom,\n    \"black\"\n)"
+    },
+    "22": {
+      "branchId": 5,
+      "one": "23",
+      "type": "branch",
+      "content": "Down arrow"
+    },
+    "23": {
+      "type": "action",
+      "one": "24",
+      "content": "bottom = y + size - padding\ntop = bottom - asize"
+    },
+    "24": {
+      "type": "action",
+      "one": "9",
+      "content": "fillTrigangle(\n    ctx,\n    left,\n    top,\n    right,\n    top,\n    midX,\n    bottom,\n    \"black\"\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nx\ny",
+  "type": "drakon"
+}

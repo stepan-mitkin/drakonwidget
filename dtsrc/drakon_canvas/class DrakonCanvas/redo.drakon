@@ -1,0 +1,61 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "3": {
+      "type": "action",
+      "one": "11",
+      "content": "selection = self.edit.redoEdit()"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "3",
+      "two": "1",
+      "content": "self.edit"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "4",
+      "content": "isReadonlyImpl(self)"
+    },
+    "9": {
+      "type": "action",
+      "one": "7",
+      "content": "tracing.trace(\"DrakonCanvas.redo\")"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "12",
+      "content": "selection"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "await loadImages(self)"
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "onUndoRedo(self, selection)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": true,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "type": "drakon"
+}

@@ -1,0 +1,84 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "10"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return undefined"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "3"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "12",
+            "content": "i = free.length - 1; i >= 0; i--"
+        },
+        "7": {
+            "type": "action",
+            "one": "4",
+            "content": "return found"
+        },
+        "8": {
+            "type": "action",
+            "one": "14",
+            "content": "free = visuals.free"
+        },
+        "10": {
+            "type": "action",
+            "one": "8",
+            "content": "visuals = widget.visuals"
+        },
+        "11": {
+            "flag1": 0,
+            "type": "question",
+            "one": "4",
+            "two": "7",
+            "content": "found"
+        },
+        "12": {
+            "type": "action",
+            "one": "18",
+            "content": "element = free[i]"
+        },
+        "14": {
+            "type": "action",
+            "one": "5",
+            "content": "visited = {}"
+        },
+        "17": {
+            "type": "action",
+            "one": "11",
+            "content": "found = hitFreeOrConnection(\n    widget,\n    element,\n    pos,\n    visited\n)"
+        },
+        "18": {
+            "flag1": 0,
+            "type": "question",
+            "two": "19",
+            "one": "17",
+            "content": "element.zIndex < 0"
+        },
+        "19": {
+            "type": "action",
+            "one": "17",
+            "content": "return undefined"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "widget\npos",
+    "type": "drakon"
+}

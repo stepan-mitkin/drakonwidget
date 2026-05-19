@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "32",
+      "type": "branch"
+    },
+    "31": {
+      "type": "action",
+      "one": "1",
+      "content": "return hitLine(\n    x1,\n    y1,\n    x2,\n    y2,\n    pos,\n    element.margin\n)"
+    },
+    "32": {
+      "type": "action",
+      "one": "31",
+      "content": "x1 = element.left\nx2 = x1 + element.x2\ny1 = element.top\ny2 = y1 + element.y2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "element\npos",
+  "type": "drakon"
+}

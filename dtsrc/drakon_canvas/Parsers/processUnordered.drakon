@@ -1,0 +1,60 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "9",
+      "content": "node; nodes"
+    },
+    "6": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "line = {\n    type: \"ul\",\n    tokens: [{text: \"• \"}]\n}"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "lines.push(line)"
+    },
+    "8": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "addNodeToLine(\n    node,\n    line.tokens,\n    false,\n    false\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "name = getNodeName(node)"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "6",
+      "content": "name === \"li\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "nodes\nlines",
+  "type": "drakon"
+}

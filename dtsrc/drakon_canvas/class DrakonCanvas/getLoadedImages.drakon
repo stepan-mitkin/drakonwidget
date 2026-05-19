@@ -1,0 +1,37 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "result = {}"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "id, image; self.images"
+    },
+    "7": {
+      "type": "action",
+      "one": "5",
+      "content": "result[id] = {content: image.content}"
+    }
+  },
+  "type": "drakon"
+}

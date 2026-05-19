@@ -1,0 +1,188 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "54",
+      "type": "branch",
+      "content": "Parse HTML"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "html = html || \"\""
+    },
+    "4": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "6": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "parser = new DOMParser()"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "doc = parser.parseFromString(\n    html,\n    \"text/html\"\n)"
+    },
+    "8": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "body = doc.documentElement.childNodes[1]"
+    },
+    "9": {
+      "branchId": 2,
+      "one": "10",
+      "type": "branch",
+      "content": "Plain text?"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "one": "12",
+      "two": "16",
+      "content": "body.childNodes.length === 1"
+    },
+    "11": {
+      "type": "action",
+      "one": "13",
+      "content": "name = getNodeName(firstNode)"
+    },
+    "12": {
+      "type": "action",
+      "one": "11",
+      "content": "firstNode = body.childNodes[0]"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "one": "15",
+      "two": "16",
+      "content": "name === \"#text\""
+    },
+    "15": {
+      "one": "32",
+      "type": "action",
+      "two": "",
+      "content": "splitToParagraphs(\n    parentElement,\n    firstNode.nodeValue\n)"
+    },
+    "16": {
+      "branchId": 3,
+      "one": "18",
+      "type": "branch",
+      "content": "Scan DOM nodes"
+    },
+    "17": {
+      "type": "loopend",
+      "one": "32"
+    },
+    "18": {
+      "type": "loopbegin",
+      "one": "29",
+      "content": "node; body.childNodes"
+    },
+    "29": {
+      "type": "action",
+      "one": "17",
+      "content": "addNodeToDom(\n    node,\n    parentElement,\n    false,\n    false,\n    formats,\n    findLinks\n)"
+    },
+    "32": {
+      "branchId": 4,
+      "one": "53",
+      "type": "branch",
+      "content": "Add to fonts"
+    },
+    "33": {
+      "flag1": 1,
+      "type": "question",
+      "two": "45",
+      "one": "47",
+      "content": "formats.bold"
+    },
+    "43": {
+      "one": "44",
+      "type": "action",
+      "two": "",
+      "content": "cache = initFontCache()"
+    },
+    "44": {
+      "one": "33",
+      "type": "action",
+      "two": "",
+      "content": "fontObj = parseCssFont(font, cache, true)"
+    },
+    "45": {
+      "flag1": 1,
+      "type": "question",
+      "two": "46",
+      "one": "48",
+      "content": "formats.italic"
+    },
+    "46": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "49",
+      "content": "formats.both"
+    },
+    "47": {
+      "type": "action",
+      "one": "45",
+      "content": "addFontVariant(\n    fonts,\n    fontObj,\n    \"weight\",\n    \"bold\"\n)"
+    },
+    "48": {
+      "type": "action",
+      "one": "46",
+      "content": "addFontVariant(\n    fonts,\n    fontObj,\n    \"style\",\n    \"italic\"\n)"
+    },
+    "49": {
+      "type": "action",
+      "one": "50",
+      "content": "fontObj2 = utils.clone(fontObj)"
+    },
+    "50": {
+      "type": "action",
+      "one": "52",
+      "content": "fontObj2.weight = \"bold\"\nfontObj2.style = \"italic\""
+    },
+    "51": {
+      "type": "action",
+      "one": "4",
+      "content": "fonts[font2] = true"
+    },
+    "52": {
+      "type": "action",
+      "one": "51",
+      "content": "font2 = cssFontToString(fontObj2)"
+    },
+    "53": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "43",
+      "content": "fonts"
+    },
+    "54": {
+      "type": "action",
+      "one": "3",
+      "content": "formats = {}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "html\nparentElement\nfonts\nfont\nfindLinks",
+  "type": "drakon"
+}

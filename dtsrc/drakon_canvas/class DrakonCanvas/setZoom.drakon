@@ -1,0 +1,103 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "3": {
+      "type": "action",
+      "one": "19",
+      "content": "self.zoom = Math.max(\n    2500,\n    Math.min(40000, zoom)\n)"
+    },
+    "6": {
+      "type": "action",
+      "one": "26",
+      "content": "initScrollPos(self)"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "28",
+      "content": "self.edit"
+    },
+    "8": {
+      "type": "action",
+      "one": "6",
+      "content": "self.visuals.config.zoom = self.zoomFactor"
+    },
+    "9": {
+      "type": "action",
+      "one": "3",
+      "content": "tracing.trace(\n    \"DrakonCanvas.setZoom\",\n    zoom\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "7",
+      "content": "self.zoomFactor = self.zoom / 10000"
+    },
+    "13": {
+      "type": "action",
+      "one": "21",
+      "content": "clientX = hover.x\nclientY = hover.y"
+    },
+    "15": {
+      "type": "action",
+      "one": "23",
+      "content": "scrollX = oldScrollX + Math.round(\n    distX - distX2\n)"
+    },
+    "17": {
+      "type": "action",
+      "one": "8",
+      "content": "setScroll(self, scrollX, scrollY)"
+    },
+    "19": {
+      "type": "action",
+      "one": "10",
+      "content": "oldZoom = self.zoomFactor"
+    },
+    "21": {
+      "type": "action",
+      "one": "15",
+      "content": "distX = clientX / oldZoom\ndistY = clientY / oldZoom\ndistX2 = clientX / self.zoomFactor\ndistY2 = clientY / self.zoomFactor"
+    },
+    "23": {
+      "type": "action",
+      "one": "17",
+      "content": "scrollY = oldScrollY + Math.round(\n    distY - distY2\n)"
+    },
+    "24": {
+      "type": "action",
+      "one": "25",
+      "content": "oldScrollX = self.visuals.scrollX\noldScrollY = self.visuals.scrollY"
+    },
+    "25": {
+      "type": "action",
+      "one": "13",
+      "content": "hover = getHoverPos(self)"
+    },
+    "26": {
+      "type": "action",
+      "one": "1",
+      "content": "paintLater(self)"
+    },
+    "28": {
+      "type": "action",
+      "one": "24",
+      "content": "updateExpandedBox(self, self.visuals)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "zoom",
+  "type": "drakon"
+}

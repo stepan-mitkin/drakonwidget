@@ -1,0 +1,39 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "15"
+    },
+    "13": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "options = {\n    paddingLeft: padding,\n    paddingRight: padding\n}"
+    },
+    "14": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return buildTextContent(\n    visuals,\n    node,\n    options\n)"
+    },
+    "15": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "padding = visuals.config.padding"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode",
+  "type": "drakon"
+}

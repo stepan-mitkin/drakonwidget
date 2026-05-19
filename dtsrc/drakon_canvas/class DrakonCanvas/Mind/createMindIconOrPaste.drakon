@@ -1,0 +1,121 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "13",
+      "type": "branch",
+      "content": "Insert new"
+    },
+    "3": {
+      "type": "action",
+      "one": "17",
+      "content": "id = createItem(\n    widget.model,\n    edits,\n    newItem\n)"
+    },
+    "4": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "newItem = {\n    type: socket.iconType,\n    content: \"\",\n    parent: parent.id,\n    treeType: getTTypeForChildren(parent)\n}"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "9",
+      "one": "4",
+      "content": "payload"
+    },
+    "8": {
+      "branchId": 3,
+      "one": "18",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "9": {
+      "branchId": 2,
+      "one": "34",
+      "type": "branch",
+      "content": "Insert from clipboard"
+    },
+    "13": {
+      "type": "action",
+      "one": "5",
+      "content": "roots = []"
+    },
+    "17": {
+      "type": "action",
+      "one": "8",
+      "content": "roots.push(id)"
+    },
+    "18": {
+      "type": "action",
+      "one": "1",
+      "content": "return roots"
+    },
+    "28": {
+      "one": "8",
+      "type": "loopend",
+      "two": ""
+    },
+    "29": {
+      "one": "30",
+      "type": "loopbegin",
+      "two": "",
+      "content": "citem; payload.items"
+    },
+    "30": {
+      "flag1": 0,
+      "type": "question",
+      "one": "36",
+      "two": "33",
+      "content": "citem.parent === \"target\""
+    },
+    "31": {
+      "one": "32",
+      "type": "action",
+      "two": "",
+      "content": "edit = createInsert(citem)"
+    },
+    "32": {
+      "one": "28",
+      "type": "action",
+      "two": "",
+      "content": "edits.push(edit)"
+    },
+    "33": {
+      "one": "36",
+      "type": "action",
+      "two": "",
+      "content": "roots.push(citem.id)"
+    },
+    "34": {
+      "one": "35",
+      "type": "action",
+      "two": "",
+      "content": "oldToNew = generateNewIds(\n    widget,\n    payload.items\n)"
+    },
+    "35": {
+      "one": "29",
+      "type": "action",
+      "two": "",
+      "content": "oldToNew[\"target\"] = parent.id"
+    },
+    "36": {
+      "one": "31",
+      "type": "action",
+      "two": "",
+      "content": "citem.parent = oldToNew[citem.parent]"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nsocket\nparent\npayload\nedits",
+  "type": "drakon"
+}

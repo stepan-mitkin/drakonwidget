@@ -1,0 +1,113 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "visited = context.visited"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "one": "1",
+      "two": "5",
+      "content": "itemId"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "1",
+      "content": "itemId in visited"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "node = getNodeByItem(\n    context.visuals,\n    itemId\n)"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "two": "9",
+      "one": "1",
+      "content": "node.type === \"branch\""
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "one": "10",
+      "two": "17",
+      "content": "isBackLink(prev, node)"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "two": "11",
+      "one": "1",
+      "content": "hasUntouchedUpstream(visited, node)"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "visited[itemId] = true"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "context.deleteList.push(itemId)"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "item = context.items[itemId]"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "traverseItemToDelete(\n    context,\n    node,\n    item.one\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "1",
+      "content": "traverseItemToDelete(\n    context,\n    node,\n    item.two\n)"
+    },
+    "16": {
+      "type": "action",
+      "one": "18",
+      "content": "visited[itemId] = true"
+    },
+    "17": {
+      "flag1": 0,
+      "type": "question",
+      "one": "16",
+      "two": "1",
+      "content": "hasUntouchedArrows(visited, node)"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "context.deleteList.push(itemId)"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "unlinkArrow(node, visited, context.edits)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "context\nprev\nitemId",
+  "type": "drakon"
+}

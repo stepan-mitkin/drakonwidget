@@ -1,0 +1,26 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return coords.map(\n    function (point) {\n        return {\n            x: point.x + left,\n            y: point.y + top\n        }\n    }\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "left\ntop\ncoords",
+  "type": "drakon"
+}

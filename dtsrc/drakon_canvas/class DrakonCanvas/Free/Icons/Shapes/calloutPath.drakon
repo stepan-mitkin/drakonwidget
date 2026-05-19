@@ -1,0 +1,292 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "24",
+      "type": "branch",
+      "content": "Decide on side"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "right = left + width\nbottom = top + height"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "dpx = px + left\ndpy = py + top"
+    },
+    "5": {
+      "type": "action",
+      "one": "8",
+      "content": "nw = isAboveNWSE(left, top, dpx, dpy)\nse = isAboveNWSE(right, bottom, dpx, dpy)"
+    },
+    "6": {
+      "branchId": 6,
+      "one": "10",
+      "type": "branch",
+      "content": "Close path"
+    },
+    "7": {
+      "branchId": 2,
+      "one": "69",
+      "type": "branch",
+      "content": "Up"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "ne = isAboveNESW(right, top, dpx, dpy)\nsw = isAboveNESW(left, bottom, dpx, dpy)"
+    },
+    "9": {
+      "type": "action",
+      "one": "17",
+      "content": "ctx.beginPath()"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.closePath()"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "two": "18",
+      "one": "7",
+      "content": "nw"
+    },
+    "13": {
+      "branchId": 3,
+      "one": "70",
+      "type": "branch",
+      "content": "Right"
+    },
+    "14": {
+      "branchId": 4,
+      "one": "72",
+      "type": "branch",
+      "content": "Down"
+    },
+    "15": {
+      "branchId": 5,
+      "one": "71",
+      "type": "branch",
+      "content": "Left"
+    },
+    "17": {
+      "flag1": 1,
+      "type": "question",
+      "one": "11",
+      "two": "20",
+      "content": "dpx < left"
+    },
+    "18": {
+      "flag1": 1,
+      "type": "question",
+      "two": "14",
+      "one": "15",
+      "content": "sw"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "two": "23",
+      "one": "21",
+      "content": "dpx > right"
+    },
+    "21": {
+      "flag1": 1,
+      "type": "question",
+      "two": "22",
+      "one": "7",
+      "content": "ne"
+    },
+    "22": {
+      "flag1": 1,
+      "type": "question",
+      "two": "14",
+      "one": "13",
+      "content": "se"
+    },
+    "23": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "14",
+      "content": "dpy > bottom"
+    },
+    "24": {
+      "type": "action",
+      "one": "3",
+      "content": "radius = 10"
+    },
+    "25": {
+      "type": "action",
+      "one": "29",
+      "content": "leftTopCorner(ctx, left, top, radius)"
+    },
+    "26": {
+      "type": "action",
+      "one": "27",
+      "content": "rightTopCorner(ctx, right, top, radius)"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "rightBottomCorner(\n    ctx,\n    right,\n    bottom,\n    radius\n)"
+    },
+    "28": {
+      "type": "action",
+      "one": "6",
+      "content": "leftBottomCorner(\n    ctx,\n    left,\n    bottom,\n    radius\n)"
+    },
+    "29": {
+      "type": "action",
+      "one": "30",
+      "content": "beginX = findCalloutRoot(\n    left,\n    right,\n    dpx,\n    pwidth\n) - pwidth / 2\nendX = beginX + pwidth"
+    },
+    "30": {
+      "type": "action",
+      "one": "26",
+      "content": "ctx.lineTo(beginX, top)\nctx.lineTo(dpx, dpy)\nctx.lineTo(endX, top)"
+    },
+    "31": {
+      "one": "57",
+      "type": "action",
+      "two": "",
+      "content": "leftTopCorner(ctx, left, top, radius)"
+    },
+    "35": {
+      "one": "36",
+      "type": "action",
+      "two": "",
+      "content": "beginY = findCalloutRoot(\n    top,\n    bottom,\n    dpy,\n    pwidth\n) - pwidth / 2\nendY = beginY + pwidth"
+    },
+    "36": {
+      "one": "60",
+      "type": "action",
+      "two": "",
+      "content": "ctx.lineTo(right, beginY)\nctx.lineTo(dpx, dpy)\nctx.lineTo(right, endY)"
+    },
+    "38": {
+      "one": "62",
+      "type": "action",
+      "two": "",
+      "content": "leftTopCorner(ctx, left, top, radius)"
+    },
+    "45": {
+      "one": "67",
+      "type": "action",
+      "two": "",
+      "content": "ctx.lineTo(beginX, bottom)\nctx.lineTo(dpx, dpy)\nctx.lineTo(endX, bottom)"
+    },
+    "46": {
+      "one": "63",
+      "type": "action",
+      "two": "",
+      "content": "leftTopCorner(ctx, left, top, radius)"
+    },
+    "53": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "ctx.lineTo(left, beginY)\nctx.lineTo(dpx, dpy)\nctx.lineTo(left, endY)"
+    },
+    "55": {
+      "type": "action",
+      "one": "45",
+      "content": "beginX = findCalloutRoot(\n    left,\n    right,\n    dpx,\n    pwidth\n) + pwidth / 2\nendX = beginX - pwidth"
+    },
+    "56": {
+      "one": "53",
+      "type": "action",
+      "two": "",
+      "content": "beginY = findCalloutRoot(\n    top,\n    bottom,\n    dpy,\n    pwidth\n) + pwidth / 2\nendY = beginY - pwidth"
+    },
+    "57": {
+      "one": "35",
+      "type": "action",
+      "two": "",
+      "content": "rightTopCorner(ctx, right, top, radius)"
+    },
+    "60": {
+      "one": "66",
+      "type": "action",
+      "two": "",
+      "content": "rightBottomCorner(\n    ctx,\n    right,\n    bottom,\n    radius\n)"
+    },
+    "62": {
+      "one": "64",
+      "type": "action",
+      "two": "",
+      "content": "rightTopCorner(ctx, right, top, radius)"
+    },
+    "63": {
+      "one": "65",
+      "type": "action",
+      "two": "",
+      "content": "rightTopCorner(ctx, right, top, radius)"
+    },
+    "64": {
+      "one": "55",
+      "type": "action",
+      "two": "",
+      "content": "rightBottomCorner(\n    ctx,\n    right,\n    bottom,\n    radius\n)"
+    },
+    "65": {
+      "one": "68",
+      "type": "action",
+      "two": "",
+      "content": "rightBottomCorner(\n    ctx,\n    right,\n    bottom,\n    radius\n)"
+    },
+    "66": {
+      "type": "action",
+      "one": "6",
+      "content": "leftBottomCorner(\n    ctx,\n    left,\n    bottom,\n    radius\n)"
+    },
+    "67": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "leftBottomCorner(\n    ctx,\n    left,\n    bottom,\n    radius\n)"
+    },
+    "68": {
+      "one": "56",
+      "type": "action",
+      "two": "",
+      "content": "leftBottomCorner(\n    ctx,\n    left,\n    bottom,\n    radius\n)"
+    },
+    "69": {
+      "type": "action",
+      "one": "25",
+      "content": "pwidth = 40"
+    },
+    "70": {
+      "type": "action",
+      "one": "31",
+      "content": "pwidth = 20"
+    },
+    "71": {
+      "type": "action",
+      "one": "46",
+      "content": "pwidth = 20"
+    },
+    "72": {
+      "type": "action",
+      "one": "38",
+      "content": "pwidth = 40"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nleft\ntop\nwidth\nheight\npx\npy",
+  "type": "drakon"
+}

@@ -1,0 +1,48 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "edits = toSilhouette(self)"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "one": "3",
+      "two": "7",
+      "content": "isSilhouette(self.visuals)"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return doEdit(self, edits)"
+    },
+    "7": {
+      "type": "action",
+      "one": "5",
+      "content": "edits = toPrimitive(self)"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "4",
+      "content": "isReadonlyImpl(self)"
+    },
+    "9": {
+      "type": "action",
+      "one": "8",
+      "content": "tracing.trace(\n    \"DrakonCanvas.toggleSilhouette\"\n)"
+    }
+  },
+  "type": "drakon"
+}

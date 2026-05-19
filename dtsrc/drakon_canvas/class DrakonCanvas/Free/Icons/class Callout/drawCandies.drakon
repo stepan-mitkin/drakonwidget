@@ -1,0 +1,73 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "62",
+      "type": "branch"
+    },
+    "62": {
+      "type": "action",
+      "one": "70",
+      "content": "drawRectCandies(widget, element, ctx)"
+    },
+    "63": {
+      "one": "64",
+      "type": "action",
+      "two": "",
+      "content": "handle = CalloutPointer()"
+    },
+    "64": {
+      "one": "68",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    handle\n)"
+    },
+    "65": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, handle, ctx)"
+    },
+    "66": {
+      "one": "67",
+      "type": "action",
+      "two": "",
+      "content": "handle.x = left + element.px\nhandle.y = top + element.py\nhandle.minX = Number.MIN_SAFE_INTEGER\nhandle.maxX = Number.MAX_SAFE_INTEGER\nhandle.minY = Number.MIN_SAFE_INTEGER\nhandle.maxY = Number.MAX_SAFE_INTEGER"
+    },
+    "67": {
+      "one": "71",
+      "type": "action",
+      "two": "",
+      "content": "handle.left = left\nhandle.top = top\nhandle.color = \"yellow\""
+    },
+    "68": {
+      "one": "66",
+      "type": "action",
+      "two": "",
+      "content": "left = element.left\ntop = element.top"
+    },
+    "70": {
+      "one": "63",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals"
+    },
+    "71": {
+      "type": "action",
+      "one": "65",
+      "content": "handle.primId = \"callout-\" + element.id"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\nctx",
+  "type": "drakon"
+}

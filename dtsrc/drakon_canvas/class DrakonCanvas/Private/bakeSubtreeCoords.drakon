@@ -1,0 +1,50 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "node.x += subtreeX\nnode.y += subtreeY"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "child; node.children"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "subtreeX = node.subtreeBox.left + parentX"
+    },
+    "7": {
+      "type": "action",
+      "one": "3",
+      "content": "subtreeY = node.subtreeBox.top + parentY"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "bakeSubtreeCoords(\n    child,\n    subtreeX,\n    subtreeY\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node\nparentX\nparentY",
+  "type": "drakon"
+}

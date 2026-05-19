@@ -1,0 +1,84 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Detect main fat skewer"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "skewer = createSkewer(visuals, true)"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "13",
+      "type": "branch",
+      "content": "Add nodes to skewer"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "9",
+      "one": "7",
+      "content": "node.type === \"header\""
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "beneath = getDown(node)"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "5",
+      "two": "9",
+      "content": "beneath.type == \"branch\""
+    },
+    "9": {
+      "type": "action",
+      "one": "5",
+      "content": "skewer.main = true"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "linkNodeToSkewer(skewer, node)"
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "12",
+      "content": "node.down"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "node = getDown(node)"
+    },
+    "13": {
+      "type": "arrow-loop",
+      "one": "10"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode",
+  "type": "drakon"
+}

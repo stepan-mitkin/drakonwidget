@@ -1,0 +1,74 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "obj = FreeMover()"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return obj"
+    },
+    "5": {
+      "type": "action",
+      "one": "12",
+      "content": "obj.widget = widget\nobj.startX = evt.clientX\nobj.startY = evt.clientY\nobj.coords = []"
+    },
+    "12": {
+      "type": "action",
+      "one": "14",
+      "content": "obj.dx = 0\nobj.dy = 0"
+    },
+    "13": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "14": {
+      "type": "loopbegin",
+      "one": "22",
+      "content": "element; elements"
+    },
+    "20": {
+      "type": "action",
+      "one": "13",
+      "content": "obj.coords.push(coord)"
+    },
+    "21": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "coord = {\n    element: element,\n    elementX: element.left,\n    elementY: element.top,\n    xy: false\n}"
+    },
+    "22": {
+      "flag1": 0,
+      "type": "question",
+      "one": "21",
+      "two": "23",
+      "content": "element.type === \"group-duration\""
+    },
+    "23": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "coord = {\n    element: element,\n    elementX: element.x,\n    elementY: element.y,\n    xy: true\n}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelements\nevt",
+  "type": "drakon"
+}

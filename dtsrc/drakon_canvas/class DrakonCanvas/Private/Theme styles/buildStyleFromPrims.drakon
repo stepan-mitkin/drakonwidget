@@ -1,0 +1,73 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return style"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "8"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "prim; prims"
+    },
+    "7": {
+      "type": "action",
+      "one": "13",
+      "content": "copyStyleFromPrim(prim, style)"
+    },
+    "8": {
+      "type": "action",
+      "one": "14",
+      "content": "style.iconBack = style.iconBack || \"\"\nstyle.color = style.color || \"\"\nstyle.iconBorder = style.iconBorder || \"\"\nstyle.internalLine = style.internalLine ||\n\"\"\nstyle.lineHeight = style.lineHeight || \"\"\nstyle.textAlign = style.textAlign || \"\"\nstyle.borderStyle = style.borderStyle ||\n\"\""
+    },
+    "9": {
+      "type": "action",
+      "one": "6",
+      "content": "style = {font: \"\"}"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "two": "11",
+      "one": "4",
+      "content": "\"borderWidth\" in style"
+    },
+    "11": {
+      "type": "action",
+      "one": "4",
+      "content": "style.borderWidth = \"\""
+    },
+    "13": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "style.font = getThemeValueCore(\n    visuals.config,\n    prim.type,\n    prim.style,\n    \"font\",\n    style.font\n)"
+    },
+    "14": {
+      "type": "action",
+      "one": "10",
+      "content": "style.shadowOffsetX = style.shadowOffsetX\n|| 0\nstyle.shadowOffsetY = style.shadowOffsetY\n|| 0\nstyle.shadowColor = style.shadowColor ||\n\"\"\nstyle.shadowBlur = style.shadowBlur || 0"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nprims",
+  "type": "drakon"
+}

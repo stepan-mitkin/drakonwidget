@@ -1,0 +1,43 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "machine = obj[property]"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "5",
+      "content": "machine"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "machine.state = undefined"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "obj[property] = undefined"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "obj\nproperty",
+  "type": "drakon"
+}

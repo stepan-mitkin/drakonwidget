@@ -1,0 +1,107 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "8",
+      "type": "branch",
+      "content": "Right scrollbar"
+    },
+    "3": {
+      "type": "action",
+      "one": "10",
+      "content": "rect = evt.target.getBoundingClientRect()"
+    },
+    "5": {
+      "type": "action",
+      "one": "9",
+      "content": "x = evt.clientX - rect.left"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "7": {
+      "branchId": 2,
+      "one": "20",
+      "type": "branch",
+      "content": "Bottom scrollbar"
+    },
+    "8": {
+      "type": "action",
+      "one": "3",
+      "content": "scrollBarWidth = 20"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "11",
+      "one": "7",
+      "content": "rect.width - x <= scrollBarWidth"
+    },
+    "10": {
+      "type": "action",
+      "one": "19",
+      "content": "diagramWidth = widget.visuals.box.width\ndiagramHeight = widget.visuals.box.height"
+    },
+    "11": {
+      "type": "action",
+      "one": "6",
+      "content": "return true"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "y = evt.clientY - rect.top"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "one": "16",
+      "two": "17",
+      "content": "rect.height - y <= scrollBarWidth"
+    },
+    "16": {
+      "type": "action",
+      "one": "6",
+      "content": "return false"
+    },
+    "17": {
+      "type": "action",
+      "one": "6",
+      "content": "return true"
+    },
+    "18": {
+      "type": "action",
+      "one": "6",
+      "content": "return false"
+    },
+    "19": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "5",
+      "content": "rect.height < diagramHeight"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "two": "18",
+      "one": "14",
+      "content": "rect.width < diagramWidth"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nevt",
+  "type": "drakon"
+}

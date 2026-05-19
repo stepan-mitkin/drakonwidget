@@ -1,0 +1,73 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "sub = crawler.sub"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "bottom = goDown(address)"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "next = getNextBranch(\n    crawler.visuals,\n    address.branch\n)"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "floor = bottom.right"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "one": "8",
+      "two": "12",
+      "content": "floor"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "floor.finalTarget = next"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "floor.outer = sub\nfloor.noBranch = address.itemId"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "addEdgeSubRecord(sub.outer, floor)"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "addNodeSubRecord(sub.outer, bottom)"
+    },
+    "12": {
+      "type": "action",
+      "one": "11",
+      "content": "bottom.finalTarget = next\nbottom.noBranch = address.itemId"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "crawler\naddress",
+  "type": "drakon"
+}

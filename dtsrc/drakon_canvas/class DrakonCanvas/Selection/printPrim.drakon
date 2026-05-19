@@ -1,0 +1,60 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "node = visuals.nodes[prim.id]"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "3",
+      "two": "6",
+      "content": "prim.id in visuals.nodes"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "console.log(node)"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "one": "7",
+      "two": "9",
+      "content": "prim.id in visuals.edges"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "edge = visuals.edges[prim.id]"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "console.log(edge)"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "console.log(\"Unknown primitive\", prim)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nprim",
+  "type": "drakon"
+}

@@ -1,0 +1,74 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "17"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "nodes = getNodesFromSelection(self)"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "one": "6",
+      "two": "1",
+      "content": "nodes.length === 1"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "node = nodes[0]"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "11",
+      "content": "canEditNodeText(self, node)"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "startEditContent(self, prim)"
+    },
+    "11": {
+      "type": "action",
+      "one": "10",
+      "content": "prim = nodeToVisualItem(self, node)"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "element = getFreeFromSelection(self)"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "two": "15",
+      "one": "4",
+      "content": "element"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "prim = freeToVisualItem(self, element)"
+    },
+    "16": {
+      "type": "action",
+      "one": "1",
+      "content": "startEditContent(self, prim)"
+    },
+    "17": {
+      "type": "action",
+      "one": "12",
+      "content": "tracing.trace(\"DrakonCanvas.editContent\")"
+    }
+  },
+  "type": "drakon"
+}

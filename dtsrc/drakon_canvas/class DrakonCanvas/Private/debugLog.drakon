@@ -1,0 +1,69 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "unit.debugLog.push(text)"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "3",
+      "two": "1",
+      "content": "unit.debugLog"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "6",
+      "one": "7",
+      "content": "unit.debugLog.length > 20"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "unit.debugLog.shift()"
+    },
+    "7": {
+      "type": "action",
+      "one": "9",
+      "content": "html.clear(unit.logDiv)"
+    },
+    "8": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "9": {
+      "type": "loopbegin",
+      "one": "10",
+      "content": "line; unit.debugLog"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "element = div({text: line})"
+    },
+    "11": {
+      "type": "action",
+      "one": "8",
+      "content": "html.add(unit.logDiv, element)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "text",
+  "type": "drakon"
+}

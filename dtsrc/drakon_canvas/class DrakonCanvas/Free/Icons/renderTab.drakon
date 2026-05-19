@@ -1,0 +1,113 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "16",
+      "type": "branch",
+      "content": "Fill"
+    },
+    "12": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "13": {
+      "branchId": 3,
+      "one": "30",
+      "type": "branch",
+      "content": "Content"
+    },
+    "14": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fill()"
+    },
+    "15": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "buildTabPath(\n    ctx,\n    element.left,\n    element.top,\n    element.width,\n    element.height,\n    element.aux\n)"
+    },
+    "16": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "line = setFillStroke(\n    visuals,\n    element,\n    ctx\n)"
+    },
+    "17": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    },
+    "18": {
+      "type": "action",
+      "one": "14",
+      "content": "ctx.closePath()"
+    },
+    "19": {
+      "branchId": 2,
+      "one": "21",
+      "type": "branch",
+      "content": "Border"
+    },
+    "20": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "ctx.stroke()"
+    },
+    "21": {
+      "flag1": 1,
+      "type": "question",
+      "one": "28",
+      "two": "13",
+      "content": "line"
+    },
+    "23": {
+      "one": "29",
+      "type": "action",
+      "two": "",
+      "content": "x = element.left + 0.5\ny = element.top + 0.5"
+    },
+    "24": {
+      "one": "29",
+      "type": "action",
+      "two": "",
+      "content": "x = element.left\ny = element.top"
+    },
+    "28": {
+      "flag1": 0,
+      "type": "question",
+      "two": "23",
+      "one": "24",
+      "content": "mustShift(visuals.config, line)"
+    },
+    "29": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "buildTabPath(\n    ctx,\n    x,\n    y,\n    element.width,\n    element.height,\n    element.aux\n)"
+    },
+    "30": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "centerContentFree(visuals, element, ctx)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

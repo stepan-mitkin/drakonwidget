@@ -1,0 +1,74 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "5",
+      "type": "branch",
+      "content": "Ellipse"
+    },
+    "3": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.fillStyle = fill;\nctx.fill();\nctx.lineWidth = 2;\nctx.strokeStyle = border;\nctx.stroke();"
+    },
+    "4": {
+      "type": "action",
+      "one": "7",
+      "content": "ctx.arc(\n    leftX + config.socketRadius,\n    cy,\n    config.socketRadius,\n    Math.PI / 2,\n    Math.PI * 3 / 2,\n    false\n);"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "ctx.beginPath()"
+    },
+    "6": {
+      "type": "action",
+      "one": "8",
+      "content": "ctx.arc(\n    rightX - config.socketRadius,\n    cy,\n    config.socketRadius,\n    Math.PI * 3 / 2,\n    Math.PI / 2,\n    false\n);"
+    },
+    "7": {
+      "type": "action",
+      "one": "6",
+      "content": "ctx.lineTo(\n    rightX - config.socketRadius,\n    cy - config.socketRadius\n)"
+    },
+    "8": {
+      "type": "action",
+      "one": "3",
+      "content": "ctx.lineTo(\n    leftX + config.socketRadius,\n    cy + config.socketRadius\n)"
+    },
+    "9": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "10": {
+      "branchId": 2,
+      "one": "12",
+      "type": "branch",
+      "content": "Cross"
+    },
+    "11": {
+      "type": "action",
+      "one": "9",
+      "content": "drawCross(\n    ctx,\n    cx,\n    cy,\n    config.socketRadius / 2,\n    2,\n    border\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "11",
+      "content": "cx = (leftX + rightX) / 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nleftX\nrightX\ncy\nfill\nborder\nconfig",
+  "type": "drakon"
+}

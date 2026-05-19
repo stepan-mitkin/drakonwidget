@@ -1,0 +1,65 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "hyp = Math.sqrt(hypSq)\ncos = h / hyp\nangle = Math.acos(cos)"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "6",
+      "content": "v >= 0"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return angle"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return -angle"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "h = x2 - x1\nv = y2 - y1"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "hypSq = h * h + v * v"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "10",
+      "one": "3",
+      "content": "hypSq === 0"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "return 0"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "x1\ny1\nx2\ny2",
+  "type": "drakon"
+}

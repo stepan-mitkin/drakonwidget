@@ -1,0 +1,125 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "33",
+      "type": "branch",
+      "content": "Create top handle"
+    },
+    "10": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "big = 1000"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "topHandle = GroupTopHandle()"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "topHandle.widget = widget\ntopHandle.element = element\ntopHandle.id = element.id\ntopHandle.x = element.hiX + element.x\ntopHandle.y = element.hiY + element.y"
+    },
+    "17": {
+      "type": "action",
+      "one": "29",
+      "content": "topHandle.minY = element.y - big\ntopHandle.maxY = element.y - element.h -\nconfig.metre / 2"
+    },
+    "21": {
+      "branchId": 4,
+      "one": "34",
+      "type": "branch",
+      "content": "Insert handle visuals"
+    },
+    "22": {
+      "branchId": 3,
+      "one": "23",
+      "type": "branch",
+      "content": "X min and max"
+    },
+    "23": {
+      "flag1": 0,
+      "type": "question",
+      "one": "24",
+      "two": "25",
+      "content": "element.flag1"
+    },
+    "24": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "topHandle.minX = element.x + element.w\ntopHandle.maxX = element.x + big"
+    },
+    "25": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "topHandle.minX = element.x - big\ntopHandle.maxX = element.x - element.w"
+    },
+    "26": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "bottomHandle.minX = topHandle.minX\nbottomHandle.maxX = topHandle.maxX"
+    },
+    "28": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, topHandle, ctx)\ncreateHandle(visuals, bottomHandle, ctx)"
+    },
+    "29": {
+      "branchId": 2,
+      "one": "30",
+      "type": "branch",
+      "content": "Create bottom handle"
+    },
+    "30": {
+      "one": "31",
+      "type": "action",
+      "two": "",
+      "content": "bottomHandle = GroupBottomHandle()"
+    },
+    "31": {
+      "one": "32",
+      "type": "action",
+      "two": "",
+      "content": "bottomHandle.widget = widget\nbottomHandle.element = element\nbottomHandle.id = element.id\nbottomHandle.x = element.loX + element.x\nbottomHandle.y = element.loY + element.y"
+    },
+    "32": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "bottomHandle.minY = element.y + element.h\n+ config.metre / 2\nbottomHandle.maxY = element.y + big"
+    },
+    "33": {
+      "type": "action",
+      "one": "10",
+      "content": "visuals = widget.visuals"
+    },
+    "34": {
+      "type": "action",
+      "one": "35",
+      "content": "topHandle.primId = \"top-\" + element.id"
+    },
+    "35": {
+      "type": "action",
+      "one": "28",
+      "content": "bottomHandle.primId = \"bottom-\" + element\n.id"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\nctx\nconfig",
+  "type": "drakon"
+}

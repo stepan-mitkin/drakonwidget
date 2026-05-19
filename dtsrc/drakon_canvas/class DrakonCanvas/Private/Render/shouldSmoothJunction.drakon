@@ -1,0 +1,129 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "24",
+      "content": "node.type === \"junction\""
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "19",
+      "one": "9",
+      "content": "node.left"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "12",
+      "one": "9",
+      "content": "node.left.role"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "10",
+      "one": "3",
+      "content": "node.right"
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "two": "14",
+      "one": "3",
+      "content": "node.right.role"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "9",
+      "content": "node.left.role in unit.noSmooth"
+    },
+    "14": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "3",
+      "content": "node.right.role in unit.noSmooth"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "6",
+      "content": "node.subtype === \"parend\""
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "two": "20",
+      "one": "8",
+      "content": "node.left.role === \"left\""
+    },
+    "20": {
+      "flag1": 0,
+      "type": "question",
+      "two": "21",
+      "one": "8",
+      "content": "node.left.finalTarget"
+    },
+    "21": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "8",
+      "content": "node.left.finalTarget.subtype === \"parend\""
+    },
+    "22": {
+      "flag1": 0,
+      "type": "question",
+      "one": "15",
+      "two": "23",
+      "content": "node.role"
+    },
+    "23": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "15",
+      "content": "node.role in unit.noSmooth"
+    },
+    "24": {
+      "flag1": 0,
+      "type": "question",
+      "one": "22",
+      "two": "5",
+      "content": "node.sharp"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node",
+  "type": "drakon"
+}

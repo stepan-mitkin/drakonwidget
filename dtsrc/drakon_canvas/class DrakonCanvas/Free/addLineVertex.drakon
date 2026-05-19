@@ -1,0 +1,331 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 5,
+      "one": "67",
+      "type": "branch",
+      "content": "Move vertexes left"
+    },
+    "11": {
+      "branchId": 8,
+      "one": "37",
+      "type": "branch",
+      "content": "Perform edit"
+    },
+    "12": {
+      "branchId": 7,
+      "one": "21",
+      "type": "branch",
+      "content": "Insert vertex"
+    },
+    "13": {
+      "type": "loopend",
+      "one": "12"
+    },
+    "14": {
+      "type": "loopbegin",
+      "one": "15",
+      "content": "point; element.coords"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "one": "13",
+      "two": "19",
+      "content": "point.x < old.x"
+    },
+    "19": {
+      "type": "action",
+      "one": "13",
+      "content": "point.x -= shift * 2"
+    },
+    "20": {
+      "type": "action",
+      "one": "11",
+      "content": "element.coords.splice(\n    ordinal + 1,\n    0,\n    newVertex\n)"
+    },
+    "21": {
+      "type": "action",
+      "one": "20",
+      "content": "newVertex = {\n    x: old.x + dx,\n    y: old.y + dy,\n    radius: 0\n}"
+    },
+    "22": {
+      "branchId": 1,
+      "one": "35",
+      "type": "branch",
+      "content": "Prepare"
+    },
+    "32": {
+      "one": "38",
+      "type": "action",
+      "two": "",
+      "content": "old = element.coords[ordinal]"
+    },
+    "33": {
+      "one": "32",
+      "type": "action",
+      "two": "",
+      "content": "element = getFree(visuals, id)"
+    },
+    "34": {
+      "one": "36",
+      "type": "action",
+      "two": "",
+      "content": "radius = visuals.config.socketTouchRadius"
+    },
+    "35": {
+      "one": "34",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals"
+    },
+    "36": {
+      "one": "33",
+      "type": "action",
+      "two": "",
+      "content": "shift = radius * 2"
+    },
+    "37": {
+      "type": "action",
+      "one": "1",
+      "content": "savePoly(\n    widget,\n    id,\n    element.left,\n    element.top,\n    element.coords\n)"
+    },
+    "38": {
+      "branchId": 2,
+      "one": "65",
+      "type": "branch",
+      "content": "Find direction of shift"
+    },
+    "40": {
+      "flag1": 1,
+      "type": "question",
+      "one": "44",
+      "two": "43",
+      "content": "Math.abs(cx2) > Math.abs(cy2)"
+    },
+    "43": {
+      "flag1": 1,
+      "type": "question",
+      "two": "73",
+      "one": "55",
+      "content": "cy1 * cy2 >= 0"
+    },
+    "44": {
+      "flag1": 1,
+      "type": "question",
+      "one": "66",
+      "two": "72",
+      "content": "cx1 * cx2 >= 0"
+    },
+    "45": {
+      "branchId": 6,
+      "one": "68",
+      "type": "branch",
+      "content": "Move vertexes right"
+    },
+    "46": {
+      "type": "loopend",
+      "one": "12"
+    },
+    "47": {
+      "type": "loopbegin",
+      "one": "48",
+      "content": "point; element.coords"
+    },
+    "48": {
+      "flag1": 0,
+      "type": "question",
+      "two": "49",
+      "one": "46",
+      "content": "point.x > old.x"
+    },
+    "49": {
+      "type": "action",
+      "one": "46",
+      "content": "point.x += shift * 2"
+    },
+    "53": {
+      "branchId": 3,
+      "one": "70",
+      "type": "branch",
+      "content": "Move vertexes up"
+    },
+    "54": {
+      "branchId": 4,
+      "one": "69",
+      "type": "branch",
+      "content": "Move vertexes down"
+    },
+    "55": {
+      "flag1": 1,
+      "type": "question",
+      "two": "54",
+      "one": "53",
+      "content": "next.y < old.y"
+    },
+    "57": {
+      "one": "12",
+      "type": "loopend",
+      "two": ""
+    },
+    "58": {
+      "one": "59",
+      "type": "loopbegin",
+      "two": "",
+      "content": "point; element.coords"
+    },
+    "59": {
+      "flag1": 0,
+      "type": "question",
+      "one": "57",
+      "two": "60",
+      "content": "point.y < old.y"
+    },
+    "60": {
+      "one": "57",
+      "type": "action",
+      "two": "",
+      "content": "point.y -= shift * 2"
+    },
+    "61": {
+      "one": "12",
+      "type": "loopend",
+      "two": ""
+    },
+    "62": {
+      "one": "63",
+      "type": "loopbegin",
+      "two": "",
+      "content": "point; element.coords"
+    },
+    "63": {
+      "flag1": 0,
+      "type": "question",
+      "one": "61",
+      "two": "64",
+      "content": "point.y > old.y"
+    },
+    "64": {
+      "one": "61",
+      "type": "action",
+      "two": "",
+      "content": "point.y += shift * 2"
+    },
+    "65": {
+      "type": "action",
+      "one": "74",
+      "content": "len = element.coords.length"
+    },
+    "66": {
+      "flag1": 1,
+      "type": "question",
+      "one": "2",
+      "two": "45",
+      "content": "next.x < old.x"
+    },
+    "67": {
+      "type": "action",
+      "one": "14",
+      "content": "dx = -shift\ndy = 0"
+    },
+    "68": {
+      "type": "action",
+      "one": "47",
+      "content": "dx = shift\ndy = 0"
+    },
+    "69": {
+      "type": "action",
+      "one": "62",
+      "content": "dx = 0\ndy = shift"
+    },
+    "70": {
+      "type": "action",
+      "one": "58",
+      "content": "dx = 0\ndy = -shift"
+    },
+    "71": {
+      "type": "action",
+      "one": "40",
+      "content": "cx1 = old.x - prev.x\ncx2 = next.x - old.x\ncy1 = old.y - prev.y\ncy2 = next.y - old.y"
+    },
+    "72": {
+      "flag1": 1,
+      "type": "question",
+      "one": "53",
+      "two": "54",
+      "content": "cy2 > 0"
+    },
+    "73": {
+      "flag1": 1,
+      "type": "question",
+      "two": "2",
+      "one": "45",
+      "content": "cx2 > 0"
+    },
+    "74": {
+      "flag1": 0,
+      "type": "question",
+      "two": "77",
+      "one": "79",
+      "content": "ordinal === 0"
+    },
+    "77": {
+      "type": "action",
+      "one": "82",
+      "content": "next = element.coords[ordinal + 1]"
+    },
+    "78": {
+      "type": "action",
+      "one": "71",
+      "content": "prev = element.coords[ordinal - 1]\nnext = element.coords[ordinal + 1]"
+    },
+    "79": {
+      "flag1": 0,
+      "type": "question",
+      "one": "78",
+      "two": "80",
+      "content": "ordinal === len - 1"
+    },
+    "80": {
+      "type": "action",
+      "one": "81",
+      "content": "prev = element.coords[ordinal - 1]"
+    },
+    "81": {
+      "type": "action",
+      "one": "83",
+      "content": "cx1 = old.x - prev.x\ncy1 = old.y - prev.y"
+    },
+    "82": {
+      "type": "action",
+      "one": "84",
+      "content": "cx2 = next.x - old.x\ncy2 = next.y - old.y"
+    },
+    "83": {
+      "flag1": 1,
+      "type": "question",
+      "one": "45",
+      "two": "2",
+      "content": "cx1 > 0"
+    },
+    "84": {
+      "flag1": 1,
+      "type": "question",
+      "one": "45",
+      "two": "2",
+      "content": "cx2 > 0"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nid\nordinal",
+  "type": "drakon"
+}

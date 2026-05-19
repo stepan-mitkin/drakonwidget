@@ -1,0 +1,121 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "22",
+      "type": "branch",
+      "content": "Prepare"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "branchNodes = {}"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "scanBranchItems(node, branchNodes)"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "end = widget.visuals.end"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "7",
+      "one": "9",
+      "content": "end"
+    },
+    "7": {
+      "type": "action",
+      "one": "9",
+      "content": "delete branchNodes[end.itemId]"
+    },
+    "8": {
+      "branchId": 3,
+      "one": "18",
+      "type": "branch",
+      "content": "Copy block"
+    },
+    "9": {
+      "branchId": 2,
+      "one": "10",
+      "type": "branch",
+      "content": "Replace targets"
+    },
+    "10": {
+      "type": "action",
+      "one": "12",
+      "content": "items = []\ntargets = {}"
+    },
+    "11": {
+      "type": "loopend",
+      "one": "8"
+    },
+    "12": {
+      "type": "loopbegin",
+      "one": "14",
+      "content": "itemId, bnode; branchNodes"
+    },
+    "13": {
+      "type": "loopend",
+      "one": "17"
+    },
+    "14": {
+      "type": "loopbegin",
+      "one": "15",
+      "content": "next; bnode.next"
+    },
+    "15": {
+      "flag1": 1,
+      "type": "question",
+      "two": "16",
+      "one": "13",
+      "content": "next.itemId in branchNodes"
+    },
+    "16": {
+      "type": "action",
+      "one": "13",
+      "content": "targets[next.itemId] = next.content"
+    },
+    "17": {
+      "type": "action",
+      "one": "11",
+      "content": "items.push(\n    copyItem(widget, itemId, images)\n)"
+    },
+    "18": {
+      "type": "action",
+      "one": "21",
+      "content": "block = {\n    start: node.itemId,\n    items: items,\n    targets: targets,\n    images: images\n}"
+    },
+    "20": {
+      "type": "action",
+      "one": "1",
+      "content": "return \"branch\""
+    },
+    "21": {
+      "type": "action",
+      "one": "20",
+      "content": "saveCopyInClipboard(\n    widget,\n    \"branch\",\n    block\n)"
+    },
+    "22": {
+      "type": "action",
+      "one": "3",
+      "content": "images = {}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

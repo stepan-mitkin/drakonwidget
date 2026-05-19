@@ -1,0 +1,68 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "18"
+    },
+    "5": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "left = node.x - node.w\nright = node.x + node.w\ntop = node.y - node.h\nbottom = node.y + node.h"
+    },
+    "7": {
+      "type": "action",
+      "one": "19",
+      "content": "ctx.beginPath();\nctx.moveTo(x1, top);\nctx.lineTo(x1low, bottom);\nctx.stroke();"
+    },
+    "10": {
+      "type": "action",
+      "one": "16",
+      "content": "ctx.lineWidth = getThemeValue(\n    visuals.config,\n    node,\n    \"borderWidth\"\n) || 1"
+    },
+    "11": {
+      "type": "action",
+      "one": "5",
+      "content": "renderDuration(visuals, node, ctx)"
+    },
+    "12": {
+      "type": "action",
+      "one": "17",
+      "content": "x1 = left + visuals.config.insertionPadding\nx2 = right - visuals.config.insertionPadding"
+    },
+    "16": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "ctx.strokeStyle = getThemeValue(\n    visuals.config,\n    node,\n    \"internalLine\"\n)"
+    },
+    "17": {
+      "type": "action",
+      "one": "10",
+      "content": "x1low = x1 + padding\nx2low = x2 - padding"
+    },
+    "18": {
+      "type": "action",
+      "one": "11",
+      "content": "padding = visuals.config.metre"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.beginPath();\nctx.moveTo(x2, top);\nctx.lineTo(x2low, bottom);\nctx.stroke();"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

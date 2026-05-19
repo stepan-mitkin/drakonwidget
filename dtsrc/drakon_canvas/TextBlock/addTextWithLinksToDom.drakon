@@ -1,0 +1,94 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "10",
+      "content": "parts = splitByWhitespacePreserve(text)"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "15"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "part; parts"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "link = tryCreateLink(part)"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "11",
+      "two": "12",
+      "content": "link"
+    },
+    "9": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "parentElement.appendChild(link)"
+    },
+    "10": {
+      "type": "action",
+      "one": "5",
+      "content": "buffer = \"\""
+    },
+    "11": {
+      "type": "action",
+      "one": "4",
+      "content": "buffer += part"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "two": "9",
+      "one": "13",
+      "content": "buffer"
+    },
+    "13": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "appendTextNode(parentElement, buffer)"
+    },
+    "14": {
+      "type": "action",
+      "one": "9",
+      "content": "buffer = \"\""
+    },
+    "15": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "1",
+      "content": "buffer"
+    },
+    "16": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "appendTextNode(parentElement, buffer)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "parentElement\ntext",
+  "type": "drakon"
+}

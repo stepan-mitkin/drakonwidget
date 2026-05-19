@@ -1,0 +1,78 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Scan subgraph"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "endId = getParTarget(start)"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "visited = {}\nvisited[endId] = true"
+    },
+    "5": {
+      "type": "action",
+      "one": "7",
+      "content": "scanTwoGraph(\n    widget.model.items,\n    visited,\n    start.id\n)"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "11",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "7": {
+      "branchId": 2,
+      "one": "10",
+      "type": "branch",
+      "content": "Add nodes to selection"
+    },
+    "8": {
+      "type": "loopend",
+      "one": "6"
+    },
+    "9": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "id, _; visited"
+    },
+    "10": {
+      "type": "action",
+      "one": "9",
+      "content": "result = headNode"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    },
+    "12": {
+      "type": "action",
+      "one": "8",
+      "content": "result = addOne(widget, result, node)"
+    },
+    "13": {
+      "type": "action",
+      "one": "12",
+      "content": "node = getNode(widget.visuals, id)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nheadNode\nstart",
+  "type": "drakon"
+}

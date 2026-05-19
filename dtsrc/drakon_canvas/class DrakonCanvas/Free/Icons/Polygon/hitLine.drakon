@@ -1,0 +1,133 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "13",
+      "type": "branch",
+      "content": "Type of line"
+    },
+    "11": {
+      "branchId": 6,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "12": {
+      "branchId": 3,
+      "one": "41",
+      "type": "branch",
+      "content": "Horizontal"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "one": "14",
+      "two": "17",
+      "content": "x1 === x2"
+    },
+    "14": {
+      "flag1": 0,
+      "type": "question",
+      "one": "16",
+      "two": "12",
+      "content": "y1 === y2"
+    },
+    "15": {
+      "branchId": 4,
+      "one": "42",
+      "type": "branch",
+      "content": "Vertical"
+    },
+    "16": {
+      "branchId": 5,
+      "one": "25",
+      "type": "branch",
+      "content": "Precise"
+    },
+    "17": {
+      "flag1": 0,
+      "type": "question",
+      "one": "15",
+      "two": "18",
+      "content": "y1 === y2"
+    },
+    "18": {
+      "type": "action",
+      "one": "11",
+      "content": "return true"
+    },
+    "25": {
+      "type": "action",
+      "one": "26",
+      "content": "line = lineFrom2Points(x1, y1, x2, y2)"
+    },
+    "26": {
+      "type": "action",
+      "one": "27",
+      "content": "distance = distanceLineToPoint(\n    line,\n    pos.x,\n    pos.y\n)"
+    },
+    "27": {
+      "flag1": 1,
+      "type": "question",
+      "two": "29",
+      "one": "28",
+      "content": "Math.abs(distance) >= margin"
+    },
+    "28": {
+      "type": "action",
+      "one": "11",
+      "content": "return false"
+    },
+    "29": {
+      "type": "action",
+      "one": "11",
+      "content": "return true"
+    },
+    "37": {
+      "branchId": 1,
+      "one": "38",
+      "type": "branch",
+      "content": "Cull box"
+    },
+    "38": {
+      "one": "39",
+      "type": "action",
+      "two": "",
+      "content": "box = calculateLineBoxCore(\n    x1,\n    y1,\n    x2,\n    y2,\n    margin\n)"
+    },
+    "39": {
+      "flag1": 1,
+      "type": "question",
+      "one": "2",
+      "two": "40",
+      "content": "hitBox(box, pos.x, pos.y)"
+    },
+    "40": {
+      "type": "action",
+      "one": "11",
+      "content": "return false"
+    },
+    "41": {
+      "type": "action",
+      "one": "11",
+      "content": "return true"
+    },
+    "42": {
+      "type": "action",
+      "one": "11",
+      "content": "return true"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "x1\ny1\nx2\ny2\npos\nmargin",
+  "type": "drakon"
+}

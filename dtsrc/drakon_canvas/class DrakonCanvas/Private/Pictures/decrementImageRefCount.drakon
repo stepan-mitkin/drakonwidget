@@ -1,0 +1,38 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "image = visuals.images[imageId]"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "image.refCount--"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "3",
+      "content": "imageId"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nimageId",
+  "type": "drakon"
+}

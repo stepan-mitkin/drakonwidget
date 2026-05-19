@@ -1,0 +1,258 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "48",
+      "type": "branch",
+      "content": "Start"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "head = skewerHead(skewer)\ntail = skewerTail(skewer)"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "38",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "12",
+      "type": "branch",
+      "content": "Step"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "one": "7",
+      "two": "4",
+      "content": "head.left"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "one": "8",
+      "two": "4",
+      "content": "tail.left"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "start = getNextDown(head)\nfinish = getNextUp(tail)"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "linkSkewers(\n    visuals,\n    start.skewer,\n    skewer,\n    start.w + metre\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "node = getDown(start)\nboundary = getBoundary(visuals, skewer)"
+    },
+    "11": {
+      "type": "action",
+      "one": "5",
+      "content": "linkSkewers(\n    visuals,\n    finish.skewer,\n    skewer,\n    boundary\n)"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "18",
+      "two": "13",
+      "content": "node === finish"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "14",
+      "content": "node.type === \"question\""
+    },
+    "14": {
+      "type": "action",
+      "one": "4",
+      "content": "linkSkewers(\n    visuals,\n    node.skewer,\n    skewer,\n    node.w + boundary + metre\n)"
+    },
+    "15": {
+      "type": "case",
+      "one": "30"
+    },
+    "16": {
+      "one": "28",
+      "type": "case",
+      "two": "15",
+      "content": "\"select\""
+    },
+    "17": {
+      "one": "46",
+      "type": "case",
+      "two": "19",
+      "content": "\"question\""
+    },
+    "18": {
+      "type": "select",
+      "one": "17",
+      "content": "node.type"
+    },
+    "19": {
+      "one": "33",
+      "type": "case",
+      "two": "20",
+      "content": "\"arrow-loop\""
+    },
+    "20": {
+      "one": "43",
+      "type": "case",
+      "two": "16",
+      "content": "\"junction\""
+    },
+    "22": {
+      "flag1": 0,
+      "type": "question",
+      "two": "23",
+      "one": "47",
+      "content": "rightJ.up"
+    },
+    "23": {
+      "type": "action",
+      "one": "45",
+      "content": "linkSkewers(\n    visuals,\n    node.skewer,\n    skewer,\n    node.w + boundary + metre\n)"
+    },
+    "25": {
+      "type": "action",
+      "one": "5",
+      "content": "corner = goRight(node)\nnode = getDown(corner)"
+    },
+    "27": {
+      "type": "action",
+      "one": "5",
+      "content": "node = lastCase(node)"
+    },
+    "28": {
+      "type": "action",
+      "one": "27",
+      "content": "linkSkewers(\n    visuals,\n    node.skewer,\n    skewer,\n    node.w + boundary\n)"
+    },
+    "29": {
+      "type": "action",
+      "one": "5",
+      "content": "node = getDown(node)"
+    },
+    "30": {
+      "type": "action",
+      "one": "29",
+      "content": "linkSkewers(\n    visuals,\n    node.skewer,\n    skewer,\n    node.w + boundary\n)"
+    },
+    "32": {
+      "type": "action",
+      "one": "44",
+      "content": "linkSkewers(\n    visuals,\n    rightJ.skewer,\n    skewer,\n    boundary\n)"
+    },
+    "33": {
+      "type": "action",
+      "one": "32",
+      "content": "rightJ = getRight(node)"
+    },
+    "35": {
+      "flag1": 1,
+      "type": "question",
+      "one": "37",
+      "two": "36",
+      "content": "node.down"
+    },
+    "36": {
+      "type": "action",
+      "one": "5",
+      "content": "node = goLeft(node)"
+    },
+    "37": {
+      "type": "action",
+      "one": "5",
+      "content": "node = getDown(node)"
+    },
+    "38": {
+      "flag1": 1,
+      "type": "question",
+      "two": "39",
+      "one": "1",
+      "content": "visuals.branches.length === 1"
+    },
+    "39": {
+      "type": "action",
+      "one": "40",
+      "content": "left = getSilCorner(visuals)"
+    },
+    "40": {
+      "type": "action",
+      "one": "41",
+      "content": "hskewer = visuals.header.skewer"
+    },
+    "41": {
+      "type": "action",
+      "one": "42",
+      "content": "boundary = getBoundary(visuals, hskewer)"
+    },
+    "42": {
+      "type": "action",
+      "one": "1",
+      "content": "linkSkewers(\n    visuals,\n    left.skewer,\n    hskewer,\n    boundary\n)"
+    },
+    "43": {
+      "type": "action",
+      "one": "52",
+      "content": "linkSkewers(\n    visuals,\n    node.skewer,\n    skewer,\n    node.w + boundary\n)"
+    },
+    "44": {
+      "type": "action",
+      "one": "5",
+      "content": "node = getDown(node)"
+    },
+    "45": {
+      "type": "action",
+      "one": "5",
+      "content": "node = getDown(node)"
+    },
+    "46": {
+      "type": "action",
+      "one": "22",
+      "content": "rightJ = getRight(node)"
+    },
+    "47": {
+      "type": "action",
+      "one": "25",
+      "content": "linkSkewers(\n    visuals,\n    rightJ.skewer,\n    skewer,\n    boundary\n)"
+    },
+    "48": {
+      "type": "action",
+      "one": "3",
+      "content": "metre = visuals.config.metre"
+    },
+    "52": {
+      "flag1": 0,
+      "type": "question",
+      "one": "35",
+      "two": "53",
+      "content": "node.subtype === \"parbegin\""
+    },
+    "53": {
+      "type": "action",
+      "one": "5",
+      "content": "corner = goRight(node)\nnode = getDown(corner)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nskewer",
+  "type": "drakon"
+}

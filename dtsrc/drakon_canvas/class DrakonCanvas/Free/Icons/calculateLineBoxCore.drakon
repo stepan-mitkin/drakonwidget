@@ -1,0 +1,45 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "left = Math.min(x1, x2)\nright = Math.max(x1, x2)"
+    },
+    "5": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "top = Math.min(y1, y2)\nbottom = Math.max(y1, y2)"
+    },
+    "7": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "width = right - left\nheight = bottom - top"
+    },
+    "10": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return createBoxWithMargin(\n    left,\n    top,\n    width,\n    height,\n    margin\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "x1\ny1\nx2\ny2\nmargin",
+  "type": "drakon"
+}

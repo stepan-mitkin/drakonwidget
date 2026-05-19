@@ -1,0 +1,109 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "63",
+      "type": "branch"
+    },
+    "9": {
+      "one": "32",
+      "type": "action",
+      "two": "",
+      "content": "width = widget.width\nheight = widget.height"
+    },
+    "28": {
+      "type": "action",
+      "one": "9",
+      "content": "widget.contentContainer.style.transformOrigin\n= \"top left\"\nwidget.contentContainer.style.transform =\nscale + \" \" + translate"
+    },
+    "29": {
+      "type": "action",
+      "one": "67",
+      "content": "visuals = widget.visuals\nconfig = visuals.config"
+    },
+    "30": {
+      "type": "action",
+      "one": "83",
+      "content": "scale = \"scale(\" + zoom + \", \" + zoom + \")\""
+    },
+    "32": {
+      "type": "action",
+      "one": "88",
+      "content": "ctx = widget.canvas.getContext(\"2d\");"
+    },
+    "62": {
+      "type": "action",
+      "one": "29",
+      "content": "factor = html.getRetinaFactor()"
+    },
+    "63": {
+      "type": "action",
+      "one": "62",
+      "content": "zoom = widget.zoomFactor"
+    },
+    "64": {
+      "type": "action",
+      "one": "30",
+      "content": "translate = \"translate(\" + (-tx) + \"px, \"\n+ (-ty) + \"px)\""
+    },
+    "67": {
+      "type": "action",
+      "one": "64",
+      "content": "tx = visuals.scrollX\nty = visuals.scrollY"
+    },
+    "83": {
+      "flag1": 0,
+      "type": "question",
+      "two": "9",
+      "one": "28",
+      "content": "config.canvasIcons"
+    },
+    "87": {
+      "type": "action",
+      "one": "90",
+      "content": "paintCore(\n    widget,\n    factor,\n    zoom,\n    -visuals.scrollX,\n    -visuals.scrollY,\n    width,\n    height\n)"
+    },
+    "88": {
+      "type": "action",
+      "one": "87",
+      "content": "visuals.ctx = ctx"
+    },
+    "89": {
+      "type": "action",
+      "one": "1",
+      "content": "drawScrollbars(widget)"
+    },
+    "90": {
+      "flag1": 1,
+      "type": "question",
+      "one": "92",
+      "two": "89",
+      "content": "config.watermark"
+    },
+    "91": {
+      "one": "89",
+      "type": "action",
+      "two": "",
+      "content": "drawWatermark(\n    widget,\n    ctx,\n    config.watermark,\n    factor,\n    zoom,\n    width,\n    height\n)"
+    },
+    "92": {
+      "flag1": 1,
+      "type": "question",
+      "two": "89",
+      "one": "91",
+      "content": "config.editorWatermark"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

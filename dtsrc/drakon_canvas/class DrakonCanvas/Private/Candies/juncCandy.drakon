@@ -1,0 +1,32 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "centerSquare(\n    ctx,\n    node.x,\n    node.y,\n    size,\n    fill,\n    border,\n    lineWidth\n)"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "fill = config.theme.candyFill\nborder = config.theme.candyBorder\nsize = 10\nlineWidth = 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node\nctx\nconfig",
+  "type": "drakon"
+}

@@ -1,0 +1,175 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "18",
+      "type": "branch",
+      "content": "Draw icons"
+    },
+    "4": {
+      "branchId": 6,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "16",
+      "type": "branch",
+      "content": "Find nugget pos"
+    },
+    "6": {
+      "type": "action",
+      "one": "10",
+      "content": "visuals = widget.visuals"
+    },
+    "10": {
+      "type": "action",
+      "one": "39",
+      "content": "ctx.setLineDash([])"
+    },
+    "11": {
+      "one": "20",
+      "type": "loopend",
+      "two": ""
+    },
+    "12": {
+      "one": "13",
+      "type": "loopbegin",
+      "two": "",
+      "content": "id, type; widget.selection.prims"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "one": "38",
+      "two": "11",
+      "content": "type === \"free\""
+    },
+    "16": {
+      "type": "action",
+      "one": "12",
+      "content": "common = {\n    left: Number.MAX_SAFE_INTEGER,\n    top: Number.MAX_SAFE_INTEGER,\n    right: Number.MIN_SAFE_INTEGER,\n    bottom: Number.MIN_SAFE_INTEGER\n}"
+    },
+    "17": {
+      "type": "action",
+      "one": "26",
+      "content": "calculateBoxFromFree(element, common)"
+    },
+    "18": {
+      "type": "action",
+      "one": "6",
+      "content": "showNugget = false"
+    },
+    "20": {
+      "branchId": 3,
+      "one": "21",
+      "type": "branch",
+      "content": "Nugget"
+    },
+    "21": {
+      "flag1": 1,
+      "type": "question",
+      "one": "22",
+      "two": "27",
+      "content": "showNugget"
+    },
+    "22": {
+      "type": "action",
+      "one": "23",
+      "content": "x = Math.floor(\n    (common.right + common.left) / 2 + 20\n)\ny = Math.floor(common.top - 40)"
+    },
+    "23": {
+      "type": "action",
+      "one": "32",
+      "content": "visuals.nugget = drawNugget(ctx, x, y)"
+    },
+    "25": {
+      "flag1": 0,
+      "type": "question",
+      "one": "17",
+      "two": "11",
+      "content": "element.type === \"group-duration\""
+    },
+    "26": {
+      "type": "action",
+      "one": "11",
+      "content": "showNugget = true"
+    },
+    "27": {
+      "type": "action",
+      "one": "32",
+      "content": "visuals.nugget = undefined"
+    },
+    "29": {
+      "branchId": 5,
+      "one": "31",
+      "type": "branch",
+      "content": "Ears"
+    },
+    "31": {
+      "type": "action",
+      "one": "4",
+      "content": "drawEars(visuals, ctx)"
+    },
+    "32": {
+      "branchId": 4,
+      "one": "34",
+      "type": "branch",
+      "content": "Draw candies"
+    },
+    "33": {
+      "one": "29",
+      "type": "loopend",
+      "two": ""
+    },
+    "34": {
+      "one": "35",
+      "type": "loopbegin",
+      "two": "",
+      "content": "id, type; widget.selection.prims"
+    },
+    "35": {
+      "flag1": 1,
+      "type": "question",
+      "two": "33",
+      "one": "36",
+      "content": "type === \"free\""
+    },
+    "36": {
+      "one": "37",
+      "type": "action",
+      "two": "",
+      "content": "element = getFree(visuals, id)"
+    },
+    "37": {
+      "one": "33",
+      "type": "action",
+      "two": "",
+      "content": "drawFreeCandies(widget, element, ctx)"
+    },
+    "38": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "element = getFree(visuals, id)"
+    },
+    "39": {
+      "type": "action",
+      "one": "5",
+      "content": "clearShadow(ctx)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nctx",
+  "type": "drakon"
+}

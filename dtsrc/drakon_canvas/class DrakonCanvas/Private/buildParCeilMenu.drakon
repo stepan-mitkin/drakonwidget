@@ -1,0 +1,66 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "menu = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return menu"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "12",
+      "content": "isReadonlyImpl(widget)"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "pushMenuItem(\n    \"delete_path\",\n    menu,\n    tr(widget, \"Delete path\"),\n    widget.visuals.config.imagePath + \"delete.png\",\n    function () {\n        deleteParPath(widget, edge.tail)\n    }\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "pushMenuItem(\n    \"add_path\",\n    menu,\n    tr(widget, \"Add path\"),\n    widget.visuals.config.imagePath + \"par.png\",\n    function () {\n        insertPath(\n            widget,\n            edge.head,\n            false\n        )\n    }\n)"
+    },
+    "10": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "menu.push({type: \"separator\"})"
+    },
+    "11": {
+      "type": "action",
+      "one": "9",
+      "content": "pushMenuItem(\n    \"add_path_left\",\n    menu,\n    tr(widget, \"Add path to the left\"),\n    widget.visuals.config.imagePath + \"par.png\",\n    function () {\n        insertPath(\n            widget,\n            edge.head,\n            true\n        )\n    }\n)"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "11",
+      "two": "9",
+      "content": "edge.head.left"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nedge",
+  "type": "drakon"
+}

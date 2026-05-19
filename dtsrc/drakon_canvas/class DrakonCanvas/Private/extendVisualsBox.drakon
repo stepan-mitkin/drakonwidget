@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "10"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "7",
+      "content": "origin.x < box.left"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "box.left = origin.x"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "box.width = box.right - box.left"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "1",
+      "content": "origin.y < box.top"
+    },
+    "8": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "box.top = origin.y"
+    },
+    "9": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "box.height = box.bottom - box.top"
+    },
+    "10": {
+      "type": "action",
+      "one": "4",
+      "content": "box = visuals.box"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\norigin",
+  "type": "drakon"
+}

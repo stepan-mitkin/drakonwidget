@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "ctx.lineWidth = getLineWidth(\n    visuals,\n    element\n)"
+    },
+    "5": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "ctx.strokeStyle = getLineColor(\n    visuals,\n    element\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "10",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "12",
+      "two": "9",
+      "content": "mustShift(visuals.config, line)"
+    },
+    "9": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "x += 0.5\ny += 0.5"
+    },
+    "10": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "line = ctx.lineWidth || 1"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "xp = Math.round(w * 0.5)\nyp = Math.round(h * 0.5)\nx0 = x - w + xp\nx1 = x + w - xp\ny0 = y - h + yp\ny1 = y + h - yp\nline1(ctx, x0, y0, x1, y0)\nline1(ctx, x0, y, x1, y)\nline1(ctx, x0, y1, x1, y1)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

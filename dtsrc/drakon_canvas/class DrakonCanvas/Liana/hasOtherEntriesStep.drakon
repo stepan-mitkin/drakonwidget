@@ -1,0 +1,73 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "1",
+      "content": "context.found"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "one": "1",
+      "two": "6",
+      "content": "lower === higher"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "1",
+      "content": "lower.id in context.visited"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "context.visited[lower.id] = true"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "12",
+      "one": "10",
+      "content": "lower.prev.length === 0"
+    },
+    "9": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "10": {
+      "type": "loopbegin",
+      "one": "11",
+      "content": "prev; lower.prev"
+    },
+    "11": {
+      "type": "action",
+      "one": "9",
+      "content": "hasOtherEntriesStep(\n    prev,\n    higher,\n    context\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "context.found = true"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "lower\nhigher\ncontext",
+  "type": "drakon"
+}

@@ -1,0 +1,227 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "25",
+      "type": "branch",
+      "content": "Create canvas"
+    },
+    "4": {
+      "one": "61",
+      "type": "action",
+      "two": "",
+      "content": "canvas = html.createElement(\"canvas\")"
+    },
+    "6": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "canvas.style.position = \"absolute\"\ncanvas.style.display = \"inline-block\"\ncanvas.style.left = \"0px\"\ncanvas.style.top = \"0px\"\ncanvas.style.width = width + \"px\"\ncanvas.style.height = height + \"px\""
+    },
+    "14": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "canvas.width = width * factor\ncanvas.height = height * factor\nself.width = width\nself.height = height"
+    },
+    "15": {
+      "type": "action",
+      "one": "18",
+      "content": "self.canvas = canvas\nself.container = container\nhtml.add(container, canvas)"
+    },
+    "17": {
+      "branchId": 8,
+      "one": "19",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "18": {
+      "branchId": 2,
+      "one": "20",
+      "type": "branch",
+      "content": "Copy config"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return container"
+    },
+    "20": {
+      "type": "action",
+      "one": "60",
+      "content": "self.config = buildConfig(config)"
+    },
+    "25": {
+      "type": "action",
+      "one": "4",
+      "content": "container = div(\n    {\n        display: \"inline-block\",\n        position: \"relative\",\n        left: \"0px\",\n        top: \"0px\",\n        width: \"100%\",\n        height: \"100%\",\n        overflow: \"hidden\"\n    }\n)"
+    },
+    "29": {
+      "branchId": 4,
+      "one": "59",
+      "type": "branch",
+      "content": "Scroll bars"
+    },
+    "39": {
+      "branchId": 3,
+      "one": "62",
+      "type": "branch",
+      "content": "Content container"
+    },
+    "40": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "self.contentContainer = div(\n    {\n        display: \"inline-block\",\n        position: \"absolute\",\n        left: \"0px\",\n        top: \"0px\",\n        width: \"100vw\",\n        height: \"100vh\",\n        \"pointer-events\": \"none\"\n    }\n)"
+    },
+    "41": {
+      "one": "29",
+      "type": "action",
+      "two": "",
+      "content": "html.add(\n    container,\n    self.contentContainer\n)"
+    },
+    "44": {
+      "one": "51",
+      "type": "action",
+      "two": "",
+      "content": "self.scrollableContainer = div(\n    scrollable\n)\nhtml.add(\n    container,\n    self.scrollableContainer\n)"
+    },
+    "51": {
+      "branchId": 5,
+      "one": "52",
+      "type": "branch",
+      "content": "Canvas events"
+    },
+    "52": {
+      "one": "53",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"pointerdown\",\n    self.onMouseDown\n)"
+    },
+    "53": {
+      "one": "54",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"pointermove\",\n    self.onMouseMove\n)"
+    },
+    "54": {
+      "one": "55",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"pointerup\",\n    self.onMouseUp\n)"
+    },
+    "55": {
+      "one": "57",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"pointerleave\",\n    self.onMouseLeave\n)"
+    },
+    "57": {
+      "one": "64",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"contextmenu\",\n    self.onContextMenu\n)"
+    },
+    "59": {
+      "type": "action",
+      "one": "44",
+      "content": "scrollable = \"drakon-scrollable-container\"\n+ self.myStyleId"
+    },
+    "60": {
+      "type": "action",
+      "one": "39",
+      "content": "createStyles(self)"
+    },
+    "61": {
+      "type": "action",
+      "one": "6",
+      "content": "factor = html.getRetinaFactor()"
+    },
+    "62": {
+      "flag1": 0,
+      "type": "question",
+      "one": "40",
+      "two": "29",
+      "content": "config.canvasIcons"
+    },
+    "64": {
+      "one": "65",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"wheel\",\n    function (evt) {\n        onMouseWheel(self, evt)\n    }\n)"
+    },
+    "65": {
+      "branchId": 6,
+      "one": "66",
+      "type": "branch",
+      "content": "Touch events"
+    },
+    "66": {
+      "one": "67",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"touchstart\",\n    self.onTouchStart\n)"
+    },
+    "67": {
+      "one": "68",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"touchmove\",\n    self.onTouchMove\n)"
+    },
+    "68": {
+      "one": "69",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"touchcancel\",\n    self.onTouchEnd\n)"
+    },
+    "69": {
+      "one": "70",
+      "type": "action",
+      "two": "",
+      "content": "registerEvent(\n    self.scrollableContainer,\n    \"touchend\",\n    self.onTouchEnd\n)"
+    },
+    "70": {
+      "branchId": 7,
+      "one": "71",
+      "type": "branch",
+      "content": "Debug log"
+    },
+    "71": {
+      "flag1": 0,
+      "type": "question",
+      "two": "75",
+      "one": "17",
+      "content": "self.config.showLog"
+    },
+    "75": {
+      "one": "77",
+      "type": "action",
+      "two": "",
+      "content": "unit.logDiv = div(\n    \"full-screen\",\n    {\n        \"position\": \"fixed\",\n        \"width\": \"100vw\",\n        \"heigh\": \"100vh\",\n        \"left\": \"0px\",\n        \"top\": \"0px\",\n        background: \"rgba(255, 200, 0, 0.5)\",\n        \"pointer-events\": \"none\",\n        \"z-index\": 5000\n    }\n)"
+    },
+    "76": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "html.add(container, unit.logDiv)"
+    },
+    "77": {
+      "one": "76",
+      "type": "action",
+      "two": "",
+      "content": "unit.debugLog = []"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "width\nheight\nconfig",
+  "type": "drakon"
+}

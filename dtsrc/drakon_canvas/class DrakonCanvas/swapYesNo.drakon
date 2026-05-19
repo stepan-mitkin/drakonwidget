@@ -1,0 +1,64 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "14"
+    },
+    "5": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "change = {\n    id: id,\n    fields: {},\n    op: \"update\"\n}"
+    },
+    "6": {
+      "type": "action",
+      "one": "5",
+      "content": "node = getNode(self.visuals, id)"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "9",
+      "one": "8",
+      "content": "node.flag1"
+    },
+    "8": {
+      "type": "action",
+      "one": "12",
+      "content": "change.fields.flag1 = 0"
+    },
+    "9": {
+      "type": "action",
+      "one": "12",
+      "content": "change.fields.flag1 = 1"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "return updateAndKeepSelection(\n    self,\n    [change]\n)"
+    },
+    "13": {
+      "type": "action",
+      "one": "6",
+      "content": "checkNotReadonly(self)"
+    },
+    "14": {
+      "type": "action",
+      "one": "13",
+      "content": "tracing.trace(\"swapYesNo\", id)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "id",
+  "type": "drakon"
+}

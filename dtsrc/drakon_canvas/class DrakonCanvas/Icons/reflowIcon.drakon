@@ -1,0 +1,75 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "27"
+    },
+    "11": {
+      "type": "case",
+      "one": "1",
+      "two": ""
+    },
+    "12": {
+      "one": "17",
+      "type": "case",
+      "two": "15",
+      "content": "\"case\""
+    },
+    "13": {
+      "one": "17",
+      "type": "case",
+      "two": "12",
+      "content": "\"branch\""
+    },
+    "14": {
+      "one": "13",
+      "type": "select",
+      "two": "",
+      "content": "node.type"
+    },
+    "15": {
+      "one": "17",
+      "type": "case",
+      "two": "11",
+      "content": "\"address\""
+    },
+    "17": {
+      "type": "action",
+      "one": "1",
+      "content": "node.h += config.triangleHeight / 2"
+    },
+    "24": {
+      "type": "action",
+      "one": "25",
+      "content": "size = commitCore(\n    visuals,\n    node,\n    node.w * 2\n)"
+    },
+    "25": {
+      "type": "action",
+      "one": "26",
+      "content": "setNodeSize(config, node, size)"
+    },
+    "26": {
+      "type": "action",
+      "one": "14",
+      "content": "node.contentHeight = size.height"
+    },
+    "27": {
+      "type": "action",
+      "one": "24",
+      "content": "config = visuals.config"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode",
+  "type": "drakon"
+}

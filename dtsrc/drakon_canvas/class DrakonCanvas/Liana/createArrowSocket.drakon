@@ -1,0 +1,96 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Analyze"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "targetId = element.finalTarget.itemId"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "9",
+      "type": "branch",
+      "content": "Create socket"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "7",
+      "content": "isArrowLoop(element.head)"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "8",
+      "content": "isArrowLoop(element.tail)"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "4",
+      "content": "canTransplant(visuals, targetId, source)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "12",
+      "two": "4",
+      "content": "element.tail.x < source.tail.x"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "one": "11",
+      "two": "4",
+      "content": "withinSameLoop(\n    visuals,\n    source,\n    element,\n    0\n)"
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "13",
+      "content": "hasOtherEntries(\n    visuals,\n    source,\n    element.tail\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "10",
+      "content": "targetLoops = element.finalTarget.loops\nsrcLoops = source.finalTarget.loops"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "socket = createSocketFromEdge(\n    visuals,\n    element,\n    \"arrow\",\n    undefined\n)"
+    },
+    "14": {
+      "type": "action",
+      "one": "4",
+      "content": "utils.addRange(\n    source.links,\n    socket.links\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nsource",
+  "type": "drakon"
+}

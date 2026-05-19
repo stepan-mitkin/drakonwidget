@@ -1,0 +1,106 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "id = \"e\" + getNextId(visuals)"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "edge = {\n    id: id,\n    head: head,\n    tail: tail,\n    vertical: vertical,\n    links: []\n}"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "11",
+      "one": "6",
+      "content": "vertical"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "10",
+      "one": "7",
+      "content": "head.right"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "9",
+      "one": "8",
+      "content": "tail.left"
+    },
+    "8": {
+      "type": "action",
+      "one": "16",
+      "content": "head.right = edge\ntail.left = edge"
+    },
+    "9": {
+      "type": "action",
+      "one": "16",
+      "content": "throw Error(\"tail.left is busy\")"
+    },
+    "10": {
+      "type": "action",
+      "one": "16",
+      "content": "throw Error(\"head.right is busy\")"
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "two": "15",
+      "one": "12",
+      "content": "head.down"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "two": "14",
+      "one": "13",
+      "content": "tail.up"
+    },
+    "13": {
+      "type": "action",
+      "one": "16",
+      "content": "head.down = edge\ntail.up = edge"
+    },
+    "14": {
+      "type": "action",
+      "one": "16",
+      "content": "throw Error(\"tail.up is busy\")"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "throw Error(\"head.down is busy\")"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "visuals.edges[id] = edge"
+    },
+    "17": {
+      "type": "action",
+      "one": "1",
+      "content": "return edge"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nhead\ntail\nvertical",
+  "type": "drakon"
+}

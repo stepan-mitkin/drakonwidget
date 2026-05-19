@@ -1,0 +1,102 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Init"
+    },
+    "3": {
+      "type": "action",
+      "one": "11",
+      "content": "edits = []"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "9",
+      "type": "branch",
+      "content": "Delete items"
+    },
+    "6": {
+      "branchId": 2,
+      "one": "15",
+      "type": "branch",
+      "content": "Empty loop"
+    },
+    "7": {
+      "branchId": 3,
+      "one": "16",
+      "type": "branch",
+      "content": "Normal loop"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "deleteItem(widget, edits, node)"
+    },
+    "10": {
+      "type": "action",
+      "one": "8",
+      "content": "deleteItem(widget, edits, end)"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "edgeUp = node.up"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "end = node.loopEnd"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "beforeEnd = getUp(end)"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "6",
+      "content": "beforeEnd === node"
+    },
+    "15": {
+      "type": "action",
+      "one": "4",
+      "content": "redirectUpperItems(\n    edits,\n    edgeUp.links,\n    end.one\n)"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "redirectUpperItems(\n    edits,\n    edgeUp.links,\n    node.one\n)"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "edgeUp2 = end.up"
+    },
+    "18": {
+      "type": "action",
+      "one": "4",
+      "content": "redirectUpperItems(\n    edits,\n    edgeUp2.links,\n    end.one\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

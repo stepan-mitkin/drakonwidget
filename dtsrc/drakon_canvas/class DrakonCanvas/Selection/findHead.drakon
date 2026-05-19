@@ -1,0 +1,78 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "5"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "10"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "6",
+            "content": "id, type; selection.prims"
+        },
+        "6": {
+            "flag1": 1,
+            "type": "question",
+            "two": "7",
+            "one": "11",
+            "content": "type === \"node\""
+        },
+        "7": {
+            "type": "action",
+            "one": "11",
+            "content": "return undefined"
+        },
+        "8": {
+            "flag1": 0,
+            "type": "question",
+            "two": "9",
+            "one": "12",
+            "content": "item.count === 0"
+        },
+        "9": {
+            "type": "action",
+            "one": "4",
+            "content": "return id"
+        },
+        "10": {
+            "type": "action",
+            "one": "1",
+            "content": "return undefined"
+        },
+        "11": {
+            "type": "action",
+            "one": "8",
+            "content": "item = byId[id]"
+        },
+        "12": {
+            "flag1": 0,
+            "type": "question",
+            "one": "4",
+            "two": "13",
+            "content": "item.count === 1"
+        },
+        "13": {
+            "flag1": 0,
+            "type": "question",
+            "two": "9",
+            "one": "4",
+            "content": "item.type === \"arrow-loop\""
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "selection\nbyId",
+    "type": "drakon"
+}

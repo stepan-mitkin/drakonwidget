@@ -1,0 +1,81 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "18"
+    },
+    "18": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "two": "20",
+      "one": "27",
+      "content": "mustShift(visuals.config, line)"
+    },
+    "20": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "x += 0.5\ny += 0.5"
+    },
+    "21": {
+      "one": "24",
+      "type": "action",
+      "two": "",
+      "content": "line = ctx.lineWidth || 1"
+    },
+    "22": {
+      "one": "23",
+      "type": "action",
+      "two": "",
+      "content": "ctx.strokeRect(left, cy, w2, border)\ncy += border * 2\nline1(ctx, left, cy, right, cy)\ncy += border\nline1(ctx, left, cy, right, cy)\ncy += border\nline1(ctx, left, cy, right, cy)\ncy += border\ncy = y + h - border * 3\nline1(ctx, left, cy, right, cy)"
+    },
+    "23": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "circlePath(ctx, x, cy, border)\nctx.fill()\nctx.stroke()"
+    },
+    "24": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    },
+    "25": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "r = w / 5"
+    },
+    "26": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "renderFreeIconShapeComplex(\n    ctx,\n    visuals,\n    element,\n    roundedRect,\n    r\n)"
+    },
+    "27": {
+      "type": "action",
+      "one": "22",
+      "content": "border = Math.round(h / 6)\nleft = x - w + border\nright = x + w - border\ncy = y - h + border\nw2 = w * 2 - border * 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

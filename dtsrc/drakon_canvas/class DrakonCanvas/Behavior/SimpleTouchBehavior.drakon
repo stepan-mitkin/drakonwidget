@@ -1,0 +1,307 @@
+{
+    "items": {
+        "2": {
+            "branchId": 1,
+            "one": "10",
+            "type": "branch",
+            "content": "Idle"
+        },
+        "3": {
+            "type": "action",
+            "one": "16",
+            "content": "timer = setTimeout(\n    me.decideOneTimeout,\n    500\n)"
+        },
+        "10": {
+            "type": "sinput",
+            "one": "17",
+            "content": "touchStart(evt)"
+        },
+        "15": {
+            "flag1": 0,
+            "type": "question",
+            "one": "3",
+            "two": "18",
+            "content": "evt.touches.length >= 2"
+        },
+        "16": {
+            "branchId": 2,
+            "one": "20",
+            "type": "branch",
+            "content": "One or two or long press?"
+        },
+        "17": {
+            "type": "action",
+            "one": "93",
+            "content": "startX = evt.touches[0].clientX\nstartY = evt.touches[0].clientY"
+        },
+        "18": {
+            "type": "action",
+            "one": "19",
+            "content": "startX2 = evt.touches[1].clientX\nstartY2 = evt.touches[1].clientY"
+        },
+        "19": {
+            "branchId": 3,
+            "one": "102",
+            "type": "branch",
+            "content": "Start zoom"
+        },
+        "20": {
+            "type": "select",
+            "one": "21",
+            "content": "receive"
+        },
+        "21": {
+            "one": "25",
+            "type": "case",
+            "two": "22",
+            "content": "touchStart(evt)"
+        },
+        "22": {
+            "one": "60",
+            "type": "case",
+            "two": "23",
+            "content": "decideOneTimeout()"
+        },
+        "23": {
+            "one": "52",
+            "type": "case",
+            "two": "24",
+            "content": "touchMove(evt)"
+        },
+        "24": {
+            "one": "37",
+            "type": "case",
+            "two": null,
+            "content": "touchEnd(evt)"
+        },
+        "25": {
+            "type": "action",
+            "one": "35",
+            "content": "clearTimeout(timer)"
+        },
+        "35": {
+            "type": "action",
+            "one": "19",
+            "content": "startX2 = evt.touches[1].clientX\nstartY2 = evt.touches[1].clientY"
+        },
+        "37": {
+            "type": "action",
+            "one": "111",
+            "content": "clearTimeout(timer)"
+        },
+        "38": {
+            "type": "action",
+            "one": "66",
+            "content": "doubleClick(widget, prim, pos, evt)"
+        },
+        "41": {
+            "type": "action",
+            "one": "2",
+            "content": "widget.mouseEvents.mouseUp(\n    buildMouseEvent(\n        startX,\n        startY,\n        0,\n        evt.target\n    )\n)"
+        },
+        "50": {
+            "type": "action",
+            "one": "41",
+            "content": "widget.mouseEvents.mouseDown(\n    buildMouseEvent(\n        startX,\n        startY,\n        0,\n        evt.target\n    )\n)"
+        },
+        "52": {
+            "type": "action",
+            "one": "55",
+            "content": "x = evt.touches[0].clientX\ny = evt.touches[0].clientY"
+        },
+        "54": {
+            "type": "action",
+            "one": "15",
+            "content": "x = startX\ny = startY"
+        },
+        "55": {
+            "flag1": 1,
+            "type": "question",
+            "one": "74",
+            "two": "16",
+            "content": "wantedMove(startX, startY, x, y)"
+        },
+        "58": {
+            "one": "62",
+            "type": "action",
+            "two": "",
+            "content": "prim = findVisualItem(widget, pos)"
+        },
+        "59": {
+            "type": "action",
+            "one": "58",
+            "content": "pos = toDiagram(widget, evt)"
+        },
+        "60": {
+            "type": "action",
+            "one": "59",
+            "content": "evt = buildMouseEvent(\n    startX,\n    startY,\n    0,\n    undefined\n)"
+        },
+        "62": {
+            "flag1": 1,
+            "type": "question",
+            "one": "120",
+            "two": "65",
+            "content": "prim"
+        },
+        "64": {
+            "type": "action",
+            "one": "38",
+            "content": "ensureSelectedOne(widget, prim)"
+        },
+        "65": {
+            "one": "66",
+            "type": "action",
+            "two": "",
+            "content": "deselectAll(widget)"
+        },
+        "66": {
+            "one": "2",
+            "type": "action",
+            "two": "",
+            "content": "paint(widget)"
+        },
+        "74": {
+            "type": "action",
+            "one": "119",
+            "content": "clearTimeout(timer)"
+        },
+        "83": {
+            "branchId": 4,
+            "one": "85",
+            "type": "branch",
+            "content": "Zoom"
+        },
+        "84": {
+            "branchId": 5,
+            "one": "88",
+            "type": "branch",
+            "content": "Scroll"
+        },
+        "85": {
+            "type": "select",
+            "one": "86",
+            "content": "receive"
+        },
+        "86": {
+            "one": "103",
+            "type": "case",
+            "two": "87",
+            "content": "touchMove(evt)"
+        },
+        "87": {
+            "one": "110",
+            "type": "case",
+            "two": null,
+            "content": "touchEnd(evt)"
+        },
+        "88": {
+            "type": "select",
+            "one": "89",
+            "content": "receive"
+        },
+        "89": {
+            "one": "118",
+            "type": "case",
+            "two": "90",
+            "content": "touchMove(evt)"
+        },
+        "90": {
+            "one": "116",
+            "type": "case",
+            "two": null,
+            "content": "touchEnd(evt)"
+        },
+        "93": {
+            "type": "action",
+            "one": "94",
+            "content": "evt2 = buildMouseEvent(\n    startX,\n    startY,\n    0,\n    evt.target\n)"
+        },
+        "94": {
+            "type": "action",
+            "one": "54",
+            "content": "scroller = createMouseScroll(\n    widget,\n    evt2\n)"
+        },
+        "96": {
+            "type": "action",
+            "one": "84",
+            "content": "onMouseScroll(scroller, widget, evt2)"
+        },
+        "102": {
+            "type": "action",
+            "one": "83",
+            "content": "zoomer = createZoomer(\n    widget,\n    startX,\n    startY,\n    startX2,\n    startY2\n)"
+        },
+        "103": {
+            "type": "action",
+            "one": "83",
+            "content": "onTouchZoom(zoomer, widget, evt)"
+        },
+        "110": {
+            "type": "action",
+            "one": "2",
+            "content": "onTouchZoomEnd(widget)"
+        },
+        "111": {
+            "type": "action",
+            "one": "50",
+            "content": "widget.config.removePopups()"
+        },
+        "113": {
+            "type": "action",
+            "one": "84",
+            "content": "dragTarget = chooseDragTarget(\n    widget,\n    evt2,\n    false\n)"
+        },
+        "114": {
+            "type": "question",
+            "one": "96",
+            "two": "115",
+            "flag1": 0,
+            "content": "dragTarget"
+        },
+        "115": {
+            "type": "action",
+            "one": "84",
+            "content": "dragTarget.onDrag(evt2)"
+        },
+        "116": {
+            "type": "question",
+            "one": "2",
+            "two": "117",
+            "flag1": 0,
+            "content": "dragTarget"
+        },
+        "117": {
+            "type": "action",
+            "one": "2",
+            "content": "dragTarget.complete()"
+        },
+        "118": {
+            "type": "action",
+            "one": "114",
+            "content": "evt2 = makeMouseEventFromTouch(evt, 0)"
+        },
+        "119": {
+            "type": "action",
+            "one": "113",
+            "content": "evt2 = makeMouseEventFromTouch(evt, 0)"
+        },
+        "120": {
+            "flag1": 1,
+            "type": "question",
+            "one": "64",
+            "two": "66",
+            "content": "prim.id"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "widget",
+    "type": "drakon"
+}

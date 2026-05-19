@@ -1,0 +1,59 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "8",
+      "two": "19",
+      "content": "self.currentUndo >= 0"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "two": "19",
+      "one": "9",
+      "content": "self.currentUndo < self.undo.length"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "edit = self.undo[self.currentUndo]"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "self.currentUndo--"
+    },
+    "11": {
+      "type": "action",
+      "one": "17",
+      "content": "applyEdit(self.diagram, edit.undo)"
+    },
+    "17": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "sendEditToServer(self, edit.undo)"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "20": {
+      "type": "action",
+      "one": "1",
+      "content": "return edit.before"
+    }
+  },
+  "keywords": {},
+  "type": "drakon"
+}

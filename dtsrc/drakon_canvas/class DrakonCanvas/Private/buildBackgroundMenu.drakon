@@ -1,0 +1,136 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "14"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return menu"
+        },
+        "5": {
+            "type": "action",
+            "one": "6",
+            "content": "clipboard = getClipboardClone(widget)"
+        },
+        "6": {
+            "flag1": 1,
+            "type": "question",
+            "one": "7",
+            "two": "32",
+            "content": "clipboard"
+        },
+        "7": {
+            "type": "select",
+            "one": "8",
+            "content": "clipboard.type"
+        },
+        "8": {
+            "one": "12",
+            "type": "case",
+            "two": "9",
+            "content": "\"case\""
+        },
+        "9": {
+            "one": "12",
+            "type": "case",
+            "two": "10",
+            "content": "\"branch\""
+        },
+        "10": {
+            "one": "12",
+            "type": "case",
+            "two": "20",
+            "content": "\"block\""
+        },
+        "11": {
+            "type": "case",
+            "one": "32"
+        },
+        "12": {
+            "type": "action",
+            "one": "17",
+            "content": "pushMenuItem(\n    \"paste\",\n    menu,\n    tr(widget, \"Paste\"),\n    undefined,\n    function () {\n        widget.showPasteSockets(\n            clipboard.type\n        )\n    }\n)"
+        },
+        "13": {
+            "flag1": 0,
+            "type": "question",
+            "two": "3",
+            "one": "5",
+            "content": "isReadonlyImpl(widget)"
+        },
+        "14": {
+            "type": "action",
+            "one": "13",
+            "content": "menu = []"
+        },
+        "15": {
+            "one": "16",
+            "type": "case",
+            "two": "11",
+            "content": "\"free\""
+        },
+        "16": {
+            "type": "action",
+            "one": "18",
+            "content": "pushMenuItem(\n    \"paste\",\n    menu,\n    tr(widget, \"Paste\"),\n    undefined,\n    function (evt) {\n        pasteFree(widget, clipboard, evt)\n    }\n)"
+        },
+        "17": {
+            "one": "32",
+            "type": "action",
+            "two": "",
+            "content": "menu.push({type: \"separator\"})"
+        },
+        "18": {
+            "one": "32",
+            "type": "action",
+            "two": "",
+            "content": "menu.push({type: \"separator\"})"
+        },
+        "19": {
+            "type": "action",
+            "one": "3",
+            "content": "pushMenuItem(\n    \"diagram_format\",\n    menu,\n    tr(widget, \"Diagram format\"),\n    undefined,\n    function () {\n        startEditDiagramStyle(\n            widget,\n            x,\n            y\n        )\n    }\n)"
+        },
+        "20": {
+            "one": "21",
+            "type": "case",
+            "two": "15",
+            "content": "\"mind\""
+        },
+        "21": {
+            "flag1": 1,
+            "type": "question",
+            "two": "32",
+            "one": "12",
+            "content": "isMind(widget)"
+        },
+        "31": {
+            "type": "action",
+            "one": "19",
+            "content": "showSelectionMode(widget, menu)"
+        },
+        "32": {
+            "type": "question",
+            "one": "31",
+            "two": "19",
+            "flag1": 1,
+            "content": "isTouch"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "widget\nx\ny\nisTouch",
+    "type": "drakon"
+}

@@ -1,0 +1,51 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "sourceBox = createBox(x, y, 0, 0)"
+    },
+    "5": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "findHorizontalGuide(\n    handle.widget,\n    handle.element.id,\n    sourceBox,\n    y\n)"
+    },
+    "6": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "findVerticalGuide(\n    handle.widget,\n    handle.element.id,\n    sourceBox,\n    x\n)"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "findHorizontalCentralGuide(\n    handle.widget,\n    handle.element.id,\n    sourceBox,\n    y\n)"
+    },
+    "8": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "findVerticalCentralGuide(\n    handle.widget,\n    handle.element.id,\n    sourceBox,\n    x\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "handle\nx\ny",
+  "type": "drakon"
+}

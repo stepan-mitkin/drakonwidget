@@ -1,0 +1,101 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "11"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "elementActions = self.freeIcons[type]"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "14",
+      "two": "5",
+      "content": "elementActions"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "console.error(\n    \"Unknown free icon type\",\n    type\n)"
+    },
+    "6": {
+      "type": "action",
+      "one": "13",
+      "content": "item = elementActions.create(pos, edits)"
+    },
+    "11": {
+      "type": "action",
+      "one": "3",
+      "content": "tracing.trace(\n    \"DrakonCanvas.insertFree\",\n    type\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "20",
+      "content": "insertFreeItem(self, edits, item)"
+    },
+    "13": {
+      "type": "action",
+      "one": "12",
+      "content": "edits = []"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "15",
+      "content": "evt"
+    },
+    "15": {
+      "type": "action",
+      "one": "6",
+      "content": "pos = getDiagramCenter(self)"
+    },
+    "16": {
+      "type": "action",
+      "one": "6",
+      "content": "pos = findFreePos(self, evt)"
+    },
+    "17": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return doEdit(self, edits)"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "insertImageDataItem(\n    imageData,\n    edits,\n    images\n)"
+    },
+    "19": {
+      "type": "action",
+      "one": "21",
+      "content": "await loadCreatedImages(\n    self,\n    edits,\n    images\n)"
+    },
+    "20": {
+      "type": "action",
+      "one": "18",
+      "content": "images = {}"
+    },
+    "21": {
+      "type": "action",
+      "one": "17",
+      "content": "resizeElementToImage(self, edits)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": true,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "type\nevt\nimageData",
+  "type": "drakon"
+}

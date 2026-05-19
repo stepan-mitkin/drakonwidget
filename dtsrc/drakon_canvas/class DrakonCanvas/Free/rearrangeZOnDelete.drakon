@@ -1,0 +1,80 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Pull elements out one by one"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "free = widget.visuals.free.map(\n    function (element) {\n        return {\n            id: element.id,\n            zIndex: element.zIndex\n        }\n    }\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "zets = {}"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "9"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "id, _; toDelete"
+    },
+    "7": {
+      "type": "action",
+      "one": "5",
+      "content": "rearrangeZ(free, id, zets)"
+    },
+    "8": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "9": {
+      "branchId": 2,
+      "one": "12",
+      "type": "branch",
+      "content": "Convert zets to edits"
+    },
+    "11": {
+      "type": "loopend",
+      "one": "8"
+    },
+    "12": {
+      "type": "loopbegin",
+      "one": "14",
+      "content": "id, zet; zets"
+    },
+    "13": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "updateItem(edits, id, {zIndex: zet})"
+    },
+    "14": {
+      "flag1": 0,
+      "type": "question",
+      "one": "13",
+      "two": "11",
+      "content": "id in toDelete"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\ntoDelete\nedits",
+  "type": "drakon"
+}

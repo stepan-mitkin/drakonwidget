@@ -1,0 +1,141 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "5",
+      "type": "branch",
+      "content": "Add nodes"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "15"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "id, node; visuals.nodes"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "14",
+      "content": "boxesIntersect(\n    visuals.selectionFrame,\n    node.box\n)"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "11",
+      "content": "canSelectNode(node)"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "12",
+      "content": "isSelected(widget, id)"
+    },
+    "14": {
+      "type": "action",
+      "one": "4",
+      "content": "addToSelection(widget, node)"
+    },
+    "15": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "37": {
+      "branchId": 1,
+      "one": "40",
+      "type": "branch",
+      "content": "Any nodes in selection?"
+    },
+    "39": {
+      "flag1": 0,
+      "type": "question",
+      "two": "50",
+      "one": "2",
+      "content": "tryAddFreeToBlock(widget)"
+    },
+    "40": {
+      "type": "action",
+      "one": "41",
+      "content": "selection = widget.selection\nvisuals = widget.visuals"
+    },
+    "41": {
+      "type": "action",
+      "one": "42",
+      "content": "selectionIds = Object.keys(\n    selection.prims\n)"
+    },
+    "42": {
+      "flag1": 1,
+      "type": "question",
+      "one": "39",
+      "two": "43",
+      "content": "selectionIds.length === 0"
+    },
+    "43": {
+      "type": "action",
+      "one": "44",
+      "content": "id = selectionIds[0]\nprim = selection.prims[id]"
+    },
+    "44": {
+      "flag1": 1,
+      "type": "question",
+      "one": "48",
+      "two": "45",
+      "content": "prim === \"node\""
+    },
+    "45": {
+      "flag1": 1,
+      "type": "question",
+      "one": "46",
+      "two": "15",
+      "content": "prim === \"free\""
+    },
+    "46": {
+      "flag1": 1,
+      "type": "question",
+      "one": "47",
+      "two": "15",
+      "content": "tryAddFreeToBlock(widget)"
+    },
+    "47": {
+      "type": "action",
+      "one": "15",
+      "content": "reportSelection(widget)"
+    },
+    "48": {
+      "type": "action",
+      "one": "49",
+      "content": "snode = getNode(visuals, id)"
+    },
+    "49": {
+      "flag1": 1,
+      "type": "question",
+      "two": "15",
+      "one": "2",
+      "content": "canSelectNode(snode)"
+    },
+    "50": {
+      "type": "action",
+      "one": "15",
+      "content": "reportSelection(widget)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

@@ -1,0 +1,116 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "text = text || \"\""
+    },
+    "4": {
+      "type": "action",
+      "one": "19",
+      "content": "state = \"idle\"\nbuffer = \"\"\nlines = []\nlength = text.length"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "20"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "i = 0; i < length; i++"
+    },
+    "7": {
+      "type": "action",
+      "one": "10",
+      "content": "ch = text[i]"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "whitespace = {}\nwhitespace[\" \"] = true\nwhitespace[\"\\t\"] = true\nwhitespace[\"\\r\"] = true"
+    },
+    "9": {
+      "type": "action",
+      "one": "21",
+      "content": "md = MarkDown_create(sb)"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "one": "15",
+      "two": "12",
+      "content": "ch === \"_\""
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "13",
+      "content": "ch === \"\\n\""
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "one": "17",
+      "two": "18",
+      "content": "whitespace[ch]"
+    },
+    "14": {
+      "type": "action",
+      "one": "1",
+      "content": "return sb.lines"
+    },
+    "15": {
+      "type": "action",
+      "one": "5",
+      "content": "md.under()"
+    },
+    "16": {
+      "type": "action",
+      "one": "5",
+      "content": "md.line()"
+    },
+    "17": {
+      "type": "action",
+      "one": "5",
+      "content": "md.white()"
+    },
+    "18": {
+      "type": "action",
+      "one": "5",
+      "content": "md.next(ch)"
+    },
+    "19": {
+      "type": "action",
+      "one": "9",
+      "content": "sb = SpanBuilder_create()"
+    },
+    "20": {
+      "type": "action",
+      "one": "14",
+      "content": "md.line()"
+    },
+    "21": {
+      "type": "action",
+      "one": "6",
+      "content": "sb.run()\nmd.run()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "text",
+  "type": "drakon"
+}

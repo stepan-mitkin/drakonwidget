@@ -1,0 +1,73 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "leftValue = left[property]\nrightValue = right[property]"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "7",
+      "content": "leftValue < rightValue"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return -1"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return 1"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "8",
+      "one": "6",
+      "content": "leftValue > rightValue"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "return 0"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "10",
+      "two": "4",
+      "content": " typeof leftValue === \"string\""
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "one": "11",
+      "two": "4",
+      "content": " typeof rightValue === \"string\""
+    },
+    "11": {
+      "type": "action",
+      "one": "4",
+      "content": "leftValue = leftValue.toLowerCase()\nrightValue = rightValue.toLowerCase()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "function": true,
+    "async": false,
+    "export": false
+  },
+  "params": "property\nleft\nright",
+  "type": "drakon"
+}

@@ -1,0 +1,58 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "8"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "one": "9",
+      "two": "6",
+      "content": "text.substring(0, 7) === \"http://\""
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "9",
+      "content": "text.substring(0, 8) === \"https://\""
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "7",
+      "content": "text"
+    },
+    "9": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "try {\n    url = new URL(text)\n} catch (_) {\n    return false\n}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "text",
+  "type": "drakon"
+}

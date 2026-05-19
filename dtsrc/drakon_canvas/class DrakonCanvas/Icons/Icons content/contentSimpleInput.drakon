@@ -1,0 +1,33 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "16"
+    },
+    "16": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "options = {\n    paddingLeft: visuals.config.metre\n}"
+    },
+    "17": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return buildTextContent(\n    visuals,\n    node,\n    options\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode",
+  "type": "drakon"
+}

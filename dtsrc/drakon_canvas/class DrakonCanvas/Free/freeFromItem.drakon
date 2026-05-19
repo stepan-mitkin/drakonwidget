@@ -1,0 +1,61 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "element = {}"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "Object.assign(element, item)"
+    },
+    "5": {
+      "type": "action",
+      "one": "8",
+      "content": "element.id = id"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return element"
+    },
+    "7": {
+      "type": "action",
+      "one": "10",
+      "content": "visuals.free.push(element)"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "parseStyle(item, element)"
+    },
+    "9": {
+      "type": "action",
+      "one": "7",
+      "content": "parseCoords(item, element)"
+    },
+    "10": {
+      "type": "action",
+      "one": "6",
+      "content": "incrementImageRefCount(\n    visuals,\n    element.image\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nid\nitem",
+  "type": "drakon"
+}

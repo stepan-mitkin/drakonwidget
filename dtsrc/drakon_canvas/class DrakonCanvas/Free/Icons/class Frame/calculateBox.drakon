@@ -1,0 +1,75 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "38",
+      "type": "branch"
+    },
+    "36": {
+      "type": "action",
+      "one": "39",
+      "content": "element.boxes = []"
+    },
+    "37": {
+      "type": "action",
+      "one": "40",
+      "content": "element.boxes.push(\n    boxForVerticalLine(\n        element.left,\n        element.top,\n        bottom,\n        margin2\n    )\n)"
+    },
+    "38": {
+      "one": "45",
+      "type": "action",
+      "two": "",
+      "content": "margin = config.socketTouchRadius"
+    },
+    "39": {
+      "type": "action",
+      "one": "37",
+      "content": "right = element.left + element.width\nbottom = element.top + element.height"
+    },
+    "40": {
+      "type": "action",
+      "one": "41",
+      "content": "element.boxes.push(\n    boxForVerticalLine(\n        right,\n        element.top,\n        bottom,\n        margin2\n    )\n)"
+    },
+    "41": {
+      "type": "action",
+      "one": "42",
+      "content": "element.boxes.push(\n    boxForHorizontalLine(\n        element.left,\n        element.top,\n        right,\n        margin2\n    )\n)"
+    },
+    "42": {
+      "type": "action",
+      "one": "1",
+      "content": "element.boxes.push(\n    boxForHorizontalLine(\n        element.left,\n        bottom,\n        right,\n        margin2\n    )\n)"
+    },
+    "43": {
+      "one": "36",
+      "type": "action",
+      "two": "",
+      "content": "element.box = createBoxWithMargin(\n    element.left,\n    element.top,\n    element.width,\n    element.height,\n    margin2\n)"
+    },
+    "44": {
+      "one": "43",
+      "type": "action",
+      "two": "",
+      "content": "element.innerBox = createBox(\n    element.left,\n    element.top,\n    element.width,\n    element.height\n)"
+    },
+    "45": {
+      "one": "44",
+      "type": "action",
+      "two": "",
+      "content": "margin2 = config.socketTouchRadius / 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "element\nconfig",
+  "type": "drakon"
+}

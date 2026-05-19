@@ -1,0 +1,121 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "31",
+      "type": "branch",
+      "content": "Setup"
+    },
+    "3": {
+      "type": "action",
+      "one": "95",
+      "content": "end = getFree(visuals, connection.end)"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "begin = getFree(\n    visuals,\n    connection.begin\n)"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "visuals = widget.visuals\nconfig = visuals.config"
+    },
+    "11": {
+      "branchId": 3,
+      "one": "13",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "23": {
+      "type": "action",
+      "one": "5",
+      "content": "minLine = 40"
+    },
+    "31": {
+      "type": "action",
+      "one": "23",
+      "content": "style = connection.style || {}"
+    },
+    "72": {
+      "one": "94",
+      "type": "action",
+      "two": "",
+      "content": "iconBack = getThemeValue(\n    visuals.config,\n    connection,\n    \"iconBack\"\n)"
+    },
+    "74": {
+      "branchId": 2,
+      "one": "75",
+      "type": "branch",
+      "content": "Draw line"
+    },
+    "75": {
+      "type": "action",
+      "one": "79",
+      "content": "coords = buildConnectionLineCoords(\n    begin,\n    end,\n    connection.role\n)"
+    },
+    "76": {
+      "type": "action",
+      "one": "11",
+      "content": "multiline(\n    config,\n    ctx,\n    coords,\n    lines,\n    lineWidth,\n    style.tailStyle,\n    style.headStyle,\n    iconBack\n)"
+    },
+    "79": {
+      "flag1": 0,
+      "type": "question",
+      "one": "90",
+      "two": "11",
+      "content": "coords.length === 0"
+    },
+    "90": {
+      "flag1": 0,
+      "type": "question",
+      "one": "76",
+      "two": "93",
+      "content": "isSelected(widget, connection.id)"
+    },
+    "91": {
+      "type": "action",
+      "one": "76",
+      "content": "multiline(\n    config,\n    ctx,\n    coords,\n    \"#00ff00\",\n    lineWidth + 2,\n    undefined,\n    undefined,\n    iconBack\n)"
+    },
+    "93": {
+      "type": "action",
+      "one": "91",
+      "content": "multiline(\n    config,\n    ctx,\n    coords,\n    \"black\",\n    lineWidth + 4,\n    undefined,\n    undefined,\n    iconBack\n)"
+    },
+    "94": {
+      "type": "action",
+      "one": "74",
+      "content": "setLineDashFromStyle(\n    config,\n    connection,\n    lineWidth,\n    \"lineStyle\",\n    ctx\n)"
+    },
+    "95": {
+      "one": "96",
+      "type": "action",
+      "two": "",
+      "content": "lineWidth = getLineWidth(\n    visuals,\n    connection\n)"
+    },
+    "96": {
+      "one": "72",
+      "type": "action",
+      "two": "",
+      "content": "lines = getLineColor(visuals, connection)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nconnection\nctx",
+  "type": "drakon"
+}

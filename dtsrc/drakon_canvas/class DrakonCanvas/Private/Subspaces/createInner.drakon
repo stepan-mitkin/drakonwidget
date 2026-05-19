@@ -1,0 +1,41 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "crawler = InnerCrawler_create(\n    visuals,\n    sub\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return crawler"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "crawler.run()"
+    },
+    "6": {
+      "type": "action",
+      "one": "4",
+      "content": "crawler.down()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nsub",
+  "type": "drakon"
+}

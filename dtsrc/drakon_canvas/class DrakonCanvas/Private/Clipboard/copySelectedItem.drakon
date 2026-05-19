@@ -1,0 +1,36 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "item = copyWholeItem(\n    widget,\n    node.itemId,\n    images\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "item.one = getCopyTarget(widget, node, 0)\nitem.two = getCopyTarget(widget, node, 1)"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return item"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode\nimages",
+  "type": "drakon"
+}

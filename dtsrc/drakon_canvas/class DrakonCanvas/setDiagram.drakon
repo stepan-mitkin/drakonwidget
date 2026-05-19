@@ -1,0 +1,68 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "49": {
+            "branchId": 0,
+            "one": "62",
+            "type": "branch"
+        },
+        "51": {
+            "one": "61",
+            "type": "action",
+            "two": "",
+            "content": "self.edit = edit_tools.createUndoEdit(\n    diagram,\n    sender\n)"
+        },
+        "53": {
+            "one": "58",
+            "type": "action",
+            "two": "",
+            "content": "self.diagramId = diagramId"
+        },
+        "57": {
+            "type": "action",
+            "one": "64",
+            "content": "fonts = self.redraw()"
+        },
+        "58": {
+            "type": "action",
+            "one": "57",
+            "content": "resetSelection(self)"
+        },
+        "61": {
+            "type": "action",
+            "one": "53",
+            "content": "await loadImages(self)"
+        },
+        "62": {
+            "type": "action",
+            "one": "65",
+            "content": "stopMachine(self, \"mouseEvents\")"
+        },
+        "63": {
+            "type": "action",
+            "one": "1",
+            "content": "return fonts"
+        },
+        "64": {
+            "type": "action",
+            "one": "63",
+            "content": "createEventBehavior(self, diagram.type)"
+        },
+        "65": {
+            "type": "action",
+            "one": "51",
+            "content": "self.selectionMode = Boolean(\n    gconfig.defaultSelectionMode\n)"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": true,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "diagramId\ndiagram\nsender",
+    "type": "drakon"
+}

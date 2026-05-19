@@ -1,0 +1,36 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "option = createElement(\n    \"option\",\n    {value: value}\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "add(select, option)"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "addText(option, text)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "type": "drakon",
+  "params": "select\nvalue\ntext"
+}

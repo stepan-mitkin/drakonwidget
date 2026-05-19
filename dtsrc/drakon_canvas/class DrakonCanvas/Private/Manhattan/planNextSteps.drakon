@@ -1,0 +1,113 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "7",
+      "type": "branch"
+    },
+    "4": {
+      "type": "case",
+      "one": "15"
+    },
+    "5": {
+      "one": "10",
+      "type": "case",
+      "two": "8",
+      "content": "\"question\""
+    },
+    "6": {
+      "one": "9",
+      "type": "case",
+      "two": "5",
+      "content": "\"select\""
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "node.type"
+    },
+    "8": {
+      "one": "13",
+      "type": "case",
+      "two": "18",
+      "content": "\"arrow-loop\""
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "layoutSelect(visuals, stack, node)"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "next1 = node.next[0]\nnext2 = node.next[1]"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "planRightStep(stack, node, next2)"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "planStep(stack, node, next1)"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "next1 = buildArrowUp(visuals, node)"
+    },
+    "14": {
+      "type": "action",
+      "one": "1",
+      "content": "planNextSteps(visuals, stack, next1)"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "16",
+      "content": "node.next.length === 0"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "next1 = node.next[0]"
+    },
+    "17": {
+      "type": "action",
+      "one": "1",
+      "content": "planStep(stack, node, next1)"
+    },
+    "18": {
+      "one": "19",
+      "type": "case",
+      "two": "4",
+      "content": "\"junction\""
+    },
+    "19": {
+      "flag1": 1,
+      "type": "question",
+      "one": "20",
+      "two": "15",
+      "content": "node.subtype === \"parbegin\""
+    },
+    "20": {
+      "type": "action",
+      "one": "1",
+      "content": "layoutParBlock(visuals, stack, node)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nstack\nnode",
+  "type": "drakon"
+}

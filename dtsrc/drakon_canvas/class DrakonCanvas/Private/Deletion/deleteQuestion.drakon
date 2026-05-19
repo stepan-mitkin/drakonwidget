@@ -1,0 +1,85 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "14",
+      "type": "branch",
+      "content": "Delete question itself"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "edits = []"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "7",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "9",
+      "type": "branch",
+      "content": "Mark the nodes that stay"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "12",
+      "type": "branch",
+      "content": "Gather the nodes to delete"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "8": {
+      "type": "action",
+      "one": "5",
+      "content": "popFromSkewer(widget, node, edits)"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "toKeep = {}\ntoKeep[node.itemId] = true"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "one = node.next[0]"
+    },
+    "11": {
+      "type": "action",
+      "one": "6",
+      "content": "markToStay(\n    widget,\n    node,\n    one.itemId,\n    toKeep\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "two = node.next[1]"
+    },
+    "13": {
+      "type": "action",
+      "one": "4",
+      "content": "markToDelete(\n    widget,\n    toKeep,\n    node,\n    two.itemId,\n    edits\n)"
+    },
+    "14": {
+      "type": "action",
+      "one": "3",
+      "content": "model = widget.model"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

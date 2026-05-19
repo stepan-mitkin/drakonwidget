@@ -1,0 +1,37 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "66",
+      "type": "branch"
+    },
+    "66": {
+      "type": "action",
+      "one": "67",
+      "content": "undoChange = createUndoChange(\n    diagram,\n    change\n)"
+    },
+    "67": {
+      "one": "68",
+      "type": "action",
+      "two": "",
+      "content": "redo.changes.push(change)\nundo.changes.push(undoChange)"
+    },
+    "68": {
+      "type": "action",
+      "one": "1",
+      "content": "applyChange(diagram, change)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "diagram\nchange\nundo\nredo",
+  "type": "drakon"
+}

@@ -1,0 +1,67 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "tokens = splitByWhitespace(line)"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "token; tokens"
+    },
+    "7": {
+      "type": "action",
+      "one": "6",
+      "content": "start = true\nresult = []"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "12",
+      "one": "10",
+      "content": "start"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "result.push({type: \"space\"})"
+    },
+    "11": {
+      "type": "action",
+      "one": "5",
+      "content": "result.push({text: token, type: type})"
+    },
+    "12": {
+      "type": "action",
+      "one": "11",
+      "content": "start = false"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "line\ntype",
+  "type": "drakon"
+}

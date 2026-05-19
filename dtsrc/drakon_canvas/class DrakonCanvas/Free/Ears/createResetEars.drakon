@@ -1,0 +1,65 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "14"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "ears = Ears_create(widget, element)\nears.run()"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "two": "15",
+      "one": "7",
+      "content": "elements.length === 1"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "element = elements[0]"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "one": "3",
+      "two": "15",
+      "content": "canConnect(widget, element)"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "visuals.ears = ears"
+    },
+    "11": {
+      "type": "action",
+      "one": "5",
+      "content": "elements = getSelectedFree(widget)"
+    },
+    "14": {
+      "type": "action",
+      "one": "11",
+      "content": "visuals = widget.visuals"
+    },
+    "15": {
+      "type": "action",
+      "one": "1",
+      "content": "visuals.ears = undefined"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

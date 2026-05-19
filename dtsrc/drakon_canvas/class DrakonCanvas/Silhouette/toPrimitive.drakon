@@ -1,0 +1,137 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Scan first branch"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "edits = []"
+    },
+    "4": {
+      "branchId": 5,
+      "one": "24",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 4,
+      "one": "19",
+      "type": "branch",
+      "content": "Delete and redirect to end"
+    },
+    "6": {
+      "branchId": 2,
+      "one": "12",
+      "type": "branch",
+      "content": "Scan other branches"
+    },
+    "7": {
+      "branchId": 3,
+      "one": "14",
+      "type": "branch",
+      "content": "Fix end and self-reference"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "visuals = widget.visuals\nbranches = visuals.branches\nfirst = {}\nrest = {}"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "firstId = branches[0]"
+    },
+    "10": {
+      "type": "action",
+      "one": "6",
+      "content": "scanBranchItems(\n    getBranch(visuals, 0),\n    first\n)"
+    },
+    "11": {
+      "type": "loopend",
+      "one": "7"
+    },
+    "12": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "i = 1; i < branches.length; i++"
+    },
+    "13": {
+      "type": "action",
+      "one": "11",
+      "content": "scanBranchItems(\n    getBranch(visuals, i),\n    rest\n)"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "one": "15",
+      "two": "17",
+      "content": "visuals.end"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "endId = visuals.end.itemId"
+    },
+    "16": {
+      "type": "action",
+      "one": "18",
+      "content": "delete rest[endId]"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "endId = createItem(\n    widget.model,\n    edits,\n    {type: \"end\"}\n)"
+    },
+    "18": {
+      "type": "action",
+      "one": "5",
+      "content": "rest[firstId] = true"
+    },
+    "19": {
+      "type": "action",
+      "one": "20",
+      "content": "redirectBranch(\n    visuals,\n    first,\n    rest,\n    endId,\n    edits\n)"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "delete rest[firstId]"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "ditch = function (itemId) {\n    deleteWithDur(widget, itemId, edits)\n}"
+    },
+    "22": {
+      "type": "action",
+      "one": "23",
+      "content": "Object.keys(rest).forEach(ditch)"
+    },
+    "23": {
+      "type": "action",
+      "one": "4",
+      "content": "updateItem(\n    edits,\n    branches[0],\n    {content: \"\", branchId: 0}\n)"
+    },
+    "24": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

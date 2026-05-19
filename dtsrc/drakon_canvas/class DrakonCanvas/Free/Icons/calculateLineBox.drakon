@@ -1,0 +1,32 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "9": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "x1 = element.left\nx2 = x1 + element.x2\ny1 = element.top\ny2 = y1 + element.y2"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return calculateLineBoxCore(\n    x1,\n    y1,\n    x2,\n    y2,\n    margin\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "element\nmargin",
+  "type": "drakon"
+}

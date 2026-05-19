@@ -1,0 +1,30 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "comp = comparerAsc(property, left, right)"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "return -1 * comp"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "function": true,
+    "async": false,
+    "export": false
+  },
+  "params": "property\nleft\nright",
+  "type": "drakon"
+}

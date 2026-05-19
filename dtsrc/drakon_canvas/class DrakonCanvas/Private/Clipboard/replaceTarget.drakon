@@ -1,0 +1,84 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "6",
+      "one": "5",
+      "content": "item.one"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "7",
+      "one": "8",
+      "content": "item.two"
+    },
+    "6": {
+      "type": "action",
+      "one": "5",
+      "content": "item.one = oldToNew[item.one]"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "item.two = oldToNew[item.two]"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "10",
+      "two": "9",
+      "content": "item.side"
+    },
+    "9": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "item.side = oldToNew[item.side]"
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "two": "11",
+      "one": "12",
+      "content": "item.begin"
+    },
+    "11": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "item.begin = oldToNew[item.begin]"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "1",
+      "two": "13",
+      "content": "item.end"
+    },
+    "13": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "item.end = oldToNew[item.end]"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "item\noldToNew",
+  "type": "drakon"
+}

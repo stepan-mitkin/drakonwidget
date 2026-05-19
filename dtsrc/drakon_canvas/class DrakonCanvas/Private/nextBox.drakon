@@ -1,0 +1,73 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "6",
+      "one": "5",
+      "content": "isNaN(left)"
+    },
+    "5": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "box.left = Math.min(box.left, left)"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "7",
+      "content": "isNaN(top)"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "box.top = Math.min(box.top, top)"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "10",
+      "one": "9",
+      "content": "isNaN(right)"
+    },
+    "9": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "box.right = Math.max(box.right, right)"
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "one": "11",
+      "two": "1",
+      "content": "isNaN(bottom)"
+    },
+    "11": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "box.bottom = Math.max(box.bottom, bottom)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "box\nleft\ntop\nright\nbottom",
+  "type": "drakon"
+}

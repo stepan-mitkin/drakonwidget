@@ -1,0 +1,55 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "17",
+      "type": "branch"
+    },
+    "15": {
+      "type": "action",
+      "one": "1",
+      "content": "renderIconShapeBorder(\n    ctx,\n    visuals,\n    buildRectCoords,\n    line,\n    element.left,\n    element.top,\n    element.width,\n    element.height,\n    undefined\n)"
+    },
+    "17": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "config = visuals.config"
+    },
+    "20": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "setLineDashFromStyle(\n    config,\n    element,\n    line,\n    \"lineStyle\",\n    ctx\n)"
+    },
+    "21": {
+      "type": "action",
+      "one": "20",
+      "content": "ctx.lineWidth = line\nctx.strokeStyle = color"
+    },
+    "22": {
+      "one": "23",
+      "type": "action",
+      "two": "",
+      "content": "line = getLineWidth(visuals, element)"
+    },
+    "23": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "color = getLineColor(visuals, element)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

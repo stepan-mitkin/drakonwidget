@@ -1,0 +1,43 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "one": "6",
+      "two": "5",
+      "content": "length === 0"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return array[length - 1]"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "length = array.length"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "array",
+  "type": "drakon"
+}

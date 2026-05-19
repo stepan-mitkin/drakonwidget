@@ -1,0 +1,52 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "3"
+        },
+        "3": {
+            "type": "action",
+            "one": "5",
+            "content": "visuals = widget.visuals\nprims = widget.selection.prims"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "7"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "10",
+            "content": "id, type; prims"
+        },
+        "7": {
+            "type": "action",
+            "one": "1",
+            "content": "return undefined"
+        },
+        "10": {
+            "flag1": 0,
+            "type": "question",
+            "one": "4",
+            "two": "11",
+            "content": "type === \"connection\""
+        },
+        "11": {
+            "type": "action",
+            "one": "4",
+            "content": "return getConnection(visuals, id)"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "widget",
+    "type": "drakon"
+}

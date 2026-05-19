@@ -1,0 +1,105 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Calculate box"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "coords = JSON.parse(item.coords)"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "left = Number.MAX_SAFE_INTEGER,\ntop = Number.MAX_SAFE_INTEGER,\nright = Number.MIN_SAFE_INTEGER,\nbottom = Number.MIN_SAFE_INTEGER"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "9"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "18",
+      "content": "point; coords"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "left = Math.min(left, x)\nright = Math.max(right, x)"
+    },
+    "8": {
+      "type": "action",
+      "one": "19",
+      "content": "top = Math.min(top, y)\nbottom = Math.max(bottom, y)"
+    },
+    "9": {
+      "type": "action",
+      "one": "11",
+      "content": "item.left = left\nitem.top = top\nitem.width = right - left\nitem.height = bottom - top"
+    },
+    "10": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "11": {
+      "branchId": 2,
+      "one": "13",
+      "type": "branch",
+      "content": "Make coords relative"
+    },
+    "12": {
+      "one": "17",
+      "type": "loopend",
+      "two": ""
+    },
+    "13": {
+      "one": "14",
+      "type": "loopbegin",
+      "two": "",
+      "content": "point; coords"
+    },
+    "14": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "point.x = point.x - item.left"
+    },
+    "16": {
+      "type": "action",
+      "one": "12",
+      "content": "point.y = point.y - item.top"
+    },
+    "17": {
+      "type": "action",
+      "one": "10",
+      "content": "item.coords = JSON.stringify(coords)"
+    },
+    "18": {
+      "type": "action",
+      "one": "7",
+      "content": "x = item.left + point.x\ny = item.top + point.y"
+    },
+    "19": {
+      "type": "action",
+      "one": "5",
+      "content": "point.x = x\npoint.y = y"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "item",
+  "type": "drakon"
+}

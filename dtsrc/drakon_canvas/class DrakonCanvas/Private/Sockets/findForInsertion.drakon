@@ -1,0 +1,90 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "edges = visuals.edges"
+    },
+    "4": {
+      "type": "action",
+      "one": "7",
+      "content": "result = []"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    },
+    "6": {
+      "type": "loopend",
+      "one": "5"
+    },
+    "7": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "id, edge; edges"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "9",
+      "content": "edge.finalTarget"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "10",
+      "content": "edge.role"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "targetId = edge.finalTarget.itemId"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "two": "13",
+      "one": "15",
+      "content": "edge.role === \"down\""
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "14",
+      "content": "edge.role === \"right\""
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "15",
+      "content": "edge.tail.up"
+    },
+    "15": {
+      "type": "action",
+      "one": "6",
+      "content": "result.push(edge)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

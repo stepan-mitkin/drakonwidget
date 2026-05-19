@@ -1,0 +1,46 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "item = widget.model.items[itemId]"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "copy = utils.clone(item)"
+    },
+    "5": {
+      "type": "action",
+      "one": "7",
+      "content": "delete copy.side"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return copy"
+    },
+    "7": {
+      "type": "action",
+      "one": "6",
+      "content": "takeImageToClipboard(\n    widget,\n    copy,\n    images\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nitemId\nimages",
+  "type": "drakon"
+}

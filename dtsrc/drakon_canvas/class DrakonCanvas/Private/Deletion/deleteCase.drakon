@@ -1,0 +1,124 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "14",
+      "type": "branch",
+      "content": "Delete itself"
+    },
+    "3": {
+      "type": "action",
+      "one": "18",
+      "content": "edits = []"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "7",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "26",
+      "type": "branch",
+      "content": "Mark the nodes that stay"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "27",
+      "type": "branch",
+      "content": "Gather the nodes to delete"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "13": {
+      "type": "action",
+      "one": "4",
+      "content": "markToDelete(\n    widget,\n    toKeep,\n    node,\n    below.itemId,\n    edits\n)"
+    },
+    "14": {
+      "type": "action",
+      "one": "3",
+      "content": "model = widget.model"
+    },
+    "15": {
+      "type": "action",
+      "one": "5",
+      "content": "deleteItem(widget, edits, node)"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "left = node.prev[0]"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "one": "20",
+      "two": "24",
+      "content": "left === node.select"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "two": "23",
+      "one": "21",
+      "content": "node.next.length === 2"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "right = node.next[1]"
+    },
+    "22": {
+      "type": "action",
+      "one": "15",
+      "content": "updateItem(\n    edits,\n    left.itemId,\n    {two: right.itemId}\n)"
+    },
+    "23": {
+      "type": "action",
+      "one": "15",
+      "content": "updateItem(edits, left.itemId, {two: \"\"})"
+    },
+    "24": {
+      "type": "action",
+      "one": "25",
+      "content": "right = node.next[1]"
+    },
+    "25": {
+      "type": "action",
+      "one": "15",
+      "content": "updateItem(\n    edits,\n    left.itemId,\n    {one: right.itemId}\n)"
+    },
+    "26": {
+      "type": "action",
+      "one": "6",
+      "content": "toKeep = markOtherCasesToStay(\n    widget,\n    node\n)"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "below = node.next[0]"
+    },
+    "28": {
+      "type": "action",
+      "one": "13",
+      "content": "toKeep[node.itemId] = true"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

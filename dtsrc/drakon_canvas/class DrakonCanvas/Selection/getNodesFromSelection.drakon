@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "11"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "result = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "id, elType; widget.selection.prims"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "9",
+      "content": "elType === \"node\""
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "node = getNode(visuals, id)"
+    },
+    "10": {
+      "type": "action",
+      "one": "5",
+      "content": "result.push(node)"
+    },
+    "11": {
+      "type": "action",
+      "one": "3",
+      "content": "visuals = widget.visuals"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

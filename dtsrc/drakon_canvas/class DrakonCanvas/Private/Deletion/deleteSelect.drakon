@@ -1,0 +1,95 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "14",
+      "type": "branch",
+      "content": "Delete itself"
+    },
+    "3": {
+      "type": "action",
+      "one": "15",
+      "content": "edits = []"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "7",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "9",
+      "type": "branch",
+      "content": "Mark the nodes that stay"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "13",
+      "type": "branch",
+      "content": "Gather the nodes to delete"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "8": {
+      "type": "action",
+      "one": "17",
+      "content": "redirectUpperItems(\n    edits,\n    edgeUp.links,\n    below.itemId\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "toKeep = {}\ntoKeep[node.itemId] = true"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "one = node.next[0]"
+    },
+    "11": {
+      "type": "action",
+      "one": "6",
+      "content": "markToStay(\n    widget,\n    undefined,\n    below.itemId,\n    toKeep\n)"
+    },
+    "13": {
+      "type": "action",
+      "one": "4",
+      "content": "markToDelete(\n    widget,\n    toKeep,\n    node,\n    first.itemId,\n    edits\n)"
+    },
+    "14": {
+      "type": "action",
+      "one": "3",
+      "content": "model = widget.model"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "first = firstCase(node)\nbelow = first.next[0]"
+    },
+    "16": {
+      "type": "action",
+      "one": "8",
+      "content": "edgeUp = node.up"
+    },
+    "17": {
+      "type": "action",
+      "one": "5",
+      "content": "deleteItem(widget, edits, node)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

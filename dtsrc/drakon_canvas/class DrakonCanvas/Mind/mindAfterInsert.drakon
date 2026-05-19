@@ -1,0 +1,38 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "13"
+    },
+    "13": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "model = widget.model"
+    },
+    "14": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "parent = socket.node.parent\nordinal = socket.node.ordinal + 1"
+    },
+    "16": {
+      "type": "action",
+      "one": "1",
+      "content": "return mindInsertCore(\n    widget,\n    socket,\n    parent,\n    ordinal,\n    payload\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nsocket\npayload",
+  "type": "drakon"
+}

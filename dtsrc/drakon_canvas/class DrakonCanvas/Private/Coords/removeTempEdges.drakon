@@ -1,0 +1,127 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "7",
+      "type": "branch",
+      "content": "Tmp edges"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "visuals.tempEdges = []"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "14",
+      "type": "branch",
+      "content": "Branch temp edge"
+    },
+    "6": {
+      "type": "loopend",
+      "one": "3"
+    },
+    "7": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "tmpEdge; visuals.tempEdges"
+    },
+    "8": {
+      "type": "action",
+      "one": "22",
+      "content": "removeNode(visuals, tmpJun.id)"
+    },
+    "9": {
+      "type": "action",
+      "one": "8",
+      "content": "removeEdge(visuals, edgeDown.id)"
+    },
+    "10": {
+      "type": "action",
+      "one": "9",
+      "content": "removeEdge(visuals, edgeUp.id)"
+    },
+    "11": {
+      "type": "action",
+      "one": "10",
+      "content": "edgeUp = tmpJun.up\nupper = edgeUp.head\nedgeDown = tmpJun.down\nlower = edgeDown.tail\nfinalTarget = edgeUp.finalTarget"
+    },
+    "12": {
+      "type": "action",
+      "one": "11",
+      "content": "removeEdge(visuals, tmpEdge.id)"
+    },
+    "13": {
+      "type": "action",
+      "one": "12",
+      "content": "tmpJun = tmpEdge.head"
+    },
+    "14": {
+      "flag1": 0,
+      "type": "question",
+      "one": "15",
+      "two": "4",
+      "content": "visuals.branches.length === 1"
+    },
+    "15": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "16",
+      "content": "visuals.end"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "oldLevel = visuals.end.level"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "utils.remove(oldLevel.nodes, visuals.end)"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "newLevel = createLevel(visuals)"
+    },
+    "19": {
+      "type": "action",
+      "one": "20",
+      "content": "newLevel.coord = oldLevel.coord\nnewLevel.nodes.push(visuals.end)\nvisuals.end.level = newLevel"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "removeEdge(visuals, visuals.end.left.id)"
+    },
+    "21": {
+      "type": "action",
+      "one": "4",
+      "content": "moveEndUp(visuals)"
+    },
+    "22": {
+      "type": "action",
+      "one": "6",
+      "content": "makeDownEdge(\n    visuals,\n    upper,\n    lower,\n    finalTarget\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

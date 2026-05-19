@@ -1,0 +1,57 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "one": "1",
+      "type": "loopend",
+      "two": ""
+    },
+    "5": {
+      "one": "9",
+      "type": "loopbegin",
+      "two": "",
+      "content": "name, value; changedFields"
+    },
+    "7": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "output[name] = oldValue"
+    },
+    "8": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "oldValue = obj[name]"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "8",
+      "two": "10",
+      "content": "name in obj"
+    },
+    "10": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "oldValue = \"\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "obj\nchangedFields\noutput",
+  "type": "drakon"
+}

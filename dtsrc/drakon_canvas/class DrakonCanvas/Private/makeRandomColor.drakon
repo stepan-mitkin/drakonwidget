@@ -1,0 +1,28 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "r = utils.random(200, 256)\ng = utils.random(200, 256)\nb = utils.random(200, 256)"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "rs = utils.hexByteToString(r)\nrg = utils.hexByteToString(g)\nrb = utils.hexByteToString(b)"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return \"#\" + rs + rg + rb"
+    }
+  },
+  "type": "drakon"
+}

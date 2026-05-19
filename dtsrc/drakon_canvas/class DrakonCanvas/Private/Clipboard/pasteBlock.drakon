@@ -1,0 +1,51 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "edits = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "firstId = replaceIds(\n    widget,\n    payload.start,\n    payload.items,\n    socket.target\n)"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "create = function (item) {\n    createPastedItem(edits, item)\n}"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "payload.items.forEach(create)"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "redirectUpperItems(\n    edits,\n    socket.links,\n    firstId\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nsocket\npayload",
+  "type": "drakon"
+}

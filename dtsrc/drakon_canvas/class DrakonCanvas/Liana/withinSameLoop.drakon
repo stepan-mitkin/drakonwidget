@@ -1,0 +1,57 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "7"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return true"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "3"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "9",
+            "content": "link; src.links"
+        },
+        "7": {
+            "type": "action",
+            "one": "5",
+            "content": "targetNode = target.finalTarget"
+        },
+        "9": {
+            "type": "action",
+            "one": "10",
+            "content": "node = getNodeByItem(\n    visuals,\n    link.source\n)"
+        },
+        "10": {
+            "flag1": 1,
+            "type": "question",
+            "two": "11",
+            "one": "4",
+            "content": "withinSameLoopCore(node, targetNode, 0)"
+        },
+        "11": {
+            "type": "action",
+            "one": "4",
+            "content": "return false"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "visuals\nsrc\ntarget",
+    "type": "drakon"
+}

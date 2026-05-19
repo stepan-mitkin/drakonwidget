@@ -1,0 +1,41 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "5",
+      "content": "self.mouseEvents"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "self.mouseEvents.mouseLeave(evt)"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "1",
+      "content": "evt.pointerType === \"touch\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "evt",
+  "type": "drakon"
+}

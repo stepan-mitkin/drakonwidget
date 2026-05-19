@@ -1,0 +1,241 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "46",
+      "type": "branch",
+      "content": "Liana source"
+    },
+    "3": {
+      "type": "action",
+      "one": "39",
+      "content": "clearSockets(visuals)"
+    },
+    "4": {
+      "branchId": 7,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "6": {
+      "branchId": 6,
+      "one": "11",
+      "type": "branch",
+      "content": "Inner-inner"
+    },
+    "7": {
+      "branchId": 5,
+      "one": "45",
+      "type": "branch",
+      "content": "Inner-outer"
+    },
+    "8": {
+      "branchId": 4,
+      "one": "24",
+      "type": "branch",
+      "content": "Outer-inner"
+    },
+    "9": {
+      "branchId": 3,
+      "one": "30",
+      "type": "branch",
+      "content": "Arrow pads"
+    },
+    "10": {
+      "branchId": 2,
+      "one": "34",
+      "type": "branch",
+      "content": "Outer-outer"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "13",
+      "content": "isDegQuestion(source)"
+    },
+    "12": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "13": {
+      "type": "loopbegin",
+      "one": "43",
+      "content": "targetId, record; source.inner.inner"
+    },
+    "15": {
+      "type": "loopend",
+      "one": "6"
+    },
+    "16": {
+      "type": "loopbegin",
+      "one": "19",
+      "content": "targetId, record; source.inner.outer"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "one": "20",
+      "two": "15",
+      "content": "source.role === \"right-loop\""
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "two": "21",
+      "one": "42",
+      "content": "source.vertical"
+    },
+    "21": {
+      "flag1": 1,
+      "type": "question",
+      "one": "42",
+      "two": "15",
+      "content": "isLower(record, source)"
+    },
+    "23": {
+      "type": "loopend",
+      "one": "27"
+    },
+    "24": {
+      "type": "loopbegin",
+      "one": "25",
+      "content": "targetId, record; source.outer.inner"
+    },
+    "25": {
+      "flag1": 1,
+      "type": "question",
+      "one": "26",
+      "two": "23",
+      "content": "canOuterToInner(record, source)"
+    },
+    "26": {
+      "type": "action",
+      "one": "23",
+      "content": "createLianaSocket(\n    visuals,\n    record,\n    source,\n    \"outer-inner\"\n)"
+    },
+    "27": {
+      "flag1": 0,
+      "type": "question",
+      "one": "28",
+      "two": "4",
+      "content": "source.arrow"
+    },
+    "28": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "7",
+      "content": "source.role === \"up\""
+    },
+    "30": {
+      "flag1": 0,
+      "type": "question",
+      "one": "32",
+      "two": "8",
+      "content": "source.arrow"
+    },
+    "31": {
+      "type": "loopend",
+      "one": "8"
+    },
+    "32": {
+      "type": "loopbegin",
+      "one": "33",
+      "content": "id, downEdge; source.outer.outerArrPads"
+    },
+    "33": {
+      "type": "action",
+      "one": "31",
+      "content": "createArrowSocket(\n    visuals,\n    downEdge,\n    source\n)"
+    },
+    "34": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "36",
+      "content": "source.outer"
+    },
+    "35": {
+      "type": "loopend",
+      "one": "9"
+    },
+    "36": {
+      "type": "loopbegin",
+      "one": "37",
+      "content": "targetId, record; source.outer.outer"
+    },
+    "37": {
+      "flag1": 1,
+      "type": "question",
+      "two": "35",
+      "one": "38",
+      "content": "isLower(record, source)"
+    },
+    "38": {
+      "type": "action",
+      "one": "35",
+      "content": "createLianaSocket(\n    visuals,\n    record,\n    source,\n    \"outer-outer\"\n)"
+    },
+    "39": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "40",
+      "content": "isReadonlyImpl(widget)"
+    },
+    "40": {
+      "type": "action",
+      "one": "41",
+      "content": "source = findLianaSource(visuals, prim)"
+    },
+    "41": {
+      "flag1": 1,
+      "type": "question",
+      "one": "10",
+      "two": "4",
+      "content": "source"
+    },
+    "42": {
+      "type": "action",
+      "one": "15",
+      "content": "createLianaSocket(\n    visuals,\n    record,\n    source,\n    \"inner-outer\"\n)"
+    },
+    "43": {
+      "type": "action",
+      "one": "12",
+      "content": "createLianaSocket(\n    visuals,\n    record,\n    source,\n    \"inner-inner\"\n)"
+    },
+    "44": {
+      "type": "action",
+      "one": "3",
+      "content": "visuals = widget.visuals"
+    },
+    "45": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "16",
+      "content": "source.inner"
+    },
+    "46": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "44",
+      "content": "isDrakon(widget)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nprim",
+  "type": "drakon"
+}

@@ -1,0 +1,87 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "9",
+      "type": "branch"
+    },
+    "9": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals"
+    },
+    "10": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "11": {
+      "type": "loopbegin",
+      "one": "18",
+      "content": "i = 0; i < element.coords.length; i++"
+    },
+    "12": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "handle = VertexHandle()"
+    },
+    "13": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    handle\n)"
+    },
+    "14": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, handle, ctx)"
+    },
+    "15": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "handle.x = left + point.x\nhandle.y = top + point.y\nhandle.radius = point.radius\nhandle.minX = Number.MIN_SAFE_INTEGER\nhandle.maxX = Number.MAX_SAFE_INTEGER\nhandle.minY = Number.MIN_SAFE_INTEGER\nhandle.maxY = Number.MAX_SAFE_INTEGER"
+    },
+    "16": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "handle.left = left\nhandle.top = top\nhandle.color = \"yellow\"\nhandle.ordinal = i"
+    },
+    "17": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "left = element.left\ntop = element.top"
+    },
+    "18": {
+      "type": "action",
+      "one": "12",
+      "content": "point = element.coords[i]"
+    },
+    "19": {
+      "type": "action",
+      "one": "15",
+      "content": "handle.addVertex = addVertex"
+    },
+    "20": {
+      "type": "action",
+      "one": "14",
+      "content": "handle.primId = \"vertex-\" + i + \"-\" + element\n.id"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\nctx",
+  "type": "drakon"
+}

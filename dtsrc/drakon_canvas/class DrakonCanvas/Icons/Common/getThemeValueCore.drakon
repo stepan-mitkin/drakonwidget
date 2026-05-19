@@ -1,0 +1,112 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "10"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "two": "16",
+      "one": "22",
+      "content": "style"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "two": "16",
+      "one": "24",
+      "content": "utils.hasValue(value)"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "two": "21",
+      "one": "17",
+      "content": "icons"
+    },
+    "16": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "theme = config.theme\nicons = theme.icons"
+    },
+    "17": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "forIcon = icons[type]"
+    },
+    "21": {
+      "type": "action",
+      "one": "33",
+      "content": "value = theme[name]"
+    },
+    "22": {
+      "type": "action",
+      "one": "12",
+      "content": "value = style[name]"
+    },
+    "23": {
+      "type": "action",
+      "one": "32",
+      "content": "value = forIcon[name]"
+    },
+    "24": {
+      "type": "action",
+      "one": "1",
+      "content": "return value"
+    },
+    "25": {
+      "flag1": 1,
+      "type": "question",
+      "one": "23",
+      "two": "21",
+      "content": "forIcon"
+    },
+    "31": {
+      "type": "action",
+      "one": "34",
+      "content": "value = config[name]"
+    },
+    "32": {
+      "flag1": 1,
+      "type": "question",
+      "one": "24",
+      "two": "21",
+      "content": "utils.hasValue(value)"
+    },
+    "33": {
+      "flag1": 1,
+      "type": "question",
+      "one": "24",
+      "two": "31",
+      "content": "utils.hasValue(value)"
+    },
+    "34": {
+      "flag1": 1,
+      "type": "question",
+      "two": "35",
+      "one": "24",
+      "content": "utils.hasValue(value)"
+    },
+    "35": {
+      "type": "action",
+      "one": "1",
+      "content": "return defaultValue"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "config\ntype\nstyle\nname\ndefaultValue",
+  "type": "drakon"
+}

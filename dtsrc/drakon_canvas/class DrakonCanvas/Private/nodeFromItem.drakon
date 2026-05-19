@@ -1,0 +1,99 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "content = item.content || \"\""
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "3",
+      "content": "item.type === \"end\""
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "content = visuals.config.end"
+    },
+    "6": {
+      "type": "action",
+      "one": "14",
+      "content": "node = createNode(\n    visuals,\n    item.id,\n    item.type,\n    content,\n    item.id\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "18",
+      "content": "setNotNull(item, node, \"w\")\nsetNotNull(item, node, \"flag1\")\nsetNotNull(item, node, \"branchId\")\nsetNotNull(item, node, \"one\")\nsetNotNull(item, node, \"two\")\nsetNotNull(item, node, \"side\")\nsetNotNull(item, node, \"link\")\nsetNotNull(item, node, \"margin\")\nsetNotNull(item, node, \"secondary\")\nsetNotNull(item, node, \"parent\")\nsetNotNull(item, node, \"ordinal\")\nsetNotNull(item, node, \"treeType\")\nsetNotNull(item, node, \"collapsed\")\nsetNotNull(item, node, \"image\")"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "return node"
+    },
+    "11": {
+      "type": "case",
+      "one": "7"
+    },
+    "12": {
+      "one": "16",
+      "type": "case",
+      "two": "11",
+      "content": "\"parend\""
+    },
+    "13": {
+      "one": "15",
+      "type": "case",
+      "two": "12",
+      "content": "\"parbegin\""
+    },
+    "14": {
+      "type": "select",
+      "one": "13",
+      "content": "item.type"
+    },
+    "15": {
+      "type": "action",
+      "one": "7",
+      "content": "node.type = \"junction\"\nnode.subtype = item.type"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "node.finalTarget = item.id"
+    },
+    "17": {
+      "type": "action",
+      "one": "15",
+      "content": "node.mountRight = node"
+    },
+    "18": {
+      "type": "action",
+      "one": "21",
+      "content": "parseStyle(item, node)"
+    },
+    "21": {
+      "type": "action",
+      "one": "8",
+      "content": "incrementImageRefCount(\n    visuals,\n    node.image\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nitem",
+  "type": "drakon"
+}

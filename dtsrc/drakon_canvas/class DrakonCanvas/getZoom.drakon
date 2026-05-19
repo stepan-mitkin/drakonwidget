@@ -1,0 +1,30 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return self.zoom"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "3",
+      "content": "self.zoom"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return 10000"
+    }
+  },
+  "type": "drakon"
+}

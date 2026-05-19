@@ -1,0 +1,361 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "3",
+      "type": "branch",
+      "content": "Lex"
+    },
+    "3": {
+      "type": "action",
+      "one": "11",
+      "content": "tokens = stringToTokensQuoted(font)"
+    },
+    "7": {
+      "branchId": 8,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "8": {
+      "branchId": 3,
+      "one": "24",
+      "type": "branch",
+      "content": "Style"
+    },
+    "10": {
+      "branchId": 7,
+      "one": "83",
+      "type": "branch",
+      "content": "Build font object"
+    },
+    "11": {
+      "type": "action",
+      "one": "23",
+      "content": "style = \"\"\nweight = \"\"\nsize = \"\"\nfamily = \"\""
+    },
+    "23": {
+      "type": "action",
+      "one": "8",
+      "content": "current = 0"
+    },
+    "24": {
+      "flag1": 1,
+      "type": "question",
+      "one": "32",
+      "two": "25",
+      "content": "current < tokens.length"
+    },
+    "25": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "throw Error(\"Empty \\\"font\\\" property\")"
+    },
+    "26": {
+      "one": "34",
+      "type": "case",
+      "two": "37",
+      "content": "\"normal\""
+    },
+    "27": {
+      "one": "33",
+      "type": "case",
+      "two": "30",
+      "content": "\"oblique\""
+    },
+    "28": {
+      "one": "33",
+      "type": "case",
+      "two": "27",
+      "content": "\"italic\""
+    },
+    "29": {
+      "one": "28",
+      "type": "select",
+      "two": "",
+      "content": "part"
+    },
+    "30": {
+      "one": "31",
+      "type": "case",
+      "two": "26",
+      "content": "\"bold\""
+    },
+    "31": {
+      "one": "35",
+      "type": "action",
+      "two": "",
+      "content": "weight = part"
+    },
+    "32": {
+      "one": "29",
+      "type": "action",
+      "two": "",
+      "content": "part = tokens[current++]"
+    },
+    "33": {
+      "one": "34",
+      "type": "action",
+      "two": "",
+      "content": "style = part"
+    },
+    "34": {
+      "branchId": 4,
+      "one": "38",
+      "type": "branch",
+      "content": "Weight"
+    },
+    "35": {
+      "branchId": 5,
+      "one": "53",
+      "type": "branch",
+      "content": "Size"
+    },
+    "36": {
+      "branchId": 6,
+      "one": "67",
+      "type": "branch",
+      "content": "Family"
+    },
+    "37": {
+      "type": "case",
+      "two": null,
+      "one": "70"
+    },
+    "38": {
+      "flag1": 1,
+      "type": "question",
+      "one": "46",
+      "two": "39",
+      "content": "current < tokens.length"
+    },
+    "39": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "throw Error(\n    \"Unexpected end of \\\"font\\\" property\"\n)"
+    },
+    "40": {
+      "one": "35",
+      "type": "case",
+      "two": "48",
+      "content": "\"normal\""
+    },
+    "42": {
+      "one": "49",
+      "type": "case",
+      "two": "40",
+      "content": "\"bold\""
+    },
+    "43": {
+      "one": "42",
+      "type": "select",
+      "two": "",
+      "content": "part"
+    },
+    "46": {
+      "one": "43",
+      "type": "action",
+      "two": "",
+      "content": "part = tokens[current++]"
+    },
+    "48": {
+      "type": "case",
+      "two": "",
+      "one": "50"
+    },
+    "49": {
+      "one": "35",
+      "type": "action",
+      "two": "",
+      "content": "weight = part"
+    },
+    "50": {
+      "type": "action",
+      "one": "51",
+      "content": "size = parsePxSize(part)"
+    },
+    "51": {
+      "flag1": 0,
+      "type": "question",
+      "one": "36",
+      "two": "52",
+      "content": "size === undefined"
+    },
+    "52": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "throw Error(\n    \"Expected px size in \\\"font\\\" property\"\n)"
+    },
+    "53": {
+      "flag1": 1,
+      "type": "question",
+      "one": "58",
+      "two": "54",
+      "content": "current < tokens.length"
+    },
+    "54": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "throw Error(\n    \"Unexpected end of \\\"font\\\" property\"\n)"
+    },
+    "58": {
+      "one": "64",
+      "type": "action",
+      "two": "",
+      "content": "part = tokens[current++]"
+    },
+    "64": {
+      "one": "65",
+      "type": "action",
+      "two": "",
+      "content": "size = parsePxSize(part)"
+    },
+    "65": {
+      "flag1": 0,
+      "type": "question",
+      "one": "36",
+      "two": "66",
+      "content": "size === undefined"
+    },
+    "66": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "throw Error(\n    \"Expected px size in \\\"font\\\" property\"\n)"
+    },
+    "67": {
+      "flag1": 1,
+      "type": "question",
+      "one": "69",
+      "two": "68",
+      "content": "current < tokens.length"
+    },
+    "68": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "throw Error(\n    \"Unexpected end of \\\"font\\\" property\"\n)"
+    },
+    "69": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "family = tokens[current++]"
+    },
+    "70": {
+      "type": "action",
+      "one": "71",
+      "content": "size = parsePxSize(part)"
+    },
+    "71": {
+      "flag1": 0,
+      "type": "question",
+      "one": "36",
+      "two": "35",
+      "content": "size === undefined"
+    },
+    "72": {
+      "branchId": 1,
+      "one": "74",
+      "type": "branch",
+      "content": "Find in cache"
+    },
+    "73": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "return fontCache[font]"
+    },
+    "74": {
+      "flag1": 1,
+      "type": "question",
+      "two": "2",
+      "one": "73",
+      "content": "font in fontCache"
+    },
+    "77": {
+      "type": "action",
+      "one": "7",
+      "content": "return fontObj"
+    },
+    "78": {
+      "one": "77",
+      "type": "action",
+      "two": "",
+      "content": "fontCache[font] = fontObj"
+    },
+    "79": {
+      "type": "action",
+      "one": "88",
+      "content": "fontObj = {\n    style: style,\n    weight: weight,\n    size: size,\n    family: family,\n    font: \"\"\n}"
+    },
+    "80": {
+      "flag1": 0,
+      "type": "question",
+      "one": "89",
+      "two": "84",
+      "content": "current < tokens.length"
+    },
+    "82": {
+      "one": "83",
+      "type": "action",
+      "two": "",
+      "content": "family += next"
+    },
+    "83": {
+      "type": "arrow-loop",
+      "one": "80"
+    },
+    "84": {
+      "type": "action",
+      "one": "85",
+      "content": "next = tokens[current++]"
+    },
+    "85": {
+      "flag1": 1,
+      "type": "question",
+      "two": "86",
+      "one": "82",
+      "content": "next[0] === \",\""
+    },
+    "86": {
+      "one": "82",
+      "type": "action",
+      "two": "",
+      "content": "family += \" \""
+    },
+    "87": {
+      "type": "action",
+      "one": "79",
+      "content": "family = enrichFamily(family)"
+    },
+    "88": {
+      "type": "action",
+      "one": "78",
+      "content": "fontObj.font = cssFontToString(fontObj)"
+    },
+    "89": {
+      "flag1": 1,
+      "type": "question",
+      "two": "79",
+      "one": "87",
+      "content": "fixFamily"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "font\nfontCache\nfixFamily",
+  "type": "drakon"
+}

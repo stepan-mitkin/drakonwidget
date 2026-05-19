@@ -1,0 +1,85 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "12"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return {\n    width: width,\n    height: node.flowBlock.height + extraHeight\n}"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "10",
+      "two": "5",
+      "content": "node.textBlock"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "one": "7",
+      "two": "13",
+      "content": "node.topTextBlock"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return {\n    width: 0,\n    height: 0\n}"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "node.topFlowBlock = flowTextBlock(\n    node.topTextBlock,\n    width\n)"
+    },
+    "8": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "node.bottomFlowBlock = flowTextBlock(\n    node.bottomTextBlock,\n    width\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "return {\n    width: width,\n    height: node.topFlowBlock.height + node\n    .bottomFlowBlock.height + extraHeight\n}"
+    },
+    "10": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "node.flowBlock = flowTextBlock(\n    node.textBlock,\n    width\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "4",
+      "content": "extraHeight = node.extraHeight || 0"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "two": "14",
+      "one": "6",
+      "content": "extraHeight"
+    },
+    "14": {
+      "type": "action",
+      "one": "1",
+      "content": "return {\n    width: width,\n    height: extraHeight\n}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node\nwidth",
+  "type": "drakon"
+}

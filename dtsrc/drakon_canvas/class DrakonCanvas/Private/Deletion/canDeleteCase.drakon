@@ -1,0 +1,50 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "select = caseNode.select"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "7",
+      "content": "select.cases.length > 2"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "7",
+      "one": "6",
+      "content": "select.cases[0] === caseNode"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "caseNode",
+  "type": "drakon"
+}

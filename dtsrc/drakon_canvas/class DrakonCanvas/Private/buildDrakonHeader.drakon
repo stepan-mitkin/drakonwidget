@@ -1,0 +1,130 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "23",
+      "type": "branch",
+      "content": "Header"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "header = createNode(\n    visuals,\n    undefined,\n    \"header\",\n    headerContent,\n    \"header\"\n)"
+    },
+    "8": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "flowIcon(visuals, visuals.header)"
+    },
+    "9": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "headerItem = model.items[\"header\"]"
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "one": "7",
+      "two": "11",
+      "content": "headerItem"
+    },
+    "11": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "header = nodeFromItem(\n    visuals,\n    headerItem\n)"
+    },
+    "12": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "header.content = headerContent"
+    },
+    "13": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "14": {
+      "branchId": 2,
+      "one": "19",
+      "type": "branch",
+      "content": "Params"
+    },
+    "15": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "visuals.params = params"
+    },
+    "16": {
+      "type": "action",
+      "one": "22",
+      "content": "params = createNode(\n    visuals,\n    undefined,\n    \"params\",\n    paramsContent,\n    \"params\"\n)"
+    },
+    "17": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "paramsItem = model.items[\"params\"]"
+    },
+    "18": {
+      "flag1": 0,
+      "type": "question",
+      "one": "16",
+      "two": "21",
+      "content": "paramsItem"
+    },
+    "19": {
+      "type": "action",
+      "one": "20",
+      "content": "paramsContent = model.doc.params"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "two": "13",
+      "one": "17",
+      "content": "paramsContent"
+    },
+    "21": {
+      "one": "24",
+      "type": "action",
+      "two": "",
+      "content": "params = nodeFromItem(\n    visuals,\n    paramsItem\n)"
+    },
+    "22": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "flowIcon(visuals, params)"
+    },
+    "23": {
+      "type": "action",
+      "one": "9",
+      "content": "headerContent = model.doc.name"
+    },
+    "24": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "params.content = paramsContent"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nmodel",
+  "type": "drakon"
+}

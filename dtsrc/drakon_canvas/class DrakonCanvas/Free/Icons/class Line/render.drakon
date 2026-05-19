@@ -1,0 +1,121 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "34",
+      "type": "branch",
+      "content": "Set style"
+    },
+    "10": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "lineWidth = getLineWidth(\n    visuals,\n    element\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "10",
+      "content": "config = visuals.config"
+    },
+    "13": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "color = getLineColor(visuals, element)"
+    },
+    "17": {
+      "type": "action",
+      "one": "20",
+      "content": "setLineDashFromStyle(\n    config,\n    element,\n    lineWidth,\n    \"lineStyle\",\n    ctx\n)"
+    },
+    "19": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "20": {
+      "branchId": 2,
+      "one": "21",
+      "type": "branch",
+      "content": "Draw line itself"
+    },
+    "21": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "line(\n    ctx,\n    x1,\n    y1,\n    x2,\n    y2,\n    color,\n    lineWidth\n)"
+    },
+    "22": {
+      "one": "23",
+      "type": "action",
+      "two": "",
+      "content": "ctx.setLineDash([])"
+    },
+    "23": {
+      "branchId": 3,
+      "one": "24",
+      "type": "branch",
+      "content": "Draw caps"
+    },
+    "24": {
+      "flag1": 1,
+      "type": "question",
+      "two": "19",
+      "one": "26",
+      "content": "element.style"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "two": "28",
+      "one": "32",
+      "content": "element.style.tailStyle"
+    },
+    "28": {
+      "flag1": 1,
+      "type": "question",
+      "two": "19",
+      "one": "32",
+      "content": "element.style.headStyle"
+    },
+    "29": {
+      "type": "action",
+      "one": "30",
+      "content": "angle = findAngle(x1, y1, x2, y2)"
+    },
+    "30": {
+      "type": "action",
+      "one": "33",
+      "content": "drawCap(\n    ctx,\n    element.style.tailStyle,\n    x1,\n    y1,\n    angle + Math.PI,\n    color,\n    iconBack,\n    lineWidth\n)"
+    },
+    "32": {
+      "one": "29",
+      "type": "action",
+      "two": "",
+      "content": "iconBack = getThemeValue(\n    config,\n    element,\n    \"iconBack\"\n)"
+    },
+    "33": {
+      "type": "action",
+      "one": "19",
+      "content": "drawCap(\n    ctx,\n    element.style.headStyle,\n    x2,\n    y2,\n    angle,\n    color,\n    iconBack,\n    lineWidth\n)"
+    },
+    "34": {
+      "type": "action",
+      "one": "12",
+      "content": "x1 = element.left\nx2 = x1 + element.x2\ny1 = element.top\ny2 = y1 + element.y2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

@@ -1,0 +1,59 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "9"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return false"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "3"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "7",
+            "content": "box; element.subboxes"
+        },
+        "7": {
+            "flag1": 0,
+            "type": "question",
+            "one": "4",
+            "two": "8",
+            "content": "hitBox(box, pos.x, pos.y)"
+        },
+        "8": {
+            "type": "action",
+            "one": "4",
+            "content": "return true"
+        },
+        "9": {
+            "flag1": 0,
+            "type": "question",
+            "one": "5",
+            "two": "10",
+            "content": "hitBox(element.innerBox, pos.x, pos.y)"
+        },
+        "10": {
+            "type": "action",
+            "one": "5",
+            "content": "return true"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "element\npos",
+    "type": "drakon"
+}

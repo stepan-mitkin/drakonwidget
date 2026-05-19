@@ -1,0 +1,57 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "toKeep = {}"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return toKeep"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "caseNode; node.select.cases"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "one": "8",
+      "two": "5",
+      "content": "caseNode === node"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "below = caseNode.next[0]"
+    },
+    "9": {
+      "type": "action",
+      "one": "5",
+      "content": "markToStay(\n    widget,\n    caseNode,\n    below.itemId,\n    toKeep\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "11",
+      "type": "branch"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "centerContentFree(visuals, element, ctx)"
+    },
+    "9": {
+      "type": "action",
+      "one": "12",
+      "content": "left = element.left\ntop = element.top\nwidth = element.width\nheight = element.height"
+    },
+    "11": {
+      "type": "action",
+      "one": "9",
+      "content": "config = visuals.config"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "5",
+      "two": "13",
+      "content": "element.style"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "one": "5",
+      "two": "14",
+      "content": "element.style.iconBack"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "ctx.fillStyle = element.style.iconBack"
+    },
+    "15": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillRect(left, top, width, height)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

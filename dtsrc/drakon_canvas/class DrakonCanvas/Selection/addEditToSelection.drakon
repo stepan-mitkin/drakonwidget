@@ -1,0 +1,56 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "id = edit.id\nfields = edit.fields"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "two": "16",
+      "one": "10",
+      "content": "isFree(widget, fields)"
+    },
+    "10": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "selection.prims[id] = \"free\""
+    },
+    "11": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "selection.prims[id] = \"node\""
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "incrementCount(byId, fields.one)"
+    },
+    "17": {
+      "type": "action",
+      "one": "11",
+      "content": "incrementCount(byId, fields.two)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nselection\nedit\nbyId",
+  "type": "drakon"
+}

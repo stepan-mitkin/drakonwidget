@@ -1,0 +1,178 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "23",
+      "type": "branch",
+      "content": "Collect internal parents"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "ids = {}"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "7"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "node; nodes"
+    },
+    "6": {
+      "branchId": 5,
+      "one": "24",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "7": {
+      "branchId": 2,
+      "one": "9",
+      "type": "branch",
+      "content": "Find roots"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "ids[node.id] = true"
+    },
+    "9": {
+      "type": "action",
+      "one": "11",
+      "content": "parents = {}"
+    },
+    "10": {
+      "branchId": 3,
+      "one": "16",
+      "type": "branch",
+      "content": "Shift down ordinal of siblings"
+    },
+    "11": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "node; nodes"
+    },
+    "12": {
+      "type": "loopend",
+      "one": "33"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "two": "14",
+      "one": "12",
+      "content": "node.parent.id in ids"
+    },
+    "14": {
+      "type": "action",
+      "one": "12",
+      "content": "parents[node.parent.id] = true"
+    },
+    "15": {
+      "type": "action",
+      "one": "10",
+      "content": "parent = getNode(widget.visuals, pids[0])"
+    },
+    "16": {
+      "type": "action",
+      "one": "19",
+      "content": "children = parent.children.filter(\n    function (sibling) {\n        return !ids[sibling.id]\n    }\n)"
+    },
+    "17": {
+      "type": "loopend",
+      "one": "25"
+    },
+    "18": {
+      "type": "loopbegin",
+      "one": "21",
+      "content": "child; children"
+    },
+    "19": {
+      "type": "action",
+      "one": "18",
+      "content": "ordinal = 0"
+    },
+    "20": {
+      "type": "action",
+      "one": "17",
+      "content": "ordinal++"
+    },
+    "21": {
+      "flag1": 1,
+      "type": "question",
+      "two": "20",
+      "one": "22",
+      "content": "child.ordinal != ordinal"
+    },
+    "22": {
+      "type": "action",
+      "one": "20",
+      "content": "updateItem(\n    edits,\n    child.id,\n    {ordinal: ordinal}\n)"
+    },
+    "23": {
+      "type": "action",
+      "one": "3",
+      "content": "edits = []"
+    },
+    "24": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "25": {
+      "branchId": 4,
+      "one": "29",
+      "type": "branch",
+      "content": "Delete the items"
+    },
+    "28": {
+      "type": "loopend",
+      "one": "6"
+    },
+    "29": {
+      "type": "loopbegin",
+      "one": "30",
+      "content": "node; nodes"
+    },
+    "30": {
+      "type": "action",
+      "one": "34",
+      "content": "deleteItemCore(edits, node.id)"
+    },
+    "31": {
+      "flag1": 1,
+      "type": "question",
+      "one": "15",
+      "two": "32",
+      "content": "pids.length === 1"
+    },
+    "32": {
+      "type": "action",
+      "one": "10",
+      "content": "throw new Error(\n    \"deleteMind: bad number of parents: \"\n    + pids.length\n)"
+    },
+    "33": {
+      "type": "action",
+      "one": "31",
+      "content": "pids = Object.keys(parents)"
+    },
+    "34": {
+      "type": "action",
+      "one": "28",
+      "content": "decrementImageRefCount(\n    widget,\n    node.image\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnodes",
+  "type": "drakon"
+}

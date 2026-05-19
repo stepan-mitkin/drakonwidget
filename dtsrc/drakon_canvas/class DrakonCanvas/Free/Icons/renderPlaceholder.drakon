@@ -1,0 +1,81 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "32"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "two": "20",
+      "one": "30",
+      "content": "mustShift(visuals.config, line)"
+    },
+    "20": {
+      "one": "30",
+      "type": "action",
+      "two": "",
+      "content": "left += 0.5\ntop += 0.5"
+    },
+    "21": {
+      "one": "24",
+      "type": "action",
+      "two": "",
+      "content": "line = ctx.lineWidth || 1"
+    },
+    "24": {
+      "one": "31",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    },
+    "28": {
+      "type": "action",
+      "one": "21",
+      "content": "renderFreeIconShape(\n    ctx,\n    visuals,\n    element,\n    buildRectCoords,\n    undefined\n)"
+    },
+    "29": {
+      "type": "action",
+      "one": "19",
+      "content": "left = element.left + radius\ntop = element.top + radius"
+    },
+    "30": {
+      "type": "action",
+      "one": "33",
+      "content": "right = left + element.width - radius * 2\nbottom = top + element.height - radius *\n2"
+    },
+    "31": {
+      "type": "action",
+      "one": "29",
+      "content": "radius = config.iconRadius || 0"
+    },
+    "32": {
+      "type": "action",
+      "one": "28",
+      "content": "config = visuals.config"
+    },
+    "33": {
+      "type": "action",
+      "one": "34",
+      "content": "line1(ctx, left, top, right, bottom)"
+    },
+    "34": {
+      "type": "action",
+      "one": "1",
+      "content": "line1(ctx, right, top, left, bottom)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

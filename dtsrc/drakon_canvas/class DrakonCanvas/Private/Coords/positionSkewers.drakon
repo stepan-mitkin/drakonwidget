@@ -1,0 +1,70 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "7",
+      "type": "branch",
+      "content": "Find relative distances"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "9",
+      "type": "branch",
+      "content": "Set absolute X coordinates"
+    },
+    "6": {
+      "type": "loopend",
+      "one": "5"
+    },
+    "7": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "id, skewer; visuals.skewers"
+    },
+    "8": {
+      "type": "action",
+      "one": "6",
+      "content": "findLeftLinks(visuals, skewer)"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "12",
+      "one": "10",
+      "content": "visuals.branches.length === 1"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "left = getSilCorner(visuals)"
+    },
+    "11": {
+      "type": "action",
+      "one": "4",
+      "content": "calculateSkewerPos(\n    visuals.skewers,\n    visuals.skewerLinks,\n    left.skewer,\n    0\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "4",
+      "content": "calculateSkewerPos(\n    visuals.skewers,\n    visuals.skewerLinks,\n    visuals.header.skewer,\n    0\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

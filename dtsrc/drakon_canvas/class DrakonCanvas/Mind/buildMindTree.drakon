@@ -1,0 +1,95 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "7",
+      "type": "branch",
+      "content": "Create children property"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "14",
+      "type": "branch",
+      "content": "Sort"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "10",
+      "type": "branch",
+      "content": "Populate children"
+    },
+    "6": {
+      "type": "loopend",
+      "one": "5"
+    },
+    "7": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "id, node; visuals.nodes"
+    },
+    "8": {
+      "type": "action",
+      "one": "17",
+      "content": "node.children = []"
+    },
+    "9": {
+      "type": "action",
+      "one": "6",
+      "content": "node.parent = getNode(\n    visuals,\n    node.parent\n)"
+    },
+    "10": {
+      "type": "loopbegin",
+      "one": "18",
+      "content": "id, node; visuals.nodes"
+    },
+    "11": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "12": {
+      "type": "action",
+      "one": "11",
+      "content": "node.parent.children.push(node)"
+    },
+    "14": {
+      "type": "loopbegin",
+      "one": "16",
+      "content": "id, node; visuals.nodes"
+    },
+    "15": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "16": {
+      "type": "action",
+      "one": "15",
+      "content": "utils.sortBy(node.children, \"ordinal\")"
+    },
+    "17": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "9",
+      "content": "node.parent"
+    },
+    "18": {
+      "flag1": 1,
+      "type": "question",
+      "one": "12",
+      "two": "11",
+      "content": "node.parent"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

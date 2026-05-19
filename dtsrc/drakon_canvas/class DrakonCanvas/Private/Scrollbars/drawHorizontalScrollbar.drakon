@@ -1,0 +1,86 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "17"
+    },
+    "3": {
+      "type": "action",
+      "one": "12",
+      "content": "roundedRect(\n    ctx,\n    cleft,\n    ctop,\n    context.scrollHeight,\n    cheight,\n    cradius\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "9",
+      "content": "visuals = widget.visuals\nctx = visuals.ctx\nconfig = visuals.config"
+    },
+    "6": {
+      "type": "action",
+      "one": "8",
+      "content": "clearShadow(ctx)"
+    },
+    "8": {
+      "type": "action",
+      "one": "10",
+      "content": "ctop = (\n    widget.height - (\n        context.barWidth + context.margin\n    )\n) / zoom + visuals.scrollY\ncleft = context.scrollTop + visuals.scrollX"
+    },
+    "9": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "zoom = widget.zoomFactor"
+    },
+    "10": {
+      "type": "action",
+      "one": "15",
+      "content": "cheight = context.barWidth / zoom\ncradius = cheight / 2"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "ctx.fill()"
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "visuals.horizontalScrollBar = {\n    elType: id,\n    primId: id,\n    barToBox: context.barToBox,\n    box: createBox(\n        cleft,\n        ctop - context.margin,\n        context.scrollHeight,\n        cheight + context.margin * 2\n    )\n}"
+    },
+    "14": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = config.theme.scrollBar"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "two": "16",
+      "one": "14",
+      "content": "visuals.highlight === id"
+    },
+    "16": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = config.theme.scrollBarHover"
+    },
+    "17": {
+      "type": "action",
+      "one": "4",
+      "content": "id = \"hscroll\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\ncontext",
+  "type": "drakon"
+}

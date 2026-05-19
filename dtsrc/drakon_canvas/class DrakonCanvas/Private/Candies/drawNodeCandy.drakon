@@ -1,0 +1,98 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "13"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "7",
+      "content": "node.type === \"junction\""
+    },
+    "6": {
+      "type": "action",
+      "one": "5",
+      "content": "node = visuals.nodes[id]"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "16",
+      "content": "node.type === \"arrow-loop\""
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "juncCandy(node, ctx, config)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "two": "10",
+      "one": "12",
+      "content": "shouldAlignWidth(visuals, node)"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "standardCandy(node, ctx, config)"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "skewerResizeCandy(widget, node, ctx)"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "two": "10",
+      "one": "11",
+      "content": "visuals.config.allowResize"
+    },
+    "13": {
+      "type": "action",
+      "one": "6",
+      "content": "visuals = widget.visuals"
+    },
+    "14": {
+      "flag1": 0,
+      "type": "question",
+      "one": "9",
+      "two": "15",
+      "content": "isMindIcon(widget, node)"
+    },
+    "15": {
+      "type": "action",
+      "one": "1",
+      "content": "mindCandy(widget, node, ctx)"
+    },
+    "16": {
+      "flag1": 0,
+      "type": "question",
+      "one": "14",
+      "two": "17",
+      "content": "node.type === \"header\""
+    },
+    "17": {
+      "type": "action",
+      "one": "1",
+      "content": "standardCandy(node, ctx, config)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nid\nctx\nconfig",
+  "type": "drakon"
+}

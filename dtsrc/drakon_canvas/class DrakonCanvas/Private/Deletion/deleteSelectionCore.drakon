@@ -1,0 +1,70 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "type": "case",
+      "one": "10"
+    },
+    "5": {
+      "one": "8",
+      "type": "case",
+      "two": "4",
+      "content": "1"
+    },
+    "6": {
+      "one": "1",
+      "type": "case",
+      "two": "5",
+      "content": "0"
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "nodes.length"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "deleteOne(widget, nodes[0])"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "deleteBlock(widget, nodes)"
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "one": "9",
+      "two": "11",
+      "content": "isMindIcon(widget, nodes[0])"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "edits = deleteMind(widget, nodes)"
+    },
+    "12": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "doEdit(widget, edits)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnodes",
+  "type": "drakon"
+}

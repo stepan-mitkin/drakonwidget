@@ -1,0 +1,97 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "31",
+      "type": "branch",
+      "content": "Setup"
+    },
+    "5": {
+      "type": "action",
+      "one": "99",
+      "content": "config = visuals.config"
+    },
+    "11": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "23": {
+      "type": "action",
+      "one": "5",
+      "content": "minLine = 40"
+    },
+    "31": {
+      "type": "action",
+      "one": "23",
+      "content": "style = element.style || {}"
+    },
+    "72": {
+      "one": "94",
+      "type": "action",
+      "two": "",
+      "content": "iconBack = getThemeValue(\n    config,\n    element,\n    \"iconBack\"\n)"
+    },
+    "74": {
+      "branchId": 2,
+      "one": "98",
+      "type": "branch",
+      "content": "Draw line"
+    },
+    "75": {
+      "type": "action",
+      "one": "95",
+      "content": "coords = element.coords.map(\n    function (point) {\n        return {\n            x: point.x + element.left,\n            y: point.y + element.top\n        }\n    }\n)"
+    },
+    "94": {
+      "type": "action",
+      "one": "74",
+      "content": "setLineDashFromStyle(\n    config,\n    element,\n    lineWidth,\n    \"lineStyle\",\n    ctx\n)"
+    },
+    "95": {
+      "type": "action",
+      "one": "96",
+      "content": "multilineSharp(\n    ctx,\n    coords,\n    line,\n    lineWidth\n)"
+    },
+    "96": {
+      "type": "action",
+      "one": "97",
+      "content": "drawTail(\n    ctx,\n    coords,\n    style.tailStyle,\n    line,\n    iconBack,\n    lineWidth\n)"
+    },
+    "97": {
+      "type": "action",
+      "one": "11",
+      "content": "drawHead(\n    ctx,\n    coords,\n    style.headStyle,\n    line,\n    iconBack,\n    lineWidth\n)"
+    },
+    "98": {
+      "type": "action",
+      "one": "75",
+      "content": "ctx.fillStyle = lines\nctx.strokeStyle = lines"
+    },
+    "99": {
+      "one": "100",
+      "type": "action",
+      "two": "",
+      "content": "lineWidth = getLineWidth(\n    visuals,\n    element\n)"
+    },
+    "100": {
+      "one": "72",
+      "type": "action",
+      "two": "",
+      "content": "lines = getLineColor(visuals, element)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

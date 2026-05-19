@@ -1,0 +1,48 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "boundary = skewer.leftWidth + metre"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "6",
+      "content": "skewer.main"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "boundary += metre"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return skewer.leftWidth + metre"
+    },
+    "7": {
+      "type": "action",
+      "one": "3",
+      "content": "metre = visuals.config.metre"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nskewer",
+  "type": "drakon"
+}

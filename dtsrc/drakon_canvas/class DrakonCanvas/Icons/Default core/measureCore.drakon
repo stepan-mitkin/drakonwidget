@@ -1,0 +1,95 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "7",
+      "type": "branch",
+      "content": "Try user-defined first"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "18",
+      "one": "12",
+      "content": "visuals.config.canvasIcons"
+    },
+    "8": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "size = node.core.measure(\n    visuals.ctx,\n    visuals.fonts\n)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "10",
+      "two": "20",
+      "content": "size"
+    },
+    "10": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "return size"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "mainDiv = node.core.buildDom(\n    visuals.fonts\n)"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "two": "20",
+      "one": "17",
+      "content": "mainDiv"
+    },
+    "16": {
+      "type": "action",
+      "one": "19",
+      "content": "return addDivToDiagram(visuals, mainDiv)"
+    },
+    "17": {
+      "type": "action",
+      "one": "16",
+      "content": "node.contentDiv = mainDiv"
+    },
+    "18": {
+      "flag1": 1,
+      "type": "question",
+      "one": "8",
+      "two": "20",
+      "content": "node.core.measure"
+    },
+    "19": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "20": {
+      "branchId": 2,
+      "one": "21",
+      "type": "branch",
+      "content": "Default"
+    },
+    "21": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "return measureDefault(visuals, node)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode",
+  "type": "drakon"
+}

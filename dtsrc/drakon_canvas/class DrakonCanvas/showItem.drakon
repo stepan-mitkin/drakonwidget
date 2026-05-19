@@ -1,0 +1,174 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "7",
+      "type": "branch",
+      "content": "Horizontal"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "36",
+      "one": "8",
+      "content": "nodeLeft >= 0"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "one": "35",
+      "two": "36",
+      "content": "nodeRight < self.width"
+    },
+    "11": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "12": {
+      "branchId": 3,
+      "one": "16",
+      "type": "branch",
+      "content": "Vertical"
+    },
+    "13": {
+      "branchId": 1,
+      "one": "47",
+      "type": "branch",
+      "content": "Prepare node box"
+    },
+    "16": {
+      "flag1": 1,
+      "type": "question",
+      "two": "39",
+      "one": "17",
+      "content": "nodeTop >= 0"
+    },
+    "17": {
+      "flag1": 1,
+      "type": "question",
+      "two": "39",
+      "one": "38",
+      "content": "nodeBottom < self.height"
+    },
+    "21": {
+      "branchId": 4,
+      "one": "32",
+      "type": "branch",
+      "content": "Select and paint"
+    },
+    "23": {
+      "type": "action",
+      "one": "41",
+      "content": "visuals = self.visuals\nbox = visuals.box"
+    },
+    "24": {
+      "type": "action",
+      "one": "25",
+      "content": "selectPrim(self, itemId)"
+    },
+    "25": {
+      "type": "action",
+      "one": "11",
+      "content": "paint(self)"
+    },
+    "27": {
+      "type": "action",
+      "one": "44",
+      "content": "width = self.width / zoom\nheight = self.height / zoom"
+    },
+    "29": {
+      "type": "action",
+      "one": "30",
+      "content": "nodeBox = node.box"
+    },
+    "30": {
+      "type": "action",
+      "one": "48",
+      "content": "nodeLeft = diagramToWidgetX(\n    self,\n    nodeBox.left\n)\nnodeTop = diagramToWidgetY(\n    self,\n    nodeBox.top\n)\nnodeRight = diagramToWidgetX(\n    self,\n    nodeBox.left + nodeBox.width\n)\nnodeBottom = diagramToWidgetY(\n    self,\n    nodeBox.top + nodeBox.height\n)"
+    },
+    "32": {
+      "type": "action",
+      "one": "24",
+      "content": "scroll = setScroll(\n    self,\n    scrollX,\n    scrollY\n)"
+    },
+    "35": {
+      "type": "action",
+      "one": "12",
+      "content": "scrollX = visuals.scrollX"
+    },
+    "36": {
+      "type": "action",
+      "one": "37",
+      "content": "halfWidth = Math.floor(width / 2)"
+    },
+    "37": {
+      "type": "action",
+      "one": "12",
+      "content": "scrollX = nodeX - halfWidth"
+    },
+    "38": {
+      "type": "action",
+      "one": "21",
+      "content": "scrollY = visuals.scrollY"
+    },
+    "39": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "halfHeight = Math.floor(height / 2)"
+    },
+    "40": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "scrollY = nodeY - halfHeight"
+    },
+    "41": {
+      "type": "action",
+      "one": "27",
+      "content": "zoom = self.zoomFactor"
+    },
+    "44": {
+      "type": "action",
+      "one": "45",
+      "content": "node = getFree(visuals, itemId)"
+    },
+    "45": {
+      "flag1": 1,
+      "type": "question",
+      "two": "46",
+      "one": "29",
+      "content": "node"
+    },
+    "46": {
+      "one": "29",
+      "type": "action",
+      "two": "",
+      "content": "node = getNode(visuals, itemId)"
+    },
+    "47": {
+      "type": "action",
+      "one": "23",
+      "content": "tracing.trace(\n    \"DrakonCanvas.showItem\",\n    itemId\n)"
+    },
+    "48": {
+      "type": "action",
+      "one": "2",
+      "content": "nodeX = nodeBox.left + nodeBox.width / 2\nnodeY = nodeBox.top + nodeBox.height / 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "itemId",
+  "type": "drakon"
+}

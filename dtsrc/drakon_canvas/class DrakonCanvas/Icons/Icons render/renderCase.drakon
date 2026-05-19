@@ -1,0 +1,54 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "renderBranch(visuals, node, ctx)"
+    },
+    "5": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "left = node.x - node.w\nbottom = node.y + node.h"
+    },
+    "6": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "middle = bottom - visuals.config.metre"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.fillRect(\n    left,\n    middle,\n    node.w * 2,\n    thickness\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "11",
+      "content": "thickness = getThemeValue(\n    visuals.config,\n    node,\n    \"borderWidth\"\n) || 1"
+    },
+    "11": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = getThemeValue(\n    visuals.config,\n    node,\n    \"internalLine\"\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

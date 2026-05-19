@@ -1,0 +1,136 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 1,
+            "one": "4",
+            "type": "branch",
+            "content": "Init"
+        },
+        "4": {
+            "type": "action",
+            "one": "12",
+            "content": "margin = (\n    flowBlock.lineHeight - flowBlock.fontSize\n) / 2"
+        },
+        "10": {
+            "branchId": 3,
+            "one": "55",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "12": {
+            "type": "action",
+            "one": "60",
+            "content": "baseLineShift = flowBlock.lineHeight - margin"
+        },
+        "45": {
+            "branchId": 2,
+            "one": "63",
+            "type": "branch",
+            "content": "Process tokens"
+        },
+        "46": {
+            "type": "loopend",
+            "one": "10"
+        },
+        "47": {
+            "type": "loopbegin",
+            "one": "54",
+            "content": "token; inputLine.tokens"
+        },
+        "48": {
+            "flag1": 1,
+            "type": "question",
+            "one": "50",
+            "two": "49",
+            "content": "line.right + token.width <= right"
+        },
+        "49": {
+            "flag1": 1,
+            "type": "question",
+            "two": "52",
+            "one": "50",
+            "content": "line.tokens.length === 0"
+        },
+        "50": {
+            "one": "46",
+            "type": "action",
+            "two": "",
+            "content": "addTokenToLine(line, token, wrap)"
+        },
+        "52": {
+            "one": "64",
+            "type": "action",
+            "two": "",
+            "content": "line = createLine(\n    flowBlock,\n    left,\n    line.bottom,\n    baseLineShift\n)"
+        },
+        "54": {
+            "type": "arrow-loop",
+            "one": "48"
+        },
+        "55": {
+            "type": "action",
+            "one": "1",
+            "content": "return line.bottom"
+        },
+        "56": {
+            "type": "case",
+            "one": "45"
+        },
+        "57": {
+            "one": "62",
+            "type": "case",
+            "two": "56",
+            "content": "\"ol\""
+        },
+        "58": {
+            "one": "62",
+            "type": "case",
+            "two": "57",
+            "content": "\"ul\""
+        },
+        "59": {
+            "type": "select",
+            "one": "58",
+            "content": "inputLine.type"
+        },
+        "60": {
+            "type": "action",
+            "one": "59",
+            "content": "line = createLine(\n    flowBlock,\n    left,\n    top,\n    baseLineShift\n)"
+        },
+        "61": {
+            "type": "action",
+            "one": "45",
+            "content": "left += inputLine.tokens[0].width"
+        },
+        "62": {
+            "flag1": 0,
+            "type": "question",
+            "one": "61",
+            "two": "45",
+            "content": "inputLine.tokens.length === 0"
+        },
+        "63": {
+            "type": "action",
+            "one": "47",
+            "content": "wrap = false"
+        },
+        "64": {
+            "type": "action",
+            "one": "54",
+            "content": "wrap = true"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "inputLine\nleft\ntop\nright\nflowBlock",
+    "type": "drakon"
+}

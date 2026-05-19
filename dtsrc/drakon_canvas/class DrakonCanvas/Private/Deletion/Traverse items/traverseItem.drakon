@@ -1,0 +1,74 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "1",
+      "content": "itemId"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "1",
+      "content": "itemId in visited"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "visited[itemId] = false"
+    },
+    "7": {
+      "type": "action",
+      "one": "13",
+      "content": "node = getNodeByItem(\n    widget.visuals,\n    itemId\n)"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "10",
+      "content": "isBackLink(prev, node)"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "item = widget.model.items[itemId]"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "traverseItem(\n    widget,\n    node,\n    item.one,\n    visited\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "traverseItem(\n    widget,\n    node,\n    item.two,\n    visited\n)"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "one": "8",
+      "two": "1",
+      "content": "node.type === \"branch\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nprev\nitemId\nvisited",
+  "type": "drakon"
+}

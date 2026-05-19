@@ -1,0 +1,58 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "7",
+      "type": "branch"
+    },
+    "6": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "7": {
+      "type": "loopbegin",
+      "one": "9",
+      "content": "sub; visuals.subs"
+    },
+    "8": {
+      "type": "loopend",
+      "one": "14"
+    },
+    "9": {
+      "type": "loopbegin",
+      "one": "10",
+      "content": "itemId, record; sub.inner"
+    },
+    "10": {
+      "type": "action",
+      "one": "8",
+      "content": "drawInnerSubItem(record, ctx, sub.color)"
+    },
+    "13": {
+      "type": "loopend",
+      "one": "6"
+    },
+    "14": {
+      "type": "loopbegin",
+      "one": "15",
+      "content": "itemId, record; sub.outer"
+    },
+    "15": {
+      "type": "action",
+      "one": "13",
+      "content": "drawOuterSubItem(record, ctx, sub.color)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nctx",
+  "type": "drakon"
+}

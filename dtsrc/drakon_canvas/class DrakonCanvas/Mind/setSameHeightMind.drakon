@@ -1,0 +1,47 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "6",
+      "content": "id, node; visuals.nodes"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "ttype = getTType(node)"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "one": "9",
+      "two": "4",
+      "content": "ttype === \"vertical\""
+    },
+    "9": {
+      "type": "action",
+      "one": "4",
+      "content": "setSameHeightForMindChildren(node)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

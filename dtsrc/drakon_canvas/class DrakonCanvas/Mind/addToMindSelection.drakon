@@ -1,0 +1,135 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "5",
+      "type": "branch",
+      "content": "Find the nodes to select"
+    },
+    "5": {
+      "type": "action",
+      "one": "9",
+      "content": "selection = widget.selection\nvisuals = widget.visuals"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "two": "11",
+      "one": "10",
+      "content": "selected.length === 0"
+    },
+    "9": {
+      "type": "action",
+      "one": "8",
+      "content": "selected = Object.keys(selection.prims)"
+    },
+    "10": {
+      "type": "action",
+      "one": "17",
+      "content": "toSelect = [node]"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "sibling = getWithCommonParent(\n    visuals,\n    node,\n    selected\n)"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "13",
+      "two": "14",
+      "content": "sibling"
+    },
+    "13": {
+      "type": "action",
+      "one": "17",
+      "content": "toSelect = getSiblingsBetween(\n    visuals,\n    node,\n    sibling\n)"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "one": "15",
+      "two": "18",
+      "content": "isUpperInTree(visuals, node, selected)"
+    },
+    "15": {
+      "type": "action",
+      "one": "17",
+      "content": "toSelect = [node]"
+    },
+    "16": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "17": {
+      "branchId": 2,
+      "one": "21",
+      "type": "branch",
+      "content": "Expand subtrees"
+    },
+    "18": {
+      "type": "action",
+      "one": "16",
+      "content": "return false"
+    },
+    "19": {
+      "type": "loopend",
+      "one": "22"
+    },
+    "20": {
+      "type": "loopbegin",
+      "one": "23",
+      "content": "subroot; toSelect"
+    },
+    "21": {
+      "type": "action",
+      "one": "20",
+      "content": "finalNodes = []"
+    },
+    "22": {
+      "branchId": 3,
+      "one": "25",
+      "type": "branch",
+      "content": "Add subtrees to selecton"
+    },
+    "23": {
+      "type": "action",
+      "one": "19",
+      "content": "getMindSubtree(subroot, finalNodes)"
+    },
+    "24": {
+      "type": "loopend",
+      "one": "27"
+    },
+    "25": {
+      "type": "loopbegin",
+      "one": "26",
+      "content": "node2; finalNodes"
+    },
+    "26": {
+      "one": "24",
+      "type": "action",
+      "two": "",
+      "content": "selection.prims[node2.id] = \"node\""
+    },
+    "27": {
+      "type": "action",
+      "one": "16",
+      "content": "return true"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

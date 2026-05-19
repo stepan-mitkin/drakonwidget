@@ -1,0 +1,147 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "4",
+      "type": "branch",
+      "content": "Filter inserts"
+    },
+    "4": {
+      "type": "action",
+      "one": "7",
+      "content": "selected = []"
+    },
+    "6": {
+      "type": "loopend",
+      "one": "25"
+    },
+    "7": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "edit; edits"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "9",
+      "one": "6",
+      "content": "edit.op === \"insert\""
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "10",
+      "one": "13",
+      "content": "edit.fields.type === \"branch\""
+    },
+    "10": {
+      "type": "action",
+      "one": "25",
+      "content": "selected = [edit]"
+    },
+    "11": {
+      "type": "action",
+      "one": "6",
+      "content": "selected.push(edit)"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "11",
+      "two": "6",
+      "content": "edit.fields.type === \"connection\""
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "two": "6",
+      "one": "12",
+      "content": "edit.fields.type === \"image\""
+    },
+    "14": {
+      "branchId": 4,
+      "one": "24",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "15": {
+      "branchId": 3,
+      "one": "23",
+      "type": "branch",
+      "content": "Build selection object"
+    },
+    "17": {
+      "one": "20",
+      "type": "loopend",
+      "two": ""
+    },
+    "18": {
+      "one": "19",
+      "type": "loopbegin",
+      "two": "",
+      "content": "edit; selected"
+    },
+    "19": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "addEditToSelection(\n    widget,\n    selection,\n    edit,\n    byId\n)"
+    },
+    "20": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "selection.head = findHead(\n    selection,\n    byId\n)"
+    },
+    "23": {
+      "type": "action",
+      "one": "18",
+      "content": "selection = {prims: {}}"
+    },
+    "24": {
+      "type": "action",
+      "one": "1",
+      "content": "return selection"
+    },
+    "25": {
+      "branchId": 2,
+      "one": "26",
+      "type": "branch",
+      "content": "Branch1"
+    },
+    "26": {
+      "type": "action",
+      "one": "28",
+      "content": "byId = {}"
+    },
+    "27": {
+      "one": "15",
+      "type": "loopend",
+      "two": ""
+    },
+    "28": {
+      "one": "29",
+      "type": "loopbegin",
+      "two": "",
+      "content": "edit; selected"
+    },
+    "29": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "byId[edit.id] = {\n    type: edit.fields.type,\n    count: 0\n}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nedits",
+  "type": "drakon"
+}

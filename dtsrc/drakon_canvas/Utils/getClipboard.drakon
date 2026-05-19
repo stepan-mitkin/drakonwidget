@@ -1,0 +1,44 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "8",
+      "content": "content"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return undefined"
+    },
+    "6": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return {\n    type: type,\n    content: JSON.parse(content)\n}"
+    },
+    "7": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "content = localStorage.getItem(\n    \"clipboard\"\n)"
+    },
+    "8": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "type = localStorage.getItem(\n    \"clipboard-type\"\n)"
+    }
+  },
+  "type": "drakon"
+}

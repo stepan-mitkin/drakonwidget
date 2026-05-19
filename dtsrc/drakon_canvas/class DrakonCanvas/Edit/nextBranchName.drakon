@@ -1,0 +1,55 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "max = 0"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return visuals.config.branch + (max + 1)"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "id; visuals.branches"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "branch = getNode(visuals, id)"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "number = getNumberPart(branch.content)"
+    },
+    "9": {
+      "type": "action",
+      "one": "5",
+      "content": "max = Math.max(max, number)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

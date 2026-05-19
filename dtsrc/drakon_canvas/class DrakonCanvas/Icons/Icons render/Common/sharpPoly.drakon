@@ -1,0 +1,65 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "p0 = points[0]"
+    },
+    "4": {
+      "type": "action",
+      "one": "7",
+      "content": "ctx.beginPath()"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.closePath()"
+    },
+    "7": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.moveTo(p0.x, p0.y)"
+    },
+    "8": {
+      "type": "loopend",
+      "one": "6"
+    },
+    "9": {
+      "type": "loopbegin",
+      "one": "12",
+      "content": "i = 1; i < length; i++"
+    },
+    "10": {
+      "type": "action",
+      "one": "9",
+      "content": "length = points.length"
+    },
+    "11": {
+      "type": "action",
+      "one": "8",
+      "content": "ctx.lineTo(p.x, p.y)"
+    },
+    "12": {
+      "type": "action",
+      "one": "11",
+      "content": "p = points[i]"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\npoints",
+  "type": "drakon"
+}

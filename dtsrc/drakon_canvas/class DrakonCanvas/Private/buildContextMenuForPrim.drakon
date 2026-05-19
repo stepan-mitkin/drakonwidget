@@ -1,0 +1,379 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 0,
+            "one": "5",
+            "type": "branch"
+        },
+        "5": {
+            "one": "6",
+            "type": "action",
+            "two": "",
+            "content": "visuals = widget.visuals"
+        },
+        "6": {
+            "flag1": 1,
+            "type": "question",
+            "two": "8",
+            "one": "63",
+            "content": "prim"
+        },
+        "8": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildBackgroundMenu(\n    widget,\n    evt.clientX,\n    evt.clientY,\n    evt.source === \"touch\"\n)"
+        },
+        "12": {
+            "type": "action",
+            "one": "13",
+            "content": "node = getNode(visuals, prim.id)"
+        },
+        "13": {
+            "flag1": 0,
+            "type": "question",
+            "one": "15",
+            "two": "73",
+            "content": "node.type == \"end\""
+        },
+        "15": {
+            "flag1": 0,
+            "type": "question",
+            "two": "42",
+            "one": "51",
+            "content": "node.type == \"junction\""
+        },
+        "26": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildBlockMenu(widget)"
+        },
+        "27": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildMenuByType(\n    widget,\n    prim,\n    node\n)"
+        },
+        "42": {
+            "flag1": 1,
+            "type": "question",
+            "two": "71",
+            "one": "52",
+            "content": "node.subtype === \"parbegin\""
+        },
+        "43": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildBeginParMenu(widget, node)"
+        },
+        "44": {
+            "type": "action",
+            "one": "95",
+            "content": "edge = getEdge(visuals, prim.id)"
+        },
+        "46": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = []"
+        },
+        "49": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildParCeilMenu(widget, edge)"
+        },
+        "51": {
+            "flag1": 1,
+            "type": "question",
+            "one": "98",
+            "two": "26",
+            "content": "ensureSelectedOne(widget, prim)"
+        },
+        "52": {
+            "flag1": 1,
+            "type": "question",
+            "two": "57",
+            "one": "43",
+            "content": "ensureSelectedOne(widget, prim)"
+        },
+        "57": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildBlockMenu(widget)"
+        },
+        "60": {
+            "one": "65",
+            "type": "case",
+            "two": "82",
+            "content": "\"free\""
+        },
+        "61": {
+            "one": "44",
+            "type": "case",
+            "two": "60",
+            "content": "\"edge\""
+        },
+        "62": {
+            "one": "12",
+            "type": "case",
+            "two": "61",
+            "content": "\"node\""
+        },
+        "63": {
+            "type": "select",
+            "one": "62",
+            "content": "prim.elType"
+        },
+        "64": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildFreeMenu(widget, prim)"
+        },
+        "65": {
+            "flag1": 0,
+            "type": "question",
+            "one": "66",
+            "two": "79",
+            "content": "isSelected(widget, prim.id)"
+        },
+        "66": {
+            "type": "action",
+            "one": "64",
+            "content": "selectPrim(widget, prim.id)"
+        },
+        "68": {
+            "type": "case",
+            "two": null,
+            "one": "114"
+        },
+        "71": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = []"
+        },
+        "72": {
+            "type": "action",
+            "one": "116",
+            "content": "pushMenuItem(\n    \"format\",\n    menu,\n    tr(widget, \"Format\"),\n    undefined,\n    function () {\n        startEditStyle(widget)\n    }\n)"
+        },
+        "73": {
+            "type": "action",
+            "one": "74",
+            "content": "menu = []"
+        },
+        "74": {
+            "one": "72",
+            "type": "action",
+            "two": "",
+            "content": "selectPrim(widget, prim.id)"
+        },
+        "79": {
+            "one": "80",
+            "type": "action",
+            "two": "",
+            "content": "selected = getSelectedFree(widget)"
+        },
+        "80": {
+            "flag1": 0,
+            "type": "question",
+            "two": "81",
+            "one": "83",
+            "content": "selected.length > 1"
+        },
+        "81": {
+            "one": "116",
+            "type": "action",
+            "two": "",
+            "content": "menu = buildBlockMenu(widget)"
+        },
+        "82": {
+            "one": "79",
+            "type": "case",
+            "two": "84",
+            "content": "\"nugget\""
+        },
+        "83": {
+            "one": "64",
+            "type": "action",
+            "two": "",
+            "content": "prim = freeToVisualItem(\n    widget,\n    selected[0]\n)"
+        },
+        "84": {
+            "one": "85",
+            "type": "case",
+            "two": "88",
+            "content": "\"connection\""
+        },
+        "85": {
+            "flag1": 0,
+            "type": "question",
+            "two": "87",
+            "one": "86",
+            "content": "isSelected(widget, prim.id)"
+        },
+        "86": {
+            "type": "action",
+            "one": "87",
+            "content": "selectPrim(widget, prim.id)"
+        },
+        "87": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildConnectionMenu(widget, prim)"
+        },
+        "88": {
+            "one": "91",
+            "type": "case",
+            "two": "68",
+            "content": "\"handle\""
+        },
+        "90": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = prim.makeContextMenu()"
+        },
+        "91": {
+            "flag1": 1,
+            "type": "question",
+            "one": "90",
+            "two": "115",
+            "content": "prim.makeContextMenu"
+        },
+        "92": {
+            "type": "case",
+            "one": "119"
+        },
+        "93": {
+            "one": "118",
+            "type": "case",
+            "two": "110",
+            "content": "\"down\""
+        },
+        "94": {
+            "one": "109",
+            "type": "case",
+            "two": "93",
+            "content": "\"parceiling\""
+        },
+        "95": {
+            "type": "select",
+            "one": "94",
+            "content": "edge.role"
+        },
+        "96": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildDownEdgeMenu(widget, edge)"
+        },
+        "98": {
+            "flag1": 0,
+            "type": "question",
+            "two": "100",
+            "one": "27",
+            "content": "isMind(widget)"
+        },
+        "100": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildMenuByTypeMind(\n    widget,\n    prim,\n    node\n)"
+        },
+        "102": {
+            "one": "105",
+            "type": "case",
+            "two": "106",
+            "content": "\"ceil\""
+        },
+        "103": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildCeilEdgeMenu(widget, edge)"
+        },
+        "105": {
+            "one": "103",
+            "type": "action",
+            "two": "",
+            "content": "selectPrim(widget, prim.id)"
+        },
+        "106": {
+            "one": "107",
+            "type": "case",
+            "two": "92",
+            "content": "\"selectceil\""
+        },
+        "107": {
+            "one": "108",
+            "type": "action",
+            "two": "",
+            "content": "selectPrim(widget, prim.id)"
+        },
+        "108": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildSelectCeilEdgeMenu(\n    widget,\n    edge\n)"
+        },
+        "109": {
+            "one": "49",
+            "type": "action",
+            "two": "",
+            "content": "selectPrim(widget, prim.id)"
+        },
+        "110": {
+            "one": "111",
+            "type": "case",
+            "two": "102",
+            "content": "\"mind-child\""
+        },
+        "111": {
+            "one": "112",
+            "type": "action",
+            "two": "",
+            "content": "selectPrim(widget, prim.id)"
+        },
+        "112": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildMindEdgeMenu(widget, edge)"
+        },
+        "113": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = buildContextMenuForPrim(\n    widget,\n    underlying,\n    evt\n)"
+        },
+        "114": {
+            "type": "action",
+            "one": "116",
+            "content": "menu = []"
+        },
+        "115": {
+            "type": "action",
+            "one": "113",
+            "content": "underlying = getPrimById(widget, prim.id)"
+        },
+        "116": {
+            "type": "action",
+            "one": "1",
+            "content": "return menu"
+        },
+        "118": {
+            "one": "96",
+            "type": "action",
+            "two": "",
+            "content": "ensureSelectedOne(widget,prim)"
+        },
+        "119": {
+            "one": "46",
+            "type": "action",
+            "two": "",
+            "content": "ensureSelectedOne(widget,prim)"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "widget\nprim\nevt",
+    "type": "drakon"
+}

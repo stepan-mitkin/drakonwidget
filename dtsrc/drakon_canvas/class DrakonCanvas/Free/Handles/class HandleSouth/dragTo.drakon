@@ -1,0 +1,36 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "type": "action",
+      "one": "8",
+      "content": "self.element.height = y - self.top"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "element = self.element"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "findHorizontalForHandle(self, element, y)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "x\ny",
+  "type": "drakon"
+}

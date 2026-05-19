@@ -1,0 +1,108 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "24",
+      "type": "branch",
+      "content": "Branch1"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "left = node.x - node.w\ntop = node.y - node.h\nright = node.x + node.w\nbottom = node.y + node.h"
+    },
+    "4": {
+      "type": "action",
+      "one": "10",
+      "content": "fill = config.theme.candyFill\nborder = config.theme.candyBorder\nsize = 10\nlineWidth = 2"
+    },
+    "9": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "10": {
+      "branchId": 2,
+      "one": "23",
+      "type": "branch",
+      "content": "Top"
+    },
+    "12": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "centerSquare(\n    ctx,\n    node.x,\n    top,\n    size,\n    fill,\n    border,\n    lineWidth\n)"
+    },
+    "14": {
+      "branchId": 3,
+      "one": "28",
+      "type": "branch",
+      "content": "Middle"
+    },
+    "15": {
+      "branchId": 4,
+      "one": "26",
+      "type": "branch",
+      "content": "Bottom"
+    },
+    "20": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "centerSquare(\n    ctx,\n    node.x,\n    bottom,\n    size,\n    fill,\n    border,\n    lineWidth\n)"
+    },
+    "22": {
+      "type": "action",
+      "one": "3",
+      "content": "config = visuals.config"
+    },
+    "23": {
+      "type": "action",
+      "one": "12",
+      "content": "createLeftDrakonResizeHandle(\n    widget,\n    node,\n    top,\n    ctx\n)"
+    },
+    "24": {
+      "type": "action",
+      "one": "22",
+      "content": "visuals = widget.visuals"
+    },
+    "25": {
+      "type": "action",
+      "one": "14",
+      "content": "createRightDrakonResizeHandle(\n    widget,\n    node,\n    top,\n    ctx\n)"
+    },
+    "26": {
+      "type": "action",
+      "one": "20",
+      "content": "createLeftDrakonResizeHandle(\n    widget,\n    node,\n    bottom,\n    ctx\n)"
+    },
+    "27": {
+      "type": "action",
+      "one": "9",
+      "content": "createRightDrakonResizeHandle(\n    widget,\n    node,\n    bottom,\n    ctx\n)"
+    },
+    "28": {
+      "type": "action",
+      "one": "29",
+      "content": "createLeftDrakonResizeHandle(\n    widget,\n    node,\n    node.y,\n    ctx\n)"
+    },
+    "29": {
+      "type": "action",
+      "one": "15",
+      "content": "createRightDrakonResizeHandle(\n    widget,\n    node,\n    node.y,\n    ctx\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode\nctx",
+  "type": "drakon"
+}

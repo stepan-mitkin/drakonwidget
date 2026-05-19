@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "10",
+      "content": "edit; edits"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "one": "9",
+      "two": "5",
+      "content": "imageId"
+    },
+    "8": {
+      "type": "action",
+      "one": "5",
+      "content": "edit.fields.height = height"
+    },
+    "9": {
+      "type": "action",
+      "one": "11",
+      "content": "image = widget.images[imageId]"
+    },
+    "10": {
+      "type": "action",
+      "one": "7",
+      "content": "imageId = edit.fields.image"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "height = getImageHeight(\n    image,\n    edit.fields.width\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "8",
+      "content": "height = Math.round(height / 10) * 10"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nedits",
+  "type": "drakon"
+}

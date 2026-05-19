@@ -1,0 +1,95 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "28"
+    },
+    "5": {
+      "type": "action",
+      "one": "15",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "6": {
+      "type": "action",
+      "one": "27",
+      "content": "roundedRect(\n    ctx,\n    element.left + border * 2,\n    element.top,\n    element.width - border * 4,\n    element.height,\n    r\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "32",
+      "content": "clearShadow(ctx)"
+    },
+    "15": {
+      "type": "action",
+      "one": "17",
+      "content": "border = Math.round(h / 5)\ntp = Math.round(w / 5)\nr = border"
+    },
+    "16": {
+      "type": "action",
+      "one": "6",
+      "content": "ctx.fillStyle = getThemeValue(\n    config,\n    element,\n    \"iconBorder\"\n)"
+    },
+    "17": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "setFillStroke(visuals, element, ctx)"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "two": "20",
+      "one": "16",
+      "content": "visuals.highlight === element.id"
+    },
+    "20": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = config.theme.highlight"
+    },
+    "27": {
+      "type": "action",
+      "one": "29",
+      "content": "ctx.fill()"
+    },
+    "28": {
+      "type": "action",
+      "one": "5",
+      "content": "config = visuals.config"
+    },
+    "29": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.fillRect(\n    x - w,\n    y + h - border,\n    w * 2,\n    border\n)"
+    },
+    "30": {
+      "type": "action",
+      "one": "31",
+      "content": "ctx.fillRect(\n    x - w + border * 3,\n    y - h + border,\n    w * 2 - border * 6,\n    h * 2 - border * 2\n)"
+    },
+    "31": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.fillRect(\n    x - tp,\n    y + h - border,\n    tp * 2,\n    border / 2\n)"
+    },
+    "32": {
+      "type": "action",
+      "one": "30",
+      "content": "ctx.fillStyle = getThemeValue(\n    config,\n    element,\n    \"iconBack\"\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

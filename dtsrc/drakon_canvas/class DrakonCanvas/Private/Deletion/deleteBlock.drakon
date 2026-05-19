@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "10"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "bottomId = findSelectionBottom(widget)\nhead = getNode(visuals, selection.head)"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "selection = widget.selection"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "edits = []"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "redirectUpperItems(\n    edits,\n    head.up.links,\n    bottomId\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "addDeletion = function (node) {\n    deleteItemCore(edits, node.id)\n    decrementImageRefCount(\n        widget,\n        node.image\n    )\n}"
+    },
+    "8": {
+      "type": "action",
+      "one": "15",
+      "content": "nodes.forEach(addDeletion)"
+    },
+    "10": {
+      "type": "action",
+      "one": "4",
+      "content": "visuals = widget.visuals"
+    },
+    "15": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return doEdit(widget, edits)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnodes",
+  "type": "drakon"
+}

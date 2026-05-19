@@ -1,0 +1,208 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "62"
+        },
+        "60": {
+            "type": "action",
+            "one": "63",
+            "content": "scroll = hitScrollBar(visuals, pos)"
+        },
+        "61": {
+            "one": "60",
+            "type": "action",
+            "two": "",
+            "content": "pos = toDiagram(widget, evt)"
+        },
+        "62": {
+            "one": "61",
+            "type": "action",
+            "two": "",
+            "content": "visuals = widget.visuals"
+        },
+        "63": {
+            "flag1": 1,
+            "type": "question",
+            "one": "85",
+            "two": "64",
+            "content": "scroll"
+        },
+        "64": {
+            "flag1": 0,
+            "type": "question",
+            "one": "67",
+            "two": "88",
+            "content": "isReadonlyImpl(widget)"
+        },
+        "65": {
+            "flag1": 1,
+            "type": "question",
+            "one": "75",
+            "two": "79",
+            "content": "ear"
+        },
+        "66": {
+            "one": "1",
+            "type": "action",
+            "two": "",
+            "content": "return visuals.ears"
+        },
+        "67": {
+            "one": "65",
+            "type": "action",
+            "two": "",
+            "content": "ear = hitEars(widget.visuals, pos)"
+        },
+        "68": {
+            "one": "69",
+            "type": "action",
+            "two": "",
+            "content": "element = findFree(widget, pos)"
+        },
+        "69": {
+            "flag1": 1,
+            "type": "question",
+            "one": "78",
+            "two": "88",
+            "content": "element"
+        },
+        "70": {
+            "one": "77",
+            "type": "action",
+            "two": "",
+            "content": "mover = createFreeMover(\n    widget,\n    [element],\n    evt\n)"
+        },
+        "71": {
+            "one": "1",
+            "type": "action",
+            "two": "",
+            "content": "return createFrameDrag(widget, evt)"
+        },
+        "72": {
+            "flag1": 0,
+            "type": "question",
+            "two": "73",
+            "one": "70",
+            "content": "isSelected(widget, element.id)"
+        },
+        "73": {
+            "one": "74",
+            "type": "action",
+            "two": "",
+            "content": "selected = getSelectedFree(widget)"
+        },
+        "74": {
+            "one": "77",
+            "type": "action",
+            "two": "",
+            "content": "mover = createFreeMover(\n    widget,\n    selected,\n    evt\n)"
+        },
+        "75": {
+            "one": "66",
+            "type": "action",
+            "two": "",
+            "content": "visuals.ears.start(ear, evt)"
+        },
+        "76": {
+            "one": "1",
+            "type": "action",
+            "two": "",
+            "content": "return mover"
+        },
+        "77": {
+            "one": "76",
+            "type": "action",
+            "two": "",
+            "content": "visuals.ears = undefined"
+        },
+        "78": {
+            "flag1": 0,
+            "type": "question",
+            "one": "72",
+            "two": "88",
+            "content": "element.type === \"connection\""
+        },
+        "79": {
+            "one": "80",
+            "type": "action",
+            "two": "",
+            "content": "handle = findHandle(visuals, pos)"
+        },
+        "80": {
+            "flag1": 1,
+            "type": "question",
+            "one": "82",
+            "two": "81",
+            "content": "handle"
+        },
+        "81": {
+            "flag1": 1,
+            "type": "question",
+            "two": "68",
+            "one": "83",
+            "content": "hitNugget(visuals, pos)"
+        },
+        "82": {
+            "one": "77",
+            "type": "action",
+            "two": "",
+            "content": "mover = createHandleDrag(\n    widget,\n    handle,\n    evt\n)"
+        },
+        "83": {
+            "one": "84",
+            "type": "action",
+            "two": "",
+            "content": "selected = getSelectedFree(widget)"
+        },
+        "84": {
+            "one": "77",
+            "type": "action",
+            "two": "",
+            "content": "mover = createFreeMover(\n    widget,\n    selected,\n    evt\n)"
+        },
+        "85": {
+            "flag1": 1,
+            "type": "question",
+            "one": "86",
+            "two": "87",
+            "content": "scroll.elType === \"hscroll\""
+        },
+        "86": {
+            "type": "action",
+            "one": "1",
+            "content": "return createHScrollDrag(\n    widget,\n    evt,\n    scroll\n)"
+        },
+        "87": {
+            "type": "action",
+            "one": "1",
+            "content": "return createVScrollDrag(\n    widget,\n    evt,\n    scroll\n)"
+        },
+        "88": {
+            "type": "question",
+            "one": "71",
+            "two": "89",
+            "flag1": 1,
+            "content": "frameFallback"
+        },
+        "89": {
+            "type": "action",
+            "one": "1",
+            "content": "return undefined"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "widget\nevt\nframeFallback",
+    "type": "drakon"
+}

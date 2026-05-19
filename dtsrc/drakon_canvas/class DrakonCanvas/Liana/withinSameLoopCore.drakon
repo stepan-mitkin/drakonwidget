@@ -1,0 +1,97 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "7"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return true"
+        },
+        "4": {
+            "type": "case",
+            "one": "10"
+        },
+        "5": {
+            "one": "9",
+            "type": "case",
+            "two": "4",
+            "content": "\"loopend\""
+        },
+        "6": {
+            "one": "8",
+            "type": "case",
+            "two": "5",
+            "content": "\"loopbegin\""
+        },
+        "7": {
+            "type": "select",
+            "one": "6",
+            "content": "node.type"
+        },
+        "8": {
+            "type": "action",
+            "one": "10",
+            "content": "depth--"
+        },
+        "9": {
+            "type": "action",
+            "one": "10",
+            "content": "depth++"
+        },
+        "10": {
+            "flag1": 0,
+            "type": "question",
+            "one": "12",
+            "two": "11",
+            "content": "depth < 0"
+        },
+        "11": {
+            "type": "action",
+            "one": "1",
+            "content": "return false"
+        },
+        "12": {
+            "flag1": 1,
+            "type": "question",
+            "one": "3",
+            "two": "14",
+            "content": "node === target"
+        },
+        "13": {
+            "type": "loopend",
+            "one": "3"
+        },
+        "14": {
+            "type": "loopbegin",
+            "one": "15",
+            "content": "prev; node.prev"
+        },
+        "15": {
+            "flag1": 1,
+            "type": "question",
+            "two": "16",
+            "one": "13",
+            "content": "withinSameLoopCore(prev, target, depth)"
+        },
+        "16": {
+            "type": "action",
+            "one": "13",
+            "content": "return false"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "node\ntarget\ndepth",
+    "type": "drakon"
+}

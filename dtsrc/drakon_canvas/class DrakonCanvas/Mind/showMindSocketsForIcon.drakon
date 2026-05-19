@@ -1,0 +1,124 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "6",
+      "type": "branch",
+      "content": "Prepare"
+    },
+    "4": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "6": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "config = visuals.config"
+    },
+    "9": {
+      "branchId": 2,
+      "one": "10",
+      "type": "branch",
+      "content": "Child socket"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "one": "13",
+      "two": "15",
+      "content": "node.children.length === 0"
+    },
+    "11": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "child = createSocket(\n    visuals,\n    cpos.x,\n    cpos.y,\n    op,\n    \"mind-child\",\n    radius\n)"
+    },
+    "12": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "child.node = node\nchild.iconType = type\nchild.imageData = imageData"
+    },
+    "13": {
+      "type": "action",
+      "one": "11",
+      "content": "cpos = getMindChildSocketPos(0, node)"
+    },
+    "14": {
+      "type": "action",
+      "one": "9",
+      "content": "radius = config.socketTouchRadius"
+    },
+    "15": {
+      "branchId": 3,
+      "one": "16",
+      "type": "branch",
+      "content": "Sibling sockets"
+    },
+    "16": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "17",
+      "content": "node.parent"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "sib = getMindSiblingSocketPos(0, node)"
+    },
+    "18": {
+      "branchId": 4,
+      "one": "23",
+      "type": "branch",
+      "content": "Create sockets - before and after"
+    },
+    "19": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "before = createSocket(\n    visuals,\n    sib.before.x,\n    sib.before.y,\n    op,\n    \"mind-before\",\n    radius\n)"
+    },
+    "20": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "before.node = node\nbefore.iconType = type\nbefore.imageData = imageData"
+    },
+    "21": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "after = createSocket(\n    visuals,\n    sib.after.x,\n    sib.after.y,\n    op,\n    \"mind-after\",\n    radius\n)"
+    },
+    "22": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "after.node = node\nafter.iconType = type\nafter.imageData = imageData"
+    },
+    "23": {
+      "flag1": 1,
+      "type": "question",
+      "two": "21",
+      "one": "19",
+      "content": "node.ordinal === 0"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nop\ntype\nimageData",
+  "type": "drakon"
+}

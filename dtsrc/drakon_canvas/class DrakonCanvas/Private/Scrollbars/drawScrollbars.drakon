@@ -1,0 +1,146 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 3,
+      "one": "13",
+      "type": "branch",
+      "content": "Vertical"
+    },
+    "8": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "9": {
+      "branchId": 4,
+      "one": "12",
+      "type": "branch",
+      "content": "Horizontal"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "8",
+      "two": "41",
+      "content": "wwidth >= box.width"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "one": "9",
+      "two": "38",
+      "content": "wheight >= box.height"
+    },
+    "14": {
+      "branchId": 1,
+      "one": "15",
+      "type": "branch",
+      "content": "Init"
+    },
+    "15": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals"
+    },
+    "16": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "zoom = widget.zoomFactor"
+    },
+    "17": {
+      "type": "action",
+      "one": "43",
+      "content": "margin = 5\nwidth = 10"
+    },
+    "27": {
+      "type": "action",
+      "one": "9",
+      "content": "drawVerticalScrollbar(widget, context)"
+    },
+    "28": {
+      "flag1": 1,
+      "type": "question",
+      "two": "8",
+      "one": "29",
+      "content": "widget.height > 30"
+    },
+    "29": {
+      "flag1": 1,
+      "type": "question",
+      "one": "45",
+      "two": "8",
+      "content": "widget.width > 30"
+    },
+    "38": {
+      "type": "action",
+      "one": "39",
+      "content": "context = {\n    boxTop: box.top,\n    boxHeight: box.height,\n    boxBottom: box.bottom,\n    zoom: zoom,\n    widgetSizeD: wheight,\n    widgetSize: widget.height,\n    margin: margin,\n    barWidth: width,\n    scroll: visuals.scrollY\n}"
+    },
+    "39": {
+      "type": "action",
+      "one": "27",
+      "content": "calculateScrollPos(context)"
+    },
+    "40": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "drawHorizontalScrollbar(widget, context)"
+    },
+    "41": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "context = {\n    boxTop: box.left,\n    boxHeight: box.width,\n    boxBottom: box.right,\n    zoom: zoom,\n    widgetSizeD: wwidth,\n    widgetSize: widget.width,\n    margin: margin,\n    barWidth: width,\n    scroll: visuals.scrollX\n}"
+    },
+    "42": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "calculateScrollPos(context)"
+    },
+    "43": {
+      "type": "action",
+      "one": "28",
+      "content": "visuals.verticalScrollBar = undefined\nvisuals.horizontalScrollBar = undefined"
+    },
+    "45": {
+      "branchId": 2,
+      "one": "46",
+      "type": "branch",
+      "content": "Expand box"
+    },
+    "46": {
+      "one": "47",
+      "type": "action",
+      "two": "",
+      "content": "wheight = widget.height / zoom"
+    },
+    "47": {
+      "one": "48",
+      "type": "action",
+      "two": "",
+      "content": "wwidth = widget.width / zoom"
+    },
+    "48": {
+      "type": "action",
+      "one": "2",
+      "content": "box = visuals.box"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

@@ -1,0 +1,26 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return tracing.setTimeout(\n    action,\n    delay,\n    notrace\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "action\ndelay\nnotrace",
+  "type": "drakon"
+}

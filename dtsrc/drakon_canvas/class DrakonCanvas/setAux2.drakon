@@ -1,0 +1,42 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "42"
+    },
+    "20": {
+      "type": "action",
+      "one": "35",
+      "content": "checkNotReadonly(self)"
+    },
+    "35": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "change = {\n    id: itemId,\n    fields: {aux2: aux2},\n    op: \"update\"\n}"
+    },
+    "40": {
+      "type": "action",
+      "one": "1",
+      "content": "return updateAndKeepSelection(\n    self,\n    [change]\n)"
+    },
+    "42": {
+      "type": "action",
+      "one": "20",
+      "content": "tracing.trace(\n    \"DrakonCanvas.setAux2\",\n    [itemId, aux2]\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "itemId\naux2",
+  "type": "drakon"
+}

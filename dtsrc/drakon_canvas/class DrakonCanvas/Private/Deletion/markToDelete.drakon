@@ -1,0 +1,41 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "context = {\n    visuals: widget.visuals,\n    items: widget.model.items,\n    deleteList: [],\n    visited: visited,\n    edits: edits\n}"
+    },
+    "4": {
+      "type": "action",
+      "one": "7",
+      "content": "traverseItemToDelete(\n    context,\n    prev,\n    startItemId\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "addDeletion = function (id) {\n    deleteWithDur(widget, id, edits)\n}"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "context.deleteList.forEach(addDeletion)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nvisited\nprev\nstartItemId\nedits",
+  "type": "drakon"
+}

@@ -1,0 +1,323 @@
+{
+    "items": {
+        "6": {
+            "branchId": 6,
+            "one": "66",
+            "type": "branch",
+            "content": "After strong under"
+        },
+        "8": {
+            "branchId": 2,
+            "one": "29",
+            "type": "branch",
+            "content": "Under"
+        },
+        "9": {
+            "branchId": 3,
+            "one": "39",
+            "type": "branch",
+            "content": "Under2"
+        },
+        "10": {
+            "branchId": 4,
+            "one": "48",
+            "type": "branch",
+            "content": "Strong"
+        },
+        "11": {
+            "branchId": 5,
+            "one": "57",
+            "type": "branch",
+            "content": "Em"
+        },
+        "15": {
+            "branchId": 1,
+            "one": "19",
+            "type": "branch",
+            "content": "Normal"
+        },
+        "16": {
+            "type": "case",
+            "one": "21",
+            "content": "line()"
+        },
+        "17": {
+            "one": "20",
+            "type": "case",
+            "two": "27",
+            "content": "next(ch)"
+        },
+        "18": {
+            "one": "8",
+            "type": "case",
+            "two": "17",
+            "content": "under()"
+        },
+        "19": {
+            "type": "select",
+            "one": "18",
+            "content": "receive"
+        },
+        "20": {
+            "type": "action",
+            "one": "15",
+            "content": "target.next(ch)"
+        },
+        "21": {
+            "type": "action",
+            "one": "15",
+            "content": "target.line()"
+        },
+        "27": {
+            "one": "28",
+            "type": "case",
+            "two": "16",
+            "content": "white()"
+        },
+        "28": {
+            "type": "action",
+            "one": "15",
+            "content": "target.white()"
+        },
+        "29": {
+            "type": "select",
+            "one": "30",
+            "content": "receive"
+        },
+        "30": {
+            "one": "9",
+            "type": "case",
+            "two": "31",
+            "content": "under()"
+        },
+        "31": {
+            "one": "35",
+            "type": "case",
+            "two": "32",
+            "content": "next(ch)"
+        },
+        "32": {
+            "one": "38",
+            "type": "case",
+            "two": "33",
+            "content": "white()"
+        },
+        "33": {
+            "type": "case",
+            "one": "37",
+            "content": "line()"
+        },
+        "35": {
+            "type": "action",
+            "one": "11",
+            "content": "target.em()\ntarget.next(ch)"
+        },
+        "37": {
+            "type": "action",
+            "one": "15",
+            "content": "target.next(\"_\")\ntarget.line()"
+        },
+        "38": {
+            "type": "action",
+            "one": "15",
+            "content": "target.next(\"_\")\ntarget.white()"
+        },
+        "39": {
+            "type": "select",
+            "one": "40",
+            "content": "receive"
+        },
+        "40": {
+            "one": "44",
+            "type": "case",
+            "two": "41",
+            "content": "under()"
+        },
+        "41": {
+            "one": "45",
+            "type": "case",
+            "two": "42",
+            "content": "next(ch)"
+        },
+        "42": {
+            "one": "46",
+            "type": "case",
+            "two": "43",
+            "content": "white()"
+        },
+        "43": {
+            "type": "case",
+            "one": "47",
+            "content": "line()"
+        },
+        "44": {
+            "type": "action",
+            "one": "15",
+            "content": "target.next(\"_\")"
+        },
+        "45": {
+            "type": "action",
+            "one": "10",
+            "content": "target.strong()\ntarget.next(ch)"
+        },
+        "46": {
+            "type": "action",
+            "one": "15",
+            "content": "target.next(\"__\")\ntarget.white()"
+        },
+        "47": {
+            "type": "action",
+            "one": "15",
+            "content": "target.next(\"__\")\ntarget.line()"
+        },
+        "48": {
+            "type": "select",
+            "one": "49",
+            "content": "receive"
+        },
+        "49": {
+            "one": "6",
+            "type": "case",
+            "two": "50",
+            "content": "under()"
+        },
+        "50": {
+            "one": "54",
+            "type": "case",
+            "two": "51",
+            "content": "next(ch)"
+        },
+        "51": {
+            "one": "55",
+            "type": "case",
+            "two": "52",
+            "content": "white()"
+        },
+        "52": {
+            "type": "case",
+            "one": "56",
+            "content": "line()"
+        },
+        "54": {
+            "type": "action",
+            "one": "10",
+            "content": "target.next(ch)"
+        },
+        "55": {
+            "type": "action",
+            "one": "10",
+            "content": "target.white()"
+        },
+        "56": {
+            "type": "action",
+            "one": "15",
+            "content": "target.line()"
+        },
+        "57": {
+            "type": "select",
+            "one": "58",
+            "content": "receive"
+        },
+        "58": {
+            "one": "62",
+            "type": "case",
+            "two": "59",
+            "content": "under()"
+        },
+        "59": {
+            "one": "63",
+            "type": "case",
+            "two": "60",
+            "content": "next(ch)"
+        },
+        "60": {
+            "one": "64",
+            "type": "case",
+            "two": "61",
+            "content": "white()"
+        },
+        "61": {
+            "type": "case",
+            "one": "65",
+            "content": "line()"
+        },
+        "62": {
+            "type": "action",
+            "one": "15",
+            "content": "target.end()"
+        },
+        "63": {
+            "type": "action",
+            "one": "11",
+            "content": "target.next(ch)"
+        },
+        "64": {
+            "type": "action",
+            "one": "11",
+            "content": "target.white()"
+        },
+        "65": {
+            "type": "action",
+            "one": "15",
+            "content": "target.line()"
+        },
+        "66": {
+            "type": "select",
+            "one": "67",
+            "content": "receive"
+        },
+        "67": {
+            "one": "71",
+            "type": "case",
+            "two": "68",
+            "content": "under()"
+        },
+        "68": {
+            "one": "75",
+            "type": "case",
+            "two": "69",
+            "content": "next(ch)"
+        },
+        "69": {
+            "one": "73",
+            "type": "case",
+            "two": "70",
+            "content": "white()"
+        },
+        "70": {
+            "type": "case",
+            "one": "74",
+            "content": "line()"
+        },
+        "71": {
+            "type": "action",
+            "one": "15",
+            "content": "target.end()"
+        },
+        "73": {
+            "type": "action",
+            "one": "10",
+            "content": "target.next(\"_\")\ntarget.white()"
+        },
+        "74": {
+            "type": "action",
+            "one": "15",
+            "content": "target.next(\"_\")\ntarget.line()"
+        },
+        "75": {
+            "type": "action",
+            "one": "10",
+            "content": "target.next(\"_\")\ntarget.next(ch)"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "target",
+    "type": "drakon"
+}

@@ -1,0 +1,67 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "13"
+        },
+        "10": {
+            "type": "action",
+            "one": "1",
+            "content": "return false"
+        },
+        "11": {
+            "type": "loopend",
+            "one": "10"
+        },
+        "12": {
+            "type": "loopbegin",
+            "one": "14",
+            "content": "i = 1; i < coords.length; i++"
+        },
+        "13": {
+            "type": "action",
+            "one": "12",
+            "content": "coords = element.coords\nleft = element.left\ntop = element.top"
+        },
+        "14": {
+            "type": "action",
+            "one": "15",
+            "content": "prev = coords[i - 1]\ncurr = coords[i]"
+        },
+        "15": {
+            "type": "action",
+            "one": "16",
+            "content": "x1 = prev.x + left\ny1 = prev.y + top\nx2 = curr.x + left\ny2 = curr.y + top"
+        },
+        "16": {
+            "type": "action",
+            "one": "17",
+            "content": "hit = hitLine(\n    x1,\n    y1,\n    x2,\n    y2,\n    pos,\n    element.margin\n)"
+        },
+        "17": {
+            "flag1": 0,
+            "type": "question",
+            "two": "18",
+            "one": "11",
+            "content": "hit"
+        },
+        "18": {
+            "type": "action",
+            "one": "11",
+            "content": "return true"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "element\npos",
+    "type": "drakon"
+}

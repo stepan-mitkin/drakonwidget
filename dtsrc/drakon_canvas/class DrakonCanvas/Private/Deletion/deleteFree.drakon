@@ -1,0 +1,84 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "16",
+      "type": "branch",
+      "content": "Create delete commands"
+    },
+    "16": {
+      "type": "action",
+      "one": "38",
+      "content": "edits = []"
+    },
+    "35": {
+      "type": "loopend",
+      "one": "41"
+    },
+    "36": {
+      "type": "loopbegin",
+      "one": "37",
+      "content": "element; elements"
+    },
+    "37": {
+      "type": "action",
+      "one": "46",
+      "content": "deleteItemCore(edits, element.id)"
+    },
+    "38": {
+      "type": "action",
+      "one": "36",
+      "content": "toDelete = {}\ntoDeleteConnections = {}"
+    },
+    "39": {
+      "type": "action",
+      "one": "35",
+      "content": "toDelete[element.id] = true"
+    },
+    "40": {
+      "branchId": 3,
+      "one": "42",
+      "type": "branch",
+      "content": "Apply commands"
+    },
+    "41": {
+      "branchId": 2,
+      "one": "47",
+      "type": "branch",
+      "content": "Update z-indexes"
+    },
+    "42": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return doEdit(widget, edits)"
+    },
+    "45": {
+      "type": "action",
+      "one": "39",
+      "content": "performOnConnections(\n    widget.visuals,\n    element.id,\n    toDeleteConnections,\n    function (connection) {\n        deleteItemCore(\n            edits,\n            connection.id\n        )\n    }\n)"
+    },
+    "46": {
+      "type": "action",
+      "one": "45",
+      "content": "decrementImageRefCount(\n    widget,\n    element.image\n)"
+    },
+    "47": {
+      "type": "action",
+      "one": "40",
+      "content": "rearrangeZOnDelete(\n    widget,\n    toDelete,\n    edits\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelements",
+  "type": "drakon"
+}

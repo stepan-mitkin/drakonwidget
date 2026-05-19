@@ -1,0 +1,57 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "4",
+      "type": "branch"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "8",
+      "content": "node.subtype === \"parbegin\""
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "10",
+      "one": "11",
+      "content": "isLastPar(node)"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "two": "9",
+      "one": "7",
+      "content": "isFirstPar(node)"
+    },
+    "9": {
+      "type": "action",
+      "one": "7",
+      "content": "showInsertParBeforeFirst(\n    visuals,\n    node,\n    op\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "showInsertParAfterLast(visuals, node, op)"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "showInsertParSocket(visuals, node, op)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nop",
+  "type": "drakon"
+}

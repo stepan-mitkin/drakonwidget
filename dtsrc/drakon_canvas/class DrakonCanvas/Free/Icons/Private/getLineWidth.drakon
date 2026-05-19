@@ -1,0 +1,52 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "lineWidth = getThemeValue(\n    config,\n    element,\n    \"lineWidth\"\n)"
+    },
+    "5": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "config = visuals.config"
+    },
+    "7": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return lineWidth"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "10",
+      "content": "visuals.highlight === element.id"
+    },
+    "10": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "lineWidth = 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement",
+  "type": "drakon"
+}

@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "17",
+      "content": "par = firstPar"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "18",
+      "two": "16",
+      "content": "par.two"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "par = par.next[1]"
+    },
+    "17": {
+      "type": "arrow-loop",
+      "one": "20"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "down = goDown(par)"
+    },
+    "19": {
+      "type": "action",
+      "one": "21",
+      "content": "parend = goLeft(down)"
+    },
+    "20": {
+      "type": "action",
+      "one": "12",
+      "content": "sub = createSubspace(visuals)\nouter = createOuter(visuals, sub)\ncrawl(outer, par.down)"
+    },
+    "21": {
+      "type": "action",
+      "one": "1",
+      "content": "return parend"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nfirstPar",
+  "type": "drakon"
+}

@@ -1,0 +1,58 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "lowest = goDown(node)"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "6",
+      "content": "lowest.type === \"end\""
+    },
+    "5": {
+      "type": "action",
+      "one": "7",
+      "content": "socket = createSocket(\n    visuals,\n    node.x - node.w,\n    node.y,\n    op,\n    \"branch\",\n    radius\n)"
+    },
+    "6": {
+      "type": "action",
+      "one": "5",
+      "content": "radius = visuals.config.socketTouchRadius"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "socket.node = node\nsocket.left = true"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "socket2 = createSocket(\n    visuals,\n    node.x + node.w,\n    node.y,\n    op,\n    \"branch\",\n    radius\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "socket2.node = node"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nop",
+  "type": "drakon"
+}

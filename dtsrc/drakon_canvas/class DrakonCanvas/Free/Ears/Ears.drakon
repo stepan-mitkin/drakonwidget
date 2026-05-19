@@ -1,0 +1,158 @@
+{
+    "items": {
+        "2": {
+            "branchId": 2,
+            "one": "28",
+            "type": "branch",
+            "content": "Idle"
+        },
+        "3": {
+            "type": "action",
+            "one": "31",
+            "content": "me.selected = ear"
+        },
+        "5": {
+            "branchId": 3,
+            "one": "10",
+            "type": "branch",
+            "content": "Dragging"
+        },
+        "10": {
+            "type": "select",
+            "one": "29",
+            "content": "receive"
+        },
+        "13": {
+            "one": "43",
+            "type": "case",
+            "two": null,
+            "content": "complete()"
+        },
+        "16": {
+            "branchId": 1,
+            "one": "50",
+            "type": "branch",
+            "content": "Create boxes"
+        },
+        "25": {
+            "type": "action",
+            "one": "2",
+            "content": "setupEarBoxes(\n    me,\n    element,\n    config.socketTouchRadius\n)"
+        },
+        "28": {
+            "type": "sinput",
+            "one": "3",
+            "content": "start(ear, evt)"
+        },
+        "29": {
+            "one": "32",
+            "type": "case",
+            "two": "13",
+            "content": "onDrag(evt)"
+        },
+        "30": {
+            "type": "action",
+            "one": "5",
+            "content": "startX = evt.clientX\nstartY = evt.clientY\nstartBoxLeft = box.left\nstartBoxTop = box.top"
+        },
+        "31": {
+            "type": "action",
+            "one": "30",
+            "content": "box = me.boxes[ear]"
+        },
+        "32": {
+            "type": "action",
+            "one": "34",
+            "content": "dx = snapUp(config, evt.clientX - startX)\ndy = snapUp(config, evt.clientY - startY)"
+        },
+        "34": {
+            "type": "action",
+            "one": "35",
+            "content": "left = startBoxLeft + dx / zoom\ntop = startBoxTop + dy / zoom"
+        },
+        "35": {
+            "flag1": 0,
+            "type": "question",
+            "two": "36",
+            "one": "37",
+            "content": "left === box.left"
+        },
+        "36": {
+            "flag1": 0,
+            "type": "question",
+            "one": "37",
+            "two": "5",
+            "content": "top === box.top"
+        },
+        "37": {
+            "type": "action",
+            "one": "41",
+            "content": "box.left = left\nbox.top = top"
+        },
+        "38": {
+            "type": "action",
+            "one": "42",
+            "content": "config = widget.visuals.config"
+        },
+        "39": {
+            "type": "action",
+            "one": "5",
+            "content": "paintLater(widget)"
+        },
+        "41": {
+            "type": "action",
+            "one": "39",
+            "content": "recalculateEarsVisuals(widget, evt, me)"
+        },
+        "42": {
+            "type": "action",
+            "one": "25",
+            "content": "me.element = element"
+        },
+        "43": {
+            "flag1": 1,
+            "type": "question",
+            "one": "47",
+            "two": "49",
+            "content": "me.target"
+        },
+        "44": {
+            "type": "action",
+            "one": "2",
+            "content": "createConnection(\n    widget,\n    element.id,\n    me.target.id,\n    role\n)"
+        },
+        "47": {
+            "type": "action",
+            "one": "44",
+            "content": "role = getEarRole(me)"
+        },
+        "48": {
+            "one": "2",
+            "type": "action",
+            "two": "",
+            "content": "widget.redraw()"
+        },
+        "49": {
+            "one": "48",
+            "type": "action",
+            "two": "",
+            "content": "setupEarBoxes(\n    me,\n    element,\n    config.socketTouchRadius\n)"
+        },
+        "50": {
+            "one": "38",
+            "type": "action",
+            "two": "",
+            "content": "zoom = widget.zoomFactor"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "widget\nelement",
+    "type": "drakon"
+}

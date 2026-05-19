@@ -1,0 +1,146 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "14",
+      "type": "branch",
+      "content": "Delete itself"
+    },
+    "3": {
+      "type": "action",
+      "one": "18",
+      "content": "edits = []"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "62",
+      "type": "branch",
+      "content": "Delete and redraw"
+    },
+    "5": {
+      "branchId": 3,
+      "one": "37",
+      "type": "branch",
+      "content": "Just the path"
+    },
+    "14": {
+      "type": "action",
+      "one": "3",
+      "content": "model = widget.model"
+    },
+    "18": {
+      "type": "action",
+      "one": "34",
+      "content": "left = getLeft(node)"
+    },
+    "29": {
+      "flag1": 0,
+      "type": "question",
+      "two": "30",
+      "one": "5",
+      "content": "isFirstPar(left)"
+    },
+    "30": {
+      "flag1": 1,
+      "type": "question",
+      "two": "31",
+      "one": "5",
+      "content": "node.right"
+    },
+    "31": {
+      "branchId": 2,
+      "one": "42",
+      "type": "branch",
+      "content": "Delete the whole parallel"
+    },
+    "34": {
+      "type": "action",
+      "one": "61",
+      "content": "endId = getParTarget(node)\nend = getNode(widget.visuals, endId)"
+    },
+    "37": {
+      "type": "action",
+      "one": "57",
+      "content": "deleteItem(widget, edits, node)"
+    },
+    "42": {
+      "type": "action",
+      "one": "43",
+      "content": "deleteItem(widget, edits, node)"
+    },
+    "43": {
+      "type": "action",
+      "one": "44",
+      "content": "deleteItem(widget, edits, end)"
+    },
+    "44": {
+      "type": "action",
+      "one": "45",
+      "content": "deleteItem(widget, edits, left)"
+    },
+    "45": {
+      "flag1": 0,
+      "type": "question",
+      "two": "48",
+      "one": "46",
+      "content": "left.one === endId"
+    },
+    "46": {
+      "type": "action",
+      "one": "47",
+      "content": "redirectUpperItems(\n    edits,\n    left.up.links,\n    left.one\n)"
+    },
+    "47": {
+      "type": "action",
+      "one": "4",
+      "content": "redirectPrevItems(edits, end, end.one)"
+    },
+    "48": {
+      "type": "action",
+      "one": "4",
+      "content": "redirectUpperItems(\n    edits,\n    left.up.links,\n    end.one\n)"
+    },
+    "56": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "updateItem(\n    edits,\n    left.itemId,\n    {two: node.two}\n)"
+    },
+    "57": {
+      "flag1": 1,
+      "type": "question",
+      "one": "56",
+      "two": "58",
+      "content": "node.two"
+    },
+    "58": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "updateItem(edits, left.itemId, {two: \"\"})"
+    },
+    "61": {
+      "type": "action",
+      "one": "29",
+      "content": "deleteIconsOnPath(\n    widget,\n    node,\n    endId,\n    edits\n)"
+    },
+    "62": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return doEdit(widget, edits)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

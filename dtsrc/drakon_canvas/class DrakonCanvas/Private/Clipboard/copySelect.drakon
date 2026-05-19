@@ -1,0 +1,65 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "10"
+    },
+    "3": {
+      "type": "action",
+      "one": "13",
+      "content": "items = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyBlock(\n    widget,\n    node.itemId,\n    items,\n    images\n)"
+    },
+    "5": {
+      "type": "action",
+      "one": "7",
+      "content": "items.push(selectItem)"
+    },
+    "6": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "7": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "caseNode; node.cases"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "caseItem = copyItem(\n    widget,\n    caseNode.itemId,\n    images\n)\ncaseItem.one = \"finish\""
+    },
+    "9": {
+      "type": "action",
+      "one": "6",
+      "content": "items.push(caseItem)"
+    },
+    "10": {
+      "type": "action",
+      "one": "3",
+      "content": "images = {}"
+    },
+    "13": {
+      "type": "action",
+      "one": "5",
+      "content": "selectItem = copyItem(\n    widget,\n    node.itemId,\n    images\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

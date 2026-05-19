@@ -1,0 +1,190 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "11",
+      "type": "branch",
+      "content": "Generate new ids"
+    },
+    "6": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "edits = []"
+    },
+    "8": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "replaceIds(\n    widget,\n    undefined,\n    payload.items,\n    \"\"\n)"
+    },
+    "11": {
+      "type": "action",
+      "one": "45",
+      "content": "payload = clipboard.content"
+    },
+    "16": {
+      "branchId": 4,
+      "one": "18",
+      "type": "branch",
+      "content": "Create items"
+    },
+    "17": {
+      "branchId": 2,
+      "one": "29",
+      "type": "branch",
+      "content": "Calculate insertion coordinates"
+    },
+    "18": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "create = function (item) {\n    createPastedItem(edits, item)\n}"
+    },
+    "19": {
+      "one": "43",
+      "type": "action",
+      "two": "",
+      "content": "payload.items.forEach(create)"
+    },
+    "20": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return doEdit(widget, edits)"
+    },
+    "21": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "dx = pos.x - epos.x\ndy = pos.y - epos.y"
+    },
+    "23": {
+      "flag1": 1,
+      "type": "question",
+      "two": "48",
+      "one": "24",
+      "content": "evt"
+    },
+    "24": {
+      "type": "action",
+      "one": "21",
+      "content": "pos = toDiagram(widget, evt)"
+    },
+    "26": {
+      "type": "loopend",
+      "one": "34"
+    },
+    "27": {
+      "type": "loopbegin",
+      "one": "41",
+      "content": "item; payload.items"
+    },
+    "28": {
+      "type": "action",
+      "one": "32",
+      "content": "x = snapUp(config, oldPos.x + dx)\ny = snapUp(config, oldPos.y + dy)"
+    },
+    "29": {
+      "type": "action",
+      "one": "23",
+      "content": "first = payload.items[0]\nepos = getFreePosition(first)"
+    },
+    "31": {
+      "type": "action",
+      "one": "6",
+      "content": "config = widget.visuals.config"
+    },
+    "32": {
+      "type": "action",
+      "one": "26",
+      "content": "setFreePosition(item, x, y)"
+    },
+    "33": {
+      "type": "action",
+      "one": "28",
+      "content": "oldPos = getFreePosition(item)"
+    },
+    "34": {
+      "branchId": 3,
+      "one": "35",
+      "type": "branch",
+      "content": "z-indexes"
+    },
+    "35": {
+      "type": "action",
+      "one": "46",
+      "content": "utils.sortBy(payload.items, \"zIndex\")"
+    },
+    "37": {
+      "type": "loopend",
+      "one": "16"
+    },
+    "38": {
+      "type": "loopbegin",
+      "one": "42",
+      "content": "item; payload.items"
+    },
+    "39": {
+      "type": "action",
+      "one": "40",
+      "content": "item.zIndex = currentZ"
+    },
+    "40": {
+      "type": "action",
+      "one": "37",
+      "content": "currentZ++"
+    },
+    "41": {
+      "flag1": 0,
+      "type": "question",
+      "one": "33",
+      "two": "26",
+      "content": "item.type === \"connection\""
+    },
+    "42": {
+      "flag1": 0,
+      "type": "question",
+      "one": "39",
+      "two": "37",
+      "content": "item.type === \"connection\""
+    },
+    "43": {
+      "type": "action",
+      "one": "20",
+      "content": "await loadCreatedImages(\n    widget,\n    edits,\n    images\n)"
+    },
+    "45": {
+      "type": "action",
+      "one": "31",
+      "content": "images = payload.images"
+    },
+    "46": {
+      "type": "action",
+      "one": "38",
+      "content": "currentZ = getNextZIndex(widget)"
+    },
+    "47": {
+      "type": "action",
+      "one": "27",
+      "content": "unit.pasteDX = dx\nunit.pasteDY = dy"
+    },
+    "48": {
+      "type": "action",
+      "one": "47",
+      "content": "dx = unit.pasteDX + 20\ndy = unit.pasteDY + 20"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": true,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nclipboard\nevt",
+  "type": "drakon"
+}

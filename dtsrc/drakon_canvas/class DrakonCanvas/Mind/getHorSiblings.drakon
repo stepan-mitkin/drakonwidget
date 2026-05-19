@@ -1,0 +1,78 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "13"
+    },
+    "4": {
+      "one": "5",
+      "type": "select",
+      "two": "",
+      "content": "ttype"
+    },
+    "5": {
+      "one": "11",
+      "type": "case",
+      "two": "6",
+      "content": "\"vertical\""
+    },
+    "6": {
+      "one": "12",
+      "type": "case",
+      "two": "7",
+      "content": "\"horizontal\""
+    },
+    "7": {
+      "one": "12",
+      "type": "case",
+      "two": "",
+      "content": "\"treeview\""
+    },
+    "8": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "ttype = getTType(parent)"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return [node.id]"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "return parent.children.map(\n    function (child) {\n        return child.id\n    }\n)"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "parent = node.parent"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "one": "8",
+      "two": "15",
+      "content": "parent"
+    },
+    "15": {
+      "type": "action",
+      "one": "1",
+      "content": "return []"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node",
+  "type": "drakon"
+}

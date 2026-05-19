@@ -1,0 +1,91 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "4",
+      "type": "branch",
+      "content": "Horizontal line"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "h2 = getSecondaryHeightCore(\n    visuals,\n    node\n)"
+    },
+    "6": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "middle = Math.round(top + h2)"
+    },
+    "8": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillRect(\n    left,\n    middle,\n    node.w * 2,\n    thickness\n)"
+    },
+    "9": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "thickness = getThemeValue(\n    visuals.config,\n    node,\n    \"borderWidth\"\n) || 1"
+    },
+    "10": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = getThemeValue(\n    visuals.config,\n    node,\n    \"internalLine\"\n)"
+    },
+    "12": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "13": {
+      "branchId": 3,
+      "one": "24",
+      "type": "branch",
+      "content": "Content"
+    },
+    "14": {
+      "branchId": 1,
+      "one": "23",
+      "type": "branch",
+      "content": "Render icon back"
+    },
+    "15": {
+      "one": "2",
+      "type": "action",
+      "two": "",
+      "content": "left = node.x - node.w\ntop = node.y - node.h\nwidth = node.w * 2\nheight = node.h * 2"
+    },
+    "21": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.setLineDash([])"
+    },
+    "23": {
+      "type": "action",
+      "one": "15",
+      "content": "renderDrakonIconShape(\n    ctx,\n    visuals,\n    node,\n    buildRectCoords,\n    undefined\n)"
+    },
+    "24": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "centerContentTop(visuals, node)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

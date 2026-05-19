@@ -1,0 +1,26 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "62",
+      "type": "branch"
+    },
+    "62": {
+      "type": "action",
+      "one": "1",
+      "content": "drawRectCandies(widget, element, ctx)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\nctx",
+  "type": "drakon"
+}

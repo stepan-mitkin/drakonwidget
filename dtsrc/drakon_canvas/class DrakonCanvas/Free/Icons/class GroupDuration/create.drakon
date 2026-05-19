@@ -1,0 +1,45 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return item"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "item = {\n    type: \"group-duration\",\n    flag1: self.flag1,\n    x: pos.x,\n    y: pos.y + 50,\n    loX: 200,\n    loY: 200,\n    hiX: 200,\n    hiY: -200\n}"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "one": "3",
+      "two": "6",
+      "content": "self.flag1 === 1"
+    },
+    "6": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "item.loX = -item.loX\nitem.hiX = -item.hiX\nitem.x += 200"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "pos",
+  "type": "drakon"
+}

@@ -1,0 +1,157 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "5": {
+      "one": "8",
+      "type": "case",
+      "two": "9",
+      "content": "\"question\""
+    },
+    "6": {
+      "one": "3",
+      "type": "case",
+      "two": "5",
+      "content": "\"header\""
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "node.type"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyQuestion"
+    },
+    "9": {
+      "one": "11",
+      "type": "case",
+      "two": "28",
+      "content": "\"case\""
+    },
+    "10": {
+      "one": "16",
+      "type": "case",
+      "two": "12",
+      "content": "\"address\""
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyCase"
+    },
+    "12": {
+      "one": "17",
+      "type": "case",
+      "two": "13",
+      "content": "\"params\""
+    },
+    "13": {
+      "one": "18",
+      "type": "case",
+      "two": "14",
+      "content": "\"junction\""
+    },
+    "14": {
+      "one": "19",
+      "type": "case",
+      "two": "15",
+      "content": "\"branch\""
+    },
+    "15": {
+      "one": "20",
+      "type": "case",
+      "two": "22",
+      "content": "\"select\""
+    },
+    "16": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "17": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "18": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyBranch"
+    },
+    "20": {
+      "type": "action",
+      "one": "1",
+      "content": "return copySelect"
+    },
+    "22": {
+      "one": "25",
+      "type": "case",
+      "two": "23",
+      "content": "\"loopbegin\""
+    },
+    "23": {
+      "one": "26",
+      "type": "case",
+      "two": "24",
+      "content": "\"loopend\""
+    },
+    "24": {
+      "type": "case",
+      "two": null,
+      "one": "27"
+    },
+    "25": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyLoop"
+    },
+    "26": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyLoopEnd"
+    },
+    "27": {
+      "type": "action",
+      "one": "1",
+      "content": "return copySimple"
+    },
+    "28": {
+      "one": "29",
+      "type": "case",
+      "two": "10",
+      "content": "\"duration\""
+    },
+    "29": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyDuration"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node",
+  "type": "drakon"
+}

@@ -1,0 +1,57 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "1",
+      "two": "5",
+      "content": "implemented"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "renderDefault(visuals, node, left, top)"
+    },
+    "6": {
+      "type": "action",
+      "one": "4",
+      "content": "implemented = core.renderContent(\n    left,\n    top,\n    visuals.ctx\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "9",
+      "content": "core = node.core"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "6",
+      "content": "core.renderContent"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "8",
+      "content": "core"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nleft\ntop",
+  "type": "drakon"
+}

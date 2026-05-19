@@ -1,0 +1,121 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "33",
+      "type": "branch"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "11",
+      "content": "edit; editCopy"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "one": "22",
+      "two": "4",
+      "content": "edit.id"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "4",
+      "content": "imageId"
+    },
+    "14": {
+      "type": "action",
+      "one": "12",
+      "content": "imageId = edit.fields.image"
+    },
+    "16": {
+      "type": "action",
+      "one": "71",
+      "content": "existingImage = widget.images[imageId]"
+    },
+    "22": {
+      "flag1": 0,
+      "type": "question",
+      "one": "14",
+      "two": "4",
+      "content": "edit.op === \"delete\""
+    },
+    "33": {
+      "type": "action",
+      "one": "72",
+      "content": "inserted = {}"
+    },
+    "50": {
+      "flag1": 1,
+      "type": "question",
+      "two": "67",
+      "one": "68",
+      "content": "existingImage.content === newImage.content"
+    },
+    "65": {
+      "flag1": 1,
+      "type": "question",
+      "two": "67",
+      "one": "66",
+      "content": "existingImage"
+    },
+    "66": {
+      "flag1": 0,
+      "type": "question",
+      "one": "68",
+      "two": "50",
+      "content": "newImage"
+    },
+    "67": {
+      "type": "action",
+      "one": "68",
+      "content": "await createImageItem(\n    widget,\n    edits,\n    edit,\n    imageId,\n    newImage.content,\n    inserted\n)"
+    },
+    "68": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "69",
+      "content": "edit.op === \"update\""
+    },
+    "69": {
+      "one": "70",
+      "type": "action",
+      "two": "",
+      "content": "item = widget.model.items[edit.id]"
+    },
+    "70": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "decrementImageRefCount(\n    widget,\n    item.image\n)"
+    },
+    "71": {
+      "type": "action",
+      "one": "65",
+      "content": "newImage = images[imageId]"
+    },
+    "72": {
+      "type": "action",
+      "one": "5",
+      "content": "editCopy = edits.slice()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": true,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nedits\nimages",
+  "type": "drakon"
+}

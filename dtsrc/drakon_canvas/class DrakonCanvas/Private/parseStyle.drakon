@@ -1,0 +1,34 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "1",
+      "content": "item.style"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "try {\n    node.style = JSON.parse(item.style)\n} catch (ex) {\n    console.error(\n        \"Error parsing style for item \" +\n        item.id + \" \" + ex.message\n    )\n}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "item\nnode",
+  "type": "drakon"
+}

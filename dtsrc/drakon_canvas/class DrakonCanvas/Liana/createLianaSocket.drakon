@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "utils.addRange(\n    source.links,\n    socket.links\n)"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "1",
+      "content": "canTransplant(\n    visuals,\n    record.targetId,\n    source\n)"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "6",
+      "content": "adjacentToAddress(record, source)"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "one": "7",
+      "two": "8",
+      "content": "record.type === \"node\""
+    },
+    "7": {
+      "type": "action",
+      "one": "9",
+      "content": "socket = createNodeSocket(\n    visuals,\n    record.element,\n    source\n)"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "socket = createSocketFromEdge(\n    visuals,\n    record.element,\n    \"liana\",\n    undefined\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "3",
+      "content": "socket.arrow = source.arrow\nsocket.style = style"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nrecord\nsource\nstyle",
+  "type": "drakon"
+}

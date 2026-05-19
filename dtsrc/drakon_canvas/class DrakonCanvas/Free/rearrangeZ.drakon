@@ -1,0 +1,111 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "9": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "21": {
+      "branchId": 1,
+      "one": "49",
+      "type": "branch",
+      "content": "Find item"
+    },
+    "22": {
+      "flag1": 0,
+      "type": "question",
+      "two": "29",
+      "one": "28",
+      "content": "toMove.zIndex < 0"
+    },
+    "26": {
+      "type": "action",
+      "one": "22",
+      "content": "toMove = free[ordinal]"
+    },
+    "28": {
+      "branchId": 2,
+      "one": "32",
+      "type": "branch",
+      "content": "Front plane"
+    },
+    "29": {
+      "branchId": 3,
+      "one": "42",
+      "type": "branch",
+      "content": "Back plane"
+    },
+    "31": {
+      "type": "loopend",
+      "one": "9"
+    },
+    "32": {
+      "type": "loopbegin",
+      "one": "34",
+      "content": "i = ordinal + 1; i < free.length; i++"
+    },
+    "34": {
+      "one": "50",
+      "type": "action",
+      "two": "",
+      "content": "element = free[i]"
+    },
+    "41": {
+      "one": "9",
+      "type": "loopend",
+      "two": ""
+    },
+    "42": {
+      "one": "44",
+      "type": "loopbegin",
+      "two": "",
+      "content": "i = 0; i < ordinal; i++"
+    },
+    "44": {
+      "one": "52",
+      "type": "action",
+      "two": "",
+      "content": "element = free[i]"
+    },
+    "49": {
+      "type": "action",
+      "one": "26",
+      "content": "ordinal = utils.findIndex(free, \"id\", id)"
+    },
+    "50": {
+      "type": "action",
+      "one": "51",
+      "content": "element.zIndex = element.zIndex - 1"
+    },
+    "51": {
+      "type": "action",
+      "one": "31",
+      "content": "zets[element.id] = element.zIndex"
+    },
+    "52": {
+      "one": "53",
+      "type": "action",
+      "two": "",
+      "content": "element.zIndex = element.zIndex + 1"
+    },
+    "53": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "zets[element.id] = element.zIndex"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "free\nid\nzets",
+  "type": "drakon"
+}

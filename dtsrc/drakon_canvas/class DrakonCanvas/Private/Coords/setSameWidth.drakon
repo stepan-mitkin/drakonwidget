@@ -1,0 +1,124 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "22",
+      "type": "branch",
+      "content": "Traverse skewer"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "width = 0\nleftWidth = 0\nmargin = 0"
+    },
+    "4": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "9",
+      "type": "branch",
+      "content": "Set width"
+    },
+    "6": {
+      "type": "loopend",
+      "one": "23"
+    },
+    "7": {
+      "type": "loopbegin",
+      "one": "15",
+      "content": "node; skewer.nodes"
+    },
+    "8": {
+      "type": "action",
+      "one": "19",
+      "content": "width = Math.max(width, node.w)"
+    },
+    "9": {
+      "type": "action",
+      "one": "12",
+      "content": "skewer.boundary = width"
+    },
+    "11": {
+      "type": "loopend",
+      "one": "18"
+    },
+    "12": {
+      "type": "loopbegin",
+      "one": "14",
+      "content": "node; skewer.nodes"
+    },
+    "13": {
+      "type": "action",
+      "one": "16",
+      "content": "node.w = width"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "two": "11",
+      "one": "13",
+      "content": "shouldAlignWidth(visuals, node)"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "two": "19",
+      "one": "8",
+      "content": "node.type === \"header\""
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "dur = getDurExtend(visuals, node)"
+    },
+    "17": {
+      "type": "action",
+      "one": "11",
+      "content": "leftWidth = Math.max(\n    leftWidth,\n    dur + width\n)"
+    },
+    "18": {
+      "type": "action",
+      "one": "4",
+      "content": "skewer.leftWidth = leftWidth + margin * visuals\n.config.metre"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "one": "6",
+      "two": "20",
+      "content": "node.type === \"branch\""
+    },
+    "20": {
+      "type": "action",
+      "one": "6",
+      "content": "margin = getBranchMargin(node)"
+    },
+    "22": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "config = visuals.config"
+    },
+    "23": {
+      "type": "action",
+      "one": "5",
+      "content": "width = config.maxWidth / 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nskewer",
+  "type": "drakon"
+}

@@ -1,0 +1,86 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "18"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "23"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "6",
+      "content": "i = 0; i < raw.length; i++"
+    },
+    "6": {
+      "type": "action",
+      "one": "9",
+      "content": "ch = raw[i]\ncode = raw.charCodeAt(i)"
+    },
+    "7": {
+      "type": "action",
+      "one": "5",
+      "content": "result = \"\""
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "16",
+      "one": "17",
+      "content": "isSpace(code)"
+    },
+    "16": {
+      "type": "action",
+      "one": "4",
+      "content": "result += \" \""
+    },
+    "17": {
+      "flag1": 1,
+      "type": "question",
+      "one": "20",
+      "two": "4",
+      "content": "code > 32"
+    },
+    "18": {
+      "type": "action",
+      "one": "7",
+      "content": "checker = createFilenameChecker()"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "one": "21",
+      "two": "22",
+      "content": "checker.isGoodChar(ch)"
+    },
+    "21": {
+      "type": "action",
+      "one": "4",
+      "content": "result += ch"
+    },
+    "22": {
+      "type": "action",
+      "one": "4",
+      "content": "result += \" \""
+    },
+    "23": {
+      "type": "action",
+      "one": "1",
+      "content": "return result.trim()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "raw",
+  "type": "drakon"
+}

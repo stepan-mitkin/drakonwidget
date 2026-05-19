@@ -1,0 +1,33 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "centerContent(visuals, node, ctx)"
+    },
+    "5": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "renderDrakonIconShapeComplex(\n    ctx,\n    visuals,\n    node,\n    roundedRect,\n    15\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

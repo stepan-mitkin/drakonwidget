@@ -1,0 +1,101 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "3",
+      "type": "branch"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "ctx.strokeStyle = color\nctx.lineWidth = width"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.stroke()"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "8",
+      "one": "17",
+      "content": "width % 2 === 0"
+    },
+    "8": {
+      "type": "action",
+      "one": "16",
+      "content": "x = first.x + 0.5\ny = first.y + 0.5"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.beginPath()"
+    },
+    "10": {
+      "type": "action",
+      "one": "7",
+      "content": "first = coords[0]"
+    },
+    "11": {
+      "type": "loopend",
+      "one": "5"
+    },
+    "12": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "i = 1; i < coords.length; i++"
+    },
+    "13": {
+      "type": "action",
+      "one": "18",
+      "content": "point = coords[i]"
+    },
+    "16": {
+      "type": "action",
+      "one": "12",
+      "content": "ctx.moveTo(x, y)"
+    },
+    "17": {
+      "type": "action",
+      "one": "16",
+      "content": "x = first.x\ny = first.y"
+    },
+    "18": {
+      "flag1": 1,
+      "type": "question",
+      "two": "19",
+      "one": "20",
+      "content": "width % 2 === 0"
+    },
+    "19": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "x = point.x + 0.5\ny = point.y + 0.5"
+    },
+    "20": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "x = point.x\ny = point.y"
+    },
+    "21": {
+      "type": "action",
+      "one": "11",
+      "content": "ctx.lineTo(x, y)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\ncoords\ncolor\nwidth",
+  "type": "drakon"
+}

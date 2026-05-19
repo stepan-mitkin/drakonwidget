@@ -1,0 +1,80 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "8"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return {\n    before: {x: bx, y: by},\n    after: {x: ax, y: ay}\n}"
+    },
+    "4": {
+      "one": "5",
+      "type": "select",
+      "two": "",
+      "content": "parenType"
+    },
+    "5": {
+      "one": "9",
+      "type": "case",
+      "two": "6",
+      "content": "\"vertical\""
+    },
+    "6": {
+      "one": "10",
+      "type": "case",
+      "two": "7",
+      "content": "\"horizontal\""
+    },
+    "7": {
+      "one": "10",
+      "type": "case",
+      "two": "",
+      "content": "\"treeview\""
+    },
+    "8": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "parenType = getTType(node.parent)"
+    },
+    "9": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "bx = node.x - node.w - r2\nby = node.y"
+    },
+    "10": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "bx = node.x\nby = node.y - node.h - r2"
+    },
+    "11": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "ax = node.x + node.w + r2\nay = node.y"
+    },
+    "12": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "ax = node.x\nay = node.y + node.h + r2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "r2\nnode",
+  "type": "drakon"
+}

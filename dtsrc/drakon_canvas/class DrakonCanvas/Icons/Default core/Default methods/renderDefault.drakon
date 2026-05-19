@@ -1,0 +1,74 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "node.contentDiv.style.left = left + \"px\"\nnode.contentDiv.style.top = top + \"px\""
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "3",
+      "content": "node.contentDiv"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "6",
+      "one": "4",
+      "content": "visuals.config.canvasIcons"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "two": "9",
+      "one": "7",
+      "content": "node.flowBlock"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "renderFlowBlock(\n    visuals,\n    node.flowBlock,\n    left,\n    top\n)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "10",
+      "two": "1",
+      "content": "node.topFlowBlock"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "renderFlowBlock(\n    visuals,\n    node.topFlowBlock,\n    left,\n    top\n)"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "lowerTop = top + node.topFlowBlock.height"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "renderFlowBlock(\n    visuals,\n    node.bottomFlowBlock,\n    left,\n    lowerTop\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nleft\ntop",
+  "type": "drakon"
+}

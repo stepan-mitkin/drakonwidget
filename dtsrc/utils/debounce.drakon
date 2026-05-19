@@ -1,0 +1,63 @@
+{
+    "items": {
+        "2": {
+            "branchId": 1,
+            "one": "6",
+            "type": "branch",
+            "content": "Idle"
+        },
+        "5": {
+            "branchId": 2,
+            "one": "7",
+            "type": "branch",
+            "content": "Waiting"
+        },
+        "6": {
+            "type": "sinput",
+            "one": "5",
+            "content": "onInput(msg)"
+        },
+        "7": {
+            "type": "action",
+            "one": "11",
+            "content": "tobj = setTimeout(\n    function () {\n        me.onTimeout()\n    },\n    delay\n)"
+        },
+        "9": {
+            "one": "13",
+            "type": "case",
+            "two": null,
+            "content": "onTimeout()"
+        },
+        "10": {
+            "one": "12",
+            "type": "case",
+            "two": "9",
+            "content": "onInput(msg)"
+        },
+        "11": {
+            "type": "select",
+            "one": "10",
+            "content": "receive"
+        },
+        "12": {
+            "type": "action",
+            "one": "5",
+            "content": "clearTimeout(tobj)"
+        },
+        "13": {
+            "type": "action",
+            "one": "2",
+            "content": "action(msg)"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": true,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "action\ndelay",
+    "type": "drakon"
+}

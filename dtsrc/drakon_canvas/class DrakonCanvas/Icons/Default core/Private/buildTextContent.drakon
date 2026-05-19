@@ -1,0 +1,196 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 3,
+      "one": "40",
+      "type": "branch",
+      "content": "Flow text"
+    },
+    "22": {
+      "branchId": 1,
+      "one": "45",
+      "type": "branch",
+      "content": "Padding"
+    },
+    "24": {
+      "branchId": 2,
+      "one": "64",
+      "type": "branch",
+      "content": "Other values"
+    },
+    "25": {
+      "type": "action",
+      "one": "26",
+      "content": "paddingLeft = padding + getConfigValue(\n    options,\n    \"paddingLeft\",\n    0\n)"
+    },
+    "26": {
+      "type": "action",
+      "one": "27",
+      "content": "paddingRight = padding + getConfigValue(\n    options,\n    \"paddingRight\",\n    0\n)"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "paddingTop = padding + getConfigValue(\n    options,\n    \"paddingTop\",\n    0\n)"
+    },
+    "28": {
+      "type": "action",
+      "one": "24",
+      "content": "paddingBottom = padding + getConfigValue(\n    options,\n    \"paddingBottom\",\n    0\n)"
+    },
+    "36": {
+      "type": "action",
+      "one": "61",
+      "content": "font = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"font\"\n)"
+    },
+    "37": {
+      "type": "action",
+      "one": "38",
+      "content": "textAlign = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"textAlign\"\n)"
+    },
+    "38": {
+      "type": "action",
+      "one": "39",
+      "content": "maxWidth = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"maxWidth\"\n)"
+    },
+    "39": {
+      "type": "action",
+      "one": "44",
+      "content": "minWidth = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"minWidth\"\n)"
+    },
+    "40": {
+      "type": "action",
+      "one": "54",
+      "content": "text = node.content || \"\""
+    },
+    "41": {
+      "type": "action",
+      "one": "37",
+      "content": "color = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"color\"\n)"
+    },
+    "42": {
+      "flag1": 0,
+      "type": "question",
+      "two": "51",
+      "one": "59",
+      "content": "options.singleLine"
+    },
+    "44": {
+      "type": "action",
+      "one": "65",
+      "content": "lineHeight = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"lineHeight\"\n)"
+    },
+    "45": {
+      "one": "46",
+      "type": "action",
+      "two": "",
+      "content": "config = visuals.config"
+    },
+    "46": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "padding = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"padding\",\n    0\n)"
+    },
+    "47": {
+      "one": "53",
+      "type": "action",
+      "two": "",
+      "content": "textDiv = div(\n    \"drakon-icon-content\",\n    {\n        \"padding-left\": paddingLeft + \"px\",\n        \"padding-top\": paddingTop + \"px\",\n        \"padding-right\": paddingRight + \"px\",\n        \"padding-bottom\": paddingBottom +\n        \"px\",\n        \"text-align\": textAlign,\n        font: font,\n        color: color,\n        \"min-width\": minWidth + \"px\",\n        \"max-width\": maxWidth + \"px\",\n        \"line-height\": lineHeight,\n        \"user-select\": \"none\"\n    }\n)"
+    },
+    "51": {
+      "one": "52",
+      "type": "action",
+      "two": "",
+      "content": "html.addText(textDiv, text)"
+    },
+    "52": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "return addDivToDiagram(visuals, textDiv)"
+    },
+    "53": {
+      "type": "action",
+      "one": "42",
+      "content": "node.contentDiv = textDiv"
+    },
+    "54": {
+      "flag1": 0,
+      "type": "question",
+      "one": "47",
+      "two": "57",
+      "content": "visuals.config.canvasIcons"
+    },
+    "55": {
+      "type": "action",
+      "one": "58",
+      "content": "node.flowBlock = measureFlow(\n    node.textBlock,\n    minWidth,\n    maxWidth\n)"
+    },
+    "56": {
+      "type": "action",
+      "one": "62",
+      "content": "node.textBlock = createTextBlock(\n    visuals.ctx,\n    text,\n    toptions,\n    visuals.fonts\n)"
+    },
+    "57": {
+      "type": "action",
+      "one": "56",
+      "content": "toptions = {\n    verticalAlign: verticalAlign,\n    paddingLeft: paddingLeft,\n    paddingTop: paddingTop,\n    paddingRight: paddingRight,\n    paddingBottom: paddingBottom,\n    minWidth: minWidth,\n    font: font,\n    color: color,\n    lineHeight: lineHeight,\n    textAlign: textAlign,\n    textFormat: config.textFormat,\n    centerContent: centerContent,\n    singleLine: options.singleLine,\n    link: !!node.link\n}"
+    },
+    "58": {
+      "type": "action",
+      "one": "4",
+      "content": "return {\n    width: node.flowBlock.width,\n    height: node.flowBlock.height\n}"
+    },
+    "59": {
+      "type": "action",
+      "one": "52",
+      "content": "addTextToDiv(\n    options,\n    config,\n    textDiv,\n    text,\n    visuals.fonts,\n    font\n)"
+    },
+    "61": {
+      "type": "action",
+      "one": "41",
+      "content": "visuals.fonts[font] = true"
+    },
+    "62": {
+      "flag1": 0,
+      "type": "question",
+      "one": "55",
+      "two": "63",
+      "content": "forceWidth"
+    },
+    "63": {
+      "type": "action",
+      "one": "58",
+      "content": "node.flowBlock = flowTextBlock(\n    node.textBlock,\n    forceWidth\n)"
+    },
+    "64": {
+      "type": "action",
+      "one": "36",
+      "content": "centerContent = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"centerContent\"\n)"
+    },
+    "65": {
+      "type": "action",
+      "one": "5",
+      "content": "verticalAlign = getFromOptionsOrConfig(\n    config,\n    options,\n    node,\n    \"verticalAlign\"\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\noptions\nforceWidth",
+  "type": "drakon"
+}

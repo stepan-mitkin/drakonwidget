@@ -1,0 +1,44 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "38",
+      "type": "branch"
+    },
+    "38": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "margin = config.socketTouchRadius"
+    },
+    "40": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "element.box = createBoxWithMargin(\n    element.innerBox.left,\n    element.innerBox.top,\n    element.innerBox.width,\n    element.innerBox.height,\n    margin\n)"
+    },
+    "41": {
+      "type": "action",
+      "one": "43",
+      "content": "element.margin = margin"
+    },
+    "43": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "element.innerBox = calculateLineBox(\n    element,\n    0\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "element\nconfig",
+  "type": "drakon"
+}

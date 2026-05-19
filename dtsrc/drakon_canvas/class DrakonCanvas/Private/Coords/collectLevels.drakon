@@ -1,0 +1,65 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "visited = {}\nvisited[branch.id] = true"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "scanManhattan(visited, getDown(branch))"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "delete visited[branch.id]"
+    },
+    "6": {
+      "type": "action",
+      "one": "8",
+      "content": "levelIds = {}"
+    },
+    "7": {
+      "type": "loopend",
+      "one": "10"
+    },
+    "8": {
+      "type": "loopbegin",
+      "one": "9",
+      "content": "nodeId, _; visited"
+    },
+    "9": {
+      "type": "action",
+      "one": "7",
+      "content": "node = visuals.nodes[nodeId]\nlevelIds[node.level.id] = true"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "getLevel = function (levelId) {\n    return visuals.levels[levelId]\n}"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return Object.keys(levelIds).map(\n    getLevel\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nbranch",
+  "type": "drakon"
+}

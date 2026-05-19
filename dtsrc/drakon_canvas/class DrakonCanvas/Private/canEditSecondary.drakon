@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "can = {\n    shelf: true,\n    process: true,\n    input: true,\n    output: true\n}"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return node.type in can"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node",
+  "type": "drakon"
+}

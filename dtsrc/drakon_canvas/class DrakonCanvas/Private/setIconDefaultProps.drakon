@@ -1,0 +1,68 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "6",
+      "content": "name; names"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "one": "7",
+      "two": "8",
+      "content": "name in icons"
+    },
+    "7": {
+      "type": "action",
+      "one": "11",
+      "content": "icon = icons[name]"
+    },
+    "8": {
+      "type": "action",
+      "one": "11",
+      "content": "icon = {}\nicons[name] = icon"
+    },
+    "10": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "11": {
+      "type": "loopbegin",
+      "one": "12",
+      "content": "key, value; props"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "two": "13",
+      "one": "10",
+      "content": "key in icon"
+    },
+    "13": {
+      "type": "action",
+      "one": "10",
+      "content": "icon[key] = value"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "icons\nnames\nprops",
+  "type": "drakon"
+}

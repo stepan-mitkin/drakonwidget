@@ -1,0 +1,43 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return rightBranch.itemId"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "3",
+      "content": "rightBranch"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return visuals.branches[0]"
+    },
+    "6": {
+      "type": "action",
+      "one": "4",
+      "content": "rightBranch = getBranchById(\n    visuals,\n    branchId\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nbranchId",
+  "type": "drakon"
+}

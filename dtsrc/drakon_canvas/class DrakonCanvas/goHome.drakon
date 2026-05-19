@@ -1,0 +1,38 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "6": {
+      "type": "action",
+      "one": "13",
+      "content": "tracing.trace(\"DrakonCanvas.goHome\")"
+    },
+    "10": {
+      "type": "action",
+      "one": "14",
+      "content": "calculateDiagramBoxForEdit(\n    self,\n    self.visuals\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "paint(self)"
+    },
+    "13": {
+      "type": "action",
+      "one": "10",
+      "content": "delete self.origins[self.diagramId]"
+    },
+    "14": {
+      "type": "action",
+      "one": "12",
+      "content": "initScrollPos(self)"
+    }
+  },
+  "type": "drakon"
+}

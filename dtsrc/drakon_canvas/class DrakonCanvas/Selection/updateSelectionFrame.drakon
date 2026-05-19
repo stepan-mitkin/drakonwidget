@@ -1,0 +1,92 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "15"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "9",
+      "content": "visuals.selectionFrame"
+    },
+    "5": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "start = toDiagram(widget, evt0)\ncurrent = toDiagram(widget, evt)"
+    },
+    "6": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "visuals.selectionFrame = {}"
+    },
+    "7": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "visuals.selectionFrame.left = left\nvisuals.selectionFrame.top = top\nvisuals.selectionFrame.width = width\nvisuals.selectionFrame.height = height"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "10",
+      "two": "11",
+      "content": "start.x < current.x"
+    },
+    "10": {
+      "type": "action",
+      "one": "12",
+      "content": "left = start.x\nwidth = current.x - start.x"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "left = current.x\nwidth = start.x - current.x"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "13",
+      "two": "14",
+      "content": "start.y < current.y"
+    },
+    "13": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "top = start.y\nheight = current.y - start.y"
+    },
+    "14": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "top = current.y\nheight = start.y - current.y"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "visuals = widget.visuals"
+    },
+    "16": {
+      "type": "action",
+      "one": "5",
+      "content": "evt0 = {\n    clientX: startX,\n    clientY: startY,\n    target: evt.target\n}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nstartX\nstartY\nevt",
+  "type": "drakon"
+}

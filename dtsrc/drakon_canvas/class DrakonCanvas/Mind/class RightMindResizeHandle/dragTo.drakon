@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "self.element.w = (x - self.left) / 2"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "self.element.x = self.left + self.element\n.w"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "x\ny",
+  "type": "drakon"
+}

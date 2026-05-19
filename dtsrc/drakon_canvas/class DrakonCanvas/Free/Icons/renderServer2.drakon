@@ -1,0 +1,103 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "5": {
+      "type": "action",
+      "one": "19",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "one": "11",
+      "two": "8",
+      "content": "mustShift(visuals.config, line)"
+    },
+    "8": {
+      "type": "action",
+      "one": "11",
+      "content": "x += 0.5\ny += 0.5"
+    },
+    "9": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "line = ctx.lineWidth || 1"
+    },
+    "11": {
+      "type": "action",
+      "one": "23",
+      "content": "b = Math.round(w / 8)\nvx = x - w + b * 2"
+    },
+    "18": {
+      "type": "action",
+      "one": "7",
+      "content": "clearShadow(ctx)"
+    },
+    "19": {
+      "type": "action",
+      "one": "21",
+      "content": "r = w / 5\nborder = Math.round(h / 6)\nleft = x - w + border\nright = x + w - border\ncy = y - h + border\nw2 = w * 2 - border * 2"
+    },
+    "21": {
+      "type": "action",
+      "one": "9",
+      "content": "renderFreeIconShape(\n    ctx,\n    visuals,\n    element,\n    buildRectCoords,\n    undefined\n)"
+    },
+    "22": {
+      "type": "loopend",
+      "one": "26"
+    },
+    "23": {
+      "type": "loopbegin",
+      "one": "24",
+      "content": "i = 0; i < 4; i++"
+    },
+    "24": {
+      "type": "action",
+      "one": "25",
+      "content": "line1(ctx, vx, y - h, vx, y + h)"
+    },
+    "25": {
+      "type": "action",
+      "one": "22",
+      "content": "vx += b"
+    },
+    "26": {
+      "type": "action",
+      "one": "27",
+      "content": "top = y - b"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "ctx.strokeRect(x + w - b * 4, top, b, b)"
+    },
+    "28": {
+      "type": "action",
+      "one": "29",
+      "content": "ctx.strokeRect(x + w - b * 2, top, b, b)"
+    },
+    "29": {
+      "type": "action",
+      "one": "1",
+      "content": "line1(ctx, x - w, y + b, x + w, y + b)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

@@ -1,0 +1,83 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "visited = context.visited"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "7",
+      "content": "node.type === \"branch\""
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "context.leak = true"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "8",
+      "one": "1",
+      "content": "node.id in visited"
+    },
+    "8": {
+      "type": "action",
+      "one": "10",
+      "content": "visited[node.id] = node"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "two": "11",
+      "one": "1",
+      "content": "node === highNode"
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "one": "16",
+      "two": "14",
+      "content": "node.type === \"case\""
+    },
+    "14": {
+      "type": "action",
+      "one": "1",
+      "content": "findWayUpStep(\n    context,\n    node.select,\n    highNode\n)"
+    },
+    "15": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "16": {
+      "type": "loopbegin",
+      "one": "17",
+      "content": "prev; node.prev"
+    },
+    "17": {
+      "type": "action",
+      "one": "15",
+      "content": "findWayUpStep(context, prev, highNode)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "context\nnode\nhighNode",
+  "type": "drakon"
+}

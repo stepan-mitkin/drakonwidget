@@ -1,0 +1,147 @@
+{
+    "items": {
+        "2": {
+            "branchId": 1,
+            "one": "16",
+            "type": "branch",
+            "content": "Idle"
+        },
+        "6": {
+            "branchId": 2,
+            "one": "11",
+            "type": "branch",
+            "content": "Scroll"
+        },
+        "11": {
+            "type": "select",
+            "one": "12",
+            "content": "receive"
+        },
+        "12": {
+            "one": "22",
+            "type": "case",
+            "two": "14",
+            "content": "mouseMove(evt)"
+        },
+        "14": {
+            "one": "2",
+            "type": "case",
+            "two": "15",
+            "content": "mouseUp(evt)"
+        },
+        "15": {
+            "one": "2",
+            "type": "case",
+            "two": null,
+            "content": "mouseLeave(evt)"
+        },
+        "16": {
+            "type": "sinput",
+            "one": "24",
+            "content": "mouseDown(evt)"
+        },
+        "22": {
+            "type": "action",
+            "one": "6",
+            "content": "onMouseScroll(scroller, widget, evt)"
+        },
+        "23": {
+            "one": "25",
+            "type": "action",
+            "two": "",
+            "content": "scroll = hitScrollBar(\n    widget.visuals,\n    pos\n)"
+        },
+        "24": {
+            "one": "23",
+            "type": "action",
+            "two": "",
+            "content": "pos = toDiagram(widget, evt)"
+        },
+        "25": {
+            "flag1": 1,
+            "type": "question",
+            "two": "29",
+            "one": "26",
+            "content": "scroll"
+        },
+        "26": {
+            "flag1": 1,
+            "type": "question",
+            "one": "27",
+            "two": "28",
+            "content": "scroll.elType === \"hscroll\""
+        },
+        "27": {
+            "one": "30",
+            "type": "action",
+            "two": "",
+            "content": "dragTarget = createHScrollDrag(\n    widget,\n    evt,\n    scroll\n)"
+        },
+        "28": {
+            "one": "30",
+            "type": "action",
+            "two": "",
+            "content": "dragTarget = createVScrollDrag(\n    widget,\n    evt,\n    scroll\n)"
+        },
+        "29": {
+            "type": "action",
+            "one": "6",
+            "content": "scroller = createMouseScroll(widget, evt)"
+        },
+        "30": {
+            "branchId": 3,
+            "one": "31",
+            "type": "branch",
+            "content": "Drag"
+        },
+        "31": {
+            "one": "32",
+            "type": "select",
+            "two": "",
+            "content": "receive"
+        },
+        "32": {
+            "one": "35",
+            "type": "case",
+            "two": "33",
+            "content": "mouseMove(evt)"
+        },
+        "33": {
+            "one": "37",
+            "type": "case",
+            "two": "34",
+            "content": "mouseUp(evt)"
+        },
+        "34": {
+            "one": "37",
+            "type": "case",
+            "two": "",
+            "content": "mouseLeave(evt)"
+        },
+        "35": {
+            "type": "action",
+            "one": "30",
+            "content": "dragTarget.onDrag(evt)"
+        },
+        "36": {
+            "type": "action",
+            "one": "2",
+            "content": "dragTarget.complete()"
+        },
+        "37": {
+            "type": "action",
+            "one": "36",
+            "content": "tracing.trace(\"drag complete\")"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "widget",
+    "type": "drakon"
+}

@@ -1,0 +1,158 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "55",
+      "type": "branch",
+      "content": "Set up ctx"
+    },
+    "19": {
+      "flag1": 1,
+      "type": "question",
+      "two": "57",
+      "one": "20",
+      "content": "theme.shadowColor"
+    },
+    "20": {
+      "one": "57",
+      "type": "action",
+      "two": "",
+      "content": "ctx.shadowColor = theme.shadowColor\nctx.shadowBlur = theme.shadowBlur"
+    },
+    "22": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = theme.commentBack"
+    },
+    "26": {
+      "branchId": 4,
+      "one": "32",
+      "type": "branch",
+      "content": "Content"
+    },
+    "27": {
+      "branchId": 3,
+      "one": "33",
+      "type": "branch",
+      "content": "Inner frame"
+    },
+    "32": {
+      "type": "action",
+      "one": "1",
+      "content": "centerContent(visuals, node, ctx)"
+    },
+    "33": {
+      "type": "action",
+      "one": "43",
+      "content": "ctx.fillStyle = getThemeValue(\n    config,\n    node,\n    \"iconBack\"\n)"
+    },
+    "34": {
+      "type": "action",
+      "one": "44",
+      "content": "left2 = left + padding\ntop2 = top + padding\nwidth2 = width - padding * 2\nheight2 = height - padding * 2"
+    },
+    "39": {
+      "type": "action",
+      "one": "52",
+      "content": "ctx.fill()"
+    },
+    "41": {
+      "type": "action",
+      "one": "60",
+      "content": "ctx.lineWidth = lineWidth || 1"
+    },
+    "42": {
+      "type": "action",
+      "one": "26",
+      "content": "ctx.stroke()"
+    },
+    "43": {
+      "one": "34",
+      "type": "action",
+      "two": "",
+      "content": "ctx.strokeStyle = getThemeValue(\n    config,\n    node,\n    \"internalLine\"\n)"
+    },
+    "44": {
+      "one": "39",
+      "type": "action",
+      "two": "",
+      "content": "roundedRect(\n    ctx,\n    left2,\n    top2,\n    width2,\n    height2,\n    padding\n)"
+    },
+    "47": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "roundedRect(\n    ctx,\n    left2,\n    top2,\n    width2,\n    height2,\n    padding\n)"
+    },
+    "52": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "lineWidth = getThemeValue(\n    config,\n    node,\n    \"borderWidth\"\n)"
+    },
+    "54": {
+      "one": "62",
+      "type": "action",
+      "two": "",
+      "content": "padding = config.commentPadding"
+    },
+    "55": {
+      "one": "56",
+      "type": "action",
+      "two": "",
+      "content": "left = node.x - node.w\ntop = node.y - node.h\nwidth = node.w * 2\nheight = node.h * 2"
+    },
+    "56": {
+      "one": "54",
+      "type": "action",
+      "two": "",
+      "content": "config = visuals.config\ntheme = config.theme"
+    },
+    "57": {
+      "branchId": 2,
+      "one": "58",
+      "type": "branch",
+      "content": "Icon back"
+    },
+    "58": {
+      "type": "action",
+      "one": "59",
+      "content": "renderIconShapeFill(\n    ctx,\n    visuals,\n    buildRectCoords,\n    left,\n    top,\n    width,\n    height,\n    undefined\n)"
+    },
+    "59": {
+      "type": "action",
+      "one": "27",
+      "content": "renderIconShapeBorder(\n    ctx,\n    visuals,\n    buildRectCoords,\n    lineWidth,\n    left,\n    top,\n    width,\n    height,\n    undefined\n)"
+    },
+    "60": {
+      "flag1": 0,
+      "type": "question",
+      "one": "47",
+      "two": "61",
+      "content": "mustShift(visuals.config, lineWidth)"
+    },
+    "61": {
+      "type": "action",
+      "one": "47",
+      "content": "left2 += 0.5\ntop2 += 0.5"
+    },
+    "62": {
+      "type": "action",
+      "one": "22",
+      "content": "lineWidth = setFillStroke(\n    visuals,\n    node,\n    ctx\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

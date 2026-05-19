@@ -1,0 +1,150 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Nodes"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "tr = visuals.config.socketTouchRadius"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "17",
+      "type": "branch",
+      "content": "Edges"
+    },
+    "6": {
+      "type": "action",
+      "one": "8",
+      "content": "nodes = visuals.nodes"
+    },
+    "7": {
+      "type": "loopend",
+      "one": "5"
+    },
+    "8": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "id, node; nodes"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "node.x = getX(node)\nnode.y = getY(node)"
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "one": "11",
+      "two": "22",
+      "content": "node.type === \"junction\""
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "one": "12",
+      "two": "22",
+      "content": "node.type === \"arrow-loop\""
+    },
+    "12": {
+      "type": "action",
+      "one": "28",
+      "content": "node.box = boxFromPoint(\n    node.x,\n    node.y,\n    node.w,\n    node.h\n)"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "9",
+      "content": "isDrawableNode(node)"
+    },
+    "15": {
+      "type": "loopend",
+      "one": "23"
+    },
+    "16": {
+      "type": "loopbegin",
+      "one": "18",
+      "content": "id, edge; edges"
+    },
+    "17": {
+      "type": "action",
+      "one": "16",
+      "content": "edges = visuals.edges"
+    },
+    "18": {
+      "flag1": 0,
+      "type": "question",
+      "two": "20",
+      "one": "19",
+      "content": "edge.vertical"
+    },
+    "19": {
+      "type": "action",
+      "one": "21",
+      "content": "left = edge.head.x\ntop = edge.head.y - tr\nright = edge.tail.x\nwidth = right - left\nheight = tr * 2"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "left = edge.head.x - tr\ntop = edge.head.y\nbottom = edge.tail.y\nwidth = tr * 2\nheight = bottom - top"
+    },
+    "21": {
+      "type": "action",
+      "one": "15",
+      "content": "edge.box = createBox(\n    left,\n    top,\n    width,\n    height\n)"
+    },
+    "22": {
+      "type": "action",
+      "one": "7",
+      "content": "node.box = boxFromPoint(\n    node.x,\n    node.y,\n    tr,\n    tr\n)"
+    },
+    "23": {
+      "branchId": 3,
+      "one": "25",
+      "type": "branch",
+      "content": "Free"
+    },
+    "24": {
+      "type": "loopend",
+      "one": "4"
+    },
+    "25": {
+      "type": "loopbegin",
+      "one": "29",
+      "content": "element; visuals.free"
+    },
+    "28": {
+      "type": "action",
+      "one": "7",
+      "content": "node.leftX = node.x - node.w\nnode.rightX = node.x + node.w\nnode.topY = node.y - node.h\nnode.middleY = node.y\nnode.bottomY = node.y + node.h"
+    },
+    "29": {
+      "type": "action",
+      "one": "24",
+      "content": "calculateFreeBox(\n    widget,\n    element,\n    visuals.config\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nvisuals",
+  "type": "drakon"
+}

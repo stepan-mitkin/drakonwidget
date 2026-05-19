@@ -1,0 +1,80 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "visuals = widget.visuals\nscroll = widget.scrollableContainer"
+    },
+    "6": {
+      "type": "action",
+      "one": "8",
+      "content": "zoom = widget.zoomFactor"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "scrollLeft = (scrollX - visuals.box.left)\n* zoom"
+    },
+    "9": {
+      "type": "action",
+      "one": "19",
+      "content": "scrollTop = (scrollY - visuals.box.top) *\nzoom"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "one": "24",
+      "two": "26",
+      "content": "scroll.scrollLeft ===\noldLeft"
+    },
+    "19": {
+      "type": "action",
+      "one": "20",
+      "content": "oldLeft = scroll.scrollLeft\noldTop = scroll.scrollTop"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "scroll.scrollLeft = scrollLeft"
+    },
+    "21": {
+      "type": "action",
+      "one": "11",
+      "content": "scroll.scrollTop = scrollTop"
+    },
+    "24": {
+      "flag1": 1,
+      "type": "question",
+      "two": "26",
+      "one": "25",
+      "content": "scroll.scrollTop ===\noldTop"
+    },
+    "25": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "26": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nscrollX\nscrollY",
+  "type": "drakon"
+}

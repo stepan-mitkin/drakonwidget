@@ -1,0 +1,103 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "10"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "14",
+      "content": "ears"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "20",
+      "content": "key, box; ears.boxes"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "ears = visuals.ears\nconfig = visuals.config"
+    },
+    "9": {
+      "type": "action",
+      "one": "5",
+      "content": "drawEar(ctx, key, box, 2, fill, border)"
+    },
+    "10": {
+      "type": "action",
+      "one": "7",
+      "content": "fill = \"#00ff00\"\nborder = \"black\""
+    },
+    "11": {
+      "type": "action",
+      "one": "15",
+      "content": "radius = visuals.config.socketTouchRadius"
+    },
+    "14": {
+      "type": "action",
+      "one": "11",
+      "content": "drawEarsLine(visuals, ears, ctx)"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "one": "6",
+      "two": "16",
+      "content": "ears.selected"
+    },
+    "16": {
+      "flag1": 0,
+      "type": "question",
+      "two": "1",
+      "one": "18",
+      "content": "ears.hideEar"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "selectedBox = ears.boxes[ears.selected]"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "drawCircle(\n    ctx,\n    selectedBox.left + radius,\n    selectedBox.top + radius,\n    radius,\n    2,\n    fill,\n    border\n)"
+    },
+    "20": {
+      "flag1": 0,
+      "type": "question",
+      "one": "21",
+      "two": "22",
+      "content": "visuals.highlight === key"
+    },
+    "21": {
+      "type": "action",
+      "one": "9",
+      "content": "fill = \"#00ff00\"\nborder = \"black\""
+    },
+    "22": {
+      "type": "action",
+      "one": "9",
+      "content": "fill = \"#00ff00\"\nborder = config.theme.highlight"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nctx",
+  "type": "drakon"
+}

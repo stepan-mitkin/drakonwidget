@@ -1,0 +1,157 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "21": {
+      "branchId": 3,
+      "one": "48",
+      "type": "branch",
+      "content": "Apply and paint"
+    },
+    "22": {
+      "branchId": 2,
+      "one": "45",
+      "type": "branch",
+      "content": "Y-coordinate"
+    },
+    "23": {
+      "branchId": 1,
+      "one": "25",
+      "type": "branch",
+      "content": "X-coordinate"
+    },
+    "24": {
+      "type": "action",
+      "one": "1",
+      "content": "paintLater(self.widget)"
+    },
+    "25": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "config = self.widget.config"
+    },
+    "26": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "zoom = self.widget.zoomFactor"
+    },
+    "27": {
+      "flag1": 1,
+      "type": "question",
+      "two": "39",
+      "one": "35",
+      "content": "self.handle.xEnabled()"
+    },
+    "33": {
+      "one": "34",
+      "type": "action",
+      "two": "",
+      "content": "dx = snapUp(config, dxDia)"
+    },
+    "34": {
+      "one": "38",
+      "type": "action",
+      "two": "",
+      "content": "x = self.handleStartX + dx"
+    },
+    "35": {
+      "one": "33",
+      "type": "action",
+      "two": "",
+      "content": "dxDia = (evt.clientX - self.startX) / zoom"
+    },
+    "36": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "x = Math.min(max, Math.max(min, x))"
+    },
+    "38": {
+      "type": "action",
+      "one": "36",
+      "content": "max = self.handle.getMaxX()\nmin = self.handle.getMinX()"
+    },
+    "39": {
+      "type": "action",
+      "one": "22",
+      "content": "x = self.handle.x"
+    },
+    "40": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "dy = snapUp(config, dyDia)"
+    },
+    "41": {
+      "one": "46",
+      "type": "action",
+      "two": "",
+      "content": "y = self.handleStartY + dy"
+    },
+    "42": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "dyDia = (evt.clientY - self.startY) / zoom"
+    },
+    "44": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "y = Math.min(max, Math.max(min, y))"
+    },
+    "45": {
+      "flag1": 1,
+      "type": "question",
+      "one": "42",
+      "two": "47",
+      "content": "self.handle.yEnabled()"
+    },
+    "46": {
+      "type": "action",
+      "one": "44",
+      "content": "max = self.handle.getMaxY()\nmin = self.handle.getMinY()"
+    },
+    "47": {
+      "type": "action",
+      "one": "21",
+      "content": "y = self.handle.y"
+    },
+    "48": {
+      "flag1": 0,
+      "type": "question",
+      "two": "52",
+      "one": "51",
+      "content": "x === self.handle.x"
+    },
+    "50": {
+      "type": "action",
+      "one": "24",
+      "content": "self.handle.dragTo(x, y)"
+    },
+    "51": {
+      "type": "action",
+      "one": "50",
+      "content": "self.handle.x = x\nself.handle.y = y"
+    },
+    "52": {
+      "flag1": 0,
+      "type": "question",
+      "one": "51",
+      "two": "1",
+      "content": "y === self.handle.y"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "evt",
+  "type": "drakon"
+}

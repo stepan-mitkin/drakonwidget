@@ -1,0 +1,114 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Left part"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "leftUp = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "4": {
+      "branchId": 4,
+      "one": "20",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "14",
+      "type": "branch",
+      "content": "Branches"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "10",
+      "type": "branch",
+      "content": "Header"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "leftDown = createJunction(\n    visuals,\n    undefined\n)"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "createEdge(\n    visuals,\n    leftUp,\n    leftDown,\n    true\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "5",
+      "content": "upper = leftUp\nlower = leftDown"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "leftUp.right.role = \"rarrow\""
+    },
+    "11": {
+      "type": "action",
+      "one": "19",
+      "content": "firstId = visuals.branches[0]"
+    },
+    "12": {
+      "type": "action",
+      "one": "4",
+      "content": "createEdge(\n    visuals,\n    visuals.header,\n    first.topNode,\n    true\n)"
+    },
+    "13": {
+      "type": "loopend",
+      "one": "6"
+    },
+    "14": {
+      "type": "loopbegin",
+      "one": "18",
+      "content": "branchId; visuals.branches"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "buildManhattan(visuals, branch)"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "connectBranch(\n    visuals,\n    branch,\n    upper,\n    lower\n)"
+    },
+    "17": {
+      "type": "action",
+      "one": "13",
+      "content": "upper = branch.topNode\nlower = branch.bottomNode"
+    },
+    "18": {
+      "type": "action",
+      "one": "15",
+      "content": "branch = visuals.nodes[branchId]"
+    },
+    "19": {
+      "type": "action",
+      "one": "12",
+      "content": "first = visuals.nodes[firstId]"
+    },
+    "20": {
+      "type": "action",
+      "one": "1",
+      "content": "delete leftDown.right.role"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

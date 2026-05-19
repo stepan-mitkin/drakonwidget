@@ -1,0 +1,87 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "12",
+      "content": "ctx.beginPath()\nctx.moveTo(rpdm, ttop)\nctx.arc(\n    rpdm,\n    pdm,\n    ar * 2,\n    -Math.PI / 2,\n    0\n)\nctx.lineTo(right, ph)\nctx.arc(right - ar, ph, ar, 0, Math.PI)\nctx.lineTo(rpdm, pdm)\nctx.lineTo(rbok, pdm)\nctx.lineTo(rbok, ld)\nctx.arc(rc, ld, r2, 0, Math.PI)\nctx.lineTo(rgr, ph)\nctx.lineTo(lgr, ph)\nctx.lineTo(lgr, ld)\nctx.arc(lc, ld, r2, 0, Math.PI)\nctx.lineTo(lbok, pdm)\nctx.lineTo(lpdm, pdm)\nctx.lineTo(lpdm, ph)\nctx.arc(lpdm - ar, ph, ar, 0, Math.PI)\nctx.lineTo(left, ttop + ar * 2)\nctx.arc(\n    left + ar * 2,\n    ttop + ar * 2,\n    ar * 2,\n    -Math.PI,\n    -Math.PI / 2\n)\nctx.closePath()\nctx.fill()"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "top = y - h\nbottom = y + h\nw2 = w * 2\nh2 = h * 2\nl = Math.round(h2 * 0.4)\nm = 0\nr2 = Math.floor((w2 - m * 3) / 8)\nr = Math.round(r2 * 1.5)\nk = Math.round(r * 2.3)\nar = Math.round(r2 * 0.8)\nright = x + r2 * 2 + ar * 2\nrpdm = right - ar * 2\nrbok = rpdm - m\nrc = rbok - r2\nrgr = rbok - r2 * 2\nlgr = rgr - m\nlc = lgr - r2\nlbok = lgr - r2 * 2\nlpdm = lbok - m\nleft = lpdm - ar * 2\nln = lpdm - r2\nhx = Math.round((lgr + rgr) / 2)\nttop = top + k\npdm = ttop + ar * 2\nph = bottom - l\nld = bottom - r2"
+    },
+    "5": {
+      "type": "action",
+      "one": "9",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "6": {
+      "type": "action",
+      "one": "10",
+      "content": "circlePath(ctx, hx, top + r, r)\nctx.fill()"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "4",
+      "content": "mustShift(visuals.config, line)"
+    },
+    "8": {
+      "type": "action",
+      "one": "4",
+      "content": "x += 0.5\ny += 0.5"
+    },
+    "9": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "line = setFillStroke(\n    visuals,\n    element,\n    ctx\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "clearShadow(ctx)"
+    },
+    "11": {
+      "type": "action",
+      "one": "14",
+      "content": "ctx.stroke()"
+    },
+    "12": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    },
+    "13": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "ctx.stroke()"
+    },
+    "14": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "setFillStroke(visuals, element, ctx)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

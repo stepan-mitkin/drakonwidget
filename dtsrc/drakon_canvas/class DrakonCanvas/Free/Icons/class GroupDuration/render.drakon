@@ -1,0 +1,196 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "60",
+      "type": "branch",
+      "content": "Set up"
+    },
+    "18": {
+      "branchId": 6,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "19": {
+      "branchId": 2,
+      "one": "26",
+      "type": "branch",
+      "content": "Vertical"
+    },
+    "21": {
+      "flag1": 0,
+      "type": "question",
+      "two": "23",
+      "one": "22",
+      "content": "element.flag1"
+    },
+    "22": {
+      "branchId": 3,
+      "one": "36",
+      "type": "branch",
+      "content": "Left"
+    },
+    "23": {
+      "branchId": 4,
+      "one": "47",
+      "type": "branch",
+      "content": "Right"
+    },
+    "26": {
+      "type": "action",
+      "one": "28",
+      "content": "ctx.beginPath();\nctx.moveTo(x, y)\nctx.lineTo(x, ctop)\nctx.stroke()"
+    },
+    "27": {
+      "type": "action",
+      "one": "34",
+      "content": "top = y + element.hiY\nbottom = y + element.loY"
+    },
+    "28": {
+      "type": "action",
+      "one": "21",
+      "content": "ctx.beginPath();\nctx.moveTo(x, y)\nctx.lineTo(x, cbottom)\nctx.stroke()"
+    },
+    "29": {
+      "type": "action",
+      "one": "45",
+      "content": "ctx.strokeStyle = color\nctx.lineWidth = lineWidth"
+    },
+    "30": {
+      "branchId": 5,
+      "one": "44",
+      "type": "branch",
+      "content": "Icon"
+    },
+    "31": {
+      "type": "action",
+      "one": "18",
+      "content": "renderDuration(visuals, element, ctx)"
+    },
+    "33": {
+      "type": "action",
+      "one": "27",
+      "content": "radius = 10"
+    },
+    "34": {
+      "type": "action",
+      "one": "43",
+      "content": "ctop = top + radius\ncbottom = bottom - radius"
+    },
+    "35": {
+      "type": "action",
+      "one": "39",
+      "content": "ctx.beginPath()\nctx.arc(\n    cx,\n    ctop,\n    radius,\n    Math.PI * 1.0,\n    Math.PI * 1.5\n)\nctx.lineTo(cx2, top)\nctx.stroke()"
+    },
+    "36": {
+      "type": "action",
+      "one": "35",
+      "content": "cx = x + radius\ncx2 = cx + radius * 2"
+    },
+    "39": {
+      "type": "action",
+      "one": "40",
+      "content": "ctx.beginPath()\nctx.moveTo(cx2, bottom)\nctx.lineTo(cx, bottom)\nctx.arc(\n    cx,\n    cbottom,\n    radius,\n    Math.PI * 0.5,\n    Math.PI * 1.0\n)\nctx.stroke()"
+    },
+    "40": {
+      "type": "action",
+      "one": "41",
+      "content": "ctx.beginPath();\nctx.setLineDash(dash);\nctx.moveTo(cx2, top);\nctx.lineTo(tx, top);\nctx.stroke();"
+    },
+    "41": {
+      "type": "action",
+      "one": "30",
+      "content": "ctx.beginPath();\nctx.setLineDash(dash);\nctx.moveTo(cx2, bottom);\nctx.lineTo(bx, bottom);\nctx.stroke();"
+    },
+    "43": {
+      "type": "action",
+      "one": "29",
+      "content": "tx = x + element.hiX\nbx = x + element.loX"
+    },
+    "44": {
+      "type": "action",
+      "one": "31",
+      "content": "ctx.setLineDash([]);"
+    },
+    "45": {
+      "type": "action",
+      "one": "19",
+      "content": "dash = [15, 5]"
+    },
+    "46": {
+      "one": "51",
+      "type": "action",
+      "two": "",
+      "content": "ctx.beginPath()\nctx.setLineDash(dash)\nctx.moveTo(tx, top)\nctx.lineTo(cx2, top)\nctx.stroke()"
+    },
+    "47": {
+      "one": "46",
+      "type": "action",
+      "two": "",
+      "content": "cx = x - radius\ncx2 = cx - radius * 2"
+    },
+    "51": {
+      "type": "action",
+      "one": "52",
+      "content": "ctx.beginPath()\nctx.setLineDash([])\nctx.moveTo(cx2, top)\nctx.lineTo(cx, top)\nctx.arc(\n    cx,\n    ctop,\n    radius,\n    Math.PI * 1.5,\n    Math.PI * 2.0\n)\nctx.stroke()"
+    },
+    "52": {
+      "type": "action",
+      "one": "53",
+      "content": "ctx.beginPath()\nctx.arc(\n    cx,\n    cbottom,\n    radius,\n    0,\n    Math.PI * 0.5\n)\nctx.lineTo(cx2, bottom)\nctx.stroke()"
+    },
+    "53": {
+      "type": "action",
+      "one": "30",
+      "content": "ctx.beginPath();\nctx.setLineDash(dash);\nctx.moveTo(bx, bottom);\nctx.lineTo(cx2, bottom);\nctx.stroke();"
+    },
+    "56": {
+      "type": "action",
+      "one": "33",
+      "content": "x = element.x + 0.5\ny = element.y + 0.5"
+    },
+    "57": {
+      "flag1": 0,
+      "type": "question",
+      "one": "56",
+      "two": "58",
+      "content": "lineWidth % 2 === 0"
+    },
+    "58": {
+      "type": "action",
+      "one": "33",
+      "content": "x = element.x\ny = element.y"
+    },
+    "59": {
+      "one": "62",
+      "type": "action",
+      "two": "",
+      "content": "lineWidth = getLineWidth(\n    visuals,\n    element\n)"
+    },
+    "60": {
+      "one": "59",
+      "type": "action",
+      "two": "",
+      "content": "config = visuals.config"
+    },
+    "62": {
+      "one": "57",
+      "type": "action",
+      "two": "",
+      "content": "color = getLineColor(visuals, element)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

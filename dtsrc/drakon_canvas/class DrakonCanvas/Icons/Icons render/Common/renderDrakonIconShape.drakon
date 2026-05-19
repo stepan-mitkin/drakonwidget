@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "renderIconShape(\n    ctx,\n    visuals,\n    node,\n    buildCoords,\n    left,\n    top,\n    width,\n    height,\n    aux\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "left = node.x - node.w\ntop = node.y - node.h\nwidth = node.w * 2\nheight = node.h * 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nvisuals\nnode\nbuildCoords\naux",
+  "type": "drakon"
+}

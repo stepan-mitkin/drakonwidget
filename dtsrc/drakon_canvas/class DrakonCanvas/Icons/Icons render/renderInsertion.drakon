@@ -1,0 +1,64 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "11"
+    },
+    "5": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "left = node.x - node.w\nright = node.x + node.w\ntop = node.y - node.h"
+    },
+    "7": {
+      "type": "action",
+      "one": "15",
+      "content": "ctx.fillRect(\n    x1,\n    top,\n    thickness,\n    node.h * 2\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "14",
+      "content": "thickness = getThemeValue(\n    visuals.config,\n    node,\n    \"borderWidth\"\n) || 1"
+    },
+    "11": {
+      "type": "action",
+      "one": "5",
+      "content": "renderAction(visuals, node, ctx)"
+    },
+    "12": {
+      "type": "action",
+      "one": "10",
+      "content": "x1 = left + visuals.config.insertionPadding\nx2 = right - visuals.config.insertionPadding"
+    },
+    "14": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "style = getThemeValue(\n    visuals.config,\n    node,\n    \"iconBorder\"\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.fillRect(\n    x2,\n    top,\n    thickness,\n    node.h * 2\n)"
+    },
+    "16": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = getThemeValue(\n    visuals.config,\n    node,\n    \"internalLine\"\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

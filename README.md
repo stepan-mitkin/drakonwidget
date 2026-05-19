@@ -1,10 +1,10 @@
 # DrakonWidget
 
-Current version: 1.4.7
+Current version: 1.5.3
 
 DrakonWidget is a JavaScript widget for viewing and editing drakon flowcharts.
 
-[DrakonHub for Desktop](https://github.com/stepan-mitkin/drakonhub_desktop) is based on DrakonWidget.
+[DrakonHub for desktop, mobile, and browser](https://drakonhub.com) is based on DrakonWidget.
 
 ## Online demo:
 
@@ -17,6 +17,9 @@ DrakonWidget is a plain JavaScript file with no dependencies. You can use Drakon
 
 [drakonwidget.js](https://stepan-mitkin.github.io/drakonwidget/libs/drakonwidget.js)
 
+## DrakonWidget is written in Drakon-JavaScript
+
+DrakonWidget is developed using the Drakon visual language in [drakon.tech.desktop](https://github.com/stepan-mitkin/drakon.tech.desktop). See the source modules in the __dtsrc__ folder.
 
 ## How to use DrakonWidget
 
@@ -96,12 +99,6 @@ drakon.redraw()
 ## Support
 
 Write to drakon.editor@gmail.com if you need help integrating DrakonWidget.
-
-
-## Source code
-
-https://app.drakon.tech/ide/doc/drakon_widget_10/1
-
 
 ## Configuration reference
 

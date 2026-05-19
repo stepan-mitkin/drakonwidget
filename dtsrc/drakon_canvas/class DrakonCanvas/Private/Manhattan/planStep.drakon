@@ -1,0 +1,87 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "step = {\n    node1: node1,\n    node2: node2,\n    down: true,\n    back: false\n}"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "6",
+      "content": "isBackLink(node1, node2)"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "step.back = true"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "stack.push(step)"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return step"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "14",
+      "two": "9",
+      "content": "node1.subtype === \"parbegin\""
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "parallelStack = node1.parallelStack.slice()"
+    },
+    "10": {
+      "type": "action",
+      "one": "12",
+      "content": "parallelStack.push(node1.id)"
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "13",
+      "content": "node2.subtype === \"parend\""
+    },
+    "12": {
+      "type": "action",
+      "one": "11",
+      "content": "node2.parallelStack = parallelStack"
+    },
+    "13": {
+      "type": "action",
+      "one": "4",
+      "content": "node2.parallelStack.pop()"
+    },
+    "14": {
+      "type": "action",
+      "one": "11",
+      "content": "node2.parallelStack = node1.parallelStack\n.slice()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "stack\nnode1\nnode2",
+  "type": "drakon"
+}

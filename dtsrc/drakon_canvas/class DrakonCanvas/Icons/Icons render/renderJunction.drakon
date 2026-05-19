@@ -1,0 +1,305 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "one": "1",
+      "two": "6",
+      "content": "radius"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "radius = visuals.config.lineRadius || 0"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "1",
+      "two": "12",
+      "content": "shouldSmoothJunction(node)"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "one": "32",
+      "two": "55",
+      "content": "node.up"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "two": "38",
+      "one": "10",
+      "content": "node.left"
+    },
+    "10": {
+      "flag1": 1,
+      "type": "question",
+      "two": "34",
+      "one": "61",
+      "content": "node.down"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "two": "24",
+      "one": "17",
+      "content": "node.down.role === \"down\""
+    },
+    "12": {
+      "type": "action",
+      "one": "7",
+      "content": "ctx.lineCap = \"butt\""
+    },
+    "17": {
+      "type": "action",
+      "one": "22",
+      "content": "x = node.x - radius\ny = node.y + radius"
+    },
+    "18": {
+      "type": "action",
+      "one": "1",
+      "content": "line(\n    ctx,\n    node.x,\n    node.y - radius,\n    node.x,\n    node.y + radius,\n    color,\n    thickness\n)"
+    },
+    "22": {
+      "type": "action",
+      "one": "18",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    -Math.PI / 2,\n    0,\n    thickness,\n    color\n)"
+    },
+    "24": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "x = node.x - radius\ny = node.y - radius"
+    },
+    "25": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "line(\n    ctx,\n    node.x,\n    node.y - radius,\n    node.x,\n    node.y + radius,\n    color,\n    thickness\n)"
+    },
+    "27": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    0,\n    Math.PI / 2,\n    thickness,\n    color\n)"
+    },
+    "31": {
+      "one": "37",
+      "type": "action",
+      "two": "",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    0,\n    Math.PI / 2,\n    thickness,\n    color\n)"
+    },
+    "32": {
+      "one": "33",
+      "type": "action",
+      "two": "",
+      "content": "thickness = node.up.thickness\ncolor = node.up.color"
+    },
+    "33": {
+      "type": "action",
+      "one": "9",
+      "content": "ctx.lineWidth = thickness\nctx.strokeStyle = color"
+    },
+    "34": {
+      "flag1": 1,
+      "type": "question",
+      "two": "35",
+      "one": "66",
+      "content": "node.right"
+    },
+    "35": {
+      "one": "36",
+      "type": "action",
+      "two": "",
+      "content": "x = node.x - radius\ny = node.y - radius"
+    },
+    "36": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    0,\n    Math.PI / 2,\n    thickness,\n    color\n)"
+    },
+    "37": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "line(\n    ctx,\n    node.x - radius,\n    node.y,\n    node.x + radius,\n    node.y,\n    color,\n    thickness\n)"
+    },
+    "38": {
+      "flag1": 1,
+      "type": "question",
+      "one": "40",
+      "two": "45",
+      "content": "node.down"
+    },
+    "40": {
+      "one": "59",
+      "type": "action",
+      "two": "",
+      "content": "line(\n    ctx,\n    node.x,\n    node.y - radius,\n    node.x,\n    node.y + radius,\n    color,\n    thickness\n)"
+    },
+    "41": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    Math.PI,\n    Math.PI * 3 / 2,\n    node.right.thickness,\n    color\n)"
+    },
+    "42": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "x = node.x + radius\ny = node.y + radius"
+    },
+    "44": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    Math.PI / 2,\n    Math.PI,\n    thickness,\n    color\n)"
+    },
+    "45": {
+      "one": "44",
+      "type": "action",
+      "two": "",
+      "content": "x = node.x + radius\ny = node.y - radius"
+    },
+    "47": {
+      "flag1": 1,
+      "type": "question",
+      "two": "50",
+      "one": "48",
+      "content": "node.right.role === \"left\""
+    },
+    "48": {
+      "one": "31",
+      "type": "action",
+      "two": "",
+      "content": "x = node.x - radius\ny = node.y - radius"
+    },
+    "49": {
+      "one": "37",
+      "type": "action",
+      "two": "",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    Math.PI / 2,\n    Math.PI,\n    thickness,\n    color\n)"
+    },
+    "50": {
+      "one": "49",
+      "type": "action",
+      "two": "",
+      "content": "x = node.x + radius\ny = node.y - radius"
+    },
+    "51": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    Math.PI,\n    Math.PI / 2 * 3,\n    thickness,\n    color\n)"
+    },
+    "52": {
+      "one": "51",
+      "type": "action",
+      "two": "",
+      "content": "x = node.x + radius\ny = node.y + radius"
+    },
+    "53": {
+      "one": "54",
+      "type": "action",
+      "two": "",
+      "content": "thickness = node.down.thickness\ncolor = node.down.color"
+    },
+    "54": {
+      "one": "56",
+      "type": "action",
+      "two": "",
+      "content": "ctx.lineWidth = thickness\nctx.strokeStyle = color"
+    },
+    "55": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "53",
+      "content": "node.down"
+    },
+    "56": {
+      "flag1": 1,
+      "type": "question",
+      "one": "52",
+      "two": "58",
+      "content": "node.right"
+    },
+    "57": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "arc(\n    ctx,\n    x,\n    y,\n    radius,\n    -Math.PI / 2,\n    0,\n    thickness,\n    color\n)"
+    },
+    "58": {
+      "one": "57",
+      "type": "action",
+      "two": "",
+      "content": "x = node.x - radius\ny = node.y + radius"
+    },
+    "59": {
+      "flag1": 0,
+      "type": "question",
+      "one": "42",
+      "two": "60",
+      "content": "node.sharp"
+    },
+    "60": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "line(\n    ctx,\n    node.x - radius,\n    node.y,\n    node.x,\n    node.y,\n    color,\n    thickness\n)"
+    },
+    "61": {
+      "flag1": 0,
+      "type": "question",
+      "two": "64",
+      "one": "11",
+      "content": "node.right"
+    },
+    "63": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "line(\n    ctx,\n    node.x,\n    node.y - radius,\n    node.x,\n    node.y + radius,\n    color,\n    thickness\n)"
+    },
+    "64": {
+      "one": "63",
+      "type": "action",
+      "two": "",
+      "content": "line(\n    ctx,\n    node.x - radius,\n    node.y,\n    node.x + radius,\n    node.y,\n    node.right.thickness,\n    thickness\n)"
+    },
+    "66": {
+      "flag1": 0,
+      "type": "question",
+      "two": "67",
+      "one": "47",
+      "content": "node.sharp"
+    },
+    "67": {
+      "one": "37",
+      "type": "action",
+      "two": "",
+      "content": "line(\n    ctx,\n    node.x,\n    node.y - radius,\n    node.x,\n    node.y,\n    color,\n    thickness\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

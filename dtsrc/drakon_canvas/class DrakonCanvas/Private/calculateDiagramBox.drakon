@@ -1,0 +1,146 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "8",
+      "type": "branch",
+      "content": "Nodes"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "18"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "31",
+      "content": "id, node; visuals.nodes"
+    },
+    "8": {
+      "type": "action",
+      "one": "16",
+      "content": "box = {\n    left: Number.MAX_SAFE_INTEGER,\n    right: Number.MIN_SAFE_INTEGER,\n    top: Number.MAX_SAFE_INTEGER,\n    bottom: Number.MIN_SAFE_INTEGER\n}"
+    },
+    "16": {
+      "type": "action",
+      "one": "5",
+      "content": "metre = visuals.config.metre"
+    },
+    "17": {
+      "branchId": 5,
+      "one": "48",
+      "type": "branch",
+      "content": "Set diagram box"
+    },
+    "18": {
+      "branchId": 2,
+      "one": "21",
+      "type": "branch",
+      "content": "Free"
+    },
+    "19": {
+      "type": "action",
+      "one": "33",
+      "content": "box.left -= padding\nbox.top -= padding\nbox.right += padding\nbox.bottom += padding\nbox.width = box.right - box.left\nbox.height = box.bottom - box.top"
+    },
+    "20": {
+      "one": "40",
+      "type": "loopend",
+      "two": ""
+    },
+    "21": {
+      "one": "32",
+      "type": "loopbegin",
+      "two": "",
+      "content": "element; visuals.free"
+    },
+    "31": {
+      "type": "action",
+      "one": "4",
+      "content": "calculateBoxIter(node, box)"
+    },
+    "32": {
+      "type": "action",
+      "one": "20",
+      "content": "calculateBoxFromFree(element.box, box)"
+    },
+    "33": {
+      "type": "action",
+      "one": "1",
+      "content": "return box"
+    },
+    "34": {
+      "branchId": 4,
+      "one": "35",
+      "type": "branch",
+      "content": "Default size"
+    },
+    "35": {
+      "flag1": 0,
+      "type": "question",
+      "one": "17",
+      "two": "36",
+      "content": "box.left === Number.MAX_SAFE_INTEGER"
+    },
+    "36": {
+      "type": "action",
+      "one": "17",
+      "content": "box.left = 0\nbox.right = 100\nbox.top = 0\nbox.bottom = 100"
+    },
+    "40": {
+      "branchId": 3,
+      "one": "42",
+      "type": "branch",
+      "content": "Connections"
+    },
+    "41": {
+      "type": "loopend",
+      "one": "34"
+    },
+    "42": {
+      "type": "loopbegin",
+      "one": "47",
+      "content": "id, connection; visuals.connectionById"
+    },
+    "43": {
+      "type": "loopend",
+      "one": "41"
+    },
+    "44": {
+      "type": "loopbegin",
+      "one": "46",
+      "content": "conbox; connection.boxes"
+    },
+    "45": {
+      "type": "action",
+      "one": "43",
+      "content": "nextBox(\n    box,\n    conbox.left,\n    conbox.top,\n    right,\n    bottom\n)"
+    },
+    "46": {
+      "type": "action",
+      "one": "45",
+      "content": "right = conbox.left + conbox.width\nbottom = conbox.top + conbox.height"
+    },
+    "47": {
+      "type": "action",
+      "one": "44",
+      "content": "buildConnectionBoxes(visuals, connection)"
+    },
+    "48": {
+      "type": "action",
+      "one": "19",
+      "content": "padding = metre"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals",
+  "type": "drakon"
+}

@@ -1,0 +1,270 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Analyze"
+    },
+    "3": {
+      "type": "action",
+      "one": "11",
+      "content": "stack = []"
+    },
+    "4": {
+      "branchId": 8,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 2,
+      "one": "12",
+      "type": "branch",
+      "content": "Process node"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "21",
+      "type": "branch",
+      "content": "Simple case"
+    },
+    "7": {
+      "branchId": 4,
+      "one": "22",
+      "type": "branch",
+      "content": "Join"
+    },
+    "8": {
+      "branchId": 5,
+      "one": "32",
+      "type": "branch",
+      "content": "Down to arrow"
+    },
+    "9": {
+      "branchId": 6,
+      "one": "37",
+      "type": "branch",
+      "content": "Right to arrow"
+    },
+    "10": {
+      "branchId": 7,
+      "one": "42",
+      "type": "branch",
+      "content": "Next nodes"
+    },
+    "11": {
+      "type": "action",
+      "one": "5",
+      "content": "planNextSteps(visuals, stack, startNode)"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "13",
+      "content": "stack.length === 0"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "step = stack.pop()\nnode1 = step.node1\nnode2 = step.node2"
+    },
+    "14": {
+      "flag1": 0,
+      "type": "question",
+      "two": "20",
+      "one": "15",
+      "content": "step.back"
+    },
+    "15": {
+      "flag1": 1,
+      "type": "question",
+      "one": "17",
+      "two": "16",
+      "content": "step.down"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "node1 = turnDown(visuals, node1, node2)"
+    },
+    "17": {
+      "flag1": 1,
+      "type": "question",
+      "two": "18",
+      "one": "6",
+      "content": "node2.prev.length === 1"
+    },
+    "18": {
+      "flag1": 0,
+      "type": "question",
+      "one": "6",
+      "two": "19",
+      "content": "node2.up"
+    },
+    "19": {
+      "type": "action",
+      "one": "7",
+      "content": "mountUp = node2.mountUp\nmountRight = node2.mountRight"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "two": "9",
+      "one": "8",
+      "content": "step.down"
+    },
+    "21": {
+      "type": "action",
+      "one": "10",
+      "content": "makeDownEdge(\n    visuals,\n    node1,\n    node2,\n    node2\n)"
+    },
+    "22": {
+      "flag1": 1,
+      "type": "question",
+      "two": "27",
+      "one": "45",
+      "content": "mountUp"
+    },
+    "23": {
+      "type": "action",
+      "one": "24",
+      "content": "makeDownEdge(\n    visuals,\n    node1,\n    mountUp,\n    node2\n)"
+    },
+    "24": {
+      "flag1": 1,
+      "type": "question",
+      "one": "25",
+      "two": "5",
+      "content": "mountUp === node2.mountUp"
+    },
+    "25": {
+      "type": "action",
+      "one": "5",
+      "content": "node2.mountUp = null"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "two": "31",
+      "one": "29",
+      "content": "mountRight"
+    },
+    "27": {
+      "type": "action",
+      "one": "28",
+      "content": "jun2 = createLeftUp(\n    visuals,\n    node2,\n    node2\n)"
+    },
+    "28": {
+      "type": "action",
+      "one": "26",
+      "content": "makeDownEdge(visuals, node1, jun2, node2)"
+    },
+    "29": {
+      "type": "action",
+      "one": "5",
+      "content": "makeLeftEdge(\n    visuals,\n    mountRight,\n    jun2,\n    node2\n)"
+    },
+    "30": {
+      "type": "action",
+      "one": "5",
+      "content": "makeLeftEdge(visuals, jun3, jun2, node2)"
+    },
+    "31": {
+      "type": "action",
+      "one": "30",
+      "content": "jun3 = splitVertical(visuals, node2)"
+    },
+    "32": {
+      "flag1": 0,
+      "type": "question",
+      "two": "34",
+      "one": "33",
+      "content": "node2.rightEdge"
+    },
+    "33": {
+      "type": "action",
+      "one": "5",
+      "content": "turn180up(visuals, node1, node2)"
+    },
+    "34": {
+      "type": "action",
+      "one": "35",
+      "content": "jun2 = splitRight(\n    visuals,\n    node2.rightEdge\n)"
+    },
+    "35": {
+      "type": "action",
+      "one": "5",
+      "content": "makeDownEdge(visuals, node1, jun2, node2)"
+    },
+    "36": {
+      "flag1": 0,
+      "type": "question",
+      "two": "41",
+      "one": "39",
+      "content": "node2.upEdge"
+    },
+    "37": {
+      "type": "action",
+      "one": "36",
+      "content": "top = getRight(node2)"
+    },
+    "38": {
+      "type": "action",
+      "one": "5",
+      "content": "node2.rightEdge = makeRightEdge(\n    visuals,\n    node1,\n    bottom,\n    node2\n)"
+    },
+    "39": {
+      "type": "action",
+      "one": "40",
+      "content": "bottom = createJunction(visuals, node2)"
+    },
+    "40": {
+      "type": "action",
+      "one": "38",
+      "content": "makeUpEdge(visuals, top, bottom, node2)"
+    },
+    "41": {
+      "type": "action",
+      "one": "38",
+      "content": "bottom = splitVerticalUp(\n    visuals,\n    node2.upEdge\n)"
+    },
+    "42": {
+      "type": "action",
+      "one": "5",
+      "content": "planNextSteps(visuals, stack, node2)"
+    },
+    "43": {
+      "flag1": 0,
+      "type": "question",
+      "one": "23",
+      "two": "44",
+      "content": "isUglyMountUp(node1, node2)"
+    },
+    "44": {
+      "type": "action",
+      "one": "27",
+      "content": "node2.mountUp = null"
+    },
+    "45": {
+      "flag1": 1,
+      "type": "question",
+      "two": "27",
+      "one": "43",
+      "content": "parallelCompatible(node1, mountUp)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nstartNode",
+  "type": "drakon"
+}

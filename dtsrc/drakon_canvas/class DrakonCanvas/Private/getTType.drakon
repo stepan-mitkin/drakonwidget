@@ -1,0 +1,50 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return node.treeType"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "3",
+      "content": "node.treeType"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return \"treeview\""
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "7",
+      "one": "5",
+      "content": "node.type === \"header\""
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return \"vertical\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node",
+  "type": "drakon"
+}

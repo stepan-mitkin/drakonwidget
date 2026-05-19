@@ -1,0 +1,170 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "63",
+      "type": "branch",
+      "content": "Element"
+    },
+    "13": {
+      "branchId": 5,
+      "one": "29",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "22": {
+      "branchId": 2,
+      "one": "60",
+      "type": "branch",
+      "content": "Children"
+    },
+    "29": {
+      "type": "action",
+      "one": "1",
+      "content": "return element"
+    },
+    "31": {
+      "type": "loopend",
+      "one": "48"
+    },
+    "32": {
+      "type": "loopbegin",
+      "one": "55",
+      "content": "arg; args"
+    },
+    "40": {
+      "type": "action",
+      "one": "64",
+      "content": "element = document.createElement(tagName)"
+    },
+    "41": {
+      "type": "loopend",
+      "one": "22"
+    },
+    "42": {
+      "type": "loopbegin",
+      "one": "43",
+      "content": "key, value; properties"
+    },
+    "43": {
+      "type": "action",
+      "one": "41",
+      "content": "element.setAttribute(key, value)"
+    },
+    "48": {
+      "branchId": 3,
+      "one": "50",
+      "type": "branch",
+      "content": "Style"
+    },
+    "49": {
+      "type": "loopend",
+      "one": "52"
+    },
+    "50": {
+      "type": "loopbegin",
+      "one": "61",
+      "content": "key, value; style"
+    },
+    "51": {
+      "type": "action",
+      "one": "49",
+      "content": "element.style.setProperty(key, value)"
+    },
+    "52": {
+      "branchId": 4,
+      "one": "53",
+      "type": "branch",
+      "content": "Class"
+    },
+    "53": {
+      "flag1": 1,
+      "type": "question",
+      "one": "54",
+      "two": "13",
+      "content": "className"
+    },
+    "54": {
+      "type": "action",
+      "one": "13",
+      "content": "element.className = className"
+    },
+    "55": {
+      "flag1": 1,
+      "type": "question",
+      "two": "57",
+      "one": "56",
+      "content": " typeof arg === \"string\""
+    },
+    "56": {
+      "type": "action",
+      "one": "31",
+      "content": "className = arg"
+    },
+    "57": {
+      "flag1": 1,
+      "type": "question",
+      "two": "59",
+      "one": "58",
+      "content": "arg.tagName"
+    },
+    "58": {
+      "type": "action",
+      "one": "31",
+      "content": "add(element, arg)"
+    },
+    "59": {
+      "type": "action",
+      "one": "31",
+      "content": "style = arg"
+    },
+    "60": {
+      "type": "action",
+      "one": "32",
+      "content": "className = \"\"\nstyle = {}"
+    },
+    "61": {
+      "flag1": 0,
+      "type": "question",
+      "two": "62",
+      "one": "65",
+      "content": "key === \"text\""
+    },
+    "62": {
+      "type": "action",
+      "one": "49",
+      "content": "addText(element, value)"
+    },
+    "63": {
+      "type": "action",
+      "one": "40",
+      "content": "args = args || []"
+    },
+    "64": {
+      "flag1": 1,
+      "type": "question",
+      "one": "42",
+      "two": "22",
+      "content": "properties"
+    },
+    "65": {
+      "flag1": 0,
+      "type": "question",
+      "two": "49",
+      "one": "51",
+      "content": "key === \"tid\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "type": "drakon",
+  "params": "tagName\nproperties\nargs"
+}

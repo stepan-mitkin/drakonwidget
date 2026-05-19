@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return Math.round(\n    width * obj.height / obj.width\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "obj = image.imageObj"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "image\nwidth",
+  "type": "drakon"
+}

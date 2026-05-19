@@ -1,0 +1,187 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 1,
+            "one": "7",
+            "type": "branch",
+            "content": "Calculate move"
+        },
+        "3": {
+            "type": "action",
+            "one": "16",
+            "content": "dx = snapUp(config, dxDia)\ndy = snapUp(config, dyDia)"
+        },
+        "7": {
+            "type": "action",
+            "one": "9",
+            "content": "config = self.widget.config\nvisuals = self.widget.visuals"
+        },
+        "8": {
+            "type": "action",
+            "one": "3",
+            "content": "dxDia = (evt.clientX - self.startX) / zoom\ndyDia = (evt.clientY - self.startY) / zoom"
+        },
+        "9": {
+            "type": "action",
+            "one": "8",
+            "content": "zoom = self.widget.zoomFactor"
+        },
+        "16": {
+            "flag1": 0,
+            "type": "question",
+            "two": "17",
+            "one": "18",
+            "content": "dx === self.dx"
+        },
+        "17": {
+            "flag1": 0,
+            "type": "question",
+            "two": "28",
+            "one": "18",
+            "content": "dy === self.dy"
+        },
+        "18": {
+            "type": "action",
+            "one": "29",
+            "content": "self.dx = dx\nself.dy = dy"
+        },
+        "28": {
+            "branchId": 6,
+            "one": "1",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "29": {
+            "branchId": 2,
+            "one": "34",
+            "type": "branch",
+            "content": "Move elements"
+        },
+        "30": {
+            "branchId": 3,
+            "one": "39",
+            "type": "branch",
+            "content": "Find horizontal guides"
+        },
+        "31": {
+            "branchId": 5,
+            "one": "32",
+            "type": "branch",
+            "content": "Paint"
+        },
+        "32": {
+            "type": "action",
+            "one": "28",
+            "content": "paintLater(self.widget)"
+        },
+        "33": {
+            "one": "30",
+            "type": "loopend",
+            "two": ""
+        },
+        "34": {
+            "one": "35",
+            "type": "loopbegin",
+            "two": "",
+            "content": "coord; self.coords"
+        },
+        "35": {
+            "one": "37",
+            "type": "action",
+            "two": "",
+            "content": "x = coord.elementX + dx\ny = coord.elementY + dy"
+        },
+        "36": {
+            "one": "33",
+            "type": "action",
+            "two": "",
+            "content": "coord.element.left = x\ncoord.element.top = y"
+        },
+        "37": {
+            "flag1": 0,
+            "type": "question",
+            "two": "38",
+            "one": "36",
+            "content": "coord.xy"
+        },
+        "38": {
+            "one": "33",
+            "type": "action",
+            "two": "",
+            "content": "coord.element.x = x\ncoord.element.y = y"
+        },
+        "39": {
+            "flag1": 1,
+            "type": "question",
+            "two": "31",
+            "one": "40",
+            "content": "self.coords.length === 1"
+        },
+        "40": {
+            "type": "action",
+            "one": "41",
+            "content": "element = self.coords[0].element"
+        },
+        "41": {
+            "flag1": 1,
+            "type": "question",
+            "one": "50",
+            "two": "31",
+            "content": "canGuideNode(self.widget, element)"
+        },
+        "42": {
+            "type": "action",
+            "one": "43",
+            "content": "findHorizontalGuide(\n    self.widget,\n    element.id,\n    ebox,\n    ebox.top\n)"
+        },
+        "43": {
+            "type": "action",
+            "one": "44",
+            "content": "findHorizontalCentralGuide(\n    self.widget,\n    element.id,\n    ebox,\n    ebox.centerY\n)"
+        },
+        "44": {
+            "type": "action",
+            "one": "45",
+            "content": "findHorizontalGuide(\n    self.widget,\n    element.id,\n    ebox,\n    ebox.bottom\n)"
+        },
+        "45": {
+            "branchId": 4,
+            "one": "46",
+            "type": "branch",
+            "content": "Find vertical guides"
+        },
+        "46": {
+            "type": "action",
+            "one": "47",
+            "content": "findVerticalGuide(\n    self.widget,\n    element.id,\n    ebox,\n    ebox.left\n)"
+        },
+        "47": {
+            "type": "action",
+            "one": "48",
+            "content": "findVerticalCentralGuide(\n    self.widget,\n    element.id,\n    ebox,\n    ebox.centerX\n)"
+        },
+        "48": {
+            "type": "action",
+            "one": "31",
+            "content": "findVerticalGuide(\n    self.widget,\n    element.id,\n    ebox,\n    ebox.right\n)"
+        },
+        "50": {
+            "one": "42",
+            "type": "action",
+            "two": "",
+            "content": "ebox = getSourceGuideBox(element)"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "evt",
+    "type": "drakon"
+}

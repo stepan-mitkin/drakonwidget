@@ -1,0 +1,122 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "6",
+      "type": "branch",
+      "content": "Branch1"
+    },
+    "6": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "left = node.x - node.w\ntop = node.y - node.h\nmiddle = top + h2"
+    },
+    "9": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "thickness = getThemeValue(\n    visuals.config,\n    node,\n    \"borderWidth\"\n) || 1"
+    },
+    "10": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "ctx.strokeStyle = getThemeValue(\n    visuals.config,\n    node,\n    \"internalLine\"\n)"
+    },
+    "12": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "14": {
+      "branchId": 1,
+      "one": "28",
+      "type": "branch",
+      "content": "Icon background"
+    },
+    "16": {
+      "one": "30",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fill()"
+    },
+    "17": {
+      "one": "2",
+      "type": "action",
+      "two": "",
+      "content": "ctx.stroke()"
+    },
+    "18": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "buildProcessPath(\n    ctx,\n    node.x + 0.5,\n    node.y + 0.5,\n    node.w,\n    node.h,\n    padding,\n    h2\n)"
+    },
+    "19": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "buildProcessPath(\n    ctx,\n    node.x,\n    node.y,\n    node.w,\n    node.h,\n    padding,\n    h2\n)"
+    },
+    "20": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "padding = visuals.config.metre / 2"
+    },
+    "21": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "line = setFillStroke(visuals, node, ctx)"
+    },
+    "23": {
+      "flag1": 1,
+      "type": "question",
+      "one": "18",
+      "two": "2",
+      "content": "line"
+    },
+    "25": {
+      "type": "action",
+      "one": "29",
+      "content": "ctx.beginPath()\nctx.moveTo(x1, y1)\nctx.lineTo(x2, y1)\nctx.lineTo(x2, y2)\nctx.stroke()"
+    },
+    "26": {
+      "type": "action",
+      "one": "25",
+      "content": "x0 = node.x - node.w + 0.5\nx1 = x0 + padding\nx3 = node.x + node.w + 0.5\nx2 = x3 - padding\ny0 = node.y - node.h + 0.5\ny1 = y0 + h2\ny2 = y0 + h2 + padding / 2"
+    },
+    "28": {
+      "type": "action",
+      "one": "21",
+      "content": "h2 = getSecondaryHeightCore(\n    visuals,\n    node\n)"
+    },
+    "29": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "centerContentTop(visuals, node)"
+    },
+    "30": {
+      "one": "23",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

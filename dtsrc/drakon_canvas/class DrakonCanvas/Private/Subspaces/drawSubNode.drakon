@@ -1,0 +1,36 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.fillRect(\n    node.x - size / 2,\n    node.y - size / 2,\n    size,\n    size\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "ctx.fillStyle = color"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "size = 20"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node\nctx\ncolor",
+  "type": "drakon"
+}

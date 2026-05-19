@@ -1,0 +1,57 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "applyEdit(self.diagram, edit)"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "action = {op: \"update\", fields: {}}"
+    },
+    "5": {
+      "type": "loopend",
+      "one": "9"
+    },
+    "6": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "name, value; changedFields"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "8",
+      "content": "name === \"id\""
+    },
+    "8": {
+      "type": "action",
+      "one": "5",
+      "content": "action.fields[name] = value"
+    },
+    "9": {
+      "type": "action",
+      "one": "3",
+      "content": "edit = {changes: [action]}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "changedFields",
+  "type": "drakon"
+}

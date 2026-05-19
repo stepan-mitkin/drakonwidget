@@ -1,0 +1,78 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "16"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "box = ctx.measureText(watermark)"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "margin = 18 / zoom\nleft = width / zoom - box.width - margin"
+    },
+    "7": {
+      "type": "action",
+      "one": "9",
+      "content": "top = 18"
+    },
+    "9": {
+      "type": "action",
+      "one": "13",
+      "content": "ctx.fillText(watermark, left, top)"
+    },
+    "10": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "ctx.font = \"16px Arial\""
+    },
+    "11": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = getWatermarkColor(\n    widget,\n    ctx\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "15",
+      "content": "ctx.save()"
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.restore()"
+    },
+    "14": {
+      "type": "action",
+      "one": "11",
+      "content": "ctx.scale(zm, zm)"
+    },
+    "15": {
+      "type": "action",
+      "one": "14",
+      "content": "ctx.resetTransform()"
+    },
+    "16": {
+      "type": "action",
+      "one": "12",
+      "content": "zm = zoom * factor"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nctx\nwatermark\nfactor\nzoom\nwidth\nheight",
+  "type": "drakon"
+}

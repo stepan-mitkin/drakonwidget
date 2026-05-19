@@ -1,0 +1,170 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "24",
+      "type": "branch"
+    },
+    "24": {
+      "type": "action",
+      "one": "66",
+      "content": "visuals = widget.visuals"
+    },
+    "66": {
+      "type": "action",
+      "one": "67",
+      "content": "scroll = hitScrollBar(visuals, pos)"
+    },
+    "67": {
+      "flag1": 1,
+      "type": "question",
+      "two": "82",
+      "one": "68",
+      "content": "scroll"
+    },
+    "68": {
+      "type": "action",
+      "one": "1",
+      "content": "return scroll"
+    },
+    "69": {
+      "one": "71",
+      "type": "action",
+      "two": "",
+      "content": "element = findFreeFront(widget, pos)"
+    },
+    "70": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return freeToVisualItemEx(\n    widget,\n    element\n)"
+    },
+    "71": {
+      "flag1": 1,
+      "type": "question",
+      "two": "73",
+      "one": "70",
+      "content": "element"
+    },
+    "72": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return nodeToVisualItem(widget, node)"
+    },
+    "73": {
+      "one": "74",
+      "type": "action",
+      "two": "",
+      "content": "node = findNode(visuals, pos)"
+    },
+    "74": {
+      "flag1": 1,
+      "type": "question",
+      "two": "75",
+      "one": "86",
+      "content": "node"
+    },
+    "75": {
+      "one": "76",
+      "type": "action",
+      "two": "",
+      "content": "edge = findEdge(visuals, pos)"
+    },
+    "76": {
+      "flag1": 1,
+      "type": "question",
+      "two": "89",
+      "one": "78",
+      "content": "edge"
+    },
+    "78": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return {\n    id: edge.id,\n    primId: edge.id,\n    type: edge.type,\n    role: edge.role,\n    elType: \"edge\"\n}"
+    },
+    "81": {
+      "flag1": 1,
+      "type": "question",
+      "two": "69",
+      "one": "85",
+      "content": "hitNugget(visuals, pos)"
+    },
+    "82": {
+      "one": "83",
+      "type": "action",
+      "two": "",
+      "content": "handle = findHandle(visuals, pos)"
+    },
+    "83": {
+      "flag1": 1,
+      "type": "question",
+      "one": "84",
+      "two": "81",
+      "content": "handle"
+    },
+    "84": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return handle"
+    },
+    "85": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return {\n    elType: \"nugget\"\n}"
+    },
+    "86": {
+      "flag1": 0,
+      "type": "question",
+      "one": "72",
+      "two": "87",
+      "content": "isDownStub(node)"
+    },
+    "87": {
+      "one": "78",
+      "type": "action",
+      "two": "",
+      "content": "edge = node.up"
+    },
+    "89": {
+      "one": "90",
+      "type": "action",
+      "two": "",
+      "content": "element = findFreeBack(widget, pos)"
+    },
+    "90": {
+      "flag1": 1,
+      "type": "question",
+      "one": "91",
+      "two": "92",
+      "content": "element"
+    },
+    "91": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return freeToVisualItemEx(\n    widget,\n    element\n)"
+    },
+    "92": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return undefined"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\npos",
+  "type": "drakon"
+}

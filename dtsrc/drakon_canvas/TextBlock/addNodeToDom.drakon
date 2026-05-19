@@ -1,0 +1,148 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "type": "action",
+      "one": "11",
+      "content": "name = getNodeName(node)"
+    },
+    "8": {
+      "one": "26",
+      "type": "case",
+      "two": "23",
+      "content": "\"em\""
+    },
+    "11": {
+      "type": "select",
+      "one": "15",
+      "content": "name"
+    },
+    "12": {
+      "one": "1",
+      "type": "case",
+      "two": "8",
+      "content": "\"script\""
+    },
+    "15": {
+      "one": "28",
+      "type": "case",
+      "two": "12",
+      "content": "\"#text\""
+    },
+    "16": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "appendTextNode(\n    parentElement,\n    node.nodeValue\n)"
+    },
+    "18": {
+      "type": "action",
+      "one": "22",
+      "content": "copy = document.createElement(name)"
+    },
+    "19": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "20": {
+      "type": "loopbegin",
+      "one": "21",
+      "content": "child; node.childNodes"
+    },
+    "21": {
+      "type": "action",
+      "one": "19",
+      "content": "addNodeToDom(\n    child,\n    copy,\n    bold,\n    italic,\n    formats,\n    findLinks\n)"
+    },
+    "22": {
+      "type": "action",
+      "one": "20",
+      "content": "parentElement.appendChild(copy)"
+    },
+    "23": {
+      "one": "27",
+      "type": "case",
+      "two": "24",
+      "content": "\"strong\""
+    },
+    "24": {
+      "type": "case",
+      "two": null,
+      "one": "18"
+    },
+    "26": {
+      "type": "action",
+      "one": "18",
+      "content": "italic = true"
+    },
+    "27": {
+      "type": "action",
+      "one": "18",
+      "content": "bold = true"
+    },
+    "28": {
+      "flag1": 1,
+      "type": "question",
+      "two": "36",
+      "one": "33",
+      "content": "bold"
+    },
+    "29": {
+      "type": "action",
+      "one": "39",
+      "content": "formats.both = true"
+    },
+    "33": {
+      "flag1": 1,
+      "type": "question",
+      "one": "29",
+      "two": "38",
+      "content": "italic"
+    },
+    "36": {
+      "flag1": 1,
+      "type": "question",
+      "one": "37",
+      "two": "39",
+      "content": "italic"
+    },
+    "37": {
+      "type": "action",
+      "one": "39",
+      "content": "formats.italic = true"
+    },
+    "38": {
+      "type": "action",
+      "one": "39",
+      "content": "formats.bold = true"
+    },
+    "39": {
+      "flag1": 0,
+      "type": "question",
+      "two": "40",
+      "one": "16",
+      "content": "findLinks"
+    },
+    "40": {
+      "type": "action",
+      "one": "1",
+      "content": "addTextWithLinksToDom(\n    parentElement,\n    node.nodeValue\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "node\nparentElement\nbold\nitalic\nformats\nfindLinks",
+  "type": "drakon"
+}

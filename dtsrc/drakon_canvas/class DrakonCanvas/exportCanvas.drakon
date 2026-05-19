@@ -1,0 +1,69 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "24"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return canvas"
+    },
+    "4": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "width = (box.right - box.left) * zoom\nheight = (box.bottom - box.top) * zoom"
+    },
+    "6": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "visuals = self.visuals\nconfig = visuals.config"
+    },
+    "8": {
+      "one": "28",
+      "type": "action",
+      "two": "",
+      "content": "ctx = canvas.getContext(\"2d\")"
+    },
+    "19": {
+      "type": "action",
+      "one": "8",
+      "content": "canvas = html.createElement(\n    \"canvas\",\n    {width: width, height: height}\n)"
+    },
+    "23": {
+      "type": "action",
+      "one": "6",
+      "content": "zoom = zoom100 / 10000"
+    },
+    "24": {
+      "type": "action",
+      "one": "23",
+      "content": "tracing.trace(\n    \"DrakonCanvas.exportCanvas\",\n    zoom100\n)"
+    },
+    "25": {
+      "type": "action",
+      "one": "4",
+      "content": "box = calculateDiagramBox(visuals, false)"
+    },
+    "28": {
+      "type": "action",
+      "one": "3",
+      "content": "exportCore(\n    self,\n    box,\n    zoom,\n    ctx,\n    watermark\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "zoom100\nwatermark",
+  "type": "drakon"
+}

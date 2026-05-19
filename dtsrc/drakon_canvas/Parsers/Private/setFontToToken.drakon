@@ -1,0 +1,98 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "17"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "font2 = {}\nObject.assign(font2, fontObj)"
+    },
+    "4": {
+      "type": "case",
+      "one": "11"
+    },
+    "5": {
+      "one": "8",
+      "type": "case",
+      "two": "13",
+      "content": "\"em\""
+    },
+    "6": {
+      "one": "3",
+      "type": "case",
+      "two": "5",
+      "content": "\"strong\""
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "token.type"
+    },
+    "8": {
+      "type": "action",
+      "one": "10",
+      "content": "font2 = {}\nObject.assign(font2, fontObj)"
+    },
+    "9": {
+      "type": "action",
+      "one": "12",
+      "content": "font2.weight = \"bold\""
+    },
+    "10": {
+      "type": "action",
+      "one": "12",
+      "content": "font2.style = \"italic\""
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "token.font = font"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "token.font = cssFontToString(font2)"
+    },
+    "13": {
+      "one": "14",
+      "type": "case",
+      "two": "4",
+      "content": "\"sem\""
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "font2 = {}\nObject.assign(font2, fontObj)"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "font2.style = \"italic\""
+    },
+    "16": {
+      "type": "action",
+      "one": "12",
+      "content": "font2.weight = \"bold\""
+    },
+    "17": {
+      "type": "action",
+      "one": "7",
+      "content": "font = fontObj.font"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "token\nfontObj",
+  "type": "drakon"
+}

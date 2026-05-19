@@ -1,0 +1,101 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "4",
+      "type": "branch",
+      "content": "Line"
+    },
+    "3": {
+      "type": "action",
+      "one": "8",
+      "content": "multilineSharp(ctx, coords, color, width)"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "5",
+      "one": "3",
+      "content": "coords.length === 2"
+    },
+    "5": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "radius = config.lineRadius || 0"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "3",
+      "two": "16",
+      "content": "radius"
+    },
+    "7": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "8": {
+      "branchId": 2,
+      "one": "11",
+      "type": "branch",
+      "content": "Tail"
+    },
+    "9": {
+      "type": "action",
+      "one": "8",
+      "content": "multilineRounded(\n    ctx,\n    coords,\n    color,\n    width,\n    radius\n)"
+    },
+    "10": {
+      "branchId": 3,
+      "one": "12",
+      "type": "branch",
+      "content": "Head"
+    },
+    "11": {
+      "type": "action",
+      "one": "10",
+      "content": "drawTail(\n    ctx,\n    coords,\n    tail,\n    color,\n    iconBack,\n    width\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "7",
+      "content": "drawHead(\n    ctx,\n    coords,\n    head,\n    color,\n    iconBack,\n    width\n)"
+    },
+    "13": {
+      "type": "loopend",
+      "one": "9"
+    },
+    "14": {
+      "type": "loopbegin",
+      "one": "15",
+      "content": "point; coords"
+    },
+    "15": {
+      "type": "action",
+      "one": "13",
+      "content": "point.x += 0.5\npoint.y += 0.5"
+    },
+    "16": {
+      "flag1": 0,
+      "type": "question",
+      "one": "14",
+      "two": "9",
+      "content": "width % 2 === 0"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "config\nctx\ncoords\ncolor\nwidth\ntail\nhead\niconBack",
+  "type": "drakon"
+}

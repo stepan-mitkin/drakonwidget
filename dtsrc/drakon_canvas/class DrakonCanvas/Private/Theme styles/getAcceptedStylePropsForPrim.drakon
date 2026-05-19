@@ -1,0 +1,85 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "12"
+    },
+    "3": {
+      "type": "action",
+      "one": "14",
+      "content": "accepted = getStandardDrakonProps()"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "one": "16",
+      "two": "8",
+      "content": "isFree(widget, prim)"
+    },
+    "8": {
+      "type": "action",
+      "one": "14",
+      "content": "accepted = getFreeAccepted(widget, prim)"
+    },
+    "12": {
+      "type": "action",
+      "one": "18",
+      "content": "incrementDictionaryValue(common, \"count\")"
+    },
+    "13": {
+      "one": "1",
+      "type": "loopend",
+      "two": ""
+    },
+    "14": {
+      "one": "15",
+      "type": "loopbegin",
+      "two": "",
+      "content": "prop; accepted"
+    },
+    "15": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "incrementDictionaryValue(common, prop)"
+    },
+    "16": {
+      "flag1": 1,
+      "type": "question",
+      "two": "3",
+      "one": "17",
+      "content": "canEditSecondary(prim)"
+    },
+    "17": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "incrementDictionaryValue(\n    common,\n    \"internalLine\"\n)"
+    },
+    "18": {
+      "flag1": 0,
+      "type": "question",
+      "two": "19",
+      "one": "4",
+      "content": "prim.type === \"connection\""
+    },
+    "19": {
+      "type": "action",
+      "one": "14",
+      "content": "accepted = getConnectionProps()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nprim\ncommon",
+  "type": "drakon"
+}

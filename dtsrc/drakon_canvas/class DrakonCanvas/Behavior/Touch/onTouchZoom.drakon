@@ -1,0 +1,67 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "12"
+    },
+    "3": {
+      "type": "action",
+      "one": "11",
+      "content": "zoom = Math.round(\n    dist / zoomer.startDist * zoomer.startZoom\n)"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "widget.setZoom(zoom)"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "widget.visuals.config.onZoomChanged(zoom)"
+    },
+    "8": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "dist = Math.sqrt(kx * kx + ky * ky)"
+    },
+    "9": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "kx = startX2 - startX1\nky = startY2 - startY1"
+    },
+    "10": {
+      "type": "action",
+      "one": "9",
+      "content": "startX1 = evt.touches[0].clientX\nstartY1 = evt.touches[0].clientY\nstartX2 = evt.touches[1].clientX\nstartY2 = evt.touches[1].clientY"
+    },
+    "11": {
+      "type": "action",
+      "one": "4",
+      "content": "widget.visuals.mouseX = zoomer.cx\nwidget.visuals.mouseY = zoomer.cy"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "10",
+      "two": "1",
+      "content": "evt.touches.length < 2"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "zoomer\nwidget\nevt",
+  "type": "drakon"
+}

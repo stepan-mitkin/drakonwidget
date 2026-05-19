@@ -1,0 +1,113 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "nodes = getNodesFromSelection(widget)"
+    },
+    "4": {
+      "type": "case",
+      "one": "18"
+    },
+    "5": {
+      "one": "16",
+      "type": "case",
+      "two": "4",
+      "content": "1"
+    },
+    "6": {
+      "one": "15",
+      "type": "case",
+      "two": "5",
+      "content": "0"
+    },
+    "7": {
+      "type": "select",
+      "one": "6",
+      "content": "nodes.length"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyOneItem(widget, nodes[0])"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyManyItems(widget, nodes)"
+    },
+    "12": {
+      "flag1": 0,
+      "type": "question",
+      "one": "14",
+      "two": "13",
+      "content": "elements.length === 0"
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    },
+    "14": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyFree(widget, elements)"
+    },
+    "15": {
+      "type": "action",
+      "one": "12",
+      "content": "elements = getSelectedFree(widget)"
+    },
+    "16": {
+      "flag1": 0,
+      "type": "question",
+      "one": "9",
+      "two": "20",
+      "content": "isMind(widget)"
+    },
+    "17": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyMind(widget, all)"
+    },
+    "18": {
+      "flag1": 0,
+      "type": "question",
+      "two": "19",
+      "one": "10",
+      "content": "isMind(widget)"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return copyMind(widget, nodes)"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "all = []"
+    },
+    "21": {
+      "type": "action",
+      "one": "17",
+      "content": "getMindSubtree(nodes[0], all)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

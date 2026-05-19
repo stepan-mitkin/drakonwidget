@@ -1,0 +1,136 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Go up"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "upper = lower"
+    },
+    "4": {
+      "branchId": 5,
+      "one": "23",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 4,
+      "one": "20",
+      "type": "branch",
+      "content": "Select"
+    },
+    "6": {
+      "branchId": 2,
+      "one": "11",
+      "type": "branch",
+      "content": "Mark inner side"
+    },
+    "7": {
+      "branchId": 3,
+      "one": "16",
+      "type": "branch",
+      "content": "Question"
+    },
+    "8": {
+      "flag1": 1,
+      "type": "question",
+      "one": "6",
+      "two": "9",
+      "content": "hasLeft(upper)"
+    },
+    "9": {
+      "type": "arrow-loop",
+      "one": "10"
+    },
+    "10": {
+      "type": "action",
+      "one": "8",
+      "content": "upper = getUp(upper)"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "n2 = getDown(upper)"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "crawler2 = createInner(\n    crawler.visuals,\n    crawler.sub\n)"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "two": "15",
+      "one": "14",
+      "content": "n2.type === \"case\""
+    },
+    "14": {
+      "type": "action",
+      "one": "7",
+      "content": "crawl(crawler2, upper.down)"
+    },
+    "15": {
+      "type": "action",
+      "one": "5",
+      "content": "crawl(crawler2, n2.down)"
+    },
+    "16": {
+      "flag1": 1,
+      "type": "question",
+      "one": "17",
+      "two": "18",
+      "content": "upper.up"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "upper.left.inner = crawler.sub"
+    },
+    "18": {
+      "type": "action",
+      "one": "19",
+      "content": "question = goLeft(upper)\nquestion.zoned = true"
+    },
+    "19": {
+      "type": "action",
+      "one": "4",
+      "content": "result = question.down"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "leftJun = getLeft(upper)\nleftCase = getDown(leftJun)"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "leftJun.zoned = true"
+    },
+    "22": {
+      "type": "action",
+      "one": "4",
+      "content": "result = leftCase.down"
+    },
+    "23": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "crawler\nlower",
+  "type": "drakon"
+}

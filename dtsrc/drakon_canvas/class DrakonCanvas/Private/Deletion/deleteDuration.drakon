@@ -1,0 +1,46 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "edits = []"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "6": {
+      "type": "action",
+      "one": "5",
+      "content": "deleteItem(widget, edits, node)"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "host = getRight(node)"
+    },
+    "8": {
+      "type": "action",
+      "one": "6",
+      "content": "updateItem(edits, host.id, {side: \"\"})"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

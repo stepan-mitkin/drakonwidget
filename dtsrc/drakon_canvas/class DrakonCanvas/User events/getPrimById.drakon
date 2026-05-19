@@ -1,0 +1,76 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "node = getNode(visuals, id)"
+    },
+    "5": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "one": "7",
+      "two": "8",
+      "content": "node"
+    },
+    "7": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "vitem = nodeToVisualItem(widget, node)"
+    },
+    "8": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "free = getFree(visuals, id)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "10",
+      "two": "12",
+      "content": "free"
+    },
+    "10": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "vitem = freeToVisualItem(widget, free)"
+    },
+    "11": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return vitem"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "return undefined"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nid",
+  "type": "drakon"
+}

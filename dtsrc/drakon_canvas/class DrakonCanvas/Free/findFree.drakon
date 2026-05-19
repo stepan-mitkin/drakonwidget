@@ -1,0 +1,43 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "17"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "found = findFreeFront(widget, pos)"
+    },
+    "18": {
+      "flag1": 1,
+      "type": "question",
+      "one": "19",
+      "two": "20",
+      "content": "found"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return found"
+    },
+    "20": {
+      "type": "action",
+      "one": "1",
+      "content": "return findFreeBack(widget, pos)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\npos",
+  "type": "drakon"
+}

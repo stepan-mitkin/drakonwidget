@@ -1,0 +1,98 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "16"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "r = w / 5\nborder = h / 4"
+    },
+    "4": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "5": {
+      "type": "action",
+      "one": "10",
+      "content": "roundedRect(\n    ctx,\n    element.left,\n    element.top,\n    element.width,\n    element.height,\n    r\n)"
+    },
+    "6": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = getThemeValue(\n    config,\n    element,\n    \"iconBorder\"\n)"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "setFillStroke(visuals, element, ctx)"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "6",
+      "two": "9",
+      "content": "visuals.highlight === element.id"
+    },
+    "9": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = config.theme.highlight"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "ctx.fill()"
+    },
+    "11": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "ctx.fillStyle = getThemeValue(\n    config,\n    element,\n    \"iconBack\"\n)"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "ctx.fillRect(\n    x - w + ctx.lineWidth,\n    y - h + border,\n    w * 2 - ctx.lineWidth * 2,\n    h * 2 - border * 2\n)"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "circlePath(\n    ctx,\n    x,\n    y - h + border / 2,\n    border / 4\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.fill()"
+    },
+    "16": {
+      "type": "action",
+      "one": "4",
+      "content": "config = visuals.config"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

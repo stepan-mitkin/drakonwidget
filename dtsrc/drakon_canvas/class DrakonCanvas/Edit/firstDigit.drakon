@@ -1,0 +1,69 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "3"
+        },
+        "3": {
+            "type": "action",
+            "one": "5",
+            "content": "last = text.length - 1"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "11"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "6",
+            "content": "i = last; i >= 0; i--"
+        },
+        "6": {
+            "type": "action",
+            "one": "7",
+            "content": "c = text.charCodeAt(i)"
+        },
+        "7": {
+            "flag1": 1,
+            "type": "question",
+            "two": "8",
+            "one": "4",
+            "content": "isDigit(c)"
+        },
+        "8": {
+            "flag1": 0,
+            "type": "question",
+            "two": "9",
+            "one": "10",
+            "content": "i === last"
+        },
+        "9": {
+            "type": "action",
+            "one": "4",
+            "content": "return -1"
+        },
+        "10": {
+            "type": "action",
+            "one": "4",
+            "content": "return i + 1"
+        },
+        "11": {
+            "type": "action",
+            "one": "1",
+            "content": "return 0"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "text",
+    "type": "drakon"
+}

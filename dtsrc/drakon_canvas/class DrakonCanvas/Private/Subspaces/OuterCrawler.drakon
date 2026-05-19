@@ -1,0 +1,427 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 2,
+            "one": "10",
+            "type": "branch",
+            "content": "down"
+        },
+        "4": {
+            "branchId": 8,
+            "one": "1",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "5": {
+            "branchId": 5,
+            "one": "47",
+            "type": "branch",
+            "content": "leftLoop"
+        },
+        "6": {
+            "branchId": 3,
+            "one": "40",
+            "type": "branch",
+            "content": "rightLoop"
+        },
+        "7": {
+            "branchId": 4,
+            "one": "42",
+            "type": "branch",
+            "content": "downLoop"
+        },
+        "8": {
+            "branchId": 6,
+            "one": "55",
+            "type": "branch",
+            "content": "right"
+        },
+        "9": {
+            "branchId": 7,
+            "one": "61",
+            "type": "branch",
+            "content": "left"
+        },
+        "10": {
+            "type": "sinput",
+            "one": "11",
+            "content": "onEdge(edge, output)"
+        },
+        "11": {
+            "type": "action",
+            "one": "12",
+            "content": "addArrowPad(sub, edge)"
+        },
+        "12": {
+            "type": "action",
+            "one": "69",
+            "content": "tail = edge.tail"
+        },
+        "13": {
+            "flag1": 0,
+            "type": "question",
+            "one": "14",
+            "two": "37",
+            "content": "tail.type === \"select\""
+        },
+        "14": {
+            "flag1": 0,
+            "type": "question",
+            "two": "29",
+            "one": "15",
+            "content": "tail.right"
+        },
+        "15": {
+            "flag1": 1,
+            "type": "question",
+            "one": "16",
+            "two": "21",
+            "content": "tail.down"
+        },
+        "16": {
+            "type": "action",
+            "one": "17",
+            "content": "addEdgeToSub(sub, edge)"
+        },
+        "17": {
+            "flag1": 0,
+            "type": "question",
+            "two": "19",
+            "one": "18",
+            "content": "tail.type === \"address\""
+        },
+        "18": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = tail.down"
+        },
+        "19": {
+            "type": "action",
+            "one": "20",
+            "content": "markFloor(me, tail)"
+        },
+        "20": {
+            "type": "action",
+            "one": "4",
+            "content": "output.next = undefined"
+        },
+        "21": {
+            "type": "action",
+            "one": "22",
+            "content": "addEdgeToSub(sub, edge)"
+        },
+        "22": {
+            "flag1": 1,
+            "type": "question",
+            "two": "25",
+            "one": "23",
+            "content": "hasLeft(tail)"
+        },
+        "23": {
+            "type": "action",
+            "one": "73",
+            "content": "addLowerCorner(sub, tail)"
+        },
+        "24": {
+            "type": "action",
+            "one": "9",
+            "content": "output.next = tail.left"
+        },
+        "25": {
+            "type": "action",
+            "one": "4",
+            "content": "output.next = undefined"
+        },
+        "26": {
+            "type": "case",
+            "one": "75"
+        },
+        "27": {
+            "one": "33",
+            "type": "case",
+            "two": "26",
+            "content": "\"question\""
+        },
+        "28": {
+            "one": "30",
+            "type": "case",
+            "two": "27",
+            "content": "\"arrow-loop\""
+        },
+        "29": {
+            "type": "select",
+            "one": "28",
+            "content": "tail.type"
+        },
+        "30": {
+            "type": "action",
+            "one": "31",
+            "content": "addEdgeToSub(sub, edge)"
+        },
+        "31": {
+            "type": "action",
+            "one": "32",
+            "content": "planSpace(me, tail)"
+        },
+        "32": {
+            "type": "action",
+            "one": "6",
+            "content": "output.next = tail.right"
+        },
+        "33": {
+            "type": "action",
+            "one": "34",
+            "content": "addEdgeToSub(sub, edge)"
+        },
+        "34": {
+            "type": "action",
+            "one": "35",
+            "content": "planSpace(me, tail)"
+        },
+        "35": {
+            "type": "action",
+            "one": "8",
+            "content": "output.next = tail.right"
+        },
+        "36": {
+            "type": "action",
+            "one": "4",
+            "content": "output.next = undefined"
+        },
+        "37": {
+            "type": "action",
+            "one": "38",
+            "content": "addEdgeToSub(sub, edge)"
+        },
+        "38": {
+            "type": "action",
+            "one": "39",
+            "content": "next = crawlSelect(visuals, tail)"
+        },
+        "39": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = next.down"
+        },
+        "40": {
+            "type": "sinput",
+            "one": "41",
+            "content": "onEdge(edge, output)"
+        },
+        "41": {
+            "type": "action",
+            "one": "7",
+            "content": "output.next = edge.tail.down"
+        },
+        "42": {
+            "type": "sinput",
+            "one": "43",
+            "content": "onEdge(edge, output)"
+        },
+        "43": {
+            "type": "action",
+            "one": "44",
+            "content": "tail = edge.tail"
+        },
+        "44": {
+            "flag1": 1,
+            "type": "question",
+            "one": "45",
+            "two": "46",
+            "content": "tail.down"
+        },
+        "45": {
+            "type": "action",
+            "one": "7",
+            "content": "output.next = tail.down"
+        },
+        "46": {
+            "type": "action",
+            "one": "5",
+            "content": "output.next = tail.left"
+        },
+        "47": {
+            "type": "sinput",
+            "one": "48",
+            "content": "onEdge(edge, output)"
+        },
+        "48": {
+            "type": "action",
+            "one": "49",
+            "content": "head = edge.head"
+        },
+        "49": {
+            "flag1": 1,
+            "type": "question",
+            "two": "51",
+            "one": "50",
+            "content": "hasLeft(head)"
+        },
+        "50": {
+            "type": "action",
+            "one": "5",
+            "content": "output.next = head.left"
+        },
+        "51": {
+            "flag1": 1,
+            "type": "question",
+            "one": "52",
+            "two": "54",
+            "content": "head.down"
+        },
+        "52": {
+            "type": "action",
+            "one": "53",
+            "content": "head.zoned = true\nedge.inner = sub"
+        },
+        "53": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = head.down"
+        },
+        "54": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = markInnerSide(me, head)"
+        },
+        "55": {
+            "type": "sinput",
+            "one": "56",
+            "content": "onEdge(edge, output)"
+        },
+        "56": {
+            "type": "action",
+            "one": "57",
+            "content": "tail = edge.tail"
+        },
+        "57": {
+            "flag1": 0,
+            "type": "question",
+            "one": "58",
+            "two": "60",
+            "content": "tail.up"
+        },
+        "58": {
+            "type": "action",
+            "one": "59",
+            "content": "addUpperCorner(sub, tail)"
+        },
+        "59": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = tail.down"
+        },
+        "60": {
+            "type": "action",
+            "one": "4",
+            "content": "output.next = undefined"
+        },
+        "61": {
+            "type": "sinput",
+            "one": "62",
+            "content": "onEdge(edge, output)"
+        },
+        "62": {
+            "type": "action",
+            "one": "63",
+            "content": "head = edge.head"
+        },
+        "63": {
+            "flag1": 1,
+            "type": "question",
+            "one": "64",
+            "two": "65",
+            "content": "head.down"
+        },
+        "64": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = head.down"
+        },
+        "65": {
+            "type": "action",
+            "one": "9",
+            "content": "output.next = head.left"
+        },
+        "66": {
+            "branchId": 1,
+            "one": "67",
+            "type": "branch",
+            "content": "Init"
+        },
+        "67": {
+            "type": "action",
+            "one": "68",
+            "content": "me.sub = sub\nme.visuals = visuals"
+        },
+        "68": {
+            "type": "action",
+            "one": "2",
+            "content": "me.side = \"outer\"\nme.plan = []"
+        },
+        "69": {
+            "flag1": 0,
+            "type": "question",
+            "two": "70",
+            "one": "13",
+            "content": "tail.subtype === \"parbegin\""
+        },
+        "70": {
+            "type": "action",
+            "one": "71",
+            "content": "addEdgeToSub(sub, edge)"
+        },
+        "71": {
+            "type": "action",
+            "one": "72",
+            "content": "next = crawlParallel(visuals, tail)"
+        },
+        "72": {
+            "type": "action",
+            "one": "2",
+            "content": "output.next = next.down"
+        },
+        "73": {
+            "type": "action",
+            "one": "74",
+            "content": "leftMost = goLeft(tail)"
+        },
+        "74": {
+            "flag1": 0,
+            "type": "question",
+            "two": "25",
+            "one": "24",
+            "content": "leftMost.subtype === \"parend\""
+        },
+        "75": {
+            "type": "action",
+            "one": "76",
+            "content": "leftMost = goLeft(tail)"
+        },
+        "76": {
+            "flag1": 0,
+            "type": "question",
+            "two": "77",
+            "one": "36",
+            "content": "leftMost.subtype === \"parend\""
+        },
+        "77": {
+            "type": "action",
+            "one": "36",
+            "content": "markParFloor(me, tail)"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "visuals\nsub",
+    "type": "drakon"
+}

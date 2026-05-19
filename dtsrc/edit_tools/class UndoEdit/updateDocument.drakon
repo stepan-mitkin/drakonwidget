@@ -1,0 +1,80 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "20",
+      "type": "branch"
+    },
+    "12": {
+      "type": "action",
+      "one": "24",
+      "content": "undoRecord = createEdit(self, changes)"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "initial = createInitialEdit(self.diagram)"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "one": "12",
+      "two": "18",
+      "content": "initial"
+    },
+    "17": {
+      "one": "22",
+      "type": "loopend",
+      "two": ""
+    },
+    "18": {
+      "one": "19",
+      "type": "loopbegin",
+      "two": "",
+      "content": "change; initial.changes"
+    },
+    "19": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "applyChange(self.diagram, change)"
+    },
+    "20": {
+      "type": "action",
+      "one": "14",
+      "content": "changesToSave = []"
+    },
+    "21": {
+      "type": "action",
+      "one": "1",
+      "content": "return changesToSave"
+    },
+    "22": {
+      "type": "action",
+      "one": "12",
+      "content": "changesToSave.push(initial)"
+    },
+    "23": {
+      "type": "action",
+      "one": "21",
+      "content": "changesToSave.push(undoRecord.redo)"
+    },
+    "24": {
+      "type": "action",
+      "one": "23",
+      "content": "undoRecord.before = before\nundoRecord.after = after"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "changes\nbefore\nafter",
+  "type": "drakon"
+}

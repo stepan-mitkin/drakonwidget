@@ -1,0 +1,79 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "8"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "14"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "id, node; widget.visuals.nodes"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "15",
+      "content": "filter(node)"
+    },
+    "8": {
+      "type": "action",
+      "one": "5",
+      "content": "best = undefined\ndistance = 10000000000"
+    },
+    "11": {
+      "flag1": 1,
+      "type": "question",
+      "one": "12",
+      "two": "4",
+      "content": "current < distance"
+    },
+    "12": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "best = node\ndistance = current"
+    },
+    "13": {
+      "type": "action",
+      "one": "11",
+      "content": "current = getDistance(\n    node,\n    srcNode,\n    vertical\n)"
+    },
+    "14": {
+      "type": "action",
+      "one": "1",
+      "content": "return best"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "16",
+      "content": "node.type === \"junction\""
+    },
+    "16": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "13",
+      "content": "node.type === \"arrow-loop\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nfilter\nsrcNode\nvertical",
+  "type": "drakon"
+}

@@ -1,0 +1,87 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "17"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "clipboard = getClipboardClone(self)"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "7",
+      "content": "clipboard"
+    },
+    "7": {
+      "type": "select",
+      "one": "8",
+      "content": "clipboard.type"
+    },
+    "8": {
+      "one": "12",
+      "type": "case",
+      "two": "9",
+      "content": "\"case\""
+    },
+    "9": {
+      "one": "12",
+      "type": "case",
+      "two": "10",
+      "content": "\"branch\""
+    },
+    "10": {
+      "one": "12",
+      "type": "case",
+      "two": "18",
+      "content": "\"block\""
+    },
+    "11": {
+      "type": "case",
+      "one": "1"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "self.showPasteSockets(clipboard.type)"
+    },
+    "13": {
+      "flag1": 0,
+      "type": "question",
+      "one": "5",
+      "two": "1",
+      "content": "isReadonlyImpl(self)"
+    },
+    "14": {
+      "one": "15",
+      "type": "case",
+      "two": "11",
+      "content": "\"free\""
+    },
+    "15": {
+      "type": "action",
+      "one": "1",
+      "content": "pasteFree(self, clipboard)"
+    },
+    "17": {
+      "type": "action",
+      "one": "13",
+      "content": "tracing.trace(\"DrakonCanvas.showPaste\")"
+    },
+    "18": {
+      "one": "12",
+      "type": "case",
+      "two": "14",
+      "content": "\"mind\""
+    }
+  },
+  "keywords": {},
+  "type": "drakon"
+}

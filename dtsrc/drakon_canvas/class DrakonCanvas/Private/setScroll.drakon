@@ -1,0 +1,46 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "7": {
+      "type": "action",
+      "one": "10",
+      "content": "widget.origins[widget.diagramId] = {\n    x: scroll.x,\n    y: scroll.y\n}"
+    },
+    "9": {
+      "type": "action",
+      "one": "11",
+      "content": "scroll = sanitizeScroll(widget, x, y)"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "return scroll"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "visuals = widget.visuals"
+    },
+    "12": {
+      "type": "action",
+      "one": "7",
+      "content": "visuals.scrollX = scroll.x\nvisuals.scrollY = scroll.y"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nx\ny",
+  "type": "drakon"
+}

@@ -1,0 +1,103 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "8",
+      "type": "branch",
+      "content": "Fill"
+    },
+    "4": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fill()"
+    },
+    "7": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "buildPath(\n    ctx,\n    left,\n    top,\n    width,\n    height,\n    aux\n)"
+    },
+    "8": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "line = setFillStroke(visuals, node, ctx)"
+    },
+    "10": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    },
+    "18": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "19": {
+      "branchId": 2,
+      "one": "21",
+      "type": "branch",
+      "content": "Border"
+    },
+    "20": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "ctx.stroke()"
+    },
+    "21": {
+      "flag1": 1,
+      "type": "question",
+      "one": "26",
+      "two": "18",
+      "content": "line"
+    },
+    "22": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "buildPath(ctx, x, y, width, height, aux)"
+    },
+    "23": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "x = left + 0.5\ny = top + 0.5"
+    },
+    "24": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "x = left\ny = top"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "one": "24",
+      "two": "27",
+      "content": "keepPos"
+    },
+    "27": {
+      "flag1": 0,
+      "type": "question",
+      "one": "24",
+      "two": "23",
+      "content": "mustShift(visuals.config, line)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nvisuals\nnode\nbuildPath\nleft\ntop\nwidth\nheight\naux\nkeepPos",
+  "type": "drakon"
+}

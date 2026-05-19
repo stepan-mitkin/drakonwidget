@@ -1,0 +1,66 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "widget.insertActions = {}"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "addSimpleInsert(widget, \"action\")\naddSimpleInsert(widget, \"insertion\")\naddSimpleInsert(widget, \"comment\")\naddSimpleInsert(widget, \"simpleinput\")\naddSimpleInsert(widget, \"simpleoutput\")\naddSimpleInsert(widget, \"timer\")\naddSimpleInsert(widget, \"pause\")\naddSimpleInsert(widget, \"ctrlstart\")\naddSimpleInsert(widget, \"ctrlend\")\naddSimpleInsert(widget, \"input\")\naddSimpleInsert(widget, \"output\")\naddSimpleInsert(widget, \"shelf\")\naddSimpleInsert(widget, \"process\")\naddSimpleInsert(widget, \"drakon-image\")"
+    },
+    "5": {
+      "type": "action",
+      "one": "8",
+      "content": "widget.insertActions.question = questionInsert"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "widget.insertActions.select = selectInsert\nwidget.insertActions[\"case\"] = caseInsert\nwidget.insertActions[\"first-case\"] = firstCaseInsert"
+    },
+    "7": {
+      "type": "action",
+      "one": "11",
+      "content": "widget.insertActions[\"foreach\"] = foreachInsert"
+    },
+    "8": {
+      "type": "action",
+      "one": "6",
+      "content": "widget.insertActions.branch = branchInsert"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "widget.insertActions[\"parblock\"] = parBlockInsert\nwidget.insertActions[\"par\"] = parInsert\nwidget.insertActions[\"firstpar\"] = firstParInsert"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "widget.insertActions.duration = durationInsert"
+    },
+    "11": {
+      "type": "action",
+      "one": "9",
+      "content": "widget.insertActions[\"mind-child\"] = mindChildInsert\nwidget.insertActions[\"mind-before\"] = mindBeforeInsert\nwidget.insertActions[\"mind-after\"] = mindAfterInsert"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

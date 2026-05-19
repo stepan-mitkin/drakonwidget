@@ -1,0 +1,56 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "3": {
+      "type": "action",
+      "one": "10",
+      "content": "config = widget.visuals.config"
+    },
+    "4": {
+      "type": "action",
+      "one": "11",
+      "content": "handle.widget = widget\nhandle.element = node\nhandle.side = \"right\"\nhandle.x = node.x + node.w\nhandle.y = y\nhandle.id = node.id"
+    },
+    "7": {
+      "type": "action",
+      "one": "3",
+      "content": "big = 500"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "createHandle(widget.visuals, handle, ctx)"
+    },
+    "10": {
+      "type": "action",
+      "one": "4",
+      "content": "handle = RightDrakonResizeHandle()"
+    },
+    "11": {
+      "type": "action",
+      "one": "13",
+      "content": "handle.minX = node.x + config.minWidth /\n2\nhandle.maxX = node.x + big"
+    },
+    "13": {
+      "type": "action",
+      "one": "9",
+      "content": "handle.primId = \"right-drakon-\" + node.id\n+ \"-\" + y"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode\ny\nctx",
+  "type": "drakon"
+}

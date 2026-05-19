@@ -1,0 +1,109 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "33",
+      "type": "branch",
+      "content": "Copy item data"
+    },
+    "7": {
+      "type": "action",
+      "one": "13",
+      "content": "copy = elements.map(\n    function (element) {\n        return copyItem(\n            widget,\n            element.id,\n            images\n        )\n    }\n)"
+    },
+    "12": {
+      "branchId": 4,
+      "one": "32",
+      "type": "branch",
+      "content": "Put to clipboard"
+    },
+    "13": {
+      "branchId": 2,
+      "one": "23",
+      "type": "branch",
+      "content": "Find connections"
+    },
+    "15": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return undefined"
+    },
+    "21": {
+      "one": "26",
+      "type": "loopend",
+      "two": ""
+    },
+    "22": {
+      "one": "25",
+      "type": "loopbegin",
+      "two": "",
+      "content": "element; elements"
+    },
+    "23": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "visited = {}"
+    },
+    "25": {
+      "type": "action",
+      "one": "21",
+      "content": "performOnConnections(\n    widget.visuals,\n    element.id,\n    visited,\n    function () {\n        return false\n    }\n)"
+    },
+    "26": {
+      "branchId": 3,
+      "one": "28",
+      "type": "branch",
+      "content": "Copy fully selected connections"
+    },
+    "27": {
+      "type": "loopend",
+      "one": "12"
+    },
+    "28": {
+      "type": "loopbegin",
+      "one": "29",
+      "content": "id, count; visited"
+    },
+    "29": {
+      "flag1": 1,
+      "type": "question",
+      "two": "27",
+      "one": "30",
+      "content": "count === 2"
+    },
+    "30": {
+      "type": "action",
+      "one": "27",
+      "content": "copy.push(copyItem(widget, id, images))"
+    },
+    "31": {
+      "type": "action",
+      "one": "7",
+      "content": "images = {}"
+    },
+    "32": {
+      "type": "action",
+      "one": "15",
+      "content": "copyItemsToClipboard(\n    widget,\n    undefined,\n    copy,\n    images,\n    \"free\"\n)"
+    },
+    "33": {
+      "type": "action",
+      "one": "31",
+      "content": "unit.pasteDX = 0\nunit.pasteDY = 0"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelements",
+  "type": "drakon"
+}

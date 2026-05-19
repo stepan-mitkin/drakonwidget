@@ -1,0 +1,44 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return item"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "item = {\n    type: self.type,\n    left: pos.x,\n    top: pos.y,\n    width: 200,\n    height: 50\n}"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "one": "3",
+      "two": "6",
+      "content": "self.props"
+    },
+    "6": {
+      "type": "action",
+      "one": "3",
+      "content": "Object.assign(item, self.props)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "pos",
+  "type": "drakon"
+}

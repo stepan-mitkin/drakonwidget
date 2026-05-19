@@ -1,0 +1,341 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "12",
+      "type": "branch",
+      "content": "Prepare"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "visuals = widget.visuals\nconfig = visuals.config"
+    },
+    "7": {
+      "type": "action",
+      "one": "34",
+      "content": "left = element.left\ntop = element.top\nright = element.width + left\nbottom = element.height + top"
+    },
+    "12": {
+      "type": "action",
+      "one": "6",
+      "content": "big = 4000"
+    },
+    "15": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "16": {
+      "branchId": 2,
+      "one": "18",
+      "type": "branch",
+      "content": "Left side"
+    },
+    "17": {
+      "one": "28",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, nw, ctx)"
+    },
+    "18": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "nw = HandleNW()"
+    },
+    "19": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "nw.x = left\nnw.y = top\nnw.minX = left - big\nnw.maxX = right - config.freeSnap\nnw.minY = top - big\nnw.maxY = bottom - config.freeSnap"
+    },
+    "20": {
+      "one": "62",
+      "type": "action",
+      "two": "",
+      "content": "nw.right = right\nnw.bottom = bottom"
+    },
+    "22": {
+      "type": "action",
+      "one": "19",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    nw\n)"
+    },
+    "23": {
+      "type": "action",
+      "one": "24",
+      "content": "sw = HandleSW()"
+    },
+    "24": {
+      "type": "action",
+      "one": "26",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    sw\n)"
+    },
+    "25": {
+      "one": "51",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, sw, ctx)"
+    },
+    "26": {
+      "one": "27",
+      "type": "action",
+      "two": "",
+      "content": "sw.x = left\nsw.y = bottom\nsw.minX = left - big\nsw.maxX = right - config.freeSnap\nsw.minY = top + config.freeSnap\nsw.maxY = bottom + big"
+    },
+    "27": {
+      "one": "64",
+      "type": "action",
+      "two": "",
+      "content": "sw.top = top\nsw.right = right"
+    },
+    "28": {
+      "type": "action",
+      "one": "29",
+      "content": "we = HandleWest()"
+    },
+    "29": {
+      "type": "action",
+      "one": "32",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    we\n)"
+    },
+    "31": {
+      "one": "23",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, we, ctx)"
+    },
+    "32": {
+      "one": "33",
+      "type": "action",
+      "two": "",
+      "content": "we.x = left\nwe.y = midY\nwe.minX = left - big\nwe.maxX = right - config.freeSnap"
+    },
+    "33": {
+      "one": "63",
+      "type": "action",
+      "two": "",
+      "content": "we.right = right"
+    },
+    "34": {
+      "type": "action",
+      "one": "16",
+      "content": "midX = left + element.width / 2\nmidY = top + element.height / 2"
+    },
+    "35": {
+      "branchId": 4,
+      "one": "37",
+      "type": "branch",
+      "content": "Right side"
+    },
+    "36": {
+      "one": "41",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, ne, ctx)"
+    },
+    "37": {
+      "one": "40",
+      "type": "action",
+      "two": "",
+      "content": "ne = HandleNE()"
+    },
+    "38": {
+      "one": "39",
+      "type": "action",
+      "two": "",
+      "content": "ne.x = right\nne.y = top\nne.minX = left + config.freeSnap\nne.maxX = right + big\nne.minY = top - big\nne.maxY = bottom - config.freeSnap"
+    },
+    "39": {
+      "one": "67",
+      "type": "action",
+      "two": "",
+      "content": "ne.left = left\nne.bottom = bottom"
+    },
+    "40": {
+      "one": "38",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    ne\n)"
+    },
+    "41": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "ea = HandleEast()"
+    },
+    "42": {
+      "one": "44",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    ea\n)"
+    },
+    "43": {
+      "one": "46",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, ea, ctx)"
+    },
+    "44": {
+      "one": "45",
+      "type": "action",
+      "two": "",
+      "content": "ea.x = right\nea.y = midY\nea.minX = left + config.freeSnap\nea.maxX = right + big"
+    },
+    "45": {
+      "one": "68",
+      "type": "action",
+      "two": "",
+      "content": "ea.left = left"
+    },
+    "46": {
+      "one": "47",
+      "type": "action",
+      "two": "",
+      "content": "se = HandleSE()"
+    },
+    "47": {
+      "one": "49",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    se\n)"
+    },
+    "48": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, se, ctx)"
+    },
+    "49": {
+      "one": "50",
+      "type": "action",
+      "two": "",
+      "content": "se.x = right\nse.y = bottom\nse.minX = left + config.freeSnap\nse.maxX = right + big\nse.minY = top + config.freeSnap\nse.maxY = bottom + big"
+    },
+    "50": {
+      "one": "69",
+      "type": "action",
+      "two": "",
+      "content": "se.top = top\nse.left = left"
+    },
+    "51": {
+      "branchId": 3,
+      "one": "52",
+      "type": "branch",
+      "content": "Middle"
+    },
+    "52": {
+      "one": "53",
+      "type": "action",
+      "two": "",
+      "content": "no = HandleNorth()"
+    },
+    "53": {
+      "one": "55",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    no\n)"
+    },
+    "54": {
+      "one": "57",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, no, ctx)"
+    },
+    "55": {
+      "one": "56",
+      "type": "action",
+      "two": "",
+      "content": "no.x = midX\nno.y = top\nno.minY = top - big\nno.maxY = bottom - config.freeSnap"
+    },
+    "56": {
+      "one": "65",
+      "type": "action",
+      "two": "",
+      "content": "no.bottom = bottom"
+    },
+    "57": {
+      "one": "58",
+      "type": "action",
+      "two": "",
+      "content": "so = HandleSouth()"
+    },
+    "58": {
+      "one": "60",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    so\n)"
+    },
+    "59": {
+      "one": "35",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, so, ctx)"
+    },
+    "60": {
+      "one": "61",
+      "type": "action",
+      "two": "",
+      "content": "so.x = midX\nso.y = bottom\nso.minY = top + config.freeSnap\nso.maxY = bottom + big"
+    },
+    "61": {
+      "one": "66",
+      "type": "action",
+      "two": "",
+      "content": "so.top = top"
+    },
+    "62": {
+      "type": "action",
+      "one": "17",
+      "content": "nw.primId = \"nw-\" + element.id"
+    },
+    "63": {
+      "type": "action",
+      "one": "31",
+      "content": "we.primId = \"we-\" + element.id"
+    },
+    "64": {
+      "type": "action",
+      "one": "25",
+      "content": "sw.primId = \"sw-\" + element.id"
+    },
+    "65": {
+      "type": "action",
+      "one": "54",
+      "content": "no.primId = \"no-\" + element.id"
+    },
+    "66": {
+      "type": "action",
+      "one": "59",
+      "content": "so.primId = \"so-\" + element.id"
+    },
+    "67": {
+      "type": "action",
+      "one": "36",
+      "content": "ne.primId = \"ne-\" + element.id"
+    },
+    "68": {
+      "type": "action",
+      "one": "43",
+      "content": "ea.primId = \"ea-\" + element.id"
+    },
+    "69": {
+      "type": "action",
+      "one": "48",
+      "content": "se.primId = \"se-\" + element.id"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\nctx",
+  "type": "drakon"
+}

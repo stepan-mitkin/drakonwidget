@@ -1,0 +1,80 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "32"
+    },
+    "21": {
+      "one": "24",
+      "type": "action",
+      "two": "",
+      "content": "line = ctx.lineWidth || 1"
+    },
+    "24": {
+      "one": "38",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    },
+    "28": {
+      "type": "action",
+      "one": "21",
+      "content": "renderFreeIconShape(\n    ctx,\n    visuals,\n    element,\n    buildRectCoords,\n    undefined\n)"
+    },
+    "32": {
+      "type": "action",
+      "one": "28",
+      "content": "config = visuals.config"
+    },
+    "35": {
+      "type": "action",
+      "one": "37",
+      "content": "xp = w * 0.6\nyp = h * 0.6\nx0 = x - w + xp\ny0 = y - h + yp\nx1 = x + w - xp\ny1 = y + h - yp"
+    },
+    "36": {
+      "type": "action",
+      "one": "35",
+      "content": "w = element.width / 2\nh = element.height / 2\nx = element.left + w\ny = element.top + h"
+    },
+    "37": {
+      "type": "action",
+      "one": "1",
+      "content": "line2(ctx, x0, y, x, y1, x1, y0)"
+    },
+    "38": {
+      "type": "action",
+      "one": "39",
+      "content": "lineWidth = getThemeValue(\n    config,\n    element,\n    \"borderWidth\"\n)"
+    },
+    "39": {
+      "flag1": 0,
+      "type": "question",
+      "two": "40",
+      "one": "41",
+      "content": "lineWidth === 0"
+    },
+    "40": {
+      "type": "action",
+      "one": "41",
+      "content": "lineWidth = 1"
+    },
+    "41": {
+      "type": "action",
+      "one": "36",
+      "content": "ctx.lineWidth = lineWidth"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

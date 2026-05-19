@@ -1,0 +1,72 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "5",
+      "type": "branch",
+      "content": "Properties"
+    },
+    "5": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "userConfig = userConfig || {}"
+    },
+    "10": {
+      "type": "action",
+      "one": "19",
+      "content": "config = {\n    \"font\": \"14px \" + face,\n    \"headerFont\": \"bold 18px \" + face,\n    \"branchFont\": \"bold 14px \" + face,\n    \"imagePath\": \"\",\n    \"metre\": 20,\n    \"lineRadius\": 0,\n    \"iconRadius\": 0,\n    \"freeSnap\": 5,\n    \"triangleHeight\": 20,\n    \"padding\": 10,\n    \"maxWidth\": 400,\n    \"lineHeight\": 1.3,\n    \"maxHeight\": 600,\n    \"minHeight\": 40,\n    \"minWidth\": 100,\n    \"touchRadius\": 5,\n    \"socketTouchRadius\": 15,\n    \"yes\": \"Yes\",\n    \"no\": \"No\",\n    \"end\": \"End\",\n    \"exit\": \"Exit\",\n    \"branch\": \"Branch\",\n    \"canSelect\": true,\n    \"drawZones\": false,\n    \"socketRadius\": 10,\n    \"socketBody\": \"yellow\",\n    \"socketBorder\": \"black\",\n    \"canvasLabels\": \"14px \" + face,\n    \"insertionPadding\": 10,\n    \"commentPadding\": 10,\n    \"parallelWidth\": 5,\n    \"canvasIcons\": false,\n    \"textFormat\": \"plain\",\n    \"allowResize\": true,\n    \"showLog\": false,\n    \"buildIconCore\": buildIconCore,\n    \"getClipboard\": getClipboard,\n    \"setClipboard\": setClipboard,\n    \"hasPopup\": function () {\n        return false\n    },\n    \"removePopups\": function () {},\n    \"onZoomChanged\": function () {}\n}"
+    },
+    "11": {
+      "branchId": 3,
+      "one": "13",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "12": {
+      "branchId": 2,
+      "one": "17",
+      "type": "branch",
+      "content": "Subconfigs"
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "return config"
+    },
+    "16": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "initAlignedNodes(config, userConfig)\ninitIconRender(config, userConfig)\ninitIconContent(config, userConfig)"
+    },
+    "17": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "config.theme = copyTheme(\n    userConfig.theme,\n    config\n)"
+    },
+    "19": {
+      "type": "action",
+      "one": "12",
+      "content": "copyNotNull(config, userConfig)"
+    },
+    "20": {
+      "type": "action",
+      "one": "10",
+      "content": "face = \"Arial\""
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "userConfig",
+  "type": "drakon"
+}

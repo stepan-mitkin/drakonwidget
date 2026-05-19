@@ -1,0 +1,48 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "edits = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "redirectUpperItems(\n    edits,\n    socket.links,\n    socket.target\n)"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "6",
+      "one": "7",
+      "content": "socket.arrow"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "popFromSkewer(\n    widget,\n    socket.arrow.finalTarget,\n    edits\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nsocket",
+  "type": "drakon"
+}

@@ -1,0 +1,84 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "node = visuals.nodes[id]"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "12",
+      "one": "5",
+      "content": "node.left"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "one": "6",
+      "two": "12",
+      "content": "node.up"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "7",
+      "two": "12",
+      "content": "node.right"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "one": "8",
+      "two": "12",
+      "content": "node.down"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "node.finalTarget = undefined"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "utils.remove(node.skewer.nodes, node)"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "utils.remove(node.level.nodes, node)"
+    },
+    "11": {
+      "type": "action",
+      "one": "13",
+      "content": "delete visuals.nodes[id]"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "throw new Error(\n    \"removeNode: Node is connected: \" + id\n)"
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "removeFromMultiDict(\n    visuals.byType,\n    node.type,\n    node.id\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nid",
+  "type": "drakon"
+}

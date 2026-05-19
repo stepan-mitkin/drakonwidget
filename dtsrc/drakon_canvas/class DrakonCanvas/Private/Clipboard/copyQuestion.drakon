@@ -1,0 +1,44 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "copy = copyItem(\n    widget,\n    node.itemId,\n    images\n)"
+    },
+    "5": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "copy.one = \"finish\"\ncopy.two = \"finish\""
+    },
+    "6": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return copyBlock(\n    widget,\n    node.itemId,\n    [copy],\n    images\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "images = {}"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nnode",
+  "type": "drakon"
+}

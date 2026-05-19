@@ -1,0 +1,45 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "size = elementActions.flow(\n    visuals,\n    element\n)"
+    },
+    "4": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "elementActions = widget.freeIcons[\n    element.type\n]"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "element.contentHeight = size.height"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "5",
+      "content": "size"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nvisuals\nelement",
+  "type": "drakon"
+}

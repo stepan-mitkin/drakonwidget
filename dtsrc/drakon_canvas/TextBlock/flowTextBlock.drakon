@@ -1,0 +1,276 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "47",
+      "type": "branch",
+      "content": "Prepare"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "flowBlock = {\n    lines: [],\n    text: block.text,\n    options: options,\n    lineHeight: block.lineHeight,\n    fontSize: block.fontSize,\n    width: width\n}"
+    },
+    "6": {
+      "type": "action",
+      "one": "41",
+      "content": "top = options.paddingTop\nleft = options.paddingLeft\nright = width - options.paddingRight"
+    },
+    "7": {
+      "branchId": 7,
+      "one": "49",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "8": {
+      "branchId": 2,
+      "one": "59",
+      "type": "branch",
+      "content": "Flow lines"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "10",
+      "one": "8",
+      "content": "left >= right"
+    },
+    "10": {
+      "type": "action",
+      "one": "16",
+      "content": "flowBlock.height = flowBlock.lineHeight +\ntop + options.paddingBottom"
+    },
+    "11": {
+      "type": "action",
+      "one": "3",
+      "content": "options = block.options"
+    },
+    "12": {
+      "type": "loopbegin",
+      "one": "14",
+      "content": "line; block.lines"
+    },
+    "13": {
+      "type": "loopend",
+      "one": "15"
+    },
+    "14": {
+      "type": "action",
+      "one": "13",
+      "content": "top = flowLine(\n    line,\n    left,\n    top,\n    rightWMargin,\n    flowBlock\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "flowBlock.height = top + options.paddingBottom"
+    },
+    "16": {
+      "branchId": 3,
+      "one": "34",
+      "type": "branch",
+      "content": "Align"
+    },
+    "17": {
+      "type": "case",
+      "one": "51"
+    },
+    "18": {
+      "one": "22",
+      "type": "case",
+      "two": "17",
+      "content": "\"center\""
+    },
+    "19": {
+      "one": "21",
+      "type": "case",
+      "two": "18",
+      "content": "\"right\""
+    },
+    "20": {
+      "type": "select",
+      "one": "19",
+      "content": "options.textAlign"
+    },
+    "21": {
+      "branchId": 5,
+      "one": "58",
+      "type": "branch",
+      "content": "Right"
+    },
+    "22": {
+      "branchId": 6,
+      "one": "27",
+      "type": "branch",
+      "content": "Center"
+    },
+    "23": {
+      "type": "loopend",
+      "one": "7"
+    },
+    "24": {
+      "type": "loopbegin",
+      "one": "25",
+      "content": "line; flowBlock.lines"
+    },
+    "25": {
+      "type": "action",
+      "one": "23",
+      "content": "line.left = right - line.width - extraPadding"
+    },
+    "26": {
+      "one": "7",
+      "type": "loopend",
+      "two": ""
+    },
+    "27": {
+      "one": "40",
+      "type": "loopbegin",
+      "two": "",
+      "content": "line; flowBlock.lines"
+    },
+    "28": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "line.left = left + diff"
+    },
+    "29": {
+      "type": "action",
+      "one": "1",
+      "content": "return flowBlock"
+    },
+    "33": {
+      "one": "20",
+      "type": "loopend",
+      "two": ""
+    },
+    "34": {
+      "one": "50",
+      "type": "loopbegin",
+      "two": "",
+      "content": "line; flowBlock.lines"
+    },
+    "36": {
+      "one": "45",
+      "type": "action",
+      "two": "",
+      "content": "line.width = line.right - line.left"
+    },
+    "37": {
+      "type": "action",
+      "one": "38",
+      "content": "last = line.tokens[\n    line.tokens.length - 1\n]"
+    },
+    "38": {
+      "flag1": 0,
+      "type": "question",
+      "one": "36",
+      "two": "39",
+      "content": "last.type === \"space\""
+    },
+    "39": {
+      "type": "action",
+      "one": "36",
+      "content": "line.tokens.pop()\nline.right -= last.width"
+    },
+    "40": {
+      "type": "action",
+      "one": "28",
+      "content": "diff = (right - left - line.width) / 2"
+    },
+    "41": {
+      "type": "action",
+      "one": "42",
+      "content": "size = 24"
+    },
+    "42": {
+      "flag1": 0,
+      "type": "question",
+      "one": "9",
+      "two": "43",
+      "content": "block.options.link"
+    },
+    "43": {
+      "type": "action",
+      "one": "9",
+      "content": "left += size * 1.5"
+    },
+    "45": {
+      "type": "action",
+      "one": "33",
+      "content": "lineWidth = Math.max(\n    lineWidth,\n    line.width\n)"
+    },
+    "47": {
+      "type": "action",
+      "one": "11",
+      "content": "lineWidth = 0"
+    },
+    "48": {
+      "type": "action",
+      "one": "29",
+      "content": "flowBlock.width = Math.max(\n    options.minWidth,\n    actualWidth\n)"
+    },
+    "49": {
+      "type": "action",
+      "one": "48",
+      "content": "actualWidth = lineWidth + options.paddingLeft\n+ options.paddingRight"
+    },
+    "50": {
+      "flag1": 0,
+      "type": "question",
+      "two": "36",
+      "one": "37",
+      "content": "line.tokens.length === 0"
+    },
+    "51": {
+      "branchId": 4,
+      "one": "52",
+      "type": "branch",
+      "content": "Left"
+    },
+    "52": {
+      "type": "action",
+      "one": "55",
+      "content": "extraPadding = getExtraPadding(\n    options,\n    width,\n    lineWidth\n)"
+    },
+    "54": {
+      "one": "7",
+      "type": "loopend",
+      "two": ""
+    },
+    "55": {
+      "one": "56",
+      "type": "loopbegin",
+      "two": "",
+      "content": "line; flowBlock.lines"
+    },
+    "56": {
+      "one": "54",
+      "type": "action",
+      "two": "",
+      "content": "line.left = line.left + extraPadding"
+    },
+    "58": {
+      "type": "action",
+      "one": "24",
+      "content": "extraPadding = getExtraPadding(\n    options,\n    width,\n    lineWidth\n)"
+    },
+    "59": {
+      "type": "action",
+      "one": "12",
+      "content": "rightWMargin = right"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "block\nwidth",
+  "type": "drakon"
+}

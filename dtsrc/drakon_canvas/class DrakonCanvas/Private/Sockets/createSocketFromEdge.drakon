@@ -1,0 +1,161 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "23"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "head = edge.head\ntail = edge.tail"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "Min = 10"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "hw = Math.max(Min, head.w)\nhh = Math.max(Min, head.h)\ntw = Math.max(Min, tail.w)\nth = Math.max(Min, tail.h)"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "7",
+      "content": "edge.vertical"
+    },
+    "7": {
+      "type": "action",
+      "one": "16",
+      "content": "x1 = getX(head) + hw\ny1 = getY(head)\nx2 = getX(tail) - tw\ny2 = y1"
+    },
+    "8": {
+      "type": "action",
+      "one": "15",
+      "content": "x1 = getX(head)\ny1 = getY(head) + hh\nx2 = x1\ny2 = getY(tail) - th"
+    },
+    "9": {
+      "type": "action",
+      "one": "14",
+      "content": "x = (x1 + x2) / 2\ny = (y1 + y2) / 2"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "socket = createSocket(\n    visuals,\n    x,\n    y,\n    op,\n    type,\n    radius\n)"
+    },
+    "11": {
+      "type": "action",
+      "one": "37",
+      "content": "socket.edge = edge"
+    },
+    "13": {
+      "type": "action",
+      "one": "1",
+      "content": "return socket"
+    },
+    "14": {
+      "type": "action",
+      "one": "10",
+      "content": "radius = visuals.config.socketTouchRadius"
+    },
+    "15": {
+      "type": "action",
+      "one": "21",
+      "content": "startPos = getVerticalStartPos(edge)\nendPos = getVerticalEndPos(edge)\nlength = endPos - startPos"
+    },
+    "16": {
+      "type": "action",
+      "one": "22",
+      "content": "startPos = edge.head.x + edge.head.w\nendPos = edge.tail.x - edge.tail.w\nlength = endPos - startPos"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "two": "24",
+      "one": "13",
+      "content": "length > radius * 2"
+    },
+    "21": {
+      "type": "action",
+      "one": "9",
+      "content": "box = createBox(\n    x1 - radius,\n    startPos,\n    radius * 2,\n    length\n)"
+    },
+    "22": {
+      "type": "action",
+      "one": "9",
+      "content": "box = createBox(\n    startPos,\n    y1 - radius,\n    length,\n    radius * 2\n)"
+    },
+    "23": {
+      "type": "action",
+      "one": "3",
+      "content": "radius = visuals.config.socketRadius"
+    },
+    "24": {
+      "type": "action",
+      "one": "25",
+      "content": "socket.box = box"
+    },
+    "25": {
+      "type": "action",
+      "one": "13",
+      "content": "socket.startPos = startPos\nsocket.endPos = endPos"
+    },
+    "29": {
+      "type": "case",
+      "one": "33"
+    },
+    "30": {
+      "one": "35",
+      "type": "case",
+      "two": "29",
+      "content": "\"parceiling\""
+    },
+    "31": {
+      "one": "36",
+      "type": "case",
+      "two": "30",
+      "content": "\"floor\""
+    },
+    "32": {
+      "type": "select",
+      "one": "31",
+      "content": "edge.role"
+    },
+    "33": {
+      "type": "action",
+      "one": "19",
+      "content": "socket.target = edge.finalTarget.itemId"
+    },
+    "35": {
+      "type": "action",
+      "one": "19",
+      "content": "socket.target = getParTarget(edge.head)"
+    },
+    "36": {
+      "type": "action",
+      "one": "19",
+      "content": "socket.target = getFloorTarget(\n    visuals,\n    edge\n)"
+    },
+    "37": {
+      "type": "action",
+      "one": "32",
+      "content": "socket.imageData = imageData"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nedge\nop\ntype\nimageData",
+  "type": "drakon"
+}

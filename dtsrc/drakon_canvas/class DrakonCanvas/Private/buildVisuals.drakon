@@ -1,0 +1,408 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "61",
+      "type": "branch",
+      "content": "Header and params"
+    },
+    "4": {
+      "branchId": 10,
+      "one": "101",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "5": {
+      "branchId": 4,
+      "one": "12",
+      "type": "branch",
+      "content": "Link nodes"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return visuals"
+    },
+    "11": {
+      "type": "loopend",
+      "one": "22"
+    },
+    "12": {
+      "type": "loopbegin",
+      "one": "13",
+      "content": "bItemId; visuals.branches"
+    },
+    "13": {
+      "type": "action",
+      "one": "20",
+      "content": "context = {\n    visuals: visuals,\n    addresses: []\n}"
+    },
+    "14": {
+      "branchId": 3,
+      "one": "16",
+      "type": "branch",
+      "content": "Create nodes"
+    },
+    "15": {
+      "type": "loopend",
+      "one": "47"
+    },
+    "16": {
+      "type": "loopbegin",
+      "one": "54",
+      "content": "id, item; model.items"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "node = nodeFromItem(visuals, item)"
+    },
+    "18": {
+      "type": "action",
+      "one": "15",
+      "content": "flowIcon(visuals, node)"
+    },
+    "20": {
+      "type": "action",
+      "one": "21",
+      "content": "linkNodeToChildren(context, bItemId)"
+    },
+    "21": {
+      "type": "action",
+      "one": "11",
+      "content": "branch = getNode(visuals, bItemId)\nbranch.addresses = context.addresses"
+    },
+    "22": {
+      "branchId": 5,
+      "one": "52",
+      "type": "branch",
+      "content": "Visual graph"
+    },
+    "23": {
+      "flag1": 0,
+      "type": "question",
+      "two": "25",
+      "one": "24",
+      "content": "model.branches.length > 1"
+    },
+    "24": {
+      "type": "action",
+      "one": "26",
+      "content": "layoutPrimitive(visuals)"
+    },
+    "25": {
+      "type": "action",
+      "one": "26",
+      "content": "layoutSilhouette(visuals)"
+    },
+    "26": {
+      "branchId": 6,
+      "one": "27",
+      "type": "branch",
+      "content": "Calculate coords"
+    },
+    "27": {
+      "type": "action",
+      "one": "29",
+      "content": "buildSkewers(visuals)"
+    },
+    "28": {
+      "type": "loopend",
+      "one": "42"
+    },
+    "29": {
+      "type": "loopbegin",
+      "one": "30",
+      "content": "id, skewer; visuals.skewers"
+    },
+    "30": {
+      "type": "action",
+      "one": "28",
+      "content": "setSameWidth(visuals, skewer)"
+    },
+    "31": {
+      "type": "action",
+      "one": "32",
+      "content": "setSameHeight(visuals)"
+    },
+    "32": {
+      "type": "action",
+      "one": "33",
+      "content": "positionSkewers(visuals)"
+    },
+    "33": {
+      "type": "action",
+      "one": "34",
+      "content": "positionLevels(visuals)"
+    },
+    "34": {
+      "type": "action",
+      "one": "79",
+      "content": "drawParams(visuals)"
+    },
+    "38": {
+      "type": "action",
+      "one": "6",
+      "content": "calculateDiagramBoxForEdit(\n    widget,\n    visuals\n)"
+    },
+    "42": {
+      "type": "action",
+      "one": "31",
+      "content": "reflowContent(visuals)"
+    },
+    "44": {
+      "flag1": 0,
+      "type": "question",
+      "one": "105",
+      "two": "45",
+      "content": "isFree(widget, item)"
+    },
+    "45": {
+      "type": "action",
+      "one": "46",
+      "content": "element = freeFromItem(visuals, id, item)"
+    },
+    "46": {
+      "type": "action",
+      "one": "15",
+      "content": "flowFreeIcon(widget, visuals, element)"
+    },
+    "47": {
+      "type": "action",
+      "one": "60",
+      "content": "sortFreeIcons(visuals)"
+    },
+    "52": {
+      "flag1": 0,
+      "type": "question",
+      "two": "26",
+      "one": "23",
+      "content": "model.branches.length === 0"
+    },
+    "54": {
+      "flag1": 0,
+      "type": "question",
+      "two": "55",
+      "one": "44",
+      "content": "item.type === \"connection\""
+    },
+    "55": {
+      "type": "action",
+      "one": "15",
+      "content": "addConnectionToVisuals(visuals, id, item)"
+    },
+    "56": {
+      "branchId": 8,
+      "one": "76",
+      "type": "branch",
+      "content": "Graf"
+    },
+    "57": {
+      "type": "case",
+      "one": "89",
+      "content": "\"free\""
+    },
+    "58": {
+      "one": "56",
+      "type": "case",
+      "two": "57",
+      "content": "\"graf\""
+    },
+    "59": {
+      "one": "5",
+      "type": "case",
+      "two": "58",
+      "content": "\"drakon\""
+    },
+    "60": {
+      "type": "select",
+      "one": "59",
+      "content": "model.type"
+    },
+    "61": {
+      "type": "select",
+      "one": "62",
+      "content": "model.type"
+    },
+    "62": {
+      "one": "103",
+      "type": "case",
+      "two": "63",
+      "content": "\"drakon\""
+    },
+    "63": {
+      "one": "104",
+      "type": "case",
+      "two": "64",
+      "content": "\"graf\""
+    },
+    "64": {
+      "one": "14",
+      "type": "case",
+      "two": "",
+      "content": "\"free\""
+    },
+    "67": {
+      "branchId": 1,
+      "one": "110",
+      "type": "branch",
+      "content": "Create visuals object"
+    },
+    "68": {
+      "one": "2",
+      "type": "action",
+      "two": "",
+      "content": "visuals = {\n    ctx: ctx,\n    nextId: 1,\n    nodes: {},\n    edges: {},\n    skewers: {},\n    levels: {},\n    byType: {},\n    skewerLinks: [],\n    levelLinks: [],\n    itemsToNodes: {},\n    branches: model.branches.slice(),\n    tempEdges: [],\n    blocks: [],\n    sockets: [],\n    subs: [],\n    free: [],\n    handles: [],\n    guides: [],\n    fonts: {},\n    images: widget.images,\n    connections: {},\n    connectionById: {},\n    ears: undefined,\n    type: model.type,\n    config: config,\n    container: widget.contentContainer\n}"
+    },
+    "69": {
+      "one": "112",
+      "type": "action",
+      "two": "",
+      "content": "model = widget.model"
+    },
+    "70": {
+      "one": "72",
+      "type": "action",
+      "two": "",
+      "content": "ctx = widget.canvas.getContext(\"2d\")"
+    },
+    "72": {
+      "one": "68",
+      "type": "action",
+      "two": "",
+      "content": "config.zoom = widget.zoomFactor"
+    },
+    "76": {
+      "type": "action",
+      "one": "77",
+      "content": "buildMindTree(visuals)"
+    },
+    "77": {
+      "type": "action",
+      "one": "78",
+      "content": "setSameWidthMind(visuals)"
+    },
+    "78": {
+      "type": "action",
+      "one": "102",
+      "content": "reflowContent(visuals)"
+    },
+    "79": {
+      "branchId": 7,
+      "one": "81",
+      "type": "branch",
+      "content": "Post process drakon"
+    },
+    "81": {
+      "one": "88",
+      "type": "action",
+      "two": "",
+      "content": "removeTempEdges(visuals)"
+    },
+    "85": {
+      "one": "86",
+      "type": "action",
+      "two": "",
+      "content": "connectLoops(visuals)"
+    },
+    "86": {
+      "one": "87",
+      "type": "action",
+      "two": "",
+      "content": "traceLoops(visuals)"
+    },
+    "87": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "forType(visuals, \"arrow-loop\", markArrow)"
+    },
+    "88": {
+      "one": "85",
+      "type": "action",
+      "two": "",
+      "content": "positionDurations(visuals)"
+    },
+    "89": {
+      "branchId": 9,
+      "one": "4",
+      "type": "branch",
+      "content": "Free"
+    },
+    "100": {
+      "type": "action",
+      "one": "4",
+      "content": "positionMind(visuals)"
+    },
+    "101": {
+      "one": "111",
+      "type": "action",
+      "two": "",
+      "content": "buildBoxes(widget, visuals)"
+    },
+    "102": {
+      "type": "action",
+      "one": "100",
+      "content": "setSameHeightMind(visuals)"
+    },
+    "103": {
+      "type": "action",
+      "one": "14",
+      "content": "buildDrakonHeader(visuals, model)"
+    },
+    "104": {
+      "type": "action",
+      "one": "14",
+      "content": "buildGrafHeader(visuals, model)"
+    },
+    "105": {
+      "flag1": 0,
+      "type": "question",
+      "one": "108",
+      "two": "15",
+      "content": "item.type === \"header\""
+    },
+    "108": {
+      "flag1": 0,
+      "type": "question",
+      "one": "109",
+      "two": "15",
+      "content": "item.type === \"params\""
+    },
+    "109": {
+      "flag1": 0,
+      "type": "question",
+      "two": "15",
+      "one": "17",
+      "content": "item.type === \"image\""
+    },
+    "110": {
+      "type": "action",
+      "one": "69",
+      "content": "resetImageRefCounts(widget)"
+    },
+    "111": {
+      "one": "38",
+      "type": "action",
+      "two": "",
+      "content": "forType(visuals, \"address\", putCycleMark)"
+    },
+    "112": {
+      "type": "action",
+      "one": "70",
+      "content": "config = buildFinalConfig(widget)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

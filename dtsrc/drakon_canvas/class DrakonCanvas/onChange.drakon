@@ -1,0 +1,38 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "self.redraw()"
+    },
+    "6": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "self.edit.forcedChange(change)"
+    },
+    "7": {
+      "type": "action",
+      "one": "6",
+      "content": "tracing.trace(\n    \"DrakonCanvas.onChange\",\n    change\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "change",
+  "type": "drakon"
+}

@@ -1,0 +1,165 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "61",
+      "type": "branch",
+      "content": "The diamond"
+    },
+    "4": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "centerContent(visuals, node, ctx)"
+    },
+    "11": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "12": {
+      "branchId": 2,
+      "one": "25",
+      "type": "branch",
+      "content": "Labels"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "two": "15",
+      "one": "14",
+      "content": "node.flag1"
+    },
+    "14": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "yesDiv = node.frame.yesDiv\nnoDiv = node.frame.noDiv"
+    },
+    "15": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "noDiv = node.frame.yesDiv\nyesDiv = node.frame.noDiv"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "yesDiv.style.top = node.y + node.h + 2 +\n\"px\"\nyesDiv.style.left = node.x - yesRect.width\n- 2 + \"px\""
+    },
+    "17": {
+      "type": "action",
+      "one": "11",
+      "content": "noDiv.style.top = node.y - noRect.height\n+ \"px\"\nnoDiv.style.left = node.x + node.w + \"px\""
+    },
+    "19": {
+      "type": "action",
+      "one": "16",
+      "content": "yesRect = yesDiv.getBoundingClientRect()\nnoRect = noDiv.getBoundingClientRect()"
+    },
+    "25": {
+      "flag1": 0,
+      "type": "question",
+      "one": "13",
+      "two": "58",
+      "content": "visuals.config.canvasLabels"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "two": "28",
+      "one": "27",
+      "content": "node.flag1"
+    },
+    "27": {
+      "type": "action",
+      "one": "29",
+      "content": "leftText = visuals.config.yes\nrightText = visuals.config.no"
+    },
+    "28": {
+      "type": "action",
+      "one": "29",
+      "content": "leftText = visuals.config.no\nrightText = visuals.config.yes"
+    },
+    "29": {
+      "type": "action",
+      "one": "31",
+      "content": "ctx.fillStyle = visuals.config.theme.backText\nctx.font = visuals.config.canvasLabels"
+    },
+    "30": {
+      "type": "action",
+      "one": "11",
+      "content": "ctx.fillText(rightText, rightX, rightY)"
+    },
+    "31": {
+      "type": "action",
+      "one": "34",
+      "content": "leftWidth = ctx.measureText(leftText).width"
+    },
+    "32": {
+      "type": "action",
+      "one": "64",
+      "content": "ctx.textAlign = \"right\""
+    },
+    "33": {
+      "type": "action",
+      "one": "35",
+      "content": "ctx.fillText(leftText, leftX, leftY)"
+    },
+    "34": {
+      "type": "action",
+      "one": "32",
+      "content": "leftX = node.x - 2 - thickness\nleftY = node.y + node.h + 3\nrightX = node.x + node.w + 3\nrightY = node.y - 2 - thickness"
+    },
+    "35": {
+      "type": "action",
+      "one": "63",
+      "content": "ctx.textAlign = \"left\""
+    },
+    "58": {
+      "type": "action",
+      "one": "26",
+      "content": "thickness = visuals.config.theme.lineWidth\n|| 1"
+    },
+    "59": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "renderIconShape(\n    ctx,\n    visuals,\n    node,\n    buildQuestionCoords,\n    left,\n    top,\n    width,\n    height,\n    visuals.config.metre\n)"
+    },
+    "60": {
+      "one": "59",
+      "type": "action",
+      "two": "",
+      "content": "left = node.x - node.w - extra\ntop = node.y - node.h\nwidth = node.w * 2 + extra * 2\nheight = node.h * 2"
+    },
+    "61": {
+      "type": "action",
+      "one": "60",
+      "content": "extra = 3"
+    },
+    "63": {
+      "type": "action",
+      "one": "30",
+      "content": "rightY = prepareTextRender(\n    visuals,\n    ctx,\n    visuals.config.canvasLabelsSize,\n    rightY\n)"
+    },
+    "64": {
+      "type": "action",
+      "one": "33",
+      "content": "leftY = prepareTextRender(\n    visuals,\n    ctx,\n    visuals.config.canvasLabelsSize,\n    leftY + visuals.config.canvasLabelsSize\n    * 1.1\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

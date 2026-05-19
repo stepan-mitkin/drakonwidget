@@ -1,0 +1,41 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "5": {
+      "type": "action",
+      "one": "10",
+      "content": "socket = visuals.sockets[\n    visuals.currentSocket - 1\n]"
+    },
+    "6": {
+      "type": "action",
+      "one": "5",
+      "content": "visuals = widget.visuals"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "runInsertAction(widget, socket)"
+    },
+    "10": {
+      "type": "action",
+      "one": "8",
+      "content": "tracing.trace(\n    \"runCurrentSocket\",\n    [\n        socket.id,\n        socket.op,\n        socket.type,\n        socket.target\n    ]\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

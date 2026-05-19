@@ -1,0 +1,47 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "7"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return false"
+        },
+        "6": {
+            "type": "loopend",
+            "one": "3"
+        },
+        "7": {
+            "type": "loopbegin",
+            "one": "8",
+            "content": "prev; node.aprev"
+        },
+        "8": {
+            "flag1": 1,
+            "type": "question",
+            "one": "6",
+            "two": "9",
+            "content": "prev.itemId in visited"
+        },
+        "9": {
+            "type": "action",
+            "one": "6",
+            "content": "return true"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "visited\nnode",
+    "type": "drakon"
+}

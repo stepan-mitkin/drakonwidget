@@ -1,0 +1,64 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "3"
+        },
+        "3": {
+            "type": "action",
+            "one": "4",
+            "content": "left = getUp(floorEdge.head)\nright = getUp(floorEdge.tail)"
+        },
+        "4": {
+            "type": "action",
+            "one": "6",
+            "content": "leftBranch = left.branch.itemId\nrightBranch = right.branch.itemId"
+        },
+        "5": {
+            "type": "loopend",
+            "one": "10"
+        },
+        "6": {
+            "type": "loopbegin",
+            "one": "7",
+            "content": "itemId; visuals.branches"
+        },
+        "7": {
+            "flag1": 1,
+            "type": "question",
+            "two": "8",
+            "one": "5",
+            "content": "itemId === leftBranch"
+        },
+        "8": {
+            "flag1": 1,
+            "type": "question",
+            "one": "5",
+            "two": "9",
+            "content": "itemId === rightBranch"
+        },
+        "9": {
+            "type": "action",
+            "one": "5",
+            "content": "return itemId"
+        },
+        "10": {
+            "type": "action",
+            "one": "1",
+            "content": "return rightBranch"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "visuals\nfloorEdge",
+    "type": "drakon"
+}

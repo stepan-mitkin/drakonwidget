@@ -1,0 +1,44 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "line = {\n    top: top,\n    bottom: top + flowBlock.lineHeight,\n    tokens: [],\n    left: left,\n    baseLine: baseLine,\n    right: left\n}"
+    },
+    "5": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "flowBlock.lines.push(line)"
+    },
+    "6": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "baseLine = top + baseLineShift"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "return line"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "flowBlock\nleft\ntop\nbaseLineShift",
+  "type": "drakon"
+}

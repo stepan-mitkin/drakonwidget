@@ -1,0 +1,47 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "3"
+        },
+        "3": {
+            "type": "action",
+            "one": "4",
+            "content": "imageObj = new Image()"
+        },
+        "4": {
+            "type": "action",
+            "one": "6",
+            "content": "imageObj.onload = me.imageLoaded"
+        },
+        "5": {
+            "type": "sinput",
+            "one": "7",
+            "content": "imageLoaded()"
+        },
+        "6": {
+            "type": "action",
+            "one": "5",
+            "content": "imageObj.src = image.content"
+        },
+        "7": {
+            "type": "action",
+            "one": "1",
+            "content": "image.imageObj = imageObj"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "image",
+    "type": "drakon"
+}

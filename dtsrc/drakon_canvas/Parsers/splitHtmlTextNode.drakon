@@ -1,0 +1,187 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "3"
+        },
+        "3": {
+            "type": "action",
+            "one": "8",
+            "content": "text = text || \"\""
+        },
+        "4": {
+            "type": "action",
+            "one": "37",
+            "content": "state = \"token\"\nbuffer = \"\"\nline = []"
+        },
+        "5": {
+            "type": "loopend",
+            "one": "22"
+        },
+        "6": {
+            "type": "loopbegin",
+            "one": "7",
+            "content": "i = 0; i < length; i++"
+        },
+        "7": {
+            "type": "action",
+            "one": "25",
+            "content": "ch = text[i]"
+        },
+        "8": {
+            "type": "action",
+            "one": "39",
+            "content": "whitespace = {}\nwhitespace[\" \"] = true\nwhitespace[\"\\t\"] = true\nwhitespace[\"\\r\"] = true\nwhitespace[\"\\n\"] = true"
+        },
+        "14": {
+            "type": "action",
+            "one": "1",
+            "content": "return line"
+        },
+        "22": {
+            "flag1": 1,
+            "type": "question",
+            "two": "14",
+            "one": "54",
+            "content": "buffer"
+        },
+        "25": {
+            "flag1": 1,
+            "type": "question",
+            "one": "26",
+            "two": "27",
+            "content": "state === \"token\""
+        },
+        "26": {
+            "flag1": 0,
+            "type": "question",
+            "two": "42",
+            "one": "45",
+            "content": "whitespace[ch]"
+        },
+        "27": {
+            "flag1": 0,
+            "type": "question",
+            "one": "49",
+            "two": "52",
+            "content": "whitespace[ch]"
+        },
+        "37": {
+            "type": "action",
+            "one": "6",
+            "content": "length = text.length"
+        },
+        "38": {
+            "one": "14",
+            "type": "action",
+            "two": "",
+            "content": "addToken(line, ttype, buffer)"
+        },
+        "39": {
+            "type": "action",
+            "one": "4",
+            "content": "whitespace[String.fromCharCode(133)] = true\nwhitespace[String.fromCharCode(160)] = true\nwhitespace[String.fromCharCode(11)] = true\nwhitespace[String.fromCharCode(12)] = true"
+        },
+        "40": {
+            "type": "action",
+            "one": "5",
+            "two": "",
+            "content": "state = \"space\""
+        },
+        "42": {
+            "flag1": 1,
+            "type": "question",
+            "two": "48",
+            "one": "43",
+            "content": "buffer"
+        },
+        "43": {
+            "one": "44",
+            "type": "action",
+            "two": "",
+            "content": "addToken(line, type, buffer)"
+        },
+        "44": {
+            "one": "48",
+            "type": "action",
+            "two": "",
+            "content": "buffer = \"\""
+        },
+        "45": {
+            "type": "action",
+            "one": "5",
+            "content": "buffer += ch"
+        },
+        "46": {
+            "type": "action",
+            "one": "5",
+            "two": "",
+            "content": "state = \"token\""
+        },
+        "47": {
+            "type": "action",
+            "one": "46",
+            "two": "",
+            "content": "buffer += ch"
+        },
+        "48": {
+            "type": "action",
+            "one": "40",
+            "content": "buffer += ch"
+        },
+        "49": {
+            "flag1": 1,
+            "type": "question",
+            "two": "47",
+            "one": "50",
+            "content": "buffer"
+        },
+        "50": {
+            "one": "51",
+            "type": "action",
+            "two": "",
+            "content": "addToken(line, \"space\", buffer)"
+        },
+        "51": {
+            "one": "47",
+            "type": "action",
+            "two": "",
+            "content": "buffer = \"\""
+        },
+        "52": {
+            "type": "action",
+            "one": "5",
+            "content": "buffer += ch"
+        },
+        "54": {
+            "type": "question",
+            "one": "55",
+            "two": "56",
+            "flag1": 1,
+            "content": "state === \"space\""
+        },
+        "55": {
+            "type": "action",
+            "one": "38",
+            "content": "ttype = \"space\""
+        },
+        "56": {
+            "type": "action",
+            "one": "38",
+            "content": "ttype = type"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "text\ntype",
+    "type": "drakon"
+}

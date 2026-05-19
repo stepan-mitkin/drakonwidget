@@ -1,0 +1,54 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "16",
+      "type": "branch"
+    },
+    "10": {
+      "type": "action",
+      "one": "13",
+      "content": "renderFreeIconShapeComplex(\n    ctx,\n    visuals,\n    element,\n    cloudPath,\n    element.aux\n)"
+    },
+    "11": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "top = Math.floor(\n    centerY - element.contentHeight / 2\n)"
+    },
+    "12": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "renderContentCore(\n    visuals,\n    element,\n    left,\n    top\n)"
+    },
+    "13": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "centerY = element.top + element.height /\n3 * 2"
+    },
+    "14": {
+      "type": "action",
+      "one": "10",
+      "content": "left = Math.round(\n    element.left + element.width * padding\n)"
+    },
+    "16": {
+      "type": "action",
+      "one": "14",
+      "content": "padding = 0.08"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

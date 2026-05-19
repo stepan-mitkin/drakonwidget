@@ -1,0 +1,102 @@
+{
+    "items": {
+        "2": {
+            "branchId": 1,
+            "one": "14",
+            "type": "branch",
+            "content": "Idle"
+        },
+        "5": {
+            "branchId": 2,
+            "one": "7",
+            "type": "branch",
+            "content": "Waiting"
+        },
+        "7": {
+            "type": "action",
+            "one": "11",
+            "content": "tobj = setTimeout(\n    function () {\n        me.onTimeout()\n    },\n    delay\n)"
+        },
+        "9": {
+            "one": "20",
+            "type": "case",
+            "two": "21",
+            "content": "onTimeout()"
+        },
+        "10": {
+            "one": "12",
+            "type": "case",
+            "two": "18",
+            "content": "onInput(msg)"
+        },
+        "11": {
+            "type": "select",
+            "one": "10",
+            "content": "receive"
+        },
+        "12": {
+            "type": "action",
+            "one": "5",
+            "content": "clearTimeout(tobj)"
+        },
+        "14": {
+            "type": "select",
+            "one": "15",
+            "content": "receive"
+        },
+        "15": {
+            "one": "5",
+            "type": "case",
+            "two": "16",
+            "content": "onInput(msg)"
+        },
+        "16": {
+            "one": "17",
+            "type": "case",
+            "two": null,
+            "content": "force(msg)"
+        },
+        "17": {
+            "type": "action",
+            "one": "2",
+            "content": "action(msg)"
+        },
+        "18": {
+            "one": "19",
+            "type": "case",
+            "two": "9",
+            "content": "force(msg)"
+        },
+        "19": {
+            "type": "action",
+            "one": "20",
+            "content": "clearTimeout(tobj)"
+        },
+        "20": {
+            "type": "action",
+            "one": "2",
+            "content": "action(msg)"
+        },
+        "21": {
+            "one": "22",
+            "type": "case",
+            "two": null,
+            "content": "reset()"
+        },
+        "22": {
+            "type": "action",
+            "one": "2",
+            "content": "clearTimeout(tobj)"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": true,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "action\ndelay",
+    "type": "drakon"
+}

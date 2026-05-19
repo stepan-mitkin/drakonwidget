@@ -1,0 +1,106 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 1,
+            "one": "21",
+            "type": "branch",
+            "content": "Scan free items"
+        },
+        "4": {
+            "type": "loopend",
+            "one": "16"
+        },
+        "5": {
+            "type": "loopbegin",
+            "one": "6",
+            "content": "element; widget.visuals.free"
+        },
+        "6": {
+            "flag1": 0,
+            "type": "question",
+            "one": "24",
+            "two": "4",
+            "content": "element.id === id"
+        },
+        "11": {
+            "flag1": 1,
+            "type": "question",
+            "two": "4",
+            "one": "13",
+            "content": "ebox.centerX === x"
+        },
+        "13": {
+            "type": "action",
+            "one": "22",
+            "content": "left = Math.min(left, ebox.centerX)\nright = Math.max(right, ebox.centerX)"
+        },
+        "15": {
+            "branchId": 3,
+            "one": "1",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "16": {
+            "branchId": 2,
+            "one": "19",
+            "type": "branch",
+            "content": "Create guide"
+        },
+        "17": {
+            "type": "action",
+            "one": "4",
+            "content": "found = true"
+        },
+        "19": {
+            "flag1": 1,
+            "type": "question",
+            "two": "15",
+            "one": "23",
+            "content": "found"
+        },
+        "20": {
+            "type": "action",
+            "one": "15",
+            "content": "widget.visuals.guides.push(guide)"
+        },
+        "21": {
+            "type": "action",
+            "one": "5",
+            "content": "top = box.centerY\nbottom = box.centerY\nfound = false"
+        },
+        "22": {
+            "type": "action",
+            "one": "17",
+            "content": "top = Math.min(top, ebox.centerY)\nbottom = Math.max(bottom, ebox.centerY)"
+        },
+        "23": {
+            "type": "action",
+            "one": "20",
+            "content": "guide = {\n    x1: Math.round(x),\n    y1: top,\n    x2: Math.round(x),\n    y2: bottom\n}"
+        },
+        "24": {
+            "flag1": 1,
+            "type": "question",
+            "two": "4",
+            "one": "25",
+            "content": "canGuideNode(widget, element)"
+        },
+        "25": {
+            "type": "action",
+            "one": "11",
+            "content": "ebox = getGuideBox(element)"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "widget\nid\nbox\nx",
+    "type": "drakon"
+}

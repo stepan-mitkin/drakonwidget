@@ -1,0 +1,61 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "canvas = document.createElement(\"canvas\")\ncanvas.id = \"dummy-canvas\""
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "canvas.width = width\ncanvas.height = height\ncanvas.style.width = width + \"px\"\ncanvas.style.height = height + \"px\""
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "canvas.style.display = \"inline-block\"\ncanvas.style.position = \"fixed\"\ncanvas.style.left = \"0px\"\ncanvas.style.top = \"0px\""
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "document.documentElement.appendChild(\n    canvas\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "ctx = canvas.getContext(\"2d\")"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "ctx.fillStyle = background"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.fillRect(0, 0, width, height)"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "return ctx"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "width\nheight\nbackground",
+  "type": "drakon"
+}

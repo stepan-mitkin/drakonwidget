@@ -1,0 +1,90 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "7",
+      "type": "branch",
+      "content": "Draw text"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "9"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "6",
+      "content": "line; flowBlock.lines"
+    },
+    "6": {
+      "type": "action",
+      "one": "4",
+      "content": "renderFlowBlockLine(ctx, line, left, top)"
+    },
+    "7": {
+      "type": "action",
+      "one": "22",
+      "content": "ctx.fillStyle = flowBlock.options.color"
+    },
+    "9": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "11": {
+      "branchId": 1,
+      "one": "17",
+      "type": "branch",
+      "content": "Draw icon"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "y = top + flowBlock.height / 2"
+    },
+    "13": {
+      "type": "action",
+      "one": "16",
+      "content": "x = left + flowBlock.options.paddingLeft\n+ iconSize / 2"
+    },
+    "14": {
+      "type": "action",
+      "one": "12",
+      "content": "iconSize = 24"
+    },
+    "15": {
+      "flag1": 1,
+      "type": "question",
+      "two": "2",
+      "one": "14",
+      "content": "flowBlock.options.link"
+    },
+    "16": {
+      "type": "action",
+      "one": "2",
+      "content": "drawLinkIcon(ctx, x, y)"
+    },
+    "17": {
+      "type": "action",
+      "one": "15",
+      "content": "ctx = visuals.ctx"
+    },
+    "22": {
+      "type": "action",
+      "one": "5",
+      "content": "top = prepareTextRender(\n    visuals,\n    ctx,\n    flowBlock.fontSize,\n    top\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nflowBlock\nleft\ntop",
+  "type": "drakon"
+}

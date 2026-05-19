@@ -1,0 +1,121 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "9": {
+      "branchId": 4,
+      "one": "27",
+      "type": "branch",
+      "content": "Perform edit"
+    },
+    "11": {
+      "branchId": 1,
+      "one": "13",
+      "type": "branch",
+      "content": "Find item"
+    },
+    "12": {
+      "one": "16",
+      "type": "action",
+      "two": "",
+      "content": "edits = []"
+    },
+    "13": {
+      "type": "action",
+      "one": "12",
+      "content": "tracing.trace(\"bringToFront\", id)"
+    },
+    "14": {
+      "flag1": 0,
+      "type": "question",
+      "two": "17",
+      "one": "18",
+      "content": "last.id === id"
+    },
+    "15": {
+      "type": "action",
+      "one": "14",
+      "content": "last = free[free.length - 1]"
+    },
+    "16": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "free = widget.visuals.free"
+    },
+    "17": {
+      "flag1": 0,
+      "type": "question",
+      "one": "9",
+      "two": "18",
+      "content": "last.zIndex < 0"
+    },
+    "18": {
+      "branchId": 2,
+      "one": "21",
+      "type": "branch",
+      "content": "Move myself"
+    },
+    "19": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "newZ = last.zIndex"
+    },
+    "20": {
+      "one": "24",
+      "type": "action",
+      "two": "",
+      "content": "updateItem(edits, id, {zIndex: newZ})"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "toMove = getFree(widget.visuals, id)"
+    },
+    "22": {
+      "flag1": 0,
+      "type": "question",
+      "two": "23",
+      "one": "19",
+      "content": "toMove.zIndex < 0"
+    },
+    "23": {
+      "one": "20",
+      "type": "action",
+      "two": "",
+      "content": "newZ = last.zIndex + 1"
+    },
+    "24": {
+      "branchId": 3,
+      "one": "26",
+      "type": "branch",
+      "content": "Rearrange others"
+    },
+    "25": {
+      "type": "action",
+      "one": "9",
+      "content": "rearrangeZOnDelete(\n    widget,\n    toDelete,\n    edits\n)"
+    },
+    "26": {
+      "type": "action",
+      "one": "25",
+      "content": "toDelete = {}\ntoDelete[id] = true"
+    },
+    "27": {
+      "type": "action",
+      "one": "1",
+      "content": "return updateAndKeepSelection(\n    widget,\n    edits\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nid",
+  "type": "drakon"
+}

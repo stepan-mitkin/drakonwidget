@@ -1,0 +1,75 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "one": "5",
+      "two": "15",
+      "content": "code === 9"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "one": "6",
+      "two": "15",
+      "content": "code === 10"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "7",
+      "two": "15",
+      "content": "code === 32"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "one": "8",
+      "two": "15",
+      "content": "code === 160"
+    },
+    "8": {
+      "flag1": 0,
+      "type": "question",
+      "one": "10",
+      "two": "15",
+      "content": "code === 133"
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "two": "15",
+      "one": "16",
+      "content": "code === 32"
+    },
+    "15": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return true"
+    },
+    "16": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return false"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "code",
+  "type": "drakon"
+}

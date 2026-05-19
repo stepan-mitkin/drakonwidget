@@ -1,0 +1,50 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "type": "action",
+      "one": "8",
+      "content": "self.element.x2 = x2\nself.element.y2 = y2"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "x2 = x - self.element.left\ny2 = y - self.element.top"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "7",
+      "content": "x2 === 0"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "1",
+      "content": "y2 === 0"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "findGuidesForPoint(self, x, y)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "x\ny",
+  "type": "drakon"
+}

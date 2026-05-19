@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "defaultValues = {\n    action: contentAction,\n    idea: contentAction,\n    ridea: contentAction,\n    question: contentQuestion,\n    \"case\": contentCase,\n    select: contentSelect,\n    branch: contentBranch,\n    address: contentAddress,\n    end: contentEnd,\n    junction: contentJunction,\n    \"arrow-loop\": contentJunction,\n    header: contentHeader,\n    loopbegin: contentAction,\n    loopend: contentAction,\n    params: contentAction,\n    comment: contentComment,\n    conclusion: contentComment,\n    insertion: contentInsertion,\n    simpleinput: contentSimpleInput,\n    simpleoutput: contentSimpleOutput,\n    duration: contentDuration,\n    timer: contentDuration,\n    pause: contentDuration,\n    ctrlstart: contentDuration,\n    ctrlend: contentDuration,\n    shelf: contentShelf,\n    process: contentProcess,\n    output: contentOutput,\n    input: contentInput,\n    \"drakon-image\": contentDrImage,\n    \"graf-image\": contentDrImage\n}"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "mergeConfigs(\n    output,\n    input,\n    \"iconContent\",\n    defaultValues\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "output\ninput",
+  "type": "drakon"
+}

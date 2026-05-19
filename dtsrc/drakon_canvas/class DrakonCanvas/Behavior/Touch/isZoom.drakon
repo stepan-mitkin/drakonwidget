@@ -1,0 +1,164 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "30",
+      "type": "branch",
+      "content": "Find max coord delta"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "delta = 0"
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "delta = Math.max(\n    delta,\n    Math.abs(startX1 - x1)\n)"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "delta = Math.max(\n    delta,\n    Math.abs(startX2 - x2)\n)"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "delta = Math.max(\n    delta,\n    Math.abs(startY1 - y1)\n)"
+    },
+    "8": {
+      "type": "action",
+      "one": "11",
+      "content": "delta = Math.max(\n    delta,\n    Math.abs(startY2 - y2)\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "23",
+      "content": "x1 = evt.touches[0].clientX\ny1 = evt.touches[0].clientY\nx2 = evt.touches[1].clientX\ny2 = evt.touches[1].clientY"
+    },
+    "10": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "11": {
+      "branchId": 2,
+      "one": "16",
+      "type": "branch",
+      "content": "Find distance delta"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "dist1 = Math.sqrt(cx1 * cx1 + cy1 * cy1)"
+    },
+    "15": {
+      "type": "action",
+      "one": "18",
+      "content": "dist2 = Math.sqrt(cx2 * cx2 + cy2 * cy2)"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "cx1 = startX2 - startX1\ncy1 = startY2 - startY1"
+    },
+    "17": {
+      "type": "action",
+      "one": "14",
+      "content": "cx2 = x2 - x1\ncy2 = y2 - y1"
+    },
+    "18": {
+      "type": "action",
+      "one": "32",
+      "content": "dDist = Math.abs(dist2 - dist1)"
+    },
+    "23": {
+      "type": "action",
+      "one": "4",
+      "content": "dx1 = x1 - startX1\ndx2 = x2 - startX2\ndy1 = y1 - startY1\ndy2 = y2 - startY2"
+    },
+    "30": {
+      "type": "action",
+      "one": "40",
+      "content": "minDelta = 3"
+    },
+    "32": {
+      "branchId": 3,
+      "one": "33",
+      "type": "branch",
+      "content": "Compare"
+    },
+    "33": {
+      "flag1": 1,
+      "type": "question",
+      "one": "38",
+      "two": "36",
+      "content": "delta > dDist"
+    },
+    "34": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "return \"zoom\""
+    },
+    "35": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "return \"scroll\""
+    },
+    "36": {
+      "flag1": 1,
+      "type": "question",
+      "two": "37",
+      "one": "39",
+      "content": "dDist > delta"
+    },
+    "37": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "return undefined"
+    },
+    "38": {
+      "flag1": 1,
+      "type": "question",
+      "one": "35",
+      "two": "36",
+      "content": "delta > minDelta"
+    },
+    "39": {
+      "flag1": 1,
+      "type": "question",
+      "two": "37",
+      "one": "34",
+      "content": "dDist > minDelta"
+    },
+    "40": {
+      "flag1": 0,
+      "type": "question",
+      "one": "9",
+      "two": "41",
+      "content": "evt.touches.length < 2"
+    },
+    "41": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "return undefined"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "startX1\nstartY1\nstartX2\nstartY2\nevt",
+  "type": "drakon"
+}

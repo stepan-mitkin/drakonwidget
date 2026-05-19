@@ -1,0 +1,67 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "5",
+      "content": "cases = select.cases"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "6"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "7",
+      "content": "i = 0; i < cases.length - 1; i++"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return cases[cases.length - 1]"
+    },
+    "7": {
+      "type": "action",
+      "one": "8",
+      "content": "left = cases[i]\nright = cases[i + 1]"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "jun = getUp(left)"
+    },
+    "9": {
+      "flag1": 0,
+      "type": "question",
+      "two": "4",
+      "one": "10",
+      "content": "jun.zoned"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "sub = createSubspace(visuals)\nouter = createOuter(visuals, sub)\ninner = createInner(visuals, sub)"
+    },
+    "11": {
+      "type": "action",
+      "one": "4",
+      "content": "crawl(outer, left.down)\ncrawl(inner, right.down)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nselect",
+  "type": "drakon"
+}

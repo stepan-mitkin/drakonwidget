@@ -1,0 +1,50 @@
+{
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "3"
+        },
+        "3": {
+            "type": "action",
+            "one": "4",
+            "content": "maxDelta = 3"
+        },
+        "4": {
+            "flag1": 0,
+            "type": "question",
+            "one": "7",
+            "two": "5",
+            "content": "Math.abs(x1 - x2) > maxDelta"
+        },
+        "5": {
+            "type": "action",
+            "one": "1",
+            "content": "return true"
+        },
+        "6": {
+            "type": "action",
+            "one": "1",
+            "content": "return false"
+        },
+        "7": {
+            "flag1": 0,
+            "type": "question",
+            "one": "6",
+            "two": "5",
+            "content": "Math.abs(y1 - y2) > maxDelta"
+        }
+    },
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
+    },
+    "params": "x1\ny1\nx2\ny2",
+    "type": "drakon"
+}

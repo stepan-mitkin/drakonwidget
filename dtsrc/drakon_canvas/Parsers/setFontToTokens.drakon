@@ -1,0 +1,40 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "6": {
+      "branchId": 0,
+      "one": "12",
+      "type": "branch"
+    },
+    "9": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "10": {
+      "type": "loopbegin",
+      "one": "11",
+      "content": "line; lines"
+    },
+    "11": {
+      "type": "action",
+      "one": "9",
+      "content": "line.tokens.forEach(\n    function (token) {\n        setFontToToken(token, fontObj)\n    }\n)"
+    },
+    "12": {
+      "type": "action",
+      "one": "10",
+      "content": "fontObj = parseCssFont(\n    font,\n    fontCache,\n    true\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "lines\nfont\nfontCache",
+  "type": "drakon"
+}

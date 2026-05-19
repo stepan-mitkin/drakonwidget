@@ -1,0 +1,156 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "27"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "8",
+      "content": "i = 0; i < text.length; i++"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "result = []"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "27",
+      "one": "9",
+      "content": "text"
+    },
+    "8": {
+      "type": "action",
+      "one": "14",
+      "content": "ch = text[i]"
+    },
+    "9": {
+      "type": "action",
+      "one": "5",
+      "content": "buffer = \"\"\nstate = \"ws\""
+    },
+    "10": {
+      "flag1": 0,
+      "type": "question",
+      "two": "15",
+      "one": "20",
+      "content": "isWhitespace(ch)"
+    },
+    "12": {
+      "one": "18",
+      "type": "case",
+      "two": null,
+      "content": "\"token\""
+    },
+    "13": {
+      "one": "10",
+      "type": "case",
+      "two": "12",
+      "content": "\"ws\""
+    },
+    "14": {
+      "type": "select",
+      "one": "13",
+      "content": "state"
+    },
+    "15": {
+      "type": "action",
+      "one": "4",
+      "content": "buffer += ch"
+    },
+    "16": {
+      "type": "action",
+      "one": "21",
+      "content": "result.push(buffer)"
+    },
+    "17": {
+      "type": "action",
+      "one": "4",
+      "content": "buffer = ch"
+    },
+    "18": {
+      "flag1": 0,
+      "type": "question",
+      "one": "19",
+      "two": "25",
+      "content": "isWhitespace(ch)"
+    },
+    "19": {
+      "type": "action",
+      "one": "4",
+      "content": "buffer += ch"
+    },
+    "20": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "21",
+      "content": "buffer"
+    },
+    "21": {
+      "type": "action",
+      "one": "17",
+      "content": "state = \"token\""
+    },
+    "22": {
+      "type": "action",
+      "one": "23",
+      "content": "state = \"ws\""
+    },
+    "23": {
+      "type": "action",
+      "one": "4",
+      "content": "buffer = ch"
+    },
+    "24": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "result.push(buffer)"
+    },
+    "25": {
+      "flag1": 1,
+      "type": "question",
+      "two": "22",
+      "one": "24",
+      "content": "buffer"
+    },
+    "26": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "result.push(buffer)"
+    },
+    "27": {
+      "flag1": 1,
+      "type": "question",
+      "two": "3",
+      "one": "26",
+      "content": "buffer"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "text",
+  "type": "drakon"
+}

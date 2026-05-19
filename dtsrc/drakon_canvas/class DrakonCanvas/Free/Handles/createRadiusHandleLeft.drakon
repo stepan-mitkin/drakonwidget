@@ -1,0 +1,76 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "11"
+    },
+    "3": {
+      "type": "action",
+      "one": "1"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "handle = RoundedRadiusLeft()"
+    },
+    "5": {
+      "one": "10",
+      "type": "action",
+      "two": "",
+      "content": "setCommonHandleFields(\n    widget,\n    element,\n    handle\n)"
+    },
+    "6": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "createHandle(visuals, handle, ctx)"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "handle.x = element.left + element.aux + touch\n* 2\nhandle.y = element.top\nhandle.minX = element.left + touch * 2\nhandle.maxX = right - touch * 2"
+    },
+    "8": {
+      "one": "13",
+      "type": "action",
+      "two": "",
+      "content": "handle.left = element.left\nhandle.touch = touch\nhandle.color = \"yellow\""
+    },
+    "10": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "touch = visuals.config.socketTouchRadius"
+    },
+    "11": {
+      "type": "action",
+      "one": "4",
+      "content": "visuals = widget.visuals"
+    },
+    "12": {
+      "type": "action",
+      "one": "7",
+      "content": "right = element.left + element.width"
+    },
+    "13": {
+      "type": "action",
+      "one": "6",
+      "content": "handle.primId = \"radius-left-\" + element.id"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\nctx",
+  "type": "drakon"
+}

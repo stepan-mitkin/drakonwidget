@@ -1,0 +1,6 @@
+{
+    "dependencies": "html\nedit_tools\ntracing\nutils\ngconfig",
+    "language": "JS2604",
+    "format": "unit",
+    "outputFile": "../../static/js/drakon_canvas.js"
+}

@@ -1,0 +1,55 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "9"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "direction = direction || \"asc\"\ndirection = direction.toLowerCase()"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "5",
+      "content": "direction === \"asc\""
+    },
+    "5": {
+      "type": "action",
+      "one": "7",
+      "content": "sorter = comparerAsc"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "sorter = comparerDesc"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "array.sort(\n    function (left, right) {\n        return sorter(\n            property,\n            left,\n            right\n        )\n    }\n)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "3",
+      "two": "1",
+      "content": "array"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": true,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "array\nproperty\ndirection",
+  "type": "drakon"
+}

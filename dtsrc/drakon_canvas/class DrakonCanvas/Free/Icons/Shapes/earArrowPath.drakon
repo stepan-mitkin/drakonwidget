@@ -1,0 +1,69 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "5",
+      "type": "branch",
+      "content": "Set up coords"
+    },
+    "3": {
+      "type": "action",
+      "one": "6",
+      "content": "x1 = left\nx2 = left + horIndent\nx3 = left + width / 2\nx4 = left + width - horIndent\nx5 = left + width"
+    },
+    "4": {
+      "type": "action",
+      "one": "3",
+      "content": "horIndent = width * (1 - arrowThickness)\n/ 2"
+    },
+    "5": {
+      "type": "action",
+      "one": "4",
+      "content": "arrowThickness = 0.3\narrowHeight = 0.6"
+    },
+    "6": {
+      "type": "action",
+      "one": "8",
+      "content": "y1 = top\ny2 = top + height * arrowHeight\ny3 = top + height"
+    },
+    "7": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "8": {
+      "branchId": 2,
+      "one": "9",
+      "type": "branch",
+      "content": "Branch2"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.beginPath()"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "ctx.moveTo(x3, y1)\nctx.lineTo(x5, y2)\nctx.lineTo(x4, y2)\nctx.lineTo(x4, y3)\nctx.lineTo(x2, y3)\nctx.lineTo(x2, y2)\nctx.lineTo(x1, y2)"
+    },
+    "11": {
+      "type": "action",
+      "one": "7",
+      "content": "ctx.closePath()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nleft\ntop\nwidth\nheight",
+  "type": "drakon"
+}

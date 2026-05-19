@@ -1,0 +1,109 @@
+{
+    "items": {
+        "2": {
+            "branchId": 1,
+            "one": "6",
+            "type": "branch",
+            "content": "Idle"
+        },
+        "5": {
+            "branchId": 2,
+            "one": "7",
+            "type": "branch",
+            "content": "Waiting"
+        },
+        "6": {
+            "type": "sinput",
+            "one": "5",
+            "content": "onInput(msg)"
+        },
+        "7": {
+            "type": "action",
+            "one": "11",
+            "content": "tobj = setTimeout(me.onTimeout, delay)"
+        },
+        "9": {
+            "one": "23",
+            "type": "case",
+            "two": null,
+            "content": "onTimeout()"
+        },
+        "10": {
+            "one": "12",
+            "type": "case",
+            "two": "9",
+            "content": "onInput(msg)"
+        },
+        "11": {
+            "type": "select",
+            "one": "10",
+            "content": "receive"
+        },
+        "12": {
+            "type": "action",
+            "one": "5",
+            "content": "clearTimeout(tobj)"
+        },
+        "14": {
+            "branchId": 4,
+            "one": "15",
+            "type": "branch",
+            "content": "Working"
+        },
+        "15": {
+            "type": "select",
+            "one": "16",
+            "content": "receive"
+        },
+        "16": {
+            "one": "21",
+            "type": "case",
+            "two": "17",
+            "content": "onInput(msg)"
+        },
+        "17": {
+            "one": "20",
+            "type": "case",
+            "two": null,
+            "content": "done()"
+        },
+        "20": {
+            "flag1": 0,
+            "type": "question",
+            "one": "2",
+            "two": "5",
+            "content": "nextRequested"
+        },
+        "21": {
+            "type": "action",
+            "one": "14",
+            "content": "nextRequested = true"
+        },
+        "23": {
+            "branchId": 3,
+            "one": "26",
+            "type": "branch",
+            "content": "Start process"
+        },
+        "24": {
+            "type": "action",
+            "one": "14",
+            "content": "action().then(me.done)"
+        },
+        "26": {
+            "type": "action",
+            "one": "24",
+            "content": "nextRequested = false"
+        }
+    },
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": true,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "action\ndelay",
+    "type": "drakon"
+}

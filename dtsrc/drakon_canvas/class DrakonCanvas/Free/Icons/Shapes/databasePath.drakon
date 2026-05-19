@@ -1,0 +1,38 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "h2 = makeCylinderHeight(w)\nscale = h / h2\nctop = y - h2 + w\ncbottom = y + h2 - w\nctx.save()\nctx.translate(x, y)\nctx.scale(1, scale)\nctx.translate(-x, -y)\nctx.beginPath();\nctx.arc(x, ctop, w, -Math.PI, 0)\nctx.arc(x, cbottom, w, 0, Math.PI)\nctx.closePath()\nctx.restore()"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "h = height / 2\nw = width / 2"
+    },
+    "5": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "x = left + w\ny = top + h"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nleft\ntop\nwidth\nheight",
+  "type": "drakon"
+}

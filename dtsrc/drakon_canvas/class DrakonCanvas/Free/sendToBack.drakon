@@ -1,0 +1,121 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "9": {
+      "branchId": 4,
+      "one": "11",
+      "type": "branch",
+      "content": "Perform edit"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "return updateAndKeepSelection(\n    widget,\n    edits\n)"
+    },
+    "21": {
+      "branchId": 1,
+      "one": "27",
+      "type": "branch",
+      "content": "Find item"
+    },
+    "23": {
+      "one": "51",
+      "type": "action",
+      "two": "",
+      "content": "edits = []"
+    },
+    "27": {
+      "type": "action",
+      "one": "23",
+      "content": "tracing.trace(\"sendToBack\", id)"
+    },
+    "49": {
+      "flag1": 0,
+      "type": "question",
+      "two": "52",
+      "one": "53",
+      "content": "first.id === id"
+    },
+    "50": {
+      "type": "action",
+      "one": "49",
+      "content": "first = free[0]"
+    },
+    "51": {
+      "one": "50",
+      "type": "action",
+      "two": "",
+      "content": "free = widget.visuals.free"
+    },
+    "52": {
+      "flag1": 0,
+      "type": "question",
+      "two": "9",
+      "one": "53",
+      "content": "first.zIndex < 0"
+    },
+    "53": {
+      "branchId": 2,
+      "one": "60",
+      "type": "branch",
+      "content": "Move myself"
+    },
+    "55": {
+      "one": "56",
+      "type": "action",
+      "two": "",
+      "content": "newZ = first.zIndex - 1"
+    },
+    "56": {
+      "one": "57",
+      "type": "action",
+      "two": "",
+      "content": "updateItem(edits, id, {zIndex: newZ})"
+    },
+    "57": {
+      "branchId": 3,
+      "one": "59",
+      "type": "branch",
+      "content": "Rearrange others"
+    },
+    "58": {
+      "type": "action",
+      "one": "9",
+      "content": "rearrangeZOnDelete(\n    widget,\n    toDelete,\n    edits\n)"
+    },
+    "59": {
+      "type": "action",
+      "one": "58",
+      "content": "toDelete = {}\ntoDelete[id] = true"
+    },
+    "60": {
+      "type": "action",
+      "one": "61",
+      "content": "toMove = getFree(widget.visuals, id)"
+    },
+    "61": {
+      "flag1": 0,
+      "type": "question",
+      "two": "62",
+      "one": "55",
+      "content": "toMove.zIndex < 0"
+    },
+    "62": {
+      "one": "56",
+      "type": "action",
+      "two": "",
+      "content": "newZ = first.zIndex"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nid",
+  "type": "drakon"
+}

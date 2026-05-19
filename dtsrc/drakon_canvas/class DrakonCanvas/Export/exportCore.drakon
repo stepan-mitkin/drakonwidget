@@ -1,0 +1,81 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "24"
+    },
+    "4": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "width = (box.right - box.left) * zoom\nheight = (box.bottom - box.top) * zoom"
+    },
+    "6": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals\nconfig = visuals.config"
+    },
+    "9": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "factor = 1"
+    },
+    "14": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "paintCore(\n    widget,\n    factor,\n    zoom,\n    -box.left,\n    -box.top,\n    width,\n    height\n)"
+    },
+    "21": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "visuals.ctx = ctx"
+    },
+    "22": {
+      "type": "action",
+      "one": "1",
+      "content": "visuals.ctx = widget.canvas.getContext(\n    \"2d\"\n)"
+    },
+    "24": {
+      "type": "action",
+      "one": "9",
+      "content": "tracing.trace(\n    \"DrakonCanvas.exportCore\",\n    zoom\n)"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "one": "28",
+      "two": "22",
+      "content": "watermark"
+    },
+    "27": {
+      "one": "22",
+      "type": "action",
+      "two": "",
+      "content": "drawWatermark(\n    widget,\n    ctx,\n    watermark,\n    factor,\n    zoom,\n    width,\n    height\n)"
+    },
+    "28": {
+      "flag1": 1,
+      "type": "question",
+      "one": "27",
+      "two": "22",
+      "content": "ctx.resetTransform"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nbox\nzoom\nctx\nwatermark",
+  "type": "drakon"
+}

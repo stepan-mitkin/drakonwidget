@@ -1,0 +1,131 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "23"
+    },
+    "4": {
+      "type": "action",
+      "one": "15",
+      "content": "clearSockets(self.visuals)"
+    },
+    "5": {
+      "type": "case",
+      "one": "11"
+    },
+    "6": {
+      "one": "19",
+      "type": "case",
+      "two": "17",
+      "content": "\"branch\""
+    },
+    "7": {
+      "one": "13",
+      "type": "case",
+      "two": "6",
+      "content": "\"case\""
+    },
+    "8": {
+      "type": "select",
+      "one": "7",
+      "content": "type"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "paint(self)"
+    },
+    "13": {
+      "type": "action",
+      "one": "14",
+      "content": "showInsert = function (visuals, node) {\n    showCaseSockets(\n        visuals,\n        node,\n        \"paste\"\n    )\n}"
+    },
+    "14": {
+      "type": "action",
+      "one": "11",
+      "content": "forType(self.visuals, \"case\", showInsert)"
+    },
+    "15": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "11",
+      "content": "type"
+    },
+    "16": {
+      "type": "action",
+      "one": "8",
+      "content": "deselectAll(self)"
+    },
+    "17": {
+      "one": "18",
+      "type": "case",
+      "two": "21",
+      "content": "\"block\""
+    },
+    "18": {
+      "type": "action",
+      "one": "11",
+      "content": "showBlockInsertSockets(\n    self.visuals,\n    \"paste\",\n    type\n)"
+    },
+    "19": {
+      "type": "action",
+      "one": "11",
+      "content": "showAllBranchSockets(\n    self.visuals,\n    \"paste\"\n)"
+    },
+    "20": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "1",
+      "content": "isReadonlyImpl(self)"
+    },
+    "21": {
+      "one": "22",
+      "type": "case",
+      "two": "24",
+      "content": "\"duration\""
+    },
+    "22": {
+      "type": "action",
+      "one": "11",
+      "content": "showDurationSockets(\n    self.visuals,\n    \"paste\"\n)"
+    },
+    "23": {
+      "type": "action",
+      "one": "20",
+      "content": "tracing.trace(\n    \"DrakonCanvas.showPasteSockets\",\n    type\n)"
+    },
+    "24": {
+      "one": "26",
+      "type": "case",
+      "two": "5",
+      "content": "\"mind\""
+    },
+    "25": {
+      "type": "action",
+      "one": "11",
+      "content": "showMindInsertSockets(\n    self,\n    \"paste\",\n    undefined\n)"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "two": "11",
+      "one": "25",
+      "content": "isMind(self)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "type",
+  "type": "drakon"
+}

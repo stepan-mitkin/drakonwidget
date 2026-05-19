@@ -1,0 +1,69 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "13"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return true"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "one": "14",
+      "two": "6",
+      "content": "big.left <= small.left"
+    },
+    "14": {
+      "flag1": 1,
+      "type": "question",
+      "one": "15",
+      "two": "6",
+      "content": "big.top <= small.top"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "bigRight = big.left + big.width\nsmallRight = small.left + small.width"
+    },
+    "16": {
+      "flag1": 1,
+      "type": "question",
+      "one": "17",
+      "two": "6",
+      "content": "bigRight >= smallRight"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "bigBottom = big.top + big.height\nsmallBottom = small.top + small.height"
+    },
+    "18": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "3",
+      "content": "bigBottom >= smallBottom"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "big\nsmall",
+  "type": "drakon"
+}

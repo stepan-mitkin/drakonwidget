@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "item = {\n    hint: hint,\n    type: \"item\",\n    text: text,\n    icon: icon,\n    action: action\n}"
+    },
+    "4": {
+      "type": "action",
+      "one": "1",
+      "content": "menu.push(item)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "hint\nmenu\ntext\nicon\naction",
+  "type": "drakon"
+}

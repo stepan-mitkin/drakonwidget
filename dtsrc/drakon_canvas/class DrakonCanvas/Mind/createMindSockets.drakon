@@ -1,0 +1,167 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "51",
+      "type": "branch",
+      "content": "Get selected mind nodes"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": "selectedNodes = getNodesFromSelection(\n    widget\n)"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "nodes = selectedNodes.filter(\n    function (node) {\n        return isMindIcon(widget, node)\n    }\n)"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "one": "6",
+      "two": "55",
+      "content": "nodes.length === 1"
+    },
+    "6": {
+      "type": "action",
+      "one": "39",
+      "content": "node = nodes[0]"
+    },
+    "7": {
+      "branchId": 5,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "8": {
+      "branchId": 3,
+      "one": "38",
+      "type": "branch",
+      "content": "Sibling sockets"
+    },
+    "16": {
+      "branchId": 4,
+      "one": "29",
+      "type": "branch",
+      "content": "Create sockets - before and after"
+    },
+    "20": {
+      "type": "action",
+      "one": "25",
+      "content": "config = widget.visuals.config"
+    },
+    "25": {
+      "type": "action",
+      "one": "54",
+      "content": "radius = config.socketTouchRadius"
+    },
+    "28": {
+      "flag1": 0,
+      "type": "question",
+      "one": "36",
+      "two": "7",
+      "content": "isReadonlyImpl(widget)"
+    },
+    "29": {
+      "one": "30",
+      "type": "action",
+      "two": "",
+      "content": "before = createSocket(\n    visuals,\n    sib.before.x,\n    sib.before.y,\n    \"insert\",\n    \"mind-before\",\n    radius\n)"
+    },
+    "30": {
+      "one": "31",
+      "type": "action",
+      "two": "",
+      "content": "before.node = node\nbefore.iconType = \"idea\""
+    },
+    "31": {
+      "one": "32",
+      "type": "action",
+      "two": "",
+      "content": "after = createSocket(\n    visuals,\n    sib.after.x,\n    sib.after.y,\n    \"insert\",\n    \"mind-after\",\n    radius\n)"
+    },
+    "32": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "after.node = node\nafter.iconType = \"idea\""
+    },
+    "36": {
+      "type": "action",
+      "one": "20",
+      "content": "visuals = widget.visuals"
+    },
+    "38": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "53",
+      "content": "node.parent"
+    },
+    "39": {
+      "branchId": 2,
+      "one": "40",
+      "type": "branch",
+      "content": "Child socket"
+    },
+    "40": {
+      "flag1": 1,
+      "type": "question",
+      "two": "8",
+      "one": "52",
+      "content": "node.children.length === 0"
+    },
+    "41": {
+      "one": "42",
+      "type": "action",
+      "two": "",
+      "content": "child = createSocket(\n    visuals,\n    cpos.x,\n    cpos.y,\n    \"insert\",\n    \"mind-child\",\n    radius\n)"
+    },
+    "42": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "child.node = node\nchild.iconType = \"idea\""
+    },
+    "51": {
+      "flag1": 1,
+      "type": "question",
+      "two": "7",
+      "one": "28",
+      "content": "isMind(widget)"
+    },
+    "52": {
+      "type": "action",
+      "one": "41",
+      "content": "cpos = getMindChildSocketPos(r2, node)"
+    },
+    "53": {
+      "type": "action",
+      "one": "16",
+      "content": "sib = getMindSiblingSocketPos(r2, node)"
+    },
+    "54": {
+      "type": "action",
+      "one": "3",
+      "content": "r2 = radius * 1.5"
+    },
+    "55": {
+      "type": "action",
+      "one": "7",
+      "content": "clearSockets(visuals)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

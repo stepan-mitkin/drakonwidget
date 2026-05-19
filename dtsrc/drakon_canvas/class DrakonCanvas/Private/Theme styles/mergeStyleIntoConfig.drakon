@@ -1,0 +1,94 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "30"
+    },
+    "15": {
+      "type": "action",
+      "one": "16",
+      "content": "result = {}"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "Object.assign(result, config)"
+    },
+    "17": {
+      "one": "21",
+      "type": "action",
+      "two": "",
+      "content": "copyFieldsWithValue(\n    result,\n    diagramStyle,\n    configToStyleFields()\n)"
+    },
+    "18": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "copyFieldsWithValue(\n    result.theme,\n    diagramStyle,\n    themeToStyleFields()\n)"
+    },
+    "19": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    },
+    "20": {
+      "type": "action",
+      "one": "15",
+      "content": "diagramStyle = diagramStyle || {}"
+    },
+    "21": {
+      "type": "action",
+      "one": "22",
+      "content": "result.theme = {icons: {}}"
+    },
+    "22": {
+      "type": "action",
+      "one": "18",
+      "content": "Object.assign(result.theme, config.theme)"
+    },
+    "23": {
+      "one": "26",
+      "type": "action",
+      "two": "",
+      "content": "setIconProps(\n    result.theme.icons,\n    [\"header\"],\n    {font: diagramStyle.headerFont}\n)"
+    },
+    "24": {
+      "one": "19",
+      "type": "action",
+      "two": "",
+      "content": "setIconProps(\n    result.theme.icons,\n    [\"branch\"],\n    {font: diagramStyle.branchFont}\n)"
+    },
+    "25": {
+      "flag1": 1,
+      "type": "question",
+      "two": "26",
+      "one": "23",
+      "content": "diagramStyle.headerFont"
+    },
+    "26": {
+      "flag1": 1,
+      "type": "question",
+      "two": "19",
+      "one": "24",
+      "content": "diagramStyle.branchFont"
+    },
+    "30": {
+      "type": "action",
+      "one": "20",
+      "content": "config = utils.deepClone(config)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "diagramStyle\nconfig",
+  "type": "drakon"
+}

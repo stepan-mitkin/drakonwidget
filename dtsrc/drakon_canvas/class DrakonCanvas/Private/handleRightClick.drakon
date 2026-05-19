@@ -1,0 +1,100 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "4",
+      "type": "branch",
+      "content": "Build menu"
+    },
+    "4": {
+      "one": "126",
+      "type": "action",
+      "two": "",
+      "content": "prim = findVisualItem(widget, pos)"
+    },
+    "114": {
+      "type": "action",
+      "one": "123",
+      "content": "menu = buildContextMenuForPrim(\n    widget,\n    prim,\n    evt\n)"
+    },
+    "115": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "117": {
+      "branchId": 2,
+      "one": "118",
+      "type": "branch",
+      "content": "Invoke context menu"
+    },
+    "118": {
+      "flag1": 0,
+      "type": "question",
+      "two": "115",
+      "one": "120",
+      "content": "menu.length === 0"
+    },
+    "119": {
+      "flag1": 1,
+      "type": "question",
+      "one": "122",
+      "two": "121",
+      "content": "callback"
+    },
+    "120": {
+      "one": "119",
+      "type": "action",
+      "two": "",
+      "content": "callback = widget.config.showContextMenu"
+    },
+    "121": {
+      "one": "115",
+      "type": "action",
+      "two": "",
+      "content": "console.error(\n    \"showContextMenu is missing in config\"\n)"
+    },
+    "122": {
+      "one": "115",
+      "type": "action",
+      "two": "",
+      "content": "callback(\n    evt.clientX,\n    evt.clientY,\n    menu,\n    prim\n)"
+    },
+    "123": {
+      "one": "117",
+      "type": "action",
+      "two": "",
+      "content": "paint(widget)"
+    },
+    "124": {
+      "flag1": 1,
+      "type": "question",
+      "two": "125",
+      "one": "114",
+      "content": "prim"
+    },
+    "125": {
+      "type": "action",
+      "one": "114",
+      "content": "deselectAll(widget)"
+    },
+    "126": {
+      "type": "action",
+      "one": "124",
+      "content": "tracing.trace(\n    \"handleRightClick\",\n    [pos, prim]\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\npos\nevt",
+  "type": "drakon"
+}

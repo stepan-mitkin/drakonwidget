@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "ctx.setLineDash([])\nctx.strokeStyle = color\nctx.lineWidth = width\nctx.lineCap = \"round\"\nctx.lineJoin = \"round\"\nheight = ARROW_WIDTH / 2\nctx.beginPath();\nctx.moveTo(0, -height - width)\nctx.lineTo(-ARROW_WIDTH, 0);\nctx.lineTo(0, height + width)\nctx.stroke();\nctx.stroke();"
+    },
+    "5": {
+      "type": "action",
+      "one": "3",
+      "content": "ARROW_WIDTH = 14\nARROW_HEIGHT = 3"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\ncolor\nwidth",
+  "type": "drakon"
+}

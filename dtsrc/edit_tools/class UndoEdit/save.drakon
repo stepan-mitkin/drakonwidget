@@ -1,0 +1,35 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "1"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "6",
+      "content": "change; changesToSave"
+    },
+    "6": {
+      "type": "action",
+      "one": "4",
+      "content": "sendEditToServer(self, change)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "changesToSave",
+  "type": "drakon"
+}

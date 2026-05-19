@@ -1,0 +1,89 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "13"
+    },
+    "8": {
+      "one": "15",
+      "type": "action",
+      "two": "",
+      "content": "edits = []"
+    },
+    "9": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "return edits"
+    },
+    "13": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "model = widget.model"
+    },
+    "15": {
+      "flag1": 1,
+      "type": "question",
+      "two": "19",
+      "one": "16",
+      "content": "socket.edge"
+    },
+    "16": {
+      "type": "action",
+      "one": "17",
+      "content": "beginpar = socket.edge.head"
+    },
+    "17": {
+      "type": "action",
+      "one": "22",
+      "content": "endparId = getParTarget(beginpar)"
+    },
+    "18": {
+      "type": "action",
+      "one": "26",
+      "content": "endparId = getParTarget(beginpar)"
+    },
+    "19": {
+      "type": "action",
+      "one": "18",
+      "content": "beginpar = socket.node"
+    },
+    "22": {
+      "one": "28",
+      "type": "action",
+      "two": "",
+      "content": "item = {\n    type: \"parbegin\",\n    one: endparId,\n    two: socket.edge.tail.itemId\n}"
+    },
+    "25": {
+      "type": "action",
+      "one": "9",
+      "content": "updateItem(\n    edits,\n    beginpar.itemId,\n    {two: newId}\n)"
+    },
+    "26": {
+      "one": "28",
+      "type": "action",
+      "two": "",
+      "content": "item = {type: \"parbegin\", one: endparId}"
+    },
+    "28": {
+      "one": "25",
+      "type": "action",
+      "two": "",
+      "content": "newId = createItem(model, edits, item)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nsocket",
+  "type": "drakon"
+}

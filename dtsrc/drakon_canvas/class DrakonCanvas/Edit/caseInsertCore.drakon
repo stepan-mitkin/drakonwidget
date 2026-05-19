@@ -1,0 +1,74 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "10",
+      "content": "edits = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "17",
+      "content": "caseId = createItem(model, edits, fields)"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "10": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "model = widget.model"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "targetId = existing.next[0].itemId"
+    },
+    "12": {
+      "type": "action",
+      "one": "13",
+      "content": "item = item || {}\nfields = utils.clone(item)\nfields.one = targetId\nfields.type = \"case\""
+    },
+    "13": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "14",
+      "content": "existing.next.length === 2"
+    },
+    "14": {
+      "type": "action",
+      "one": "15",
+      "content": "right = existing.next[1]"
+    },
+    "15": {
+      "type": "action",
+      "one": "4",
+      "content": "fields.two = right.itemId"
+    },
+    "17": {
+      "type": "action",
+      "one": "9",
+      "content": "updateItem(\n    edits,\n    existing.itemId,\n    {two: caseId}\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nexisting\nitem",
+  "type": "drakon"
+}

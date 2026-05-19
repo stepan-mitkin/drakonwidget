@@ -1,0 +1,26 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "7"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "tracing.registerEvent(\n    element,\n    eventName,\n    action\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "element\neventName\naction",
+  "type": "drakon"
+}

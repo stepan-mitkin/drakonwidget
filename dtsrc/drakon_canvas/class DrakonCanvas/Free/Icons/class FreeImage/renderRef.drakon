@@ -1,0 +1,37 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 0,
+      "one": "11",
+      "type": "branch"
+    },
+    "5": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "centerContentFree(visuals, element, ctx)"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "renderCallback = function (\n    ctx,\n    left,\n    top\n) {\n    calloutPath(\n        ctx,\n        left,\n        top,\n        element.width,\n        element.height,\n        element.px,\n        element.py\n    )\n}"
+    },
+    "12": {
+      "type": "action",
+      "one": "5",
+      "content": "renderIconShapeComplex(\n    ctx,\n    visuals,\n    element,\n    renderCallback,\n    element.left,\n    element.top\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nelement\nctx",
+  "type": "drakon"
+}

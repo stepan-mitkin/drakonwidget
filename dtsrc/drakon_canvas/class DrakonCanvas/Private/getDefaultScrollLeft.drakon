@@ -1,0 +1,88 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "12"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return left"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "5",
+      "one": "10",
+      "content": "widget.model.type === \"free\""
+    },
+    "5": {
+      "one": "6",
+      "type": "action",
+      "two": "",
+      "content": "wwidth = widget.width / zoom"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "one": "7",
+      "two": "8",
+      "content": "wwidth > box.width"
+    },
+    "7": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "left = box.left"
+    },
+    "8": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "left = box.left - Math.floor(\n    (wwidth - box.width) / 2\n)"
+    },
+    "10": {
+      "one": "3",
+      "type": "action",
+      "two": "",
+      "content": "left = box.left"
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "one": "4",
+      "two": "5",
+      "content": "widget.model.type === \"graf\""
+    },
+    "12": {
+      "one": "14",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals"
+    },
+    "13": {
+      "one": "11",
+      "type": "action",
+      "two": "",
+      "content": "zoom = widget.zoomFactor"
+    },
+    "14": {
+      "type": "action",
+      "one": "13",
+      "content": "box = visuals.smallBox"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

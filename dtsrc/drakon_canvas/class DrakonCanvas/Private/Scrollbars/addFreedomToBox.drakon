@@ -1,0 +1,70 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "5"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "result.left = box.left - hor\nresult.right = box.right + hor\nresult.width = box.width + hor * 2"
+    },
+    "4": {
+      "type": "action",
+      "one": "6",
+      "content": "result.top = box.top - ver\nresult.bottom = box.bottom + ver\nresult.height = box.height + ver * 2"
+    },
+    "5": {
+      "type": "action",
+      "one": "8",
+      "content": "result = {}"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return result"
+    },
+    "7": {
+      "flag1": 1,
+      "type": "question",
+      "two": "10",
+      "one": "3",
+      "content": "box.width > hor"
+    },
+    "8": {
+      "type": "action",
+      "one": "7",
+      "content": "hor = Math.floor(widgetWidth / 2)\nver = Math.floor(widgetHeight / 2)"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "4",
+      "two": "11",
+      "content": "box.height > ver"
+    },
+    "10": {
+      "type": "action",
+      "one": "9",
+      "content": "result.left = box.left\nresult.right = box.right\nresult.width = box.width"
+    },
+    "11": {
+      "type": "action",
+      "one": "6",
+      "content": "result.top = box.top\nresult.bottom = box.bottom\nresult.height = box.height"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "box\nwidgetWidth\nwidgetHeight",
+  "type": "drakon"
+}

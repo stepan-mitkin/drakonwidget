@@ -1,0 +1,78 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "25"
+    },
+    "5": {
+      "flag1": 0,
+      "type": "question",
+      "two": "21",
+      "one": "15",
+      "content": "pathNode.left"
+    },
+    "9": {
+      "flag1": 1,
+      "type": "question",
+      "one": "5",
+      "two": "23",
+      "content": "left"
+    },
+    "13": {
+      "one": "18",
+      "type": "action",
+      "two": "",
+      "content": "utils.addRange(\n    pathNode.up.links,\n    socket.links\n)"
+    },
+    "15": {
+      "type": "action",
+      "one": "13",
+      "content": "socket = {\n    op: \"insert\",\n    type: \"firstpar\",\n    node: pathNode,\n    links: []\n}"
+    },
+    "17": {
+      "type": "action",
+      "one": "18",
+      "content": "socket = {\n    op: \"insert\",\n    type: \"par\",\n    edge: pathNode.right,\n    links: []\n}"
+    },
+    "18": {
+      "type": "action",
+      "one": "1",
+      "content": "runInsertAction(widget, socket)"
+    },
+    "21": {
+      "type": "action",
+      "one": "18",
+      "content": "socket = {\n    op: \"insert\",\n    type: \"par\",\n    edge: pathNode.left,\n    links: []\n}"
+    },
+    "23": {
+      "flag1": 1,
+      "type": "question",
+      "one": "17",
+      "two": "24",
+      "content": "pathNode.right"
+    },
+    "24": {
+      "type": "action",
+      "one": "18",
+      "content": "socket = {\n    op: \"insert\",\n    type: \"par\",\n    node: pathNode,\n    links: []\n}"
+    },
+    "25": {
+      "type": "action",
+      "one": "9",
+      "content": "tracing.trace(\n    \"insertPath\",\n    pathNode.id + \"-\" + left\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\npathNode\nleft",
+  "type": "drakon"
+}

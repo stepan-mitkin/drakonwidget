@@ -1,0 +1,63 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "edge = visuals.edges[id]"
+    },
+    "4": {
+      "flag1": 0,
+      "type": "question",
+      "two": "9",
+      "one": "8",
+      "content": "edge.vertical"
+    },
+    "7": {
+      "type": "action",
+      "one": "4",
+      "content": "head = edge.head\ntail = edge.tail"
+    },
+    "8": {
+      "type": "action",
+      "one": "10",
+      "content": "head.right = null\ntail.left = null"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "head.down = null\ntail.up = null"
+    },
+    "10": {
+      "type": "action",
+      "one": "11",
+      "content": "utils.remove(head.sources, edge)\nutils.remove(head.targets, edge)\nutils.remove(tail.sources, edge)\nutils.remove(tail.targets, edge)"
+    },
+    "11": {
+      "type": "action",
+      "one": "12",
+      "content": "edge.head = null\nedge.tail = null\nedge.source = null\nedge.target = null\nedge.finalTarget = null"
+    },
+    "12": {
+      "type": "action",
+      "one": "1",
+      "content": "delete visuals.edges[id]"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nid",
+  "type": "drakon"
+}

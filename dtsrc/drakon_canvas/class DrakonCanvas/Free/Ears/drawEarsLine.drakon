@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "lines = visuals.config.theme.lines"
+    },
+    "5": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "lineWidth = visuals.config.theme.lineWidth"
+    },
+    "6": {
+      "flag1": 1,
+      "type": "question",
+      "two": "1",
+      "one": "4",
+      "content": "ears.lineTarget"
+    },
+    "8": {
+      "type": "action",
+      "one": "11",
+      "content": "coords = buildConnectionLineCoords(\n    ears.element,\n    ears.lineTarget,\n    role\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "8",
+      "content": "role = getEarRole(ears)"
+    },
+    "10": {
+      "type": "action",
+      "one": "1",
+      "content": "multiline(\n    visuals.config,\n    ctx,\n    coords,\n    lines,\n    lineWidth,\n    undefined,\n    undefined,\n    undefined\n)"
+    },
+    "11": {
+      "flag1": 0,
+      "type": "question",
+      "one": "10",
+      "two": "1",
+      "content": "coords.length === 0"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nears\nctx",
+  "type": "drakon"
+}

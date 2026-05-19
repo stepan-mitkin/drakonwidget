@@ -1,0 +1,103 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "11"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return added"
+    },
+    "4": {
+      "one": "3",
+      "type": "loopend",
+      "two": ""
+    },
+    "5": {
+      "one": "15",
+      "type": "loopbegin",
+      "two": "",
+      "content": "element; visuals.free"
+    },
+    "10": {
+      "type": "action",
+      "one": "5",
+      "content": "added = false"
+    },
+    "11": {
+      "type": "action",
+      "one": "10",
+      "content": "visuals = widget.visuals\nselection = widget.selection"
+    },
+    "12": {
+      "flag1": 1,
+      "type": "question",
+      "one": "13",
+      "two": "14",
+      "content": "element.innerBox"
+    },
+    "13": {
+      "type": "action",
+      "one": "22",
+      "content": "box = element.innerBox"
+    },
+    "14": {
+      "type": "action",
+      "one": "22",
+      "content": "box = element.box"
+    },
+    "15": {
+      "flag1": 0,
+      "type": "question",
+      "one": "12",
+      "two": "4",
+      "content": "isSelected(widget, element.id)"
+    },
+    "16": {
+      "one": "17",
+      "type": "action",
+      "two": "",
+      "content": "selection.prims[element.id] = \"free\""
+    },
+    "17": {
+      "type": "action",
+      "one": "4",
+      "content": "added = true"
+    },
+    "19": {
+      "flag1": 0,
+      "type": "question",
+      "one": "16",
+      "two": "21",
+      "content": "element.boxes"
+    },
+    "21": {
+      "flag1": 1,
+      "type": "question",
+      "one": "16",
+      "two": "4",
+      "content": "intersectBoxes(\n    element,\n    visuals.selectionFrame\n)"
+    },
+    "22": {
+      "flag1": 1,
+      "type": "question",
+      "two": "4",
+      "one": "19",
+      "content": "boxesIntersect(\n    visuals.selectionFrame,\n    box\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget",
+  "type": "drakon"
+}

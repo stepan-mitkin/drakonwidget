@@ -1,0 +1,31 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "7",
+      "content": "defaultValues = {\n    action: true,\n    question: true,\n    \"case\": true,\n    select: true,\n    branch: true,\n    address: true,\n    loopbegin: true,\n    loopend: true,\n    insertion: true,\n    comment: true,\n    simpleinput: true,\n    simpleoutput: true,\n    shelf: true,\n    input: true,\n    output: true,\n    process: true,\n    \"drakon-image\": true\n}"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "mergeConfigs(\n    output,\n    input,\n    \"alignedNodes\",\n    defaultValues\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "output\ninput",
+  "type": "drakon"
+}

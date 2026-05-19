@@ -1,0 +1,62 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "10"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "4": {
+      "type": "loopend",
+      "one": "3"
+    },
+    "5": {
+      "type": "loopbegin",
+      "one": "6",
+      "content": "itemId; visuals.branches"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "branch = getNode(visuals, itemId)"
+    },
+    "7": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "4",
+      "content": "branch.branchId > branchId"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": "newId = branch.branchId - 1"
+    },
+    "9": {
+      "type": "action",
+      "one": "4",
+      "content": "updateItem(\n    edits,\n    itemId,\n    {branchId: newId}\n)"
+    },
+    "10": {
+      "type": "action",
+      "one": "5",
+      "content": "edits = []"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nbranchId",
+  "type": "drakon"
+}

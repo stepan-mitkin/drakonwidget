@@ -1,0 +1,56 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "11": {
+      "branchId": 3,
+      "one": "37",
+      "type": "branch",
+      "content": "Perform edit"
+    },
+    "12": {
+      "branchId": 2,
+      "one": "20",
+      "type": "branch",
+      "content": "Remove vertex"
+    },
+    "20": {
+      "type": "action",
+      "one": "11",
+      "content": "element.coords.splice(ordinal, 1)"
+    },
+    "22": {
+      "branchId": 1,
+      "one": "35",
+      "type": "branch",
+      "content": "Prepare"
+    },
+    "33": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "element = getFree(visuals, id)"
+    },
+    "35": {
+      "one": "33",
+      "type": "action",
+      "two": "",
+      "content": "visuals = widget.visuals"
+    },
+    "37": {
+      "type": "action",
+      "one": "1",
+      "content": "savePoly(\n    widget,\n    id,\n    element.left,\n    element.top,\n    element.coords\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nid\nordinal",
+  "type": "drakon"
+}

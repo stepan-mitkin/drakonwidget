@@ -1,0 +1,50 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "10"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "render = visuals.config.iconRender[\n    node.type\n]"
+    },
+    "5": {
+      "flag1": 1,
+      "type": "question",
+      "one": "9",
+      "two": "6",
+      "content": "render"
+    },
+    "6": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "console.error(\n    \"iconRender callback not found for element of type: \"\n    + node.type\n)"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "render(visuals, node, ctx)"
+    },
+    "10": {
+      "type": "action",
+      "one": "4",
+      "content": "ctx.setLineDash([])"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode\nctx",
+  "type": "drakon"
+}

@@ -1,0 +1,52 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "3"
+    },
+    "3": {
+      "type": "action",
+      "one": "10",
+      "content": "edits = []"
+    },
+    "4": {
+      "type": "action",
+      "one": "17",
+      "content": "caseId = createItem(model, edits, fields)"
+    },
+    "9": {
+      "type": "action",
+      "one": "1",
+      "content": "return edits"
+    },
+    "10": {
+      "one": "12",
+      "type": "action",
+      "two": "",
+      "content": "model = widget.model"
+    },
+    "12": {
+      "type": "action",
+      "one": "4",
+      "content": "fields = utils.clone(item)"
+    },
+    "17": {
+      "type": "action",
+      "one": "9",
+      "content": "updateItem(\n    edits,\n    existing.itemId,\n    {side: caseId}\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nexisting\nitem",
+  "type": "drakon"
+}

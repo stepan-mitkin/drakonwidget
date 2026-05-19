@@ -1,0 +1,36 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "6"
+    },
+    "6": {
+      "type": "action",
+      "one": "7",
+      "content": "left = Math.floor(node.x - node.w) + 1"
+    },
+    "7": {
+      "type": "action",
+      "one": "11",
+      "content": "top = Math.ceil(node.y - node.h)"
+    },
+    "11": {
+      "type": "action",
+      "one": "1",
+      "content": "renderContentCore(\n    visuals,\n    node,\n    left,\n    top\n)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "visuals\nnode",
+  "type": "drakon"
+}

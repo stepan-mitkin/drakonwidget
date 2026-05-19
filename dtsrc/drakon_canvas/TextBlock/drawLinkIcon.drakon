@@ -1,0 +1,64 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 1,
+      "one": "3",
+      "type": "branch",
+      "content": "Icon back"
+    },
+    "3": {
+      "type": "action",
+      "one": "4",
+      "content": " size = 24\n radius = size / 2\n angle = 3\n x0 = x - radius\n x1 = x0 + angle\n x3 = x + radius\n x2 = x3 - angle\n y0 = y - radius\n y1 = y0 + angle\n y3 = y + radius\n y2 = y3 - angle"
+    },
+    "4": {
+      "type": "action",
+      "one": "5",
+      "content": "ctx.beginPath()\nctx.moveTo(x0, y1)\nctx.lineTo(x1, y0)\nctx.lineTo(x2, y0)\nctx.lineTo(x3, y1)\nctx.lineTo(x3, y2)\nctx.lineTo(x2, y3)\nctx.lineTo(x1, y3)\nctx.lineTo(x0, y2)\nctx.closePath()"
+    },
+    "5": {
+      "type": "action",
+      "one": "7",
+      "content": "ctx.fillStyle = \"#000090\"\nctx.fill()"
+    },
+    "6": {
+      "branchId": 3,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "7": {
+      "branchId": 2,
+      "one": "8",
+      "type": "branch",
+      "content": "Arrow"
+    },
+    "8": {
+      "type": "action",
+      "one": "9",
+      "content": " aradius = radius - 7\n m = aradius * 1.0\nx0 = x - aradius\nx1 = x + aradius - m\nx2 = x + aradius\ny0 = y - aradius\ny1 = y0 + m\ny2 = y + aradius"
+    },
+    "9": {
+      "type": "action",
+      "one": "10",
+      "content": "ctx.strokeStyle = \"white\"\nctx.lineWidth = 3\nctx.setLineDash([])"
+    },
+    "10": {
+      "type": "action",
+      "one": "6",
+      "content": "line1(ctx, x0, y2, x2, y0)\nline2(ctx, x, y0, x2, y0, x2, y)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nx\ny",
+  "type": "drakon"
+}

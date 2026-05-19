@@ -1,0 +1,99 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "37"
+    },
+    "20": {
+      "type": "action",
+      "one": "46",
+      "content": "checkNotReadonly(self)"
+    },
+    "37": {
+      "type": "action",
+      "one": "20",
+      "content": "tracing.trace(\n    \"DrakonCanvas.setImage\",\n    itemId\n)"
+    },
+    "43": {
+      "type": "action",
+      "one": "1",
+      "content": "return updateAndKeepSelection(\n    self,\n    edits\n)"
+    },
+    "44": {
+      "one": "45",
+      "type": "action",
+      "two": "",
+      "content": "edits = [\n    {\n        id: itemId,\n        fields: fields,\n        op: \"update\"\n    }\n]"
+    },
+    "45": {
+      "type": "action",
+      "one": "43",
+      "content": "await loadCreatedImages(\n    self,\n    edits,\n    images\n)"
+    },
+    "46": {
+      "type": "action",
+      "one": "47",
+      "content": "fields = {}\nimages = {}"
+    },
+    "47": {
+      "flag1": 0,
+      "type": "question",
+      "one": "55",
+      "two": "57",
+      "content": "imageData.id"
+    },
+    "53": {
+      "one": "54",
+      "type": "action",
+      "two": "",
+      "content": "images[tempId] = {\n    content: imageData.content\n}"
+    },
+    "54": {
+      "one": "44",
+      "type": "action",
+      "two": "",
+      "content": "fields.image = tempId"
+    },
+    "55": {
+      "one": "53",
+      "type": "action",
+      "two": "",
+      "content": "tempId = \"temp-image-id\""
+    },
+    "56": {
+      "type": "action",
+      "one": "44",
+      "content": "fields.image = imageData.id"
+    },
+    "57": {
+      "type": "action",
+      "one": "58",
+      "content": "item = self.model.items[itemId]"
+    },
+    "58": {
+      "flag1": 0,
+      "type": "question",
+      "two": "59",
+      "one": "56",
+      "content": "item.image === imageData.id"
+    },
+    "59": {
+      "type": "action",
+      "one": "1",
+      "content": "return []"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": true,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "itemId\nimageData",
+  "type": "drakon"
+}

@@ -1,0 +1,55 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "1",
+      "content": "drawSubNode(record.element, ctx, color)"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "one": "3",
+      "two": "5",
+      "content": "record.type === \"node\""
+    },
+    "5": {
+      "type": "action",
+      "one": "6",
+      "content": "edge = record.element"
+    },
+    "6": {
+      "flag1": 0,
+      "type": "question",
+      "two": "8",
+      "one": "7",
+      "content": "edge.vertical"
+    },
+    "7": {
+      "type": "action",
+      "one": "1",
+      "content": "drawHorizontalSubEdge(\n    edge,\n    0,\n    ctx,\n    color\n)"
+    },
+    "8": {
+      "type": "action",
+      "one": "1",
+      "content": "drawVerticalSubEdge(edge, 0, ctx, color)"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "record\nctx\ncolor",
+  "type": "drakon"
+}

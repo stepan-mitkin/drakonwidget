@@ -1,0 +1,44 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "4": {
+      "flag1": 1,
+      "type": "question",
+      "two": "6",
+      "one": "7",
+      "content": "hitBox(element.box, pos.x, pos.y)"
+    },
+    "5": {
+      "type": "action",
+      "one": "1",
+      "content": "return elementActions.hit(element, pos)"
+    },
+    "6": {
+      "type": "action",
+      "one": "1",
+      "content": "return false"
+    },
+    "7": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "elementActions = widget.freeIcons[\n    element.type\n]"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "widget\nelement\npos",
+  "type": "drakon"
+}

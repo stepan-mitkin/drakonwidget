@@ -1,0 +1,126 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "branchId": 2,
+      "one": "7",
+      "type": "branch",
+      "content": "Branch1"
+    },
+    "4": {
+      "one": "9",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fill()"
+    },
+    "5": {
+      "one": "4",
+      "type": "action",
+      "two": "",
+      "content": "earArrowPath(\n    ctx,\n    box.left,\n    box.top,\n    box.width,\n    box.height\n)"
+    },
+    "7": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "clearShadow(ctx)"
+    },
+    "8": {
+      "type": "action",
+      "one": "5",
+      "content": "ctx.fillStyle = fill\nctx.strokeStyle = border"
+    },
+    "9": {
+      "type": "action",
+      "one": "23",
+      "content": "ctx.stroke()"
+    },
+    "10": {
+      "branchId": 4,
+      "one": "1",
+      "type": "branch",
+      "content": "Exit"
+    },
+    "11": {
+      "branchId": 3,
+      "one": "10",
+      "type": "branch",
+      "content": "Branch2"
+    },
+    "12": {
+      "branchId": 1,
+      "one": "18",
+      "type": "branch",
+      "content": "Branch3"
+    },
+    "13": {
+      "one": "21",
+      "type": "case",
+      "two": "17",
+      "content": "\"down\""
+    },
+    "14": {
+      "one": "20",
+      "type": "case",
+      "two": "13",
+      "content": "\"right\""
+    },
+    "15": {
+      "one": "19",
+      "type": "case",
+      "two": "14",
+      "content": "\"left\""
+    },
+    "16": {
+      "type": "select",
+      "one": "15",
+      "content": "key"
+    },
+    "17": {
+      "type": "case",
+      "two": null,
+      "one": "2"
+    },
+    "18": {
+      "type": "action",
+      "one": "22",
+      "content": "centerX = box.left + box.width / 2\ncenterY = box.top + box.height / 2"
+    },
+    "19": {
+      "type": "action",
+      "one": "2",
+      "content": "rotateAround(\n    ctx,\n    centerX,\n    centerY,\n    -Math.PI / 2\n)"
+    },
+    "20": {
+      "type": "action",
+      "one": "2",
+      "content": "rotateAround(\n    ctx,\n    centerX,\n    centerY,\n    Math.PI / 2\n)"
+    },
+    "21": {
+      "type": "action",
+      "one": "2",
+      "content": "rotateAround(\n    ctx,\n    centerX,\n    centerY,\n    Math.PI\n)"
+    },
+    "22": {
+      "type": "action",
+      "one": "16",
+      "content": "ctx.save()"
+    },
+    "23": {
+      "type": "action",
+      "one": "11",
+      "content": "ctx.restore()"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "ctx\nkey\nbox\nlineWidth\nfill\nborder",
+  "type": "drakon"
+}

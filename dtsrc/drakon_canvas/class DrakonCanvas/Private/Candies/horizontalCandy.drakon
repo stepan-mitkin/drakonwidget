@@ -1,0 +1,55 @@
+{
+  "items": {
+    "1": {
+      "type": "end"
+    },
+    "2": {
+      "type": "branch",
+      "branchId": 0,
+      "one": "4"
+    },
+    "3": {
+      "type": "action",
+      "one": "9",
+      "content": "ctx.fillRect(x, y - 2, w, 6)"
+    },
+    "4": {
+      "one": "5",
+      "type": "action",
+      "two": "",
+      "content": "head = edge.head\ntail = edge.tail"
+    },
+    "5": {
+      "one": "7",
+      "type": "action",
+      "two": "",
+      "content": "headX = getX(head)\nheadY = getY(head)\ntailX = getX(tail)\nx = headX\ny = headY\nw = tailX - headX"
+    },
+    "7": {
+      "type": "action",
+      "one": "3",
+      "content": "ctx.fillStyle = config.theme.candyBorder"
+    },
+    "8": {
+      "one": "1",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillRect(x + 2, y, w - 4, 2)"
+    },
+    "9": {
+      "one": "8",
+      "type": "action",
+      "two": "",
+      "content": "ctx.fillStyle = config.theme.candyFill"
+    }
+  },
+  "keywords": {
+    "scenario": false,
+    "async": false,
+    "export": false,
+    "function": true,
+    "algoprop": false
+  },
+  "params": "edge\nctx\nconfig",
+  "type": "drakon"
+}
