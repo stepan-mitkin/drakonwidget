@@ -1,0 +1,87 @@
+{
+    "keywords": {
+        "function": false,
+        "machine": false,
+        "async": false,
+        "export": false,
+        "algoprop": false,
+        "lazy": false
+    },
+    "params": "self\ndiagramId\ndiagram\nsender\ncanReuseUndo",
+    "type": "drakon",
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "5"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return undoBuffer"
+        },
+        "5": {
+            "type": "question",
+            "one": "12",
+            "two": "6",
+            "flag1": 1,
+            "content": "self.undoBuffers"
+        },
+        "6": {
+            "type": "action",
+            "one": "12",
+            "content": "self.undoBuffers = {}"
+        },
+        "7": {
+            "type": "question",
+            "one": "15",
+            "two": "8",
+            "flag1": 1,
+            "content": "diagramId in self.undoBuffers"
+        },
+        "8": {
+            "one": "10",
+            "type": "action",
+            "two": "",
+            "content": "undoBuffer = edit_tools.createUndoEdit(\n    diagram,\n    sender\n)"
+        },
+        "9": {
+            "type": "action",
+            "one": "11",
+            "content": "undoBuffer = self.undoBuffers[diagramId]"
+        },
+        "10": {
+            "type": "action",
+            "one": "3",
+            "content": "self.undoBuffers[diagramId] = undoBuffer"
+        },
+        "11": {
+            "type": "action",
+            "one": "3",
+            "content": "undoBuffer.setEditSink(sender)"
+        },
+        "12": {
+            "type": "question",
+            "one": "7",
+            "two": "13",
+            "flag1": 1,
+            "content": "diagramId"
+        },
+        "13": {
+            "one": "3",
+            "type": "action",
+            "two": "",
+            "content": "undoBuffer = edit_tools.createUndoEdit(\n    diagram,\n    sender\n)"
+        },
+        "15": {
+            "type": "question",
+            "one": "9",
+            "two": "8",
+            "flag1": 1,
+            "content": "canReuseUndo"
+        }
+    }
+}

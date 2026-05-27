@@ -1,77 +1,82 @@
 {
-  "items": {
-    "1": {
-      "type": "end"
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "17"
+        },
+        "3": {
+            "type": "action",
+            "one": "1",
+            "content": "return config"
+        },
+        "4": {
+            "one": "14",
+            "type": "action",
+            "two": "",
+            "content": "config = mergeStyleIntoConfig(\n    model.doc.style,\n    wconfig\n)"
+        },
+        "5": {
+            "one": "6",
+            "type": "action",
+            "two": "",
+            "content": "model = widget.model"
+        },
+        "6": {
+            "type": "action",
+            "one": "8",
+            "content": "wconfig = utils.clone(widget.config)"
+        },
+        "8": {
+            "flag1": 1,
+            "type": "question",
+            "two": "9",
+            "one": "4",
+            "content": "\"centerContent\" in wconfig"
+        },
+        "9": {
+            "flag1": 1,
+            "type": "question",
+            "one": "10",
+            "two": "16",
+            "content": "model.type === \"drakon\""
+        },
+        "10": {
+            "type": "action",
+            "one": "4",
+            "content": "wconfig.centerContent = drakonRecenter"
+        },
+        "12": {
+            "type": "action",
+            "one": "3",
+            "content": "config.canvasLabelsSize = fontObj.size"
+        },
+        "14": {
+            "type": "action",
+            "one": "12",
+            "content": "fontObj = parseCssFont(\n    config.canvasLabels,\n    {},\n    true\n)"
+        },
+        "16": {
+            "type": "action",
+            "one": "4",
+            "content": "wconfig.centerContent = false"
+        },
+        "17": {
+            "type": "action",
+            "one": "5",
+            "content": "drakonRecenter = false"
+        }
     },
-    "2": {
-      "type": "branch",
-      "branchId": 0,
-      "one": "5"
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
     },
-    "3": {
-      "type": "action",
-      "one": "1",
-      "content": "return config"
-    },
-    "4": {
-      "one": "14",
-      "type": "action",
-      "two": "",
-      "content": "config = mergeStyleIntoConfig(\n    model.doc.style,\n    wconfig\n)"
-    },
-    "5": {
-      "one": "6",
-      "type": "action",
-      "two": "",
-      "content": "model = widget.model"
-    },
-    "6": {
-      "type": "action",
-      "one": "8",
-      "content": "wconfig = utils.clone(widget.config)"
-    },
-    "8": {
-      "flag1": 1,
-      "type": "question",
-      "two": "9",
-      "one": "4",
-      "content": "\"centerContent\" in wconfig"
-    },
-    "9": {
-      "flag1": 1,
-      "type": "question",
-      "one": "10",
-      "two": "16",
-      "content": "model.type === \"drakon\""
-    },
-    "10": {
-      "type": "action",
-      "one": "4",
-      "content": "wconfig.centerContent = true"
-    },
-    "12": {
-      "type": "action",
-      "one": "3",
-      "content": "config.canvasLabelsSize = fontObj.size"
-    },
-    "14": {
-      "type": "action",
-      "one": "12",
-      "content": "fontObj = parseCssFont(\n    config.canvasLabels,\n    {},\n    true\n)"
-    },
-    "16": {
-      "type": "action",
-      "one": "4",
-      "content": "wconfig.centerContent = false"
-    }
-  },
-  "keywords": {
-    "scenario": false,
-    "async": false,
-    "export": false,
-    "function": true,
-    "algoprop": false
-  },
-  "params": "widget",
-  "type": "drakon"
+    "params": "widget",
+    "type": "drakon"
 }

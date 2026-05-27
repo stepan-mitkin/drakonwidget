@@ -934,7 +934,8 @@
         drakon.setDiagram(
             diagram.id,
             diagram,
-            sender
+            sender,
+            false
         )
 
         localStorage.setItem("current-diagram", currentDiagram)

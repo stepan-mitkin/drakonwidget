@@ -8,12 +8,6 @@
             "one": "62",
             "type": "branch"
         },
-        "51": {
-            "one": "61",
-            "type": "action",
-            "two": "",
-            "content": "self.edit = edit_tools.createUndoEdit(\n    diagram,\n    sender\n)"
-        },
         "53": {
             "one": "58",
             "type": "action",
@@ -52,17 +46,24 @@
         },
         "65": {
             "type": "action",
-            "one": "51",
+            "one": "66",
             "content": "self.selectionMode = Boolean(\n    gconfig.defaultSelectionMode\n)"
+        },
+        "66": {
+            "one": "61",
+            "type": "action",
+            "two": "",
+            "content": "self.edit = getOrCreateUndoEdit(\n    self,\n    diagramId,\n    diagram,\n    sender,\n    canReuseUndo\n)"
         }
     },
     "keywords": {
-        "scenario": false,
+        "function": false,
+        "machine": false,
         "async": true,
         "export": false,
-        "function": true,
-        "algoprop": false
+        "algoprop": false,
+        "lazy": false
     },
-    "params": "diagramId\ndiagram\nsender",
+    "params": "diagramId\ndiagram\nsender\ncanReuseUndo",
     "type": "drakon"
 }

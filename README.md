@@ -1,6 +1,6 @@
 # DrakonWidget
 
-Current version: 1.5.3
+Current version: 1.5.6
 
 DrakonWidget is a JavaScript widget for viewing and editing drakon flowcharts.
 
@@ -85,7 +85,8 @@ var diagram = getDiagramFromServer(diagramId)
 drakon.setDiagram(
     diagramId,
     diagram,
-    sender
+    sender,
+    false
 )
 ```
 
@@ -841,14 +842,15 @@ The array contains all fonts that are used in the diagram.
 Loads a diagram into the widget.
 
 ```
-function setDiagram(diagramId, diagram, editSender)
+function setDiagram(diagramId, diagram, editSender, canReuseUndo)
 ```
 
 |Name|Data type|Description|
 |---|---|---|
-|diagramId|text|The id of the diagram|
+|diagramId|text|The id of the diagram. The widget remembers each diagram's scrolling position and undo buffer by __diagramId__.|
 |diagram|object|The diagram. See the Diagram data model. Takes ownership of the diagram object.|
 |editSender|object|The widget will send edits performed on the diagram to the __editSender__ object. See the EditSender reference.|
+|canReuseUndo|boolean|If falsey, the widget will create a new undo buffer.|
 
 Return value
 

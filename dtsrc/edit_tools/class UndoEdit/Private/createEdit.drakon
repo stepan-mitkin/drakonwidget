@@ -1,112 +1,139 @@
 {
-  "items": {
-    "1": {
-      "type": "end"
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "branchId": 1,
+            "one": "37",
+            "type": "branch",
+            "content": "Create edit"
+        },
+        "10": {
+            "branchId": 4,
+            "one": "18",
+            "type": "branch",
+            "content": "Exit"
+        },
+        "18": {
+            "type": "action",
+            "one": "1",
+            "content": "return edit"
+        },
+        "23": {
+            "branchId": 2,
+            "one": "24",
+            "type": "branch",
+            "content": "Replace tail in undo buffer"
+        },
+        "24": {
+            "flag1": 1,
+            "type": "question",
+            "two": "25",
+            "one": "30",
+            "content": "obj.currentUndo >= 0"
+        },
+        "25": {
+            "type": "action",
+            "one": "28",
+            "content": "obj.undo = []"
+        },
+        "26": {
+            "type": "action",
+            "one": "29",
+            "content": "obj.undo = obj.undo.slice(\n    0,\n    obj.currentUndo\n)"
+        },
+        "28": {
+            "type": "action",
+            "one": "29",
+            "content": "obj.currentUndo = 0"
+        },
+        "29": {
+            "type": "action",
+            "one": "51",
+            "content": "obj.undo.push(edit)"
+        },
+        "30": {
+            "flag1": 1,
+            "type": "question",
+            "two": "26",
+            "one": "31",
+            "content": "obj.currentUndo < obj.undo.length"
+        },
+        "31": {
+            "type": "action",
+            "one": "26",
+            "content": "obj.currentUndo++"
+        },
+        "37": {
+            "type": "action",
+            "one": "40",
+            "content": "diagram = obj.diagram"
+        },
+        "40": {
+            "type": "action",
+            "one": "46",
+            "content": "undo = createEditStep(diagram.id)\nredo = createEditStep(diagram.id)"
+        },
+        "45": {
+            "type": "loopend",
+            "one": "50"
+        },
+        "46": {
+            "type": "loopbegin",
+            "one": "47",
+            "content": "change; changes"
+        },
+        "47": {
+            "type": "action",
+            "one": "45",
+            "content": "addChangeToEdit(\n    diagram,\n    change,\n    undo,\n    redo\n)"
+        },
+        "49": {
+            "type": "action",
+            "one": "23",
+            "content": "edit = {undo: undo, redo: redo}"
+        },
+        "50": {
+            "type": "action",
+            "one": "49",
+            "content": "undo.changes.reverse()"
+        },
+        "51": {
+            "type": "branch",
+            "branchId": 3,
+            "one": "52",
+            "content": "Limit undo buffer size"
+        },
+        "52": {
+            "type": "action",
+            "one": "55",
+            "content": "MaxUndo = 50"
+        },
+        "53": {
+            "type": "question",
+            "one": "10",
+            "two": "54",
+            "flag1": 0,
+            "content": "obj.undo.length > MaxUndo"
+        },
+        "54": {
+            "type": "action",
+            "one": "55",
+            "content": "obj.undo.shift()"
+        },
+        "55": {
+            "type": "arrow-loop",
+            "one": "53"
+        }
     },
-    "2": {
-      "branchId": 1,
-      "one": "37",
-      "type": "branch",
-      "content": "Create edit"
+    "keywords": {
+        "scenario": false,
+        "async": false,
+        "export": false,
+        "function": true,
+        "algoprop": false
     },
-    "10": {
-      "branchId": 3,
-      "one": "18",
-      "type": "branch",
-      "content": "Exit"
-    },
-    "18": {
-      "type": "action",
-      "one": "1",
-      "content": "return edit"
-    },
-    "23": {
-      "branchId": 2,
-      "one": "24",
-      "type": "branch",
-      "content": "Replace tail in undo buffer"
-    },
-    "24": {
-      "flag1": 1,
-      "type": "question",
-      "two": "25",
-      "one": "30",
-      "content": "obj.currentUndo >= 0"
-    },
-    "25": {
-      "type": "action",
-      "one": "28",
-      "content": "obj.undo = []"
-    },
-    "26": {
-      "type": "action",
-      "one": "29",
-      "content": "obj.undo = obj.undo.slice(\n    0,\n    obj.currentUndo\n)"
-    },
-    "28": {
-      "type": "action",
-      "one": "29",
-      "content": "obj.currentUndo = 0"
-    },
-    "29": {
-      "type": "action",
-      "one": "10",
-      "content": "obj.undo.push(edit)"
-    },
-    "30": {
-      "flag1": 1,
-      "type": "question",
-      "two": "26",
-      "one": "31",
-      "content": "obj.currentUndo < obj.undo.length"
-    },
-    "31": {
-      "type": "action",
-      "one": "26",
-      "content": "obj.currentUndo++"
-    },
-    "37": {
-      "type": "action",
-      "one": "40",
-      "content": "diagram = obj.diagram"
-    },
-    "40": {
-      "type": "action",
-      "one": "46",
-      "content": "undo = createEditStep(diagram.id)\nredo = createEditStep(diagram.id)"
-    },
-    "45": {
-      "type": "loopend",
-      "one": "50"
-    },
-    "46": {
-      "type": "loopbegin",
-      "one": "47",
-      "content": "change; changes"
-    },
-    "47": {
-      "type": "action",
-      "one": "45",
-      "content": "addChangeToEdit(\n    diagram,\n    change,\n    undo,\n    redo\n)"
-    },
-    "49": {
-      "type": "action",
-      "one": "23",
-      "content": "edit = {undo: undo, redo: redo}"
-    },
-    "50": {
-      "type": "action",
-      "one": "49",
-      "content": "undo.changes.reverse()"
-    }
-  },
-  "keywords": {
-    "scenario": false,
-    "async": false,
-    "export": false,
-    "function": true,
-    "algoprop": false
-  },
-  "params": "obj\nchanges",
-  "type": "drakon"
+    "params": "obj\nchanges",
+    "type": "drakon"
 }

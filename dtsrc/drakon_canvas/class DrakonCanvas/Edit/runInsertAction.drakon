@@ -1,102 +1,122 @@
 {
-  "items": {
-    "1": {
-      "type": "end"
+    "items": {
+        "1": {
+            "type": "end"
+        },
+        "2": {
+            "type": "branch",
+            "branchId": 0,
+            "one": "19"
+        },
+        "3": {
+            "type": "action",
+            "one": "11",
+            "content": "action = widget.insertActions[\n    socket.type\n]"
+        },
+        "4": {
+            "one": "14",
+            "type": "case",
+            "two": "8",
+            "content": "\"arrow\""
+        },
+        "5": {
+            "one": "13",
+            "type": "case",
+            "two": "4",
+            "content": "\"paste\""
+        },
+        "6": {
+            "one": "3",
+            "type": "case",
+            "two": "5",
+            "content": "\"insert\""
+        },
+        "7": {
+            "type": "select",
+            "one": "6",
+            "content": "socket.op"
+        },
+        "8": {
+            "one": "15",
+            "type": "case",
+            "two": "9",
+            "content": "\"liana\""
+        },
+        "9": {
+            "one": "23",
+            "type": "case",
+            "two": null,
+            "content": "\"params\""
+        },
+        "11": {
+            "type": "action",
+            "one": "20",
+            "content": "edits = action(widget, socket)"
+        },
+        "13": {
+            "type": "action",
+            "one": "18",
+            "content": "edits = pasteInSocket(\n    widget,\n    socket,\n    images\n)"
+        },
+        "14": {
+            "type": "action",
+            "one": "18",
+            "content": "edits = clickArrowSocket(widget, socket)"
+        },
+        "15": {
+            "type": "action",
+            "one": "18",
+            "content": "edits = clickLianaSocket(widget, socket)"
+        },
+        "17": {
+            "one": "1",
+            "type": "action",
+            "two": "",
+            "content": "return doEdit(widget, edits)"
+        },
+        "18": {
+            "type": "action",
+            "one": "17",
+            "content": "await loadCreatedImages(\n    widget,\n    edits,\n    images\n)"
+        },
+        "19": {
+            "type": "action",
+            "one": "7",
+            "content": "images = {}"
+        },
+        "20": {
+            "type": "action",
+            "one": "18",
+            "content": "insertImageDataItem(\n    socket.imageData,\n    edits,\n    images\n)"
+        },
+        "21": {
+            "type": "action",
+            "one": "1",
+            "content": "return []"
+        },
+        "22": {
+            "type": "action",
+            "one": "21",
+            "content": "addParameters(widget, prim)"
+        },
+        "23": {
+            "type": "action",
+            "one": "24",
+            "content": "widget.redraw()"
+        },
+        "24": {
+            "type": "action",
+            "one": "22",
+            "content": "prim = {\n    left: widget.visuals.header.x,\n    top: widget.visuals.header.y\n}"
+        }
     },
-    "2": {
-      "type": "branch",
-      "branchId": 0,
-      "one": "19"
+    "keywords": {
+        "scenario": false,
+        "async": true,
+        "export": false,
+        "function": true,
+        "algoprop": false
     },
-    "3": {
-      "type": "action",
-      "one": "11",
-      "content": "action = widget.insertActions[\n    socket.type\n]"
-    },
-    "4": {
-      "one": "14",
-      "type": "case",
-      "two": "8",
-      "content": "\"arrow\""
-    },
-    "5": {
-      "one": "13",
-      "type": "case",
-      "two": "4",
-      "content": "\"paste\""
-    },
-    "6": {
-      "one": "3",
-      "type": "case",
-      "two": "5",
-      "content": "\"insert\""
-    },
-    "7": {
-      "type": "select",
-      "one": "6",
-      "content": "socket.op"
-    },
-    "8": {
-      "one": "15",
-      "type": "case",
-      "two": "9",
-      "content": "\"liana\""
-    },
-    "9": {
-      "one": "1",
-      "type": "case",
-      "two": null,
-      "content": "\"params\""
-    },
-    "11": {
-      "type": "action",
-      "one": "20",
-      "content": "edits = action(widget, socket)"
-    },
-    "13": {
-      "type": "action",
-      "one": "18",
-      "content": "edits = pasteInSocket(\n    widget,\n    socket,\n    images\n)"
-    },
-    "14": {
-      "type": "action",
-      "one": "18",
-      "content": "edits = clickArrowSocket(widget, socket)"
-    },
-    "15": {
-      "type": "action",
-      "one": "18",
-      "content": "edits = clickLianaSocket(widget, socket)"
-    },
-    "17": {
-      "one": "1",
-      "type": "action",
-      "two": "",
-      "content": "return doEdit(widget, edits)"
-    },
-    "18": {
-      "type": "action",
-      "one": "17",
-      "content": "await loadCreatedImages(\n    widget,\n    edits,\n    images\n)"
-    },
-    "19": {
-      "type": "action",
-      "one": "7",
-      "content": "images = {}"
-    },
-    "20": {
-      "type": "action",
-      "one": "18",
-      "content": "insertImageDataItem(\n    socket.imageData,\n    edits,\n    images\n)"
-    }
-  },
-  "keywords": {
-    "scenario": false,
-    "async": true,
-    "export": false,
-    "function": true,
-    "algoprop": false
-  },
-  "params": "widget\nsocket",
-  "type": "drakon"
+    "params": "widget\nsocket",
+    "type": "drakon"
 }
