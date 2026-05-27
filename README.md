@@ -1284,7 +1284,6 @@ var diagram = {
 
 The first icon on the diagram is the __branch__ icon with the lowest __branchId__.
 
-
 ### Diagram object
 
 |Name|Description|Data type|Required|
