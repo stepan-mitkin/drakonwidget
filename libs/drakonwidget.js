@@ -550,7 +550,7 @@ function DrakonCanvas() {
         return result;
     }
     function getVersion() {
-        return '1.5.6';
+        return '1.5.7';
     }
     function getZoom() {
         if (self.zoom) {
@@ -21709,6 +21709,12 @@ Object.defineProperty(unit, 'utils', {
 });
 return unit;
 }
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+        drakon_canvas
+    };
+}
+
 function edit_tools() {
 var unit = {};
 var utils;
@@ -21846,9 +21852,10 @@ function createEdit(obj, changes) {
         obj.currentUndo = 0;
     }
     obj.undo.push(edit);
-    MaxUndo = 50;
+    MaxUndo = 100;
     while (true) {
         if (obj.undo.length > MaxUndo) {
+            obj.currentUndo--;
             obj.undo.shift();
         } else {
             break;
@@ -21948,6 +21955,12 @@ Object.defineProperty(unit, 'utils', {
 });
 return unit;
 }
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+        edit_tools
+    };
+}
+
 function html_0_1() {
 var unit = {};
 
