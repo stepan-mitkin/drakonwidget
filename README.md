@@ -6,6 +6,10 @@ DrakonWidget is a JavaScript widget for viewing and editing drakon flowcharts.
 
 [DrakonHub for desktop, mobile, and browser](https://drakonhub.com) is based on DrakonWidget.
 
+## Rules validation (optional module)
+
+The optional `validation/` folder adds a pluggable DRAKON rules validator: an engine, rule packs, an editable config (rules can be changed without code), and an issue panel with Report/Strict modes. It does not change `libs/drakonwidget.js`. See [validation/README.md](validation/README.md). Run the tests with `npm test`.
+
 ## Online demo:
 
 https://stepan-mitkin.github.io/drakonwidget/

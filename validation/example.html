@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DrakonWidget validation example</title>
+    <link rel="stylesheet" href="drakon-validation.css" />
+    <style>
+        html, body { margin: 0; height: 100%; font: 14px Arial, sans-serif; }
+        #editor { position: absolute; inset: 0; }
+    </style>
+</head>
+
+<body>
+    <div id="editor"></div>
+
+    <!-- 1. the widget -->
+    <script src="../libs/drakonwidget.js"></script>
+    <!-- 2. the validation engine, then any rule packs, then the config -->
+    <script src="drakon-validator.js"></script>
+    <script src="rules/structure-rules.js"></script>
+    <script src="rules/content-rules.js"></script>
+    <script src="rules-config.js"></script>
+    <!-- 3. the panel that connects the validator to the widget -->
+    <script src="drakon-validation-ui.js"></script>
+    <script>
+        var drakon = createDrakonWidget()
+
+        var validator = DrakonValidator.createValidator(DrakonValidator.defaultConfig)
+
+        var validation = DrakonValidationUI.create({
+            validator: validator,
+            getWidget: function () { return drakon },
+            mount: document.body,
+            mode: "report"
+        })
+
+        var diagram = {
+            name: "Validation example",
+            access: "write",
+            items: {
+                "1": { type: "end" },
+                "2": { type: "branch", branchId: 0, one: "3" },
+                "3": { type: "action", content: "Check the input", one: "4" },
+                "4": { type: "question", content: "Is the input valid?", one: "5", two: "6", flag1: 1 },
+                "5": { type: "action", content: "Process it", one: "1" },
+                "6": { type: "action", content: "Report the error", one: "1" }
+            }
+        }
+
+        var sender = {
+            stop: function () { },
+            pushEdit: function (edit) { console.log("edit", edit) }  // save to your storage here
+        }
+
+        var editor = document.getElementById("editor")
+        var rect = editor.getBoundingClientRect()
+        editor.appendChild(drakon.render(rect.width, rect.height, { canSelect: true }))
+
+        drakon.setDiagram("example", diagram, validation.wrapEditSender(sender), false)
+            .then(function () { validation.validateNow() })
+    </script>
+</body>
+
+</html>

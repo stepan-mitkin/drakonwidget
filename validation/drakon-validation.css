@@ -1,0 +1,202 @@
+/* Validation panel for DrakonValidationUI (top-right corner) */
+.dv-panel {
+    position: fixed;
+    right: 16px;
+    top: 16px;
+    width: 380px;
+    max-width: calc(100vw - 80px);
+    max-height: calc(100vh - 32px);
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    color: #222222;
+    border: 1px solid #c8c8c8;
+    border-left: 4px solid #3a9b4f;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    font: 13px Arial, sans-serif;
+    z-index: 5;
+}
+
+.dv-panel.dv-has-errors {
+    border-left-color: #c62828;
+}
+
+.dv-header {
+    padding: 6px 8px;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.dv-collapsed .dv-header {
+    border-bottom: none;
+}
+
+.dv-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dv-summary {
+    flex: 1;
+    font-weight: bold;
+}
+
+.dv-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.dv-label {
+    color: #666666;
+    font-size: 12px;
+}
+
+.dv-button {
+    font: 12px Arial, sans-serif;
+    padding: 3px 8px;
+    border: 1px solid #b8b8b8;
+    border-radius: 4px;
+    background: #f4f4f4;
+    color: #222222;
+    cursor: pointer;
+}
+
+.dv-button:hover {
+    background: #e8e8e8;
+}
+
+.dv-button.dv-active {
+    background: #2f5d8a;
+    border-color: #2f5d8a;
+    color: #ffffff;
+}
+
+.dv-segmented {
+    display: inline-flex;
+}
+
+.dv-segmented .dv-seg {
+    border-radius: 0;
+    margin-left: -1px;
+}
+
+.dv-segmented .dv-seg:first-child {
+    border-radius: 4px 0 0 4px;
+    margin-left: 0;
+}
+
+.dv-segmented .dv-seg:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+.dv-help-button {
+    font-weight: bold;
+    min-width: 26px;
+}
+
+.dv-controls .dv-button:last-child {
+    margin-left: auto;
+}
+
+.dv-help {
+    display: none;
+    padding: 8px;
+    background: #f6f9fc;
+    border-bottom: 1px solid #e4e4e4;
+    line-height: 1.4;
+}
+
+.dv-help-open .dv-help {
+    display: block;
+}
+
+.dv-help-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    row-gap: 4px;
+    margin: 0;
+}
+
+.dv-help-list dt {
+    font-weight: bold;
+}
+
+.dv-help-list dd {
+    margin: 0;
+}
+
+.dv-help-actions {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.dv-notice {
+    display: none;
+    padding: 6px 8px;
+    background: #fff3e0;
+    color: #7a4100;
+    border-bottom: 1px solid #f0d2a8;
+}
+
+.dv-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+}
+
+.dv-collapsed .dv-list,
+.dv-collapsed .dv-help,
+.dv-collapsed .dv-controls,
+.dv-collapsed .dv-notice {
+    display: none !important;
+}
+
+.dv-issue {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    padding: 6px 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.dv-clickable {
+    cursor: pointer;
+}
+
+.dv-clickable:hover {
+    background: #f5f8ff;
+}
+
+.dv-badge {
+    grid-row: span 2;
+    align-self: start;
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: #ffffff;
+}
+
+.dv-error .dv-badge { background: #c62828; }
+.dv-warning .dv-badge { background: #e08a00; }
+.dv-info .dv-badge { background: #4a6fa5; }
+
+.dv-rule {
+    color: #777777;
+    font-size: 11px;
+}
+
+/* Hint text under the Validation section of a host menu */
+.dv-menu-hint {
+    margin-top: 6px;
+    color: #555555;
+    font-size: 12px;
+    line-height: 1.4;
+}

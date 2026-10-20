@@ -4,7 +4,7 @@
   "description": "A JavaScript widget for viewing and editing drakon flowcharts",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test test/validation.test.js"
   },
   "repository": {
     "type": "git",
